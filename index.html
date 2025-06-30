@@ -4,12 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SterlWorld</title>
+
+  <!-- 🪄 Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
       padding: 0;
       background: black;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: gold;
       text-align: center;
       overflow: hidden;
@@ -34,20 +38,22 @@
     }
 
     .magic-text {
-      font-size: 3rem;
-      font-weight: bold;
+      font-size: 3.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 500;
       position: relative;
       z-index: 2;
-      color: #00ffff;
-      background: linear-gradient(120deg, #00ffff, #66ffcc, #00ccff, #99ffff);
-      background-size: 300% 300%;
+      color: white;
+      background: linear-gradient(120deg, #ffffff, #d0faff, #ffffff);
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: shimmer 6s infinite ease-in-out;
       text-shadow:
-        0 0 8px rgba(0, 255, 255, 0.8),
+        0 0 10px rgba(255, 255, 255, 0.9),
         0 0 20px rgba(0, 255, 255, 0.4),
-        0 0 40px rgba(0, 255, 255, 0.2);
+        0 0 30px rgba(0, 255, 255, 0.3);
+      margin-bottom: 0.5rem;
     }
 
     @keyframes shimmer {
@@ -56,13 +62,14 @@
       100% { background-position: 0% 50%; }
     }
 
-    p {
+    p.subtitle {
       font-size: 1.25rem;
       max-width: 600px;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 2.5rem;
       position: relative;
       z-index: 2;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+      color: #ccf;
+      text-shadow: 0 0 8px rgba(100, 200, 255, 0.3);
     }
 
     a.button {
@@ -77,11 +84,32 @@
       position: relative;
       z-index: 2;
       box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+      margin-top: 1.5rem;
     }
 
     a.button:hover {
       background: darkgoldenrod;
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    }
+
+    .preview {
+      margin-top: 2.5rem;
+      z-index: 2;
+      position: relative;
+    }
+
+    .preview img {
+      width: 480px;
+      max-width: 95%;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
+    }
+
+    .preview small {
+      display: block;
+      margin-top: 0.5rem;
+      color: #88f;
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -96,13 +124,21 @@
   </header>
 
   <h1 class="magic-text">Welcome to SterlWorld</h1>
-  <p>Your creative universe is taking shape. Stay tuned!</p>
+  <p class="subtitle">Your creative universe is taking shape.</p>
 
   <p>
     <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button">
       Play Crust Master on Itch.io
     </a>
   </p>
+
+  <!-- Preview Section -->
+  <div class="preview">
+    <a href="https://sterlworld.itch.io/crust-master" target="_blank">
+      <img src="https://img.itch.zone/aW1nLzE2OTk1Mjc3LnBuZw==/original/QF05tN.png" alt="Crust Master preview" />
+    </a>
+    <small>sterlworld.itch.io/crust-master</small>
+  </div>
 
   <!-- Code Rain Animation Script -->
   <script>
