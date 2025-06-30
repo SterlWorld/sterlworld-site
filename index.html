@@ -28,7 +28,7 @@
     }
 
     header img {
-      max-width: 480px; /* Bigger logo now */
+      max-width: 480px;
       margin: 0 auto 0.5rem;
       display: block;
       height: auto;
@@ -73,6 +73,7 @@
       z-index: 2;
       box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
       margin-top: 1.5rem;
+      cursor: pointer;
     }
 
     a.button:hover {
@@ -99,6 +100,17 @@
       color: #88f;
       font-size: 0.85rem;
     }
+
+    .bio {
+      max-width: 640px;
+      margin: 2rem auto 1rem;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #bbdefb;
+      text-shadow: 0 0 5px rgba(0, 150, 255, 0.3);
+      position: relative;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -121,13 +133,28 @@
     </a>
   </p>
 
-  <!-- Preview Section using your uploaded "Crust Master Title.png" -->
+  <!-- Preview Section -->
   <div class="preview">
     <a href="https://sterlworld.itch.io/crust-master" target="_blank">
       <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
     </a>
     <small>sterlworld.itch.io/crust-master</small>
   </div>
+
+  <!-- Bio/Intro -->
+  <div class="bio">
+    <p>
+      SterlWorld is a visionary creative universe brought to life by Sterlin Griffin. 
+      Dive into the adventure with our first game, Crust Master, and join us on a journey to build a legendary world full of stories, characters, and cosmic vibes.  
+    </p>
+  </div>
+
+  <!-- SUPPORT Button -->
+  <p>
+    <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button" style="background:#0099ff; color:white; box-shadow: 0 0 20px #00bbff;">
+      SUPPORT Crust Master
+    </a>
+  </p>
 
   <!-- Matrix Code Background Script -->
   <script>
