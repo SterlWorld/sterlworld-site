@@ -27,8 +27,9 @@
       margin: 20px auto;
       display: block;
       height: auto;
-      z-index: 2;
       position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 0 10px rgba(0,255,255,0.4));
     }
 
     h1 {
@@ -36,6 +37,7 @@
       margin-bottom: 1rem;
       position: relative;
       z-index: 2;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
     }
 
     p {
@@ -44,6 +46,7 @@
       margin: 0 auto 1.5rem;
       position: relative;
       z-index: 2;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
     }
 
     a.button {
@@ -57,17 +60,21 @@
       transition: background 0.3s ease;
       position: relative;
       z-index: 2;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
     }
 
     a.button:hover {
       background: darkgoldenrod;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
     }
   </style>
 </head>
 <body>
 
+  <!-- Matrix Code Background -->
   <canvas id="matrix"></canvas>
 
+  <!-- SterlWorld Content -->
   <header>
     <img src="logo.png" alt="SterlWorld Logo" />
   </header>
@@ -81,15 +88,16 @@
     </a>
   </p>
 
+  <!-- Code Rain Animation Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
-    // Fullscreen
+    // Fullscreen canvas
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const symbols = 'アァカサタナハマヤラワ0123456789$&∞∆✶⧫✧Ωπ'.split('');
+    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
     const fontSize = 16;
     const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
@@ -99,17 +107,23 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px monospace`;
+
       for (let i = 0; i < drops.length; i++) {
         const text = symbols[Math.floor(Math.random() * symbols.length)];
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        ctx.fillStyle = `hsl(${Math.random() * 300}, 100%, 70%)`;
+        // BLUE-GREEN COSMIC SHADES ONLY
+        const green = Math.floor(150 + Math.random() * 100);
+        const blue = Math.floor(180 + Math.random() * 75);
+        ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+
         ctx.fillText(text, x, y);
 
         if (y > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
+
         drops[i]++;
       }
     }
