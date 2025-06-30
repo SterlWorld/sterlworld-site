@@ -33,12 +33,27 @@
       filter: drop-shadow(0 0 10px rgba(0,255,255,0.4));
     }
 
-    h1 {
+    .magic-text {
       font-size: 3rem;
-      margin-bottom: 1rem;
+      font-weight: bold;
       position: relative;
       z-index: 2;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+      color: #00ffff;
+      background: linear-gradient(120deg, #00ffff, #66ffcc, #00ccff, #99ffff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s infinite ease-in-out;
+      text-shadow:
+        0 0 8px rgba(0, 255, 255, 0.8),
+        0 0 20px rgba(0, 255, 255, 0.4),
+        0 0 40px rgba(0, 255, 255, 0.2);
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     p {
@@ -80,7 +95,7 @@
     <img src="logo.png" alt="SterlWorld Logo" />
   </header>
 
-  <h1>Welcome to SterlWorld</h1>
+  <h1 class="magic-text">Welcome to SterlWorld</h1>
   <p>Your creative universe is taking shape. Stay tuned!</p>
 
   <p>
