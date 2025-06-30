@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- IMPORTANT FIX -->
   <title>SterlWorld</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       background: black;
       font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: gold;
       text-align: center;
-      overflow: hidden;
-      cursor: url('Dale%20Glove%20cursor.png'), auto;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     canvas {
@@ -28,6 +28,7 @@
     }
 
     header img {
+      width: 90%;
       max-width: 480px;
       margin: 0 auto 0.5rem;
       display: block;
@@ -38,7 +39,7 @@
     }
 
     .welcome-text {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-family: 'Orbitron', sans-serif;
       font-weight: 500;
       position: relative;
@@ -51,8 +52,8 @@
     }
 
     .subtitle {
-      font-size: 1.25rem;
-      max-width: 600px;
+      font-size: 1.2rem;
+      max-width: 90%;
       margin: 0 auto 2.5rem;
       position: relative;
       z-index: 2;
@@ -62,7 +63,7 @@
 
     a.button {
       display: inline-block;
-      background: #0099ff;  /* Blue for Support button */
+      background: #0099ff;
       color: white;
       padding: 12px 24px;
       font-weight: bold;
@@ -73,7 +74,7 @@
       z-index: 2;
       box-shadow: 0 0 20px #00bbff;
       margin-top: 1.5rem;
-      cursor: pointer;
+      font-size: 1rem;
     }
 
     a.button:hover {
@@ -88,8 +89,8 @@
     }
 
     .preview img {
-      width: 480px;
-      max-width: 95%;
+      width: 95%;
+      max-width: 480px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
     }
@@ -102,14 +103,27 @@
     }
 
     .bio {
-      max-width: 640px;
+      max-width: 90%;
       margin: 2rem auto 1rem;
-      font-size: 1.1rem;
-      line-height: 1.5;
+      font-size: 1rem;
+      line-height: 1.6;
       color: #bbdefb;
       text-shadow: 0 0 5px rgba(0, 150, 255, 0.3);
       position: relative;
       z-index: 2;
+    }
+
+    @media screen and (max-width: 480px) {
+      .welcome-text {
+        font-size: 1.75rem;
+      }
+      .subtitle {
+        font-size: 1rem;
+      }
+      a.button {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+      }
     }
   </style>
 </head>
@@ -127,14 +141,12 @@
 
   <p class="subtitle">Your creative universe is taking shape.</p>
 
-  <!-- Support Button replacing Play button -->
   <p>
     <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button">
       Support SterlWorld
     </a>
   </p>
 
-  <!-- Preview Section -->
   <div class="preview">
     <a href="https://sterlworld.itch.io/crust-master" target="_blank">
       <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
@@ -142,11 +154,10 @@
     <small>sterlworld.itch.io/crust-master</small>
   </div>
 
-  <!-- Bio/Intro -->
   <div class="bio">
     <p>
       SterlWorld is a visionary creative universe brought to life by Sterlin Griffin. 
-      Dive into the adventure with our first game, Crust Master, and join us on a journey to build a legendary world full of stories, characters, and cosmic vibes.  
+      Dive into the adventure with our first game, Crust Master, and join us on a journey to build a legendary world full of stories, characters, and cosmic vibes.
     </p>
   </div>
 
