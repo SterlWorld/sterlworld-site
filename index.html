@@ -13,6 +13,7 @@
       color: gold;
       text-align: center;
       overflow: hidden;
+      cursor: url('Dale%20Glove%20cursor.png'), auto;
     }
 
     canvas {
@@ -93,7 +94,6 @@
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
-    // Fullscreen canvas
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -113,7 +113,6 @@
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        // BLUE-GREEN COSMIC SHADES ONLY
         const green = Math.floor(150 + Math.random() * 100);
         const blue = Math.floor(180 + Math.random() * 75);
         ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
