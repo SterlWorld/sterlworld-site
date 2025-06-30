@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- IMPORTANT FIX -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SterlWorld</title>
 
   <!-- Google Fonts -->
@@ -17,7 +17,6 @@
       color: gold;
       text-align: center;
       overflow-x: hidden;
-      width: 100%;
     }
 
     canvas {
@@ -25,6 +24,8 @@
       top: 0;
       left: 0;
       z-index: -1;
+      width: 100%;
+      height: 100%;
     }
 
     header img {
@@ -54,7 +55,7 @@
     .subtitle {
       font-size: 1.2rem;
       max-width: 90%;
-      margin: 0 auto 2.5rem;
+      margin: 0 auto 2rem;
       position: relative;
       z-index: 2;
       color: #ccf;
@@ -161,7 +162,7 @@
     </p>
   </div>
 
-  <!-- Matrix Code Background Script -->
+  <!-- Matrix Background Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -200,6 +201,12 @@
     }
 
     setInterval(draw, 50);
+
+    // Auto-resize canvas on window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
   </script>
 
 </body>
