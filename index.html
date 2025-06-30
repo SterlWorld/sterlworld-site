@@ -14,18 +14,18 @@
       padding: 0;
       background: black;
       font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: gold;
       text-align: center;
       overflow-x: hidden;
+      height: 100%;
     }
 
     canvas {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      width: 100%;
-      height: 100%;
     }
 
     header img {
@@ -130,10 +130,8 @@
 </head>
 <body>
 
-  <!-- Background Matrix Canvas -->
   <canvas id="matrix"></canvas>
 
-  <!-- Main Content -->
   <h1 class="welcome-text">Welcome to</h1>
 
   <header>
@@ -162,24 +160,28 @@
     </p>
   </div>
 
-  <!-- Matrix Background Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
     const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
+    let columns = Math.floor(window.innerWidth / fontSize);
+    let drops = Array(columns).fill(1);
 
-    function draw() {
+    function drawMatrix() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.font = `${fontSize}px monospace`;
+      ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
         const text = symbols[Math.floor(Math.random() * symbols.length)];
@@ -200,13 +202,7 @@
       }
     }
 
-    setInterval(draw, 50);
-
-    // Auto-resize canvas on window resize
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
+    setInterval(drawMatrix, 50);
   </script>
 
 </body>
