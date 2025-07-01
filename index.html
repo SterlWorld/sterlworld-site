@@ -155,86 +155,98 @@
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
-    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆𓂀𓊽𓋹𓉔𓅓𓏏'.split('');
-    const sacred = ['𓂀', '𓊽', '𓋹', '𓉔']; // special golden ones
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
     const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-    let sparkles = [];
+    const columns = Math.floor(width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    // Choose reliable, visible characters
+    const symbols = 'アカサ0123456789Ωπ⊙∆𓂀𓊽𓋹𓉔';
+    const sacred = ['𓂀', '𓊽', '𓋹', '𓉔'];
+
+    const sparkles = [];
 
     function drawMatrix() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, width, height);
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+        const text = symbols[Math.floor(Math.random() * symbols.length)];
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        if (sacred.includes(symbol) && Math.random() < 0.01) {
-          ctx.fillStyle = 'rgba(255, 215, 0, 0.9)';
+        if (sacred.includes(text) && Math.random() < 0.003) {
+          ctx.fillStyle = 'gold';
           ctx.shadowColor = 'gold';
-          ctx.shadowBlur = 12;
+          ctx.shadowBlur = 10;
         } else {
-          const green = Math.floor(150 + Math.random() * 100);
-          const blue = Math.floor(180 + Math.random() * 75);
-          ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+          ctx.fillStyle = 'rgba(0, 255, 200, 0.75)';
           ctx.shadowBlur = 0;
         }
 
-        ctx.fillText(symbol, x, y);
-        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        ctx.fillText(text, x, y);
+
+        if (y > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
         drops[i]++;
       }
     }
 
     function createSparkle(x, y) {
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 8; i++) {
         sparkles.push({
-          x: x,
-          y: y,
+          x,
+          y,
           alpha: 1,
           radius: Math.random() * 2 + 1,
-          dx: (Math.random() - 0.5) * 2,
-          dy: (Math.random() - 0.5) * 2,
-          color: `rgba(${200 + Math.random()*55}, ${200 + Math.random()*55}, 255,`
+          dx: (Math.random() - 0.5) * 3,
+          dy: (Math.random() - 0.5) * 3,
         });
       }
     }
 
     function drawSparkles() {
       for (let i = sparkles.length - 1; i >= 0; i--) {
-        const p = sparkles[i];
+        const s = sparkles[i];
         ctx.beginPath();
-        ctx.fillStyle = p.color + p.alpha + ')';
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
         ctx.fill();
-        p.x += p.dx;
-        p.y += p.dy;
-        p.alpha -= 0.02;
-        if (p.alpha <= 0) sparkles.splice(i, 1);
+        s.x += s.dx;
+        s.y += s.dy;
+        s.alpha -= 0.02;
+        if (s.alpha <= 0) sparkles.splice(i, 1);
       }
     }
 
-    function animate() {
-      drawMatrix();
-      drawSparkles();
+    let lastDraw = 0;
+    function animate(time) {
+      if (time - lastDraw > 50) {
+        drawMatrix();
+        drawSparkles();
+        lastDraw = time;
+      }
       requestAnimationFrame(animate);
     }
 
     animate();
 
-    window.addEventListener('click', (e) => {
-      createSparkle(e.clientX, e.clientY);
+    // Sparkle on all clicks or taps
+    window.addEventListener('click', (e) => createSparkle(e.clientX, e.clientY));
+    window.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      createSparkle(touch.clientX, touch.clientY);
     });
 
     window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     });
   </script>
 
