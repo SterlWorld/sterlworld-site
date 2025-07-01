@@ -62,7 +62,7 @@
 
     a.button {
       display: inline-block;
-      background: #0099ff;
+      background: #0099ff;  /* Blue for Support button */
       color: white;
       padding: 12px 24px;
       font-weight: bold;
@@ -115,11 +115,12 @@
 </head>
 <body>
 
-  <!-- Matrix Background -->
+  <!-- Background Matrix Canvas -->
   <canvas id="matrix"></canvas>
 
-  <!-- Welcome + Logo -->
+  <!-- Main Content -->
   <h1 class="welcome-text">Welcome to</h1>
+
   <header>
     <img src="logo.png" alt="SterlWorld Logo" />
   </header>
@@ -133,7 +134,7 @@
     </a>
   </p>
 
-  <!-- Crust Master Preview -->
+  <!-- Preview Section -->
   <div class="preview">
     <a href="https://sterlworld.itch.io/crust-master" target="_blank">
       <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
@@ -141,15 +142,15 @@
     <small>sterlworld.itch.io/crust-master</small>
   </div>
 
-  <!-- Bio -->
+  <!-- Bio/Intro -->
   <div class="bio">
     <p>
       SterlWorld is a visionary creative universe brought to life by Sterlin Griffin. 
-      Dive into the adventure with our first game, Crust Master, and join us on a journey to build a legendary world full of stories, characters, and cosmic vibes.
+      Dive into the adventure with our first game, Crust Master, and join us on a journey to build a legendary world full of stories, characters, and cosmic vibes.  
     </p>
   </div>
 
-  <!-- Matrix Script (No Flashes) -->
+  <!-- Matrix Code Background Script with glowing gold hieroglyphs -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -169,8 +170,8 @@
     const drops = Array(columns).fill(1);
 
     function draw() {
-      // Fix: gentler fade to avoid flashing
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+      // translucent black background to create fading trails
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px monospace`;
@@ -180,7 +181,7 @@
         let text;
         let isSpecial = false;
 
-        if (Math.random() < 0.015) {
+        if (Math.random() < 0.015) { // ~1.5% chance for special gold symbol
           text = specialSymbols[Math.floor(Math.random() * specialSymbols.length)];
           isSpecial = true;
         } else {
