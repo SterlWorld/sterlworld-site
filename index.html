@@ -103,12 +103,7 @@
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
     }
 
-    .preview small {
-      display: block;
-      margin-top: 0.5rem;
-      color: #88f;
-      font-size: 0.85rem;
-    }
+    /* Removed small text styling since it is no longer used */
 
     @media screen and (max-width: 480px) {
       .welcome-text {
@@ -153,7 +148,6 @@
     <a href="https://sterlworld.itch.io/crust-master" target="_blank">
       <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
     </a>
-    <small>sterlworld.itch.io/crust-master</small>
   </div>
 
   <script>
@@ -251,22 +245,19 @@
     sparkleCanvas.style.position = 'fixed';
     sparkleCanvas.style.top = '0';
     sparkleCanvas.style.left = '0';
-    sparkleCanvas.style.pointerEvents = 'none'; // so clicks go through
+    sparkleCanvas.style.pointerEvents = 'none';
 
     animateSparkles();
 
-    // Add sparkles on click only
     window.addEventListener('click', e => {
       const rect = sparkleCanvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      // Create about 12 sparkles per click
       for (let i = 0; i < 12; i++) {
         sparkles.push(new Sparkle(x, y));
       }
     });
 
-    // Resize canvases on window resize
     window.addEventListener('resize', () => {
       matrixCanvas.width = window.innerWidth;
       matrixCanvas.height = window.innerHeight;
