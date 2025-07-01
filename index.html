@@ -5,30 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SterlWorld</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
 
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: black;
-      font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center;
-      overflow-x: hidden;
-      overflow-y: auto;
       height: 100%;
       width: 100%;
+      background: black;
+      font-family: 'Unica One', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
       cursor: url('Dale%20Glove%20cursor.png'), auto;
     }
 
-    canvas {
+    #matrix {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+      z-index: -999;
+      background: black;
     }
 
     header img {
@@ -38,18 +37,17 @@
       display: block;
       height: auto;
       position: relative;
-      z-index: 2;
+      z-index: 1;
       filter: drop-shadow(0 0 10px rgba(0,255,255,0.4));
     }
 
     .welcome-text {
       font-size: 2.5rem;
       font-family: 'Orbitron', sans-serif;
-      font-weight: 500;
-      position: relative;
-      z-index: 2;
       color: white;
       margin: 2rem 0 0.5rem;
+      z-index: 1;
+      position: relative;
       text-shadow:
         0 0 10px rgba(255, 255, 255, 0.9),
         0 0 20px rgba(0, 255, 255, 0.4);
@@ -57,28 +55,26 @@
 
     .subtitle {
       font-size: 1.25rem;
-      max-width: 600px;
-      margin: 0 auto 2.5rem;
-      position: relative;
-      z-index: 2;
       color: #ccf;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      z-index: 1;
+      position: relative;
       text-shadow: 0 0 8px rgba(100, 200, 255, 0.3);
     }
 
     a.button {
-      display: inline-block;
       background: #0099ff;
       color: white;
       padding: 12px 24px;
-      font-weight: bold;
       border-radius: 8px;
+      font-weight: bold;
       text-decoration: none;
-      transition: background 0.3s ease;
+      display: inline-block;
+      z-index: 1;
       position: relative;
-      z-index: 2;
       box-shadow: 0 0 20px #00bbff;
       margin-top: 1.5rem;
-      cursor: pointer;
     }
 
     a.button:hover {
@@ -87,8 +83,8 @@
     }
 
     .preview {
-      margin-top: 2.5rem;
-      z-index: 2;
+      margin-top: 2rem;
+      z-index: 1;
       position: relative;
     }
 
@@ -108,13 +104,13 @@
 
     .bio {
       max-width: 640px;
-      margin: 2rem auto 1rem;
+      margin: 2rem auto;
       font-size: 1.1rem;
       line-height: 1.5;
       color: #bbdefb;
-      text-shadow: 0 0 5px rgba(0, 150, 255, 0.3);
+      z-index: 1;
       position: relative;
-      z-index: 2;
+      text-shadow: 0 0 5px rgba(0, 150, 255, 0.3);
       padding: 0 1rem;
     }
 
@@ -124,7 +120,7 @@
       }
 
       .subtitle {
-        font-size: 1.05rem;
+        font-size: 1.1rem;
       }
 
       a.button {
@@ -135,8 +131,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Matrix Background -->
   <canvas id="matrix"></canvas>
 
   <h1 class="welcome-text">Welcome to</h1>
@@ -167,15 +161,16 @@
     </p>
   </div>
 
-  <!-- Matrix Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
-    let width, height, fontSize = 16;
-    let columns, drops = [];
+    let width, height;
+    let fontSize = 16;
+    let columns;
+    let drops = [];
 
-    function resize() {
+    function resizeMatrix() {
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = width;
@@ -184,15 +179,15 @@
       drops = Array(columns).fill(1);
     }
 
-    resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resizeMatrix);
+    resizeMatrix();
 
     const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
 
-    function draw() {
+    function drawMatrix() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, width, height);
-      ctx.font = fontSize + "px monospace";
+      ctx.font = fontSize + 'px monospace';
 
       for (let i = 0; i < drops.length; i++) {
         const text = symbols[Math.floor(Math.random() * symbols.length)];
@@ -213,8 +208,7 @@
       }
     }
 
-    setInterval(draw, 50);
+    setInterval(drawMatrix, 50);
   </script>
-
 </body>
 </html>
