@@ -151,7 +151,7 @@
     <small>sterlworld.itch.io/crust-master</small>
   </div>
 
-  <!-- Matrix + Sparkle Script -->
+  <!-- Matrix Code Background Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -163,9 +163,9 @@
     const columns = Math.floor(width / fontSize);
     const drops = Array(columns).fill(1);
 
-    // Choose reliable, visible characters
-    const symbols = 'アカサ0123456789Ωπ⊙∆𓂀𓊽𓋹𓉔';
-    const sacred = ['𓂀', '𓊽', '𓋹', '𓉔'];
+    // Safe universal matrix characters including sacred glyphs
+    const symbols = 'アカサタナ0123456789∞Ωπ∆⊙✧';
+    const sacred = ['Ω', 'π', '∞', '✧']; // Glow-worthy
 
     const sparkles = [];
 
@@ -199,14 +199,17 @@
     }
 
     function createSparkle(x, y) {
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 10; i++) {
+        const angle = Math.random() * 2 * Math.PI;
+        const speed = Math.random() * 3 + 1;
         sparkles.push({
           x,
           y,
           alpha: 1,
           radius: Math.random() * 2 + 1,
-          dx: (Math.random() - 0.5) * 3,
-          dy: (Math.random() - 0.5) * 3,
+          dx: Math.cos(angle) * speed,
+          dy: Math.sin(angle) * speed,
+          color: `hsl(${Math.random() * 360}, 100%, 75%)`
         });
       }
     }
@@ -215,12 +218,17 @@
       for (let i = sparkles.length - 1; i >= 0; i--) {
         const s = sparkles[i];
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = s.alpha;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = s.color;
         ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
         ctx.fill();
+        ctx.globalAlpha = 1;
+
         s.x += s.dx;
         s.y += s.dy;
-        s.alpha -= 0.02;
+        s.alpha -= 0.03;
         if (s.alpha <= 0) sparkles.splice(i, 1);
       }
     }
@@ -237,7 +245,7 @@
 
     animate();
 
-    // Sparkle on all clicks or taps
+    // Sparkle on all clicks/taps anywhere
     window.addEventListener('click', (e) => createSparkle(e.clientX, e.clientY));
     window.addEventListener('touchstart', (e) => {
       const touch = e.touches[0];
