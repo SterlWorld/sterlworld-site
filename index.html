@@ -127,7 +127,7 @@
 
   <p class="subtitle">Your creative universe is taking shape.</p>
 
-  <!-- Support Button -->
+  <!-- Support Button replacing Play button -->
   <p>
     <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button">
       Support SterlWorld
@@ -150,57 +150,33 @@
     </p>
   </div>
 
-  <!-- Matrix Code Background Script with glowing gold hieroglyphs -->
+  <!-- Matrix Code Background Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    const regularSymbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
-    const specialSymbols = ['𓂀','𓆣','𓋹','𓊹','𓇳','𓎛'];
-
+    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
     const fontSize = 16;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
 
     function draw() {
-      // translucent black background to create fading trails
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px monospace`;
-      ctx.textBaseline = 'top';
 
       for (let i = 0; i < drops.length; i++) {
-        let text;
-        let isSpecial = false;
-
-        if (Math.random() < 0.015) { // ~1.5% chance for special gold symbol
-          text = specialSymbols[Math.floor(Math.random() * specialSymbols.length)];
-          isSpecial = true;
-        } else {
-          text = regularSymbols[Math.floor(Math.random() * regularSymbols.length)];
-        }
-
+        const text = symbols[Math.floor(Math.random() * symbols.length)];
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        if (isSpecial) {
-          ctx.fillStyle = 'gold';
-          ctx.shadowColor = 'gold';
-          ctx.shadowBlur = 15;
-        } else {
-          const green = Math.floor(150 + Math.random() * 100);
-          const blue = Math.floor(180 + Math.random() * 75);
-          ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
-          ctx.shadowBlur = 0;
-        }
+        const green = Math.floor(150 + Math.random() * 100);
+        const blue = Math.floor(180 + Math.random() * 75);
+        ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
 
         ctx.fillText(text, x, y);
 
