@@ -9,10 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
       padding: 0;
@@ -20,7 +16,7 @@
       font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: gold;
       text-align: center;
-      overflow-x: hidden;
+      overflow: hidden;
       cursor: url('Dale%20Glove%20cursor.png'), auto;
     }
 
@@ -32,7 +28,6 @@
     }
 
     header img {
-      width: 80%;
       max-width: 480px;
       margin: 0 auto 0.5rem;
       display: block;
@@ -43,23 +38,22 @@
     }
 
     .welcome-text {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       font-family: 'Orbitron', sans-serif;
       font-weight: 500;
       position: relative;
       z-index: 2;
       color: white;
       margin: 2rem 0 0.5rem;
-      padding: 0 1rem;
       text-shadow:
         0 0 10px rgba(255, 255, 255, 0.9),
         0 0 20px rgba(0, 255, 255, 0.4);
     }
 
     .subtitle {
-      font-size: 1.1rem;
-      max-width: 90%;
-      margin: 0 auto 2rem;
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
       position: relative;
       z-index: 2;
       color: #ccf;
@@ -87,15 +81,14 @@
     }
 
     .preview {
-      margin: 2.5rem auto 1rem;
+      margin-top: 2.5rem;
       z-index: 2;
       position: relative;
-      max-width: 90%;
     }
 
     .preview img {
-      width: 100%;
-      max-width: 480px;
+      width: 480px;
+      max-width: 95%;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
     }
@@ -106,29 +99,12 @@
       color: #88f;
       font-size: 0.85rem;
     }
-
-    @media screen and (max-width: 480px) {
-      .welcome-text {
-        font-size: 1.8rem;
-      }
-
-      .subtitle {
-        font-size: 1rem;
-      }
-
-      a.button {
-        padding: 10px 20px;
-        font-size: 0.95rem;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Background Matrix Canvas -->
   <canvas id="matrix"></canvas>
 
-  <!-- Main Content -->
   <h1 class="welcome-text">Welcome to</h1>
 
   <header>
@@ -143,7 +119,6 @@
     </a>
   </p>
 
-  <!-- Preview Section -->
   <div class="preview">
     <a href="https://sterlworld.itch.io/crust-master" target="_blank">
       <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
@@ -151,33 +126,45 @@
     <small>sterlworld.itch.io/crust-master</small>
   </div>
 
-  <!-- Matrix Code Background Script -->
+  <!-- Matrix Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
     const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    // All symbols: base + hieroglyphs
+    const baseSymbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆';
+    const allHieroglyphs = '𓂀𓊽𓏏𓂋𓊹𓋹𓃭𓆑𓈖𓎛𓆣𓂓𓏲𓇌𓉐𓅓𓃀';
+    const allSymbols = (baseSymbols + allHieroglyphs).split('');
+
+    // Top 4 power glyphs
+    const powerGlyphs = ['𓂀', '𓊹', '𓋹', '𓏏'];
 
     function draw() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const text = symbols[Math.floor(Math.random() * symbols.length)];
+        const text = allSymbols[Math.floor(Math.random() * allSymbols.length)];
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        const green = Math.floor(150 + Math.random() * 100);
-        const blue = Math.floor(180 + Math.random() * 75);
-        ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+        if (powerGlyphs.includes(text)) {
+          ctx.fillStyle = 'rgba(255, 215, 0, 0.9)'; // Gold glow
+          ctx.shadowColor = 'gold';
+          ctx.shadowBlur = 10;
+        } else {
+          const green = Math.floor(150 + Math.random() * 100);
+          const blue = Math.floor(180 + Math.random() * 75);
+          ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+          ctx.shadowBlur = 0;
+        }
 
         ctx.fillText(text, x, y);
 
