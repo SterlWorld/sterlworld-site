@@ -4,117 +4,132 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SterlWorld</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
-
   <style>
     body {
       margin: 0;
       padding: 0;
       background: black;
-      font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: gold;
       text-align: center;
-      cursor: url('Dale%20Glove%20cursor.png'), auto;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
 
     header img {
-      max-width: 480px;
-      margin: 0 auto 1rem;
+      max-width: 350px;
+      margin: 20px auto;
       display: block;
       height: auto;
-      filter: drop-shadow(0 0 8px rgba(255,255,255,0.25));
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 0 10px rgba(0,255,255,0.4));
     }
 
-    .welcome-text {
-      font-size: 2.5rem;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 500;
-      margin-top: 2rem;
-      color: white;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
     }
 
-    .subtitle {
+    p {
       font-size: 1.25rem;
-      margin: 0.5rem auto 2rem;
       max-width: 600px;
-      color: #ccc;
+      margin: 0 auto 1.5rem;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
     }
 
     a.button {
       display: inline-block;
-      background: #007bff;
-      color: white;
+      background: gold;
+      color: black;
       padding: 12px 24px;
       font-weight: bold;
-      border-radius: 6px;
+      border-radius: 8px;
       text-decoration: none;
       transition: background 0.3s ease;
-      margin: 1rem 0;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
     }
 
     a.button:hover {
-      background: #005fcc;
-    }
-
-    .preview {
-      margin: 2rem auto 1rem;
-    }
-
-    .preview img {
-      width: 480px;
-      max-width: 95%;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
-    }
-
-    .preview small {
-      display: block;
-      margin-top: 0.5rem;
-      color: #aaa;
-      font-size: 0.85rem;
-    }
-
-    .bio {
-      max-width: 640px;
-      margin: 2rem auto 2rem;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #bbb;
+      background: darkgoldenrod;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
     }
   </style>
 </head>
 <body>
 
-  <h1 class="welcome-text">Welcome to</h1>
+  <!-- Matrix Code Background -->
+  <canvas id="matrix"></canvas>
 
+  <!-- SterlWorld Content -->
   <header>
     <img src="logo.png" alt="SterlWorld Logo" />
   </header>
 
-  <p class="subtitle">Your creative universe is taking shape.</p>
+  <h1>Welcome to SterlWorld</h1>
+  <p>Your creative universe is taking shape. Stay tuned!</p>
 
   <p>
     <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button">
-      Support SterlWorld
+      Play Crust Master on Itch.io
     </a>
   </p>
 
-  <div class="preview">
-    <a href="https://sterlworld.itch.io/crust-master" target="_blank">
-      <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
-    </a>
-    <small>sterlworld.itch.io/crust-master</small>
-  </div>
+  <!-- Code Rain Animation Script -->
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
 
-  <div class="bio">
-    <p>
-      SterlWorld is a visionary creative universe brought to life by Sterlin Griffin.
-      Dive into the adventure with our first game, Crust Master, and help build a legendary world full of stories, characters, and cosmic creativity.
-    </p>
-  </div>
+    // Fullscreen canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = symbols[Math.floor(Math.random() * symbols.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        // BLUE-GREEN COSMIC SHADES ONLY
+        const green = Math.floor(150 + Math.random() * 100);
+        const blue = Math.floor(180 + Math.random() * 75);
+        ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 50);
+  </script>
 
 </body>
 </html>
