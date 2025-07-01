@@ -151,45 +151,86 @@
     <small>sterlworld.itch.io/crust-master</small>
   </div>
 
-  <!-- Matrix Code Background Script -->
+  <!-- Matrix + Sparkle Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
+    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆𓂀𓊽𓋹𓉔𓅓𓏏'.split('');
+    const sacred = ['𓂀', '𓊽', '𓋹', '𓉔']; // special golden ones
     const fontSize = 16;
     const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
+    let sparkles = [];
 
-    function draw() {
+    function drawMatrix() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const text = symbols[Math.floor(Math.random() * symbols.length)];
+        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        const green = Math.floor(150 + Math.random() * 100);
-        const blue = Math.floor(180 + Math.random() * 75);
-        ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
-
-        ctx.fillText(text, x, y);
-
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
+        if (sacred.includes(symbol) && Math.random() < 0.01) {
+          ctx.fillStyle = 'rgba(255, 215, 0, 0.9)';
+          ctx.shadowColor = 'gold';
+          ctx.shadowBlur = 12;
+        } else {
+          const green = Math.floor(150 + Math.random() * 100);
+          const blue = Math.floor(180 + Math.random() * 75);
+          ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+          ctx.shadowBlur = 0;
         }
 
+        ctx.fillText(symbol, x, y);
+        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
 
-    setInterval(draw, 50);
+    function createSparkle(x, y) {
+      for (let i = 0; i < 10; i++) {
+        sparkles.push({
+          x: x,
+          y: y,
+          alpha: 1,
+          radius: Math.random() * 2 + 1,
+          dx: (Math.random() - 0.5) * 2,
+          dy: (Math.random() - 0.5) * 2,
+          color: `rgba(${200 + Math.random()*55}, ${200 + Math.random()*55}, 255,`
+        });
+      }
+    }
+
+    function drawSparkles() {
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        const p = sparkles[i];
+        ctx.beginPath();
+        ctx.fillStyle = p.color + p.alpha + ')';
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        p.alpha -= 0.02;
+        if (p.alpha <= 0) sparkles.splice(i, 1);
+      }
+    }
+
+    function animate() {
+      drawMatrix();
+      drawSparkles();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('click', (e) => {
+      createSparkle(e.clientX, e.clientY);
+    });
 
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
