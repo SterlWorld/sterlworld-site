@@ -1,195 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SterlWorld</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SterlWorld</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: gold;
-      text-align: center;
-      overflow: hidden;
-      cursor: url('Dale%20Glove%20cursor.png'), auto;
-    }
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      text-align: center;
+      cursor: url('Dale%20Glove%20cursor.png'), auto;
+    }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
+    header img {
+      max-width: 480px;
+      margin: 0 auto 1rem;
+      display: block;
+      height: auto;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.25));
+    }
 
-    header img {
-      max-width: 480px;
-      margin: 0 auto 0.5rem;
-      display: block;
-      height: auto;
-      position: relative;
-      z-index: 2;
-      filter: drop-shadow(0 0 10px rgba(0,255,255,0.4));
-    }
+    .welcome-text {
+      font-size: 2.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 500;
+      margin-top: 2rem;
+      color: white;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
 
-    .welcome-text {
-      font-size: 2.5rem;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 500;
-      position: relative;
-      z-index: 2;
-      color: white;
-      margin: 2rem 0 0.5rem;
-      text-shadow:
-        0 0 10px rgba(255, 255, 255, 0.9),
-        0 0 20px rgba(0, 255, 255, 0.4);
-    }
+    .subtitle {
+      font-size: 1.25rem;
+      margin: 0.5rem auto 2rem;
+      max-width: 600px;
+      color: #ccc;
+    }
 
-    .subtitle {
-      font-size: 1.25rem;
-      max-width: 600px;
-      margin: 0 auto 2.5rem;
-      position: relative;
-      z-index: 2;
-      color: #ccf;
-      text-shadow: 0 0 8px rgba(100, 200, 255, 0.3);
-    }
+    a.button {
+      display: inline-block;
+      background: #007bff;
+      color: white;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      margin: 1rem 0;
+    }
 
-    a.button {
-      display: inline-block;
-      background: #0099ff;  /* Blue for Support button */
-      color: white;
-      padding: 12px 24px;
-      font-weight: bold;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.3s ease;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 20px #00bbff;
-      margin-top: 1.5rem;
-      cursor: pointer;
-    }
+    a.button:hover {
+      background: #005fcc;
+    }
 
-    a.button:hover {
-      background: #007acc;
-      box-shadow: 0 0 30px #00ddff;
-    }
+    .preview {
+      margin: 2rem auto 1rem;
+    }
 
-    .preview {
-      margin-top: 2.5rem;
-      z-index: 2;
-      position: relative;
-    }
+    .preview img {
+      width: 480px;
+      max-width: 95%;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+    }
 
-    .preview img {
-      width: 480px;
-      max-width: 95%;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
-    }
+    .preview small {
+      display: block;
+      margin-top: 0.5rem;
+      color: #aaa;
+      font-size: 0.85rem;
+    }
 
-    .preview small {
-      display: block;
-      margin-top: 0.5rem;
-      color: #88f;
-      font-size: 0.85rem;
-    }
-
-    .bio {
-      max-width: 640px;
-      margin: 2rem auto 1rem;
-      font-size: 1.1rem;
-      line-height: 1.5;
-      color: #bbdefb;
-      text-shadow: 0 0 5px rgba(0, 150, 255, 0.3);
-      position: relative;
-      z-index: 2;
-    }
-  </style>
+    .bio {
+      max-width: 640px;
+      margin: 2rem auto 2rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #bbb;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Background Matrix Canvas -->
-  <canvas id="matrix"></canvas>
+  <h1 class="welcome-text">Welcome to</h1>
 
-  <!-- Main Content -->
-  <h1 class="welcome-text">Welcome to</h1>
+  <header>
+    <img src="logo.png" alt="SterlWorld Logo" />
+  </header>
 
-  <header>
-    <img src="logo.png" alt="SterlWorld Logo" />
-  </header>
+  <p class="subtitle">Your creative universe is taking shape.</p>
 
-  <p class="subtitle">Your creative universe is taking shape.</p>
+  <p>
+    <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button">
+      Support SterlWorld
+    </a>
+  </p>
 
-  <!-- Support Button replacing Play button -->
-  <p>
-    <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button">
-      Support SterlWorld
-    </a>
-  </p>
+  <div class="preview">
+    <a href="https://sterlworld.itch.io/crust-master" target="_blank">
+      <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
+    </a>
+    <small>sterlworld.itch.io/crust-master</small>
+  </div>
 
-  <!-- Preview Section -->
-  <div class="preview">
-    <a href="https://sterlworld.itch.io/crust-master" target="_blank">
-      <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
-    </a>
-    <small>sterlworld.itch.io/crust-master</small>
-  </div>
-
-  <!-- Bio/Intro -->
-  <div class="bio">
-    <p>
-      SterlWorld is a visionary creative universe brought to life by Sterlin Griffin. 
-      Dive into the adventure with our first game, Crust Master, and join us on a journey to build a legendary world full of stories, characters, and cosmic vibes.  
-    </p>
-  </div>
-
-  <!-- Matrix Code Background Script -->
-  <script>
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.font = `${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = symbols[Math.floor(Math.random() * symbols.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        const green = Math.floor(150 + Math.random() * 100);
-        const blue = Math.floor(180 + Math.random() * 75);
-        ctx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
-
-        ctx.fillText(text, x, y);
-
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 50);
-  </script>
+  <div class="bio">
+    <p>
+      SterlWorld is a visionary creative universe brought to life by Sterlin Griffin.
+      Dive into the adventure with our first game, Crust Master, and help build a legendary world full of stories, characters, and cosmic creativity.
+    </p>
+  </div>
 
 </body>
 </html>
