@@ -14,10 +14,11 @@
       padding: 0;
       background: black;
       font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: gold;
       text-align: center;
       overflow-x: hidden;
+      overflow-y: auto;
       height: 100%;
+      width: 100%;
       cursor: url('Dale%20Glove%20cursor.png'), auto;
     }
 
@@ -25,8 +26,8 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       z-index: -1;
     }
 
@@ -171,28 +172,27 @@
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    let width, height, fontSize = 16;
+    let columns, drops = [];
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      columns = Math.floor(width / fontSize);
+      drops = Array(columns).fill(1);
     }
 
-    resizeCanvas();
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      columns = Math.floor(canvas.width / fontSize);
-      drops = Array(columns).fill(1);
-    });
+    resize();
+    window.addEventListener('resize', resize);
 
     const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
-    const fontSize = 16;
-    let columns = Math.floor(window.innerWidth / fontSize);
-    let drops = Array(columns).fill(1);
 
     function draw() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.font = `${fontSize}px monospace`;
+      ctx.fillRect(0, 0, width, height);
+      ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
         const text = symbols[Math.floor(Math.random() * symbols.length)];
@@ -205,7 +205,7 @@
 
         ctx.fillText(text, x, y);
 
-        if (y > canvas.height && Math.random() > 0.975) {
+        if (y > height && Math.random() > 0.975) {
           drops[i] = 0;
         }
 
