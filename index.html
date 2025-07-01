@@ -6,7 +6,7 @@
   <title>SterlWorld</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet" />
 
   <style>
     * {
@@ -22,6 +22,7 @@
       text-align: center;
       overflow-x: hidden;
       cursor: url('Dale%20Glove%20cursor.png'), auto;
+      user-select: none;
     }
 
     canvas {
@@ -29,6 +30,7 @@
       top: 0;
       left: 0;
       z-index: -1;
+      display: block;
     }
 
     header img {
@@ -39,7 +41,7 @@
       height: auto;
       position: relative;
       z-index: 2;
-      filter: drop-shadow(0 0 10px rgba(0,255,255,0.4));
+      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
     }
 
     .welcome-text {
@@ -79,6 +81,7 @@
       z-index: 2;
       box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
       margin-top: 1.5rem;
+      user-select: none;
     }
 
     a.button:hover {
@@ -127,6 +130,8 @@
 
   <!-- Background Matrix Canvas -->
   <canvas id="matrix"></canvas>
+  <!-- Sparkle Canvas -->
+  <canvas id="sparkle"></canvas>
 
   <!-- Main Content -->
   <h1 class="welcome-text">Welcome to</h1>
@@ -151,46 +156,36 @@
     <small>sterlworld.itch.io/crust-master</small>
   </div>
 
-  <!-- Matrix Code Background Script -->
   <script>
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
+    // MATRIX BACKGROUND
+    const matrixCanvas = document.getElementById('matrix');
+    const mCtx = matrixCanvas.getContext('2d');
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
+    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
     const fontSize = 16;
-    const columns = Math.floor(width / fontSize);
+    const columns = Math.floor(matrixCanvas.width / fontSize);
     const drops = Array(columns).fill(1);
 
-    // Safe universal matrix characters including sacred glyphs
-    const symbols = 'アカサタナ0123456789∞Ωπ∆⊙✧';
-    const sacred = ['Ω', 'π', '∞', '✧']; // Glow-worthy
-
-    const sparkles = [];
-
     function drawMatrix() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-      ctx.fillRect(0, 0, width, height);
-      ctx.font = `${fontSize}px monospace`;
+      mCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+      mCtx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
         const text = symbols[Math.floor(Math.random() * symbols.length)];
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        if (sacred.includes(text) && Math.random() < 0.003) {
-          ctx.fillStyle = 'gold';
-          ctx.shadowColor = 'gold';
-          ctx.shadowBlur = 10;
-        } else {
-          ctx.fillStyle = 'rgba(0, 255, 200, 0.75)';
-          ctx.shadowBlur = 0;
-        }
+        const green = Math.floor(150 + Math.random() * 100);
+        const blue = Math.floor(180 + Math.random() * 75);
+        mCtx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
 
-        ctx.fillText(text, x, y);
+        mCtx.fillText(text, x, y);
 
-        if (y > height && Math.random() > 0.975) {
+        if (y > matrixCanvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
 
@@ -198,63 +193,85 @@
       }
     }
 
-    function createSparkle(x, y) {
-      for (let i = 0; i < 10; i++) {
-        const angle = Math.random() * 2 * Math.PI;
-        const speed = Math.random() * 3 + 1;
-        sparkles.push({
-          x,
-          y,
-          alpha: 1,
-          radius: Math.random() * 2 + 1,
-          dx: Math.cos(angle) * speed,
-          dy: Math.sin(angle) * speed,
-          color: `hsl(${Math.random() * 360}, 100%, 75%)`
-        });
-      }
-    }
+    setInterval(drawMatrix, 50);
 
-    function drawSparkles() {
-      for (let i = sparkles.length - 1; i >= 0; i--) {
-        const s = sparkles[i];
+    // SPARKLE EFFECT ON CLICK
+    const sparkleCanvas = document.getElementById('sparkle');
+    const sCtx = sparkleCanvas.getContext('2d');
+    sparkleCanvas.width = window.innerWidth;
+    sparkleCanvas.height = window.innerHeight;
+
+    class Sparkle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.life = 20; // frames
+        this.size = Math.random() * 3 + 2;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.speedY = (Math.random() - 0.5) * 2;
+        this.opacity = 1;
+        this.color = `rgba(255, 215, 0, ${this.opacity})`; // gold color
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life--;
+        this.opacity = this.life / 20;
+        this.color = `rgba(255, 215, 0, ${this.opacity})`;
+      }
+
+      draw(ctx) {
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, ' + this.opacity + ')');
+        gradient.addColorStop(0.5, this.color);
+        gradient.addColorStop(1, 'rgba(255, 215, 0, 0)');
+        ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.fillStyle = s.color;
-        ctx.globalAlpha = s.alpha;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = s.color;
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
-        ctx.globalAlpha = 1;
-
-        s.x += s.dx;
-        s.y += s.dy;
-        s.alpha -= 0.03;
-        if (s.alpha <= 0) sparkles.splice(i, 1);
       }
     }
 
-    let lastDraw = 0;
-    function animate(time) {
-      if (time - lastDraw > 50) {
-        drawMatrix();
-        drawSparkles();
-        lastDraw = time;
+    const sparkles = [];
+
+    function animateSparkles() {
+      sCtx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        const sp = sparkles[i];
+        sp.update();
+        sp.draw(sCtx);
+        if (sp.life <= 0) {
+          sparkles.splice(i, 1);
+        }
       }
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animateSparkles);
     }
 
-    animate();
+    sparkleCanvas.style.position = 'fixed';
+    sparkleCanvas.style.top = '0';
+    sparkleCanvas.style.left = '0';
+    sparkleCanvas.style.pointerEvents = 'none'; // so clicks go through
 
-    // Sparkle on all clicks/taps anywhere
-    window.addEventListener('click', (e) => createSparkle(e.clientX, e.clientY));
-    window.addEventListener('touchstart', (e) => {
-      const touch = e.touches[0];
-      createSparkle(touch.clientX, touch.clientY);
+    animateSparkles();
+
+    // Add sparkles on click only
+    window.addEventListener('click', e => {
+      const rect = sparkleCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      // Create about 12 sparkles per click
+      for (let i = 0; i < 12; i++) {
+        sparkles.push(new Sparkle(x, y));
+      }
     });
 
+    // Resize canvases on window resize
     window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      matrixCanvas.width = window.innerWidth;
+      matrixCanvas.height = window.innerHeight;
+      sparkleCanvas.width = window.innerWidth;
+      sparkleCanvas.height = window.innerHeight;
     });
   </script>
 
