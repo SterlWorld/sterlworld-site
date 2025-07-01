@@ -9,6 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -16,7 +20,7 @@
       font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: gold;
       text-align: center;
-      overflow: hidden;
+      overflow-x: hidden;
       cursor: url('Dale%20Glove%20cursor.png'), auto;
     }
 
@@ -28,7 +32,8 @@
     }
 
     header img {
-      max-width: 480px; /* Bigger logo now */
+      width: 80%;
+      max-width: 480px;
       margin: 0 auto 0.5rem;
       display: block;
       height: auto;
@@ -38,22 +43,23 @@
     }
 
     .welcome-text {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-family: 'Orbitron', sans-serif;
       font-weight: 500;
       position: relative;
       z-index: 2;
       color: white;
       margin: 2rem 0 0.5rem;
+      padding: 0 1rem;
       text-shadow:
         0 0 10px rgba(255, 255, 255, 0.9),
         0 0 20px rgba(0, 255, 255, 0.4);
     }
 
     .subtitle {
-      font-size: 1.25rem;
-      max-width: 600px;
-      margin: 0 auto 2.5rem;
+      font-size: 1.1rem;
+      max-width: 90%;
+      margin: 0 auto 2rem;
       position: relative;
       z-index: 2;
       color: #ccf;
@@ -81,14 +87,15 @@
     }
 
     .preview {
-      margin-top: 2.5rem;
+      margin: 2.5rem auto 1rem;
       z-index: 2;
       position: relative;
+      max-width: 90%;
     }
 
     .preview img {
-      width: 480px;
-      max-width: 95%;
+      width: 100%;
+      max-width: 480px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
     }
@@ -98,6 +105,21 @@
       margin-top: 0.5rem;
       color: #88f;
       font-size: 0.85rem;
+    }
+
+    @media screen and (max-width: 480px) {
+      .welcome-text {
+        font-size: 1.8rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      a.button {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
@@ -121,7 +143,7 @@
     </a>
   </p>
 
-  <!-- Preview Section using your uploaded "Crust Master Title.png" -->
+  <!-- Preview Section -->
   <div class="preview">
     <a href="https://sterlworld.itch.io/crust-master" target="_blank">
       <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
@@ -168,6 +190,11 @@
     }
 
     setInterval(draw, 50);
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
   </script>
 
 </body>
