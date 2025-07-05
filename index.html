@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SterlWorld</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -48,6 +48,7 @@
       opacity: 0;
       transition: opacity 2s ease 2s;
       z-index: 3;
+      padding: 0 1rem;
     }
 
     .content.visible {
@@ -73,6 +74,28 @@
       left: 0;
       z-index: 0;
       pointer-events: none;
+    }
+
+    /* Mobile tweaks */
+    @media screen and (max-width: 480px) {
+      #logo {
+        width: 180px;
+        top: 45%;
+        transform: translate(-50%, -50%);
+      }
+      #logo.floating {
+        top: 40px;
+      }
+      .content {
+        top: 50%;
+        transform: translate(-50%, 50%);
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      p {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
