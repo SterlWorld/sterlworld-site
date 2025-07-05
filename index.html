@@ -23,29 +23,19 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%);
       opacity: 0;
+      transition: opacity 1.5s ease, top 1.5s ease;
       z-index: 10;
-      animation-fill-mode: forwards;
     }
 
     #logo.visible {
-      animation: fadeIn 1.5s ease forwards;
+      opacity: 1;
     }
 
-    #logo.floating {
-      animation: anticipateUp 2s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    @keyframes anticipateUp {
-      0%   { top: 50%; transform: translate(-50%, -50%) scale(1); }
-      20%  { top: 52%; transform: translate(-50%, -50%) scale(0.97); } /* slight down */
-      100% { top: 40px; transform: translate(-50%, 0) scale(1); } /* up and settled */
+    #logo.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
     }
 
     .content {
@@ -109,9 +99,6 @@
         font-size: 1rem;
         top: 58%;
       }
-      .support {
-        font-size: 0.95rem;
-      }
     }
   </style>
 </head>
@@ -136,18 +123,18 @@
       const logo = document.getElementById('logo');
       const content = document.getElementById('mainText');
 
-      // Step 1: Fade in logo
+      // Step 1: fade in
       logo.classList.add('visible');
 
-      // Step 2: After fade-in + 1s pause, do bounce-up animation
+      // Step 2: after 1.5s, float to top
       setTimeout(() => {
-        logo.classList.add('floating');
-      }, 2500);
+        logo.classList.add('move-top');
+      }, 1500);
 
-      // Step 3: Show content after logo has floated up
+      // Step 3: show content after logo reaches top
       setTimeout(() => {
         content.classList.add('visible');
-      }, 4300); // adjust as needed to time with animation
+      }, 3000);
     };
   </script>
 </body>
