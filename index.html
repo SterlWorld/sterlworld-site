@@ -15,9 +15,6 @@
       font-family: 'Poppins', sans-serif;
       color: white;
       overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
     }
     #logo {
       width: 300px;
@@ -60,25 +57,24 @@
     p {
       line-height: 1.5;
     }
-    footer {
-      margin-top: auto;
+    .support {
+      margin-top: 2.5rem;
       background: #111;
-      padding: 1rem 0;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #aaa;
-      border-top: 1px solid #222;
-      user-select: none;
+      padding: 1.2rem;
+      border-radius: 10px;
+      display: inline-block;
+      color: #eee;
+      box-shadow: 0 0 15px rgba(0,255,255,0.1);
     }
-    footer p {
-      margin: 0.25rem 0;
+    .support p {
+      margin: 0.4rem 0;
     }
-    footer a {
+    .support a {
       color: #0ff;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: bold;
     }
-    footer a:hover {
+    .support a:hover {
       text-decoration: underline;
     }
     @media screen and (max-width: 480px) {
@@ -96,27 +92,28 @@
       h1 {
         font-size: 1.8rem;
       }
-      footer {
-        font-size: 0.8rem;
-        padding: 0.8rem 0;
+      .support {
+        font-size: 0.9rem;
+        padding: 1rem;
       }
     }
   </style>
 </head>
 <body>
   <img src="logo.png" id="logo" alt="SterlWorld Logo" />
+
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />We’re building a new legacy of entertainment — and it’s just the beginning. 🌌</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
-  </div>
 
-  <footer>
-    <p>Support SterlWorld:</p>
-    <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank" rel="noopener">@sterlworld_business</a></p>
-    <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank" rel="noopener">$SterWorldx2</a></p>
-    <p><a href="https://sterlworld.itch.io/crust-master" target="_blank" rel="noopener">Play Crust Master / Donate</a></p>
-  </footer>
+    <div class="support">
+      <p>💖 Want to support the vision?</p>
+      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
+      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">🎮 Play Crust Master / Donate</a></p>
+    </div>
+  </div>
 
   <script>
     window.onload = () => {
