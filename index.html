@@ -21,28 +21,33 @@
       cursor: crosshair;
     }
 
-    /* Logo styles */
+    /* Logo wrapper centers it perfectly */
+    #logo-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: top 1.5s ease, transform 1.5s ease;
+      z-index: 10;
+    }
+
+    /* Slide logo to top */
+    #logo-wrapper.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
+    }
+
     #logo {
       width: 300px;
       max-width: 80vw;
-      position: absolute;
-      top: calc(50% - 150px); /* adjusted to center vertically without shifting later */
-      left: 50%;
-      transform: translateX(-50%);
       opacity: 0;
-      transition: opacity 1.5s ease, top 1.5s ease;
-      z-index: 10;
+      transition: opacity 1.5s ease;
     }
 
     #logo.visible {
       opacity: 1;
     }
 
-    #logo.move-top {
-      top: 40px;
-    }
-
-    /* Text Content */
     .content {
       position: absolute;
       top: 55%;
@@ -93,7 +98,6 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
 
-    /* Sparkles on click */
     .sparkle {
       position: fixed;
       width: 8px;
@@ -128,10 +132,12 @@
 </head>
 <body>
 
-  <!-- Logo -->
-  <img src="logo.png" id="logo" alt="SterlWorld Logo" />
+  <!-- Logo Wrapper for perfect centering + movement -->
+  <div id="logo-wrapper">
+    <img src="logo.png" id="logo" alt="SterlWorld Logo" />
+  </div>
 
-  <!-- Main content -->
+  <!-- Main Content -->
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
@@ -146,27 +152,28 @@
     </div>
   </div>
 
-  <!-- JS for animation + sparkles -->
+  <!-- JS for animation and sparkles -->
   <script>
     window.onload = () => {
       const logo = document.getElementById('logo');
+      const logoWrapper = document.getElementById('logo-wrapper');
       const content = document.getElementById('mainText');
 
-      // Fade in
+      // Step 1: fade in logo
       logo.classList.add('visible');
 
-      // Slide up after 1.5s
+      // Step 2: float up logo after 1.5s
       setTimeout(() => {
-        logo.classList.add('move-top');
+        logoWrapper.classList.add('move-top');
       }, 1500);
 
-      // Show content after 3s
+      // Step 3: fade in text content after 3s
       setTimeout(() => {
         content.classList.add('visible');
       }, 3000);
     };
 
-    // Sparkles on click
+    // Sparkle effect on all clicks
     document.addEventListener('click', (e) => {
       for (let i = 0; i < 5; i++) {
         const sparkle = document.createElement('div');
