@@ -1,141 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SterlWorld</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SterlWorld | Power the Dream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      background: black;
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: #000;
+      color: #eee;
       font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow-x: hidden;
+      line-height:1.5;
     }
-
+    section { padding:4rem 1rem; text-align:center; max-width:800px; margin:0 auto; }
     #logo {
-      width: 300px;
-      max-width: 80vw;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      transition: opacity 1.5s ease, top 1.5s ease;
-      z-index: 10;
+      width:300px; max-width:80vw;
+      margin:8rem auto 0;
+      opacity:0; position:relative;
+      transition:opacity 1.5s ease, margin-top 1.5s ease;
     }
-
     #logo.visible {
-      opacity: 1;
+      opacity:1;
     }
-
-    #logo.move-top {
-      top: 40px;
-      transform: translate(-50%, 0);
+    #logo.moved {
+      margin-top:2rem;
     }
-
-    .content {
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 90%;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      font-size: 1.2rem;
-      color: #ccc;
-      z-index: 5;
+    h1, h2 { font-family:'Orbitron',sans-serif; color:#fff; margin-bottom:1rem; }
+    h1 { font-size:2.5rem; }
+    h2 { font-size:2rem; margin-top:2rem; }
+    p { color:#ccc; margin-bottom:1.5rem; }
+    .glow-link {
+      color:#0ff; font-weight:600;
+      text-decoration:none; position:relative;
+      transition:text-shadow .3s ease, color .3s ease;
     }
-
-    .content.visible {
-      opacity: 1;
+    .glow-link:hover {
+      color:#fff;
+      text-shadow:0 0 6px #0ff, 0 0 12px #0ff;
     }
-
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 600;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: white;
+    .btn-outline {
+      border:2px solid #0ff;
+      padding:.6rem 1.2rem;
+      border-radius:5px;
+      color:#0ff;
+      text-decoration:none;
+      font-weight:600;
+      transition:background .3s ease;
+      display:inline-block;
+      margin-top:1rem;
     }
-
-    p {
-      line-height: 1.5;
+    .btn-outline:hover { background:rgba(0,255,255,0.1); }
+    .feature-img {
+      width:100%; max-width:480px;
+      border-radius:8px;
+      margin:2rem auto;
+      box-shadow:0 0 20px rgba(0,255,255,0.2);
     }
-
-    .support {
-      margin-top: 2.5rem;
+    .contact {
+      margin-top:2rem;
+      font-size:1rem;
     }
-
-    .support p {
-      margin: 0.5rem 0;
-    }
-
-    .support a {
-      color: #0ff;
-      font-weight: bold;
-      text-decoration: none;
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-    }
-
-    .support a:hover {
-      color: #fff;
-      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
-    }
-
-    @media screen and (max-width: 480px) {
-      #logo {
-        width: 180px;
-      }
-      h1 {
-        font-size: 1.8rem;
-      }
-      .content {
-        font-size: 1rem;
-        top: 58%;
-      }
+    @media(max-width:480px){
+      h1 { font-size:1.8rem; }
+      h2 { font-size:1.5rem; }
     }
   </style>
 </head>
 <body>
-  <img src="logo.png" id="logo" alt="SterlWorld Logo" />
 
-  <div class="content" id="mainText">
+  <!-- Logo + animation -->
+  <section id="hero">
+    <img src="logo.png" id="logo" alt="SterlWorld Logo">
+  </section>
+
+  <!-- Mission & story -->
+  <section id="mission">
     <h1>Welcome to SterlWorld</h1>
-    <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />We’re building a new legacy of entertainment — and it’s just the beginning. 🌌</p>
-    <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
+    <p>Born from a dream to pioneer a new entertainment universe—SterlWorld combines gaming, art, music, animation, and spiritual creativity into one cosmic experience.</p>
+    <p>Built solo late nights, self-funded, guided by passion and purpose. And this is only the beginning.</p>
+  </section>
 
-    <div class="support">
-      <p>💖 Want to support the vision?</p>
-      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">🎮 Play Crust Master / Donate</a></p>
-    </div>
-  </div>
+  <!-- Power the Dream -->
+  <section id="support">
+    <h2>Power the Dream</h2>
+    <p>Our first milestone: <strong>$50,000</strong> to fully launch the studio's debut projects.</p>
+    <p>Every dollar supports:</p>
+    <ul>
+      <li>Game development & artist fees</li>
+      <li>Music, animations & creative tools</li>
+      <li>Marketing, servers & admin costs</li>
+    </ul>
+    <p>💖 Want to support the vision?</p>
+    <p>Venmo: <a class="glow-link" href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
+    <p>Cash App: <a class="glow-link" href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
+    <p><a class="btn-outline" href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+  </section>
+
+  <!-- Featured content -->
+  <section id="featured">
+    <h2>Featured Preview</h2>
+    <img src="crust-master-preview.png" alt="Crust Master Preview" class="feature-img">
+    <p>Crust Master — our debut cosmic pizza game is coming soon. Stay tuned and be among the first to play!</p>
+  </section>
+
+  <!-- Contact / Join -->
+  <section id="contact">
+    <h2>Join the Journey</h2>
+    <p class="contact">Interested in investing, collaborating, or learning more? Reach out at <a class="glow-link" href="mailto:hello@sterlworld.com">hello@sterlworld.com</a></p>
+    <p class="contact">Together, let's build the creative legacy we've all been waiting for.</p>
+  </section>
 
   <script>
     window.onload = () => {
-      const logo = document.getElementById('logo');
-      const content = document.getElementById('mainText');
-
-      // Step 1: fade in
+      const logo = document.querySelector('#hero #logo');
+      const smlDelay = 500; // fade-in delay
+      const slideDelay = 1500; // delay before move
       logo.classList.add('visible');
-
-      // Step 2: after 1.5s, float to top
-      setTimeout(() => {
-        logo.classList.add('move-top');
-      }, 1500);
-
-      // Step 3: show content after logo reaches top
-      setTimeout(() => {
-        content.classList.add('visible');
-      }, 3000);
+      setTimeout(() => logo.classList.add('moved'), slideDelay);
     };
   </script>
+
 </body>
 </html>
