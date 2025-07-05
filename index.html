@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
@@ -15,22 +15,43 @@
       color: white;
     }
 
-    #logo {
-      width: 300px;
-      max-width: 80%;
+    /* Container for logo + sparkle canvas */
+    #logoContainer {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      width: 300px;
+      max-width: 80vw;
       opacity: 0;
       transition: all 2s ease;
       z-index: 5;
     }
 
-    #logo.floating {
+    #logoContainer.floating {
       top: 60px;
       opacity: 1;
       animation: twinkle 4s infinite ease-in-out;
+    }
+
+    #logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    #logoSparkles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
     }
 
     @keyframes twinkle {
@@ -68,7 +89,8 @@
       color: #ccc;
     }
 
-    canvas {
+    /* Background sparkle canvas */
+    #stars {
       position: fixed;
       top: 0;
       left: 0;
@@ -78,12 +100,12 @@
 
     /* Mobile tweaks */
     @media screen and (max-width: 480px) {
-      #logo {
+      #logoContainer {
         width: 180px;
         top: 45%;
         transform: translate(-50%, -50%);
       }
-      #logo.floating {
+      #logoContainer.floating {
         top: 40px;
       }
       .content {
@@ -101,7 +123,10 @@
 </head>
 <body>
 
-  <img src="logo.png" id="logo" alt="SterlWorld Logo" />
+  <div id="logoContainer">
+    <img src="logo.png" id="logo" alt="SterlWorld Logo" />
+    <canvas id="logoSparkles"></canvas>
+  </div>
   
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
@@ -114,28 +139,27 @@
   <script>
     // Logo float-in on load
     window.onload = () => {
-      const logo = document.getElementById('logo');
+      const logoContainer = document.getElementById('logoContainer');
       const text = document.getElementById('mainText');
-      setTimeout(() => logo.classList.add('floating'), 500);
+      setTimeout(() => logoContainer.classList.add('floating'), 500);
       setTimeout(() => text.classList.add('visible'), 2200);
     };
 
-    // Click/tap sparkle effect
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
+    // Background click/tap sparkle effect
+    const starsCanvas = document.getElementById('stars');
+    const starsCtx = starsCanvas.getContext('2d');
+    let starsParticles = [];
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    function resizeStarsCanvas() {
+      starsCanvas.width = window.innerWidth;
+      starsCanvas.height = window.innerHeight;
     }
+    window.addEventListener('resize', resizeStarsCanvas);
+    resizeStarsCanvas();
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    function createSparkle(x, y) {
+    function createStarsSparkle(x, y) {
       for (let i = 0; i < 10; i++) {
-        particles.push({
+        starsParticles.push({
           x: x,
           y: y,
           dx: (Math.random() - 0.5) * 4,
@@ -146,29 +170,83 @@
       }
     }
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p, i) => {
+    function animateStars() {
+      starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+      starsParticles.forEach((p, i) => {
         p.x += p.dx;
         p.y += p.dy;
         p.life--;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-        if (p.life <= 0) particles.splice(i, 1);
+        starsCtx.beginPath();
+        starsCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        starsCtx.fillStyle = p.color;
+        starsCtx.fill();
+        if (p.life <= 0) starsParticles.splice(i, 1);
       });
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animateStars);
     }
+    animateStars();
 
-    animate();
-
-    window.addEventListener('click', e => createSparkle(e.clientX, e.clientY));
+    window.addEventListener('click', e => createStarsSparkle(e.clientX, e.clientY));
     window.addEventListener('touchstart', e => {
       if (e.touches.length > 0) {
-        createSparkle(e.touches[0].clientX, e.touches[0].clientY);
+        createStarsSparkle(e.touches[0].clientX, e.touches[0].clientY);
       }
     });
+
+    // Logo sparkle overlay code
+    const logo = document.getElementById('logo');
+    const sparkleCanvas = document.getElementById('logoSparkles');
+    const sparkleCtx = sparkleCanvas.getContext('2d');
+
+    let sparkles = [];
+    const sparkleCount = 25;
+
+    function resizeSparkleCanvas() {
+      sparkleCanvas.width = logo.clientWidth;
+      sparkleCanvas.height = logo.clientHeight;
+      sparkleCanvas.style.width = logo.clientWidth + 'px';
+      sparkleCanvas.style.height = logo.clientHeight + 'px';
+    }
+    resizeSparkleCanvas();
+    window.addEventListener('resize', resizeSparkleCanvas);
+
+    function createSparkles() {
+      sparkles = [];
+      for (let i = 0; i < sparkleCount; i++) {
+        sparkles.push({
+          x: Math.random() * sparkleCanvas.width,
+          y: Math.random() * sparkleCanvas.height,
+          alpha: 0,
+          maxAlpha: 0.8 + Math.random() * 0.2,
+          size: 1 + Math.random() * 2,
+          flickerSpeed: 0.02 + Math.random() * 0.04,
+          flickerDirection: 1,
+        });
+      }
+    }
+    createSparkles();
+
+    function animateSparkles() {
+      sparkleCtx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+      sparkles.forEach((s, i) => {
+        s.alpha += s.flickerSpeed * s.flickerDirection;
+        if (s.alpha >= s.maxAlpha) s.flickerDirection = -1;
+        if (s.alpha <= 0) {
+          s.flickerDirection = 1;
+          s.x = Math.random() * sparkleCanvas.width;
+          s.y = Math.random() * sparkleCanvas.height;
+        }
+        sparkleCtx.beginPath();
+        sparkleCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        sparkleCtx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+        sparkleCtx.shadowColor = `rgba(255, 255, 255, ${s.alpha})`;
+        sparkleCtx.shadowBlur = 8;
+        sparkleCtx.fill();
+      });
+      requestAnimationFrame(animateSparkles);
+    }
+    animateSparkles();
   </script>
+
 </body>
 </html>
