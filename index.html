@@ -150,17 +150,18 @@
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
-    We’re building a new legacy of entertainment — and it’s just the beginning. 🌌</p>
+    We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
     <div class="support">
-      <p>💖 Want to support the vision?</p>
+      <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">🎮 Play Crust Master / Donate</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
     </div>
   </div>
 
+  <!-- JS for animation and stars -->
   <script>
     window.onload = () => {
       const logo = document.getElementById('logo');
@@ -201,12 +202,10 @@
     window.addEventListener('resize', resize);
     resize();
 
-    const starImageSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const starImage = new Image();
-    starImage.src = starImageSrc;
+    starImage.src = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     let stars = [];
-
     function createStar() {
       return {
         x: (Math.random() - 0.5) * w * 1.5,
@@ -222,12 +221,16 @@
       stars.push(createStar());
     }
 
-    function animate() {
+    let lastTime = performance.now();
+    function animate(time = performance.now()) {
+      const delta = (time - lastTime) / 16.67;
+      lastTime = time;
+
       ctx.fillStyle = "rgba(0,0,0,0.3)";
       ctx.fillRect(0, 0, w, h);
 
       stars.forEach((s, i) => {
-        s.z -= 0.8;
+        s.z -= 0.5 * delta;
 
         if (s.z <= 0) {
           stars[i] = createStar();
@@ -247,8 +250,8 @@
         ctx.translate(px, py);
         ctx.rotate(s.rotationAngle);
         ctx.shadowBlur = 14;
-        ctx.shadowColor = '#f7de99'; // golden glow
-        ctx.globalAlpha = 0.35; // dim stars
+        ctx.shadowColor = '#f7de99';
+        ctx.globalAlpha = 0.35;
         let starSize = s.size * (1 - s.z / w) * 25;
         ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
         ctx.restore();
