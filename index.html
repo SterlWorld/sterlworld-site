@@ -6,11 +6,7 @@
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       height: 100%;
@@ -30,6 +26,40 @@
       display: block;
     }
 
+    #enter-screen {
+      position: fixed;
+      z-index: 10000;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      color: white;
+      font-size: 1.5rem;
+      transition: opacity 0.8s ease;
+    }
+
+    #enter-screen button {
+      margin-top: 1.5rem;
+      background: none;
+      border: 2px solid #0ff;
+      color: #0ff;
+      font-size: 1.1rem;
+      padding: 0.7rem 1.5rem;
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    #enter-screen button:hover {
+      background: #0ff;
+      color: black;
+    }
+
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -40,9 +70,7 @@
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
 
-    #logo-wrapper.fade-in {
-      opacity: 1;
-    }
+    #logo-wrapper.fade-in { opacity: 1; }
 
     #logo-wrapper.move-top {
       top: 40px;
@@ -70,9 +98,7 @@
       padding: 0 20px;
     }
 
-    .content.visible {
-      opacity: 1;
-    }
+    .content.visible { opacity: 1; }
 
     h1 {
       font-family: 'Orbitron', sans-serif;
@@ -82,17 +108,13 @@
       color: white;
     }
 
-    p {
-      line-height: 1.5;
-    }
+    p { line-height: 1.5; }
 
     .support {
       margin-top: 2.5rem;
     }
 
-    .support p {
-      margin: 0.5rem 0;
-    }
+    .support p { margin: 0.5rem 0; }
 
     .support a {
       color: #0ff;
@@ -129,24 +151,25 @@
     }
 
     @media screen and (max-width: 600px) {
-      #logo {
-        width: 180px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .content {
-        font-size: 1rem;
-        top: 120px;
-      }
+      #logo { width: 180px; }
+      h1 { font-size: 1.8rem; }
+      .content { font-size: 1rem; top: 120px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Starfield canvas -->
   <canvas id="space"></canvas>
+
+  <!-- Enter screen -->
+  <div id="enter-screen">
+    <div>Tap to Enter</div>
+    <button id="enter-btn">Enter SterlWorld</button>
+  </div>
+
+  <!-- Audio -->
+  <audio id="bg-audio" src="https://your-github-repo-url/Runescape%2007%20-%20Forever%20(Trap%20Remix).mp3" preload="auto"></audio>
 
   <!-- Logo -->
   <div id="logo-wrapper">
@@ -159,7 +182,6 @@
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
-
     <div class="support">
       <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
@@ -169,9 +191,19 @@
   </div>
 
   <script>
+    const enterBtn = document.getElementById('enter-btn');
+    const enterScreen = document.getElementById('enter-screen');
+    const audio = document.getElementById('bg-audio');
     const logoWrapper = document.getElementById('logo-wrapper');
     const content = document.getElementById('mainText');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+
+    enterBtn.addEventListener('click', () => {
+      audio.play().catch(() => {});
+      enterScreen.style.opacity = '0';
+      setTimeout(() => enterScreen.remove(), 800);
+      startAnimation();
+    });
 
     function createSparkleBurst(x, y) {
       const numStars = 5 + Math.floor(Math.random() * 3);
@@ -201,6 +233,7 @@
       }
     });
 
+    // Starfield
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -209,7 +242,6 @@
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
-
     window.addEventListener('resize', resize);
     resize();
 
@@ -230,71 +262,77 @@
 
     for (let i = 0; i < 200; i++) stars.push(createStar());
 
-    let warpSpeed = 30;
-    const normalSpeed = 0.5;
-    const warpDuration = 3000;
-    let warpStartTime = null;
-    let warpComplete = false;
-    let lastTime = performance.now();
+    function startAnimation() {
+      let warpSpeed = 30;
+      const normalSpeed = 0.5;
+      const warpDuration = 3000;
+      let warpStartTime = null;
+      let warpComplete = false;
+      let lastTime = performance.now();
 
-    function animate(time = performance.now()) {
-      if (!warpStartTime) warpStartTime = time;
-      const elapsed = time - warpStartTime;
+      function animate(time = performance.now()) {
+        if (!warpStartTime) warpStartTime = time;
+        const elapsed = time - warpStartTime;
 
-      if (elapsed < warpDuration) {
-        const t = elapsed / warpDuration;
-        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
-      } else {
-        warpSpeed = normalSpeed;
-        if (!warpComplete) {
-          warpComplete = true;
-          logoWrapper.classList.add('fade-in');
-          setTimeout(() => {
-            logoWrapper.classList.add('move-top');
-            setTimeout(() => content.classList.add('visible'), 1000);
-          }, 1500); // wait for fade-in to finish before sliding
+        if (elapsed < warpDuration) {
+          const t = elapsed / warpDuration;
+          warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+        } else {
+          warpSpeed = normalSpeed;
+          if (!warpComplete) {
+            warpComplete = true;
+            logoWrapper.classList.add('fade-in');
+            setTimeout(() => {
+              logoWrapper.classList.add('move-top');
+              setTimeout(() => content.classList.add('visible'), 1000);
+            }, 1500);
+          }
         }
+
+        const delta = (time - lastTime) / 16.67;
+        lastTime = time;
+
+        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+        ctx.fillRect(0, 0, w, h);
+
+        stars.forEach((s, i) => {
+          s.z -= warpSpeed * delta;
+          if (s.z <= 0) {
+            stars[i] = createStar();
+            return;
+          }
+          let k = 128.0 / s.z;
+          let px = s.x * k + w / 2;
+          let py = s.y * k + h / 2;
+          if (px < 0 || px >= w || py < 0 || py >= h) {
+            stars[i] = createStar();
+            return;
+          }
+          ctx.save();
+          ctx.translate(px, py);
+          ctx.rotate(s.rotationAngle);
+          ctx.shadowBlur = 14;
+          ctx.shadowColor = '#f7de99';
+          ctx.globalAlpha = 0.35;
+          let starSize = s.size * (1 - s.z / w) * 25;
+          ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+          ctx.restore();
+          s.rotationAngle += s.rotationSpeed;
+        });
+
+        requestAnimationFrame(animate);
       }
 
-      const delta = (time - lastTime) / 16.67;
-      lastTime = time;
+      starImage.onload = () => {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, w, h);
+        animate();
+      };
 
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-      ctx.fillRect(0, 0, w, h);
-
-      stars.forEach((s, i) => {
-        s.z -= warpSpeed * delta;
-        if (s.z <= 0) {
-          stars[i] = createStar();
-          return;
-        }
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) {
-          stars[i] = createStar();
-          return;
-        }
-        ctx.save();
-        ctx.translate(px, py);
-        ctx.rotate(s.rotationAngle);
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = '#f7de99';
-        ctx.globalAlpha = 0.35;
-        let starSize = s.size * (1 - s.z / w) * 25;
-        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
-        ctx.restore();
-        s.rotationAngle += s.rotationSpeed;
-      });
-
-      requestAnimationFrame(animate);
+      if (starImage.complete) {
+        animate();
+      }
     }
-
-    starImage.onload = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, w, h);
-      animate();
-    };
   </script>
 </body>
 </html>
