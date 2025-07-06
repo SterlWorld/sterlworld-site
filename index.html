@@ -27,6 +27,12 @@
       left: 0;
       z-index: 0;
       display: block;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    canvas#space.visible {
+      opacity: 1;
     }
 
     #logo-wrapper {
@@ -165,22 +171,24 @@
     const logo = document.getElementById('logo');
     const logoWrapper = document.getElementById('logo-wrapper');
     const content = document.getElementById('mainText');
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
-    // Sparkle burst on click or touch
+    // Sparkle burst
     function createSparkleBurst(x, y) {
-      const numStars = 7 + Math.floor(Math.random() * 3); // 7–9 stars
+      const numStars = 7 + Math.floor(Math.random() * 3);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
         sparkle.className = 'sparkle-star';
 
-        const size = Math.random() * 12 + 6; // Size: 6–18px
+        const size = Math.random() * 12 + 6;
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
 
         const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 60 + 20; // Burst radius: 20–80px
+        const distance = Math.random() * 60 + 20;
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
 
@@ -193,21 +201,15 @@
       }
     }
 
-    document.addEventListener('click', (e) => {
-      createSparkleBurst(e.clientX, e.clientY);
-    });
-
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length > 0) {
         createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
       }
     });
 
-    // ----------- STARFIELD BACKGROUND -----------
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
+    // Resize canvas
     let w, h;
-
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
@@ -234,11 +236,10 @@
       stars.push(createStar());
     }
 
-    // Warp speed effect variables
-    let warpSpeed = 30;          // initial warp speed (high)
-    const normalSpeed = 0.5;     // normal cruising speed
-    const warpDuration = 3000;   // duration of warp slow down in milliseconds
-    let warpStartTime = null;    // timestamp when warp started
+    let warpSpeed = 30;
+    const normalSpeed = 0.5;
+    const warpDuration = 3000;
+    let warpStartTime = null;
     let warpComplete = false;
 
     let lastTime = performance.now();
@@ -247,7 +248,6 @@
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
 
-      // Ease warpSpeed from 30 down to normalSpeed over warpDuration (easeOutCubic)
       if (elapsed < warpDuration) {
         const t = elapsed / warpDuration;
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
@@ -255,7 +255,6 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          // Show logo and content after warp effect finishes
           logo.classList.add('visible');
           setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
           setTimeout(() => content.classList.add('visible'), 3000);
@@ -276,9 +275,9 @@
           return;
         }
 
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
+        const k = 128.0 / s.z;
+        const px = s.x * k + w / 2;
+        const py = s.y * k + h / 2;
 
         if (px < 0 || px >= w || py < 0 || py >= h) {
           stars[i] = createStar();
@@ -291,7 +290,7 @@
         ctx.shadowBlur = 14;
         ctx.shadowColor = '#f7de99';
         ctx.globalAlpha = 0.35;
-        let starSize = s.size * (1 - s.z / w) * 25;
+        const starSize = s.size * (1 - s.z / w) * 25;
         ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
         ctx.restore();
 
@@ -301,11 +300,14 @@
       requestAnimationFrame(animate);
     }
 
-    // Start animation only after starImage loads
+    // Start animation after star image loads
     starImage.onload = () => {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
-      animate();
+      setTimeout(() => {
+        canvas.classList.add('visible'); // Fade in the canvas
+        animate();
+      }, 100);
     };
   </script>
 </body>
