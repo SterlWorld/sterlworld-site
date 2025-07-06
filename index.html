@@ -6,7 +6,12 @@
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
       height: 100%;
       background: black;
@@ -16,12 +21,11 @@
       cursor: crosshair;
     }
 
-    canvas#space {
+    canvas {
       position: fixed;
       top: 0;
       left: 0;
       z-index: 0;
-      display: block;
     }
 
     #logo-wrapper {
@@ -75,10 +79,6 @@
       color: white;
     }
 
-    p {
-      line-height: 1.5;
-    }
-
     .support {
       margin-top: 2.5rem;
     }
@@ -100,14 +100,22 @@
     }
 
     @media screen and (max-width: 480px) {
-      #logo { width: 180px; }
-      h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 58%; }
+      #logo {
+        width: 180px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .content {
+        font-size: 1rem;
+        top: 58%;
+      }
     }
   </style>
 </head>
 <body>
-
   <canvas id="space"></canvas>
 
   <div id="logo-wrapper">
@@ -144,76 +152,70 @@
     window.addEventListener('resize', resize);
     resize();
 
-    const totalStars = 300;
     const stars = [];
+    const STAR_COUNT = 450;
 
-    for (let i = 0; i < totalStars; i++) {
+    for (let i = 0; i < STAR_COUNT; i++) {
       stars.push({
-        x: (Math.random() - 0.5) * w,
-        y: (Math.random() - 0.5) * h,
-        z: Math.random() * w,
-        size: Math.random() * 1 + 0.5,
-        baseZ: Math.random() * w,
+        x: (Math.random() - 0.5) * 2,
+        y: (Math.random() - 0.5) * 2,
+        z: Math.random() * 2 + 0.1,
+        size: Math.random() * 0.5 + 0.5
       });
     }
 
-    let startTime = null;
-    let logoShown = false;
+    let speed = 0.07;
+    let warpStart = null;
+    let slowed = false;
 
     function animate(time) {
-      if (!startTime) startTime = time;
-      const elapsed = time - startTime;
+      if (!warpStart) warpStart = time;
+      const elapsed = time - warpStart;
 
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
 
-      // Calculate smooth speed transition
-      let warpProgress = Math.min(elapsed / 3000, 1); // from 0 to 1 over 3s
-      let speed = 6 - 5.5 * easeOutQuad(warpProgress); // from 6 → 0.5
+      if (elapsed > 3000 && !slowed) {
+        speed = 0.02; // slow to cruising speed
+        slowed = true;
 
-      for (let s of stars) {
-        s.z -= speed;
-        if (s.z <= 0.1) {
-          s.z = s.baseZ = w;
-          s.x = (Math.random() - 0.5) * w;
-          s.y = (Math.random() - 0.5) * h;
-        }
-
-        let k = 128 / s.z;
-        let px = s.x * k + cx;
-        let py = s.y * k + cy;
-
-        const size = s.size * (1 - s.z / s.baseZ) * 30;
-
-        ctx.globalAlpha = (1 - s.z / s.baseZ) * 0.8;
-        ctx.drawImage(starImg, px - size / 2, py - size / 2, size, size);
-      }
-
-      // Show logo after warp calms
-      if (elapsed > 3300 && !logoShown) {
-        logoShown = true;
+        // Start logo and content fade
         const logo = document.getElementById('logo');
-        const wrapper = document.getElementById('logo-wrapper');
+        const logoWrapper = document.getElementById('logo-wrapper');
         const content = document.getElementById('mainText');
 
         logo.classList.add('visible');
-        setTimeout(() => {
-          wrapper.classList.add('move-top');
-          setTimeout(() => content.classList.add('visible'), 1000);
-        }, 1500);
+        setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
+        setTimeout(() => content.classList.add('visible'), 3000);
+      }
+
+      for (let star of stars) {
+        star.z -= speed;
+        if (star.z <= 0.05) {
+          star.x = (Math.random() - 0.5) * 2;
+          star.y = (Math.random() - 0.5) * 2;
+          star.z = 2;
+        }
+
+        const k = 1 / star.z;
+        const x = cx + star.x * k * w * 0.4;
+        const y = cy + star.y * k * h * 0.4;
+        const s = (1 - star.z / 2) * star.size * 40;
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.globalAlpha = 0.6;
+        ctx.drawImage(starImg, -s/2, -s/2, s, s);
+        ctx.restore();
       }
 
       requestAnimationFrame(animate);
     }
 
-    function easeOutQuad(t) {
-      return t * (2 - t);
-    }
-
     starImg.onload = () => {
-      setTimeout(() => {
-        requestAnimationFrame(animate);
-      }, 500); // 0.5s of pitch black
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+      requestAnimationFrame(animate);
     };
   </script>
 </body>
