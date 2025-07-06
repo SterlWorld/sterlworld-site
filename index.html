@@ -140,12 +140,12 @@
   <!-- Starfield canvas -->
   <canvas id="space"></canvas>
 
-  <!-- Logo Wrapper -->
+  <!-- Logo wrapper -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-  <!-- Main Content -->
+  <!-- Main content -->
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
@@ -160,9 +160,8 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script>
-    // Logo + Content Animation
+    // Fade-in and logo float
     window.onload = () => {
       const logo = document.getElementById('logo');
       const logoWrapper = document.getElementById('logo-wrapper');
@@ -173,24 +172,26 @@
       setTimeout(() => content.classList.add('visible'), 3000);
     };
 
-    // Sparkle effect
+    // Sparkles on click
     document.addEventListener('click', (e) => {
       for (let i = 0; i < 5; i++) {
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
         document.body.appendChild(sparkle);
+
         const x = e.clientX + (Math.random() * 40 - 20);
         const y = e.clientY + (Math.random() * 40 - 20);
         sparkle.style.left = `${x}px`;
         sparkle.style.top = `${y}px`;
+
         setTimeout(() => sparkle.remove(), 1000);
       }
     });
 
-    // Starfield animation
+    // Galaxy tunnel effect
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
-    let w, h, stars = [], symbols = [], meteors = [];
+    let w, h, stars = [], meteors = [], symbols = [];
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -201,10 +202,9 @@
 
     function createStar() {
       return {
-        x: Math.random() * w,
-        y: Math.random() * h,
-        size: Math.random() * 2,
-        speed: Math.random() * 1 + 0.2
+        x: (Math.random() - 0.5) * w,
+        y: (Math.random() - 0.5) * h,
+        z: Math.random() * w
       };
     }
 
@@ -212,73 +212,88 @@
       return {
         x: Math.random() * w,
         y: 0,
-        length: Math.random() * 100 + 50,
-        speed: Math.random() * 4 + 2,
-        angle: Math.PI / 4
+        length: Math.random() * 120 + 60,
+        speed: Math.random() * 3 + 2,
+        angle: Math.PI / 3
       };
     }
 
     function createSymbol() {
+      const egyptian = ['𓂀', '𓊽', '𓏏', '𓆣', '𓎼'];
       return {
         x: Math.random() * w,
         y: Math.random() * h,
-        char: ['Ω', 'ψ', '₪', '★', '✶', '♒︎'][Math.floor(Math.random() * 6)],
-        size: Math.random() * 24 + 12,
-        opacity: Math.random() * 0.3 + 0.1,
-        life: Math.random() * 200 + 100
+        char: egyptian[Math.floor(Math.random() * egyptian.length)],
+        size: Math.random() * 20 + 20,
+        opacity: 0,
+        life: Math.random() * 400 + 200,
+        fadeIn: true
       };
     }
 
-    for (let i = 0; i < 150; i++) stars.push(createStar());
-    for (let i = 0; i < 10; i++) symbols.push(createSymbol());
+    for (let i = 0; i < 300; i++) stars.push(createStar());
+    for (let i = 0; i < 5; i++) symbols.push(createSymbol());
 
     function animate() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.fillStyle = "rgba(0,0,0,0.4)";
       ctx.fillRect(0, 0, w, h);
 
-      // Stars
+      // Star tunnel effect
       ctx.fillStyle = "white";
-      stars.forEach(s => {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fill();
-        s.y += s.speed;
-        if (s.y > h) {
-          s.y = 0;
-          s.x = Math.random() * w;
+      stars.forEach((s, i) => {
+        s.z -= 4;
+        if (s.z <= 0) stars[i] = createStar();
+
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) stars[i] = createStar();
+        else {
+          let size = (1 - s.z / w) * 2;
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
         }
       });
 
-      // Symbols
-      ctx.font = "bold 20px Orbitron, monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      symbols.forEach((sym, i) => {
-        ctx.fillStyle = `rgba(255, 255, 255, ${sym.opacity})`;
-        ctx.fillText(sym.char, sym.x, sym.y);
-        sym.life--;
-        if (sym.life < 0) symbols[i] = createSymbol();
-      });
-
-      // Meteors
-      ctx.strokeStyle = "rgba(0,255,255,0.7)";
+      // Shooting meteors
       meteors.forEach((m, i) => {
+        let x2 = m.x - m.length * Math.cos(m.angle);
+        let y2 = m.y - m.length * Math.sin(m.angle);
+        const grad = ctx.createLinearGradient(m.x, m.y, x2, y2);
+        grad.addColorStop(0, "rgba(255, 100, 0, 0.8)");
+        grad.addColorStop(1, "rgba(255, 0, 0, 0)");
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(m.x, m.y);
-        ctx.lineTo(m.x - m.length * Math.cos(m.angle), m.y - m.length * Math.sin(m.angle));
+        ctx.lineTo(x2, y2);
         ctx.stroke();
         m.x += m.speed * Math.cos(m.angle);
         m.y += m.speed * Math.sin(m.angle);
         if (m.x < -100 || m.y > h + 100) meteors.splice(i, 1);
       });
+      if (Math.random() < 0.005) meteors.push(createMeteor());
 
-      // Occasionally spawn meteors
-      if (Math.random() < 0.01) meteors.push(createMeteor());
+      // Ancient symbols
+      symbols.forEach((s, i) => {
+        if (s.fadeIn) {
+          s.opacity += 0.005;
+          if (s.opacity >= 0.3) s.fadeIn = false;
+        } else {
+          s.opacity -= 0.002;
+          if (s.opacity <= 0) symbols[i] = createSymbol();
+        }
+        ctx.font = `${s.size}px Orbitron, sans-serif`;
+        ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+        ctx.fillText(s.char, s.x, s.y);
+      });
 
       requestAnimationFrame(animate);
     }
 
     animate();
   </script>
+
 </body>
 </html>
