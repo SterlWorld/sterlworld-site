@@ -36,11 +36,11 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 10;
-      transition: top 1.5s ease, transform 1.5s ease;
       opacity: 0;
+      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
 
-    #logo-wrapper.visible {
+    #logo-wrapper.fade-in {
       opacity: 1;
     }
 
@@ -248,11 +248,11 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          logoWrapper.classList.add('visible');
+          logoWrapper.classList.add('fade-in');
           setTimeout(() => {
             logoWrapper.classList.add('move-top');
             setTimeout(() => content.classList.add('visible'), 1000);
-          }, 1500);
+          }, 1500); // wait for fade-in to finish before sliding
         }
       }
 
