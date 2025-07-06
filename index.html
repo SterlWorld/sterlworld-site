@@ -4,267 +4,190 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SterlWorld</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Unica+One&display=swap" rel="stylesheet" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
-    body {
-      margin: 0;
-      padding: 0;
+    html, body {
+      height: 100%;
       background: black;
-      font-family: 'Unica One', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: gold;
-      text-align: center;
-      overflow-x: hidden;
-      cursor: url('Dale%20Glove%20cursor.png'), auto;
-      user-select: none;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      display: block;
-    }
-
-    header img {
-      width: 80%;
-      max-width: 480px;
-      margin: 0 auto 0.5rem;
-      display: block;
-      height: auto;
-      position: relative;
-      z-index: 2;
-      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
-    }
-
-    .welcome-text {
-      font-size: 2.2rem;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 500;
-      position: relative;
-      z-index: 2;
+      font-family: 'Poppins', sans-serif;
       color: white;
-      margin: 2rem 0 0.5rem;
-      padding: 0 1rem;
-      text-shadow:
-        0 0 10px rgba(255, 255, 255, 0.9),
-        0 0 20px rgba(0, 255, 255, 0.4);
+      overflow-x: hidden;
+      cursor: crosshair;
     }
 
-    .subtitle {
-      font-size: 1.1rem;
+    /* Logo wrapper centers it perfectly */
+    #logo-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: top 1.5s ease, transform 1.5s ease;
+      z-index: 10;
+    }
+
+    /* Slide logo to top */
+    #logo-wrapper.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
+    }
+
+    #logo {
+      width: 300px;
+      max-width: 80vw;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    #logo.visible {
+      opacity: 1;
+    }
+
+    .content {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       max-width: 90%;
-      margin: 0 auto 2rem;
-      position: relative;
-      z-index: 2;
-      color: #ccf;
-      text-shadow: 0 0 8px rgba(100, 200, 255, 0.3);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
     }
 
-    a.button {
-      display: inline-block;
-      background: gold;
-      color: black;
-      padding: 12px 24px;
+    .content.visible {
+      opacity: 1;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .support {
+      margin-top: 2.5rem;
+    }
+
+    .support p {
+      margin: 0.5rem 0;
+    }
+
+    .support a {
+      color: #0ff;
       font-weight: bold;
-      border-radius: 8px;
       text-decoration: none;
-      transition: background 0.3s ease;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-      margin-top: 1.5rem;
-      user-select: none;
+      transition: text-shadow 0.3s ease, color 0.3s ease;
     }
 
-    a.button:hover {
-      background: darkgoldenrod;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    .support a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
 
-    .preview {
-      margin: 2.5rem auto 1rem;
-      z-index: 2;
-      position: relative;
-      max-width: 90%;
+    .sparkle {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0ff;
+      pointer-events: none;
+      z-index: 9999;
+      animation: sparkle-fade 1s forwards;
     }
 
-    .preview img {
-      width: 100%;
-      max-width: 480px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
+    @keyframes sparkle-fade {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(2); }
     }
-
-    /* Removed small text styling since it is no longer used */
 
     @media screen and (max-width: 480px) {
-      .welcome-text {
+      #logo {
+        width: 180px;
+      }
+
+      h1 {
         font-size: 1.8rem;
       }
 
-      .subtitle {
+      .content {
         font-size: 1rem;
-      }
-
-      a.button {
-        padding: 10px 20px;
-        font-size: 0.95rem;
+        top: 58%;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Matrix Canvas -->
-  <canvas id="matrix"></canvas>
-  <!-- Sparkle Canvas -->
-  <canvas id="sparkle"></canvas>
-
-  <!-- Main Content -->
-  <h1 class="welcome-text">Welcome to</h1>
-
-  <header>
-    <img src="logo.png" alt="SterlWorld Logo" />
-  </header>
-
-  <p class="subtitle">Your creative universe is taking shape.</p>
-
-  <p>
-    <a href="https://sterlworld.itch.io/crust-master" target="_blank" class="button">
-      Play Crust Master on Itch.io
-    </a>
-  </p>
-
-  <!-- Preview Section -->
-  <div class="preview">
-    <a href="https://sterlworld.itch.io/crust-master" target="_blank">
-      <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
-    </a>
+  <!-- Logo Wrapper for perfect centering + movement -->
+  <div id="logo-wrapper">
+    <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
+  <!-- Main Content -->
+  <div class="content" id="mainText">
+    <h1>Welcome to SterlWorld</h1>
+    <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
+    We’re building a new legacy of entertainment — and it’s just the beginning. 🌌</p>
+    <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
+
+    <div class="support">
+      <p>💖 Want to support the vision?</p>
+      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
+      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">🎮 Play Crust Master / Donate</a></p>
+    </div>
+  </div>
+
+  <!-- JS for animation and sparkles -->
   <script>
-    // MATRIX BACKGROUND
-    const matrixCanvas = document.getElementById('matrix');
-    const mCtx = matrixCanvas.getContext('2d');
-    matrixCanvas.width = window.innerWidth;
-    matrixCanvas.height = window.innerHeight;
+    window.onload = () => {
+      const logo = document.getElementById('logo');
+      const logoWrapper = document.getElementById('logo-wrapper');
+      const content = document.getElementById('mainText');
 
-    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
-    const fontSize = 16;
-    const columns = Math.floor(matrixCanvas.width / fontSize);
-    const drops = Array(columns).fill(1);
+      // Step 1: fade in logo
+      logo.classList.add('visible');
 
-    function drawMatrix() {
-      mCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+      // Step 2: float up logo after 1.5s
+      setTimeout(() => {
+        logoWrapper.classList.add('move-top');
+      }, 1500);
 
-      mCtx.font = ${fontSize}px monospace;
+      // Step 3: fade in text content after 3s
+      setTimeout(() => {
+        content.classList.add('visible');
+      }, 3000);
+    };
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = symbols[Math.floor(Math.random() * symbols.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
+    // Sparkle effect on all clicks
+    document.addEventListener('click', (e) => {
+      for (let i = 0; i < 5; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        document.body.appendChild(sparkle);
 
-        const green = Math.floor(150 + Math.random() * 100);
-        const blue = Math.floor(180 + Math.random() * 75);
-        mCtx.fillStyle = rgba(0, ${green}, ${blue}, 0.8);
+        const x = e.clientX + (Math.random() * 40 - 20);
+        const y = e.clientY + (Math.random() * 40 - 20);
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
 
-        mCtx.fillText(text, x, y);
-
-        if (y > matrixCanvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
+        setTimeout(() => sparkle.remove(), 1000);
       }
-    }
-
-    setInterval(drawMatrix, 50);
-
-    // SPARKLE EFFECT ON CLICK
-    const sparkleCanvas = document.getElementById('sparkle');
-    const sCtx = sparkleCanvas.getContext('2d');
-    sparkleCanvas.width = window.innerWidth;
-    sparkleCanvas.height = window.innerHeight;
-
-    class Sparkle {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.life = 20; // frames
-        this.size = Math.random() * 3 + 2;
-        this.speedX = (Math.random() - 0.5) * 2;
-        this.speedY = (Math.random() - 0.5) * 2;
-        this.opacity = 1;
-        this.color = rgba(255, 215, 0, ${this.opacity}); // gold color
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.life--;
-        this.opacity = this.life / 20;
-        this.color = rgba(255, 215, 0, ${this.opacity});
-      }
-
-      draw(ctx) {
-        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-        gradient.addColorStop(0, 'rgba(255, 255, 255, ' + this.opacity + ')');
-        gradient.addColorStop(0.5, this.color);
-        gradient.addColorStop(1, 'rgba(255, 215, 0, 0)');
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    const sparkles = [];
-
-    function animateSparkles() {
-      sCtx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
-      for (let i = sparkles.length - 1; i >= 0; i--) {
-        const sp = sparkles[i];
-        sp.update();
-        sp.draw(sCtx);
-        if (sp.life <= 0) {
-          sparkles.splice(i, 1);
-        }
-      }
-      requestAnimationFrame(animateSparkles);
-    }
-
-    sparkleCanvas.style.position = 'fixed';
-    sparkleCanvas.style.top = '0';
-    sparkleCanvas.style.left = '0';
-    sparkleCanvas.style.pointerEvents = 'none';
-
-    animateSparkles();
-
-    window.addEventListener('click', e => {
-      const rect = sparkleCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      for (let i = 0; i < 12; i++) {
-        sparkles.push(new Sparkle(x, y));
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      matrixCanvas.width = window.innerWidth;
-      matrixCanvas.height = window.innerHeight;
-      sparkleCanvas.width = window.innerWidth;
-      sparkleCanvas.height = window.innerHeight;
     });
   </script>
-
 </body>
 </html>
