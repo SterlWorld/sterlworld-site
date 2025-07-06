@@ -3,22 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SterlWorld Warp</title>
+  <title>SterlWorld</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      background: black;
+      box-sizing: border-box;
+    }
+
+    html, body {
       height: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow: hidden;
+      cursor: crosshair;
     }
 
     canvas {
-      display: block;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       z-index: 0;
+      display: block;
     }
 
     #logo {
@@ -38,91 +46,213 @@
       opacity: 1;
       transform: translate(-50%, 0);
     }
+
+    .content {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
+    }
+
+    .content.visible {
+      opacity: 1;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .support {
+      margin-top: 2.5rem;
+    }
+
+    .support p {
+      margin: 0.5rem 0;
+    }
+
+    .support a {
+      color: #0ff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+    }
+
+    .support a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
+    }
+
+    .sparkle-star {
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform: translate(-50%, -50%);
+      animation: sparkleFade 1s ease forwards;
+      z-index: 9999;
+      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
+    }
+
+    @keyframes sparkleFade {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(2); }
+    }
+
+    @media screen and (max-width: 480px) {
+      #logo {
+        width: 180px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .content {
+        font-size: 1rem;
+        top: 60%;
+      }
+    }
   </style>
 </head>
 <body>
   <!-- Warp canvas -->
   <canvas id="warpCanvas"></canvas>
 
-  <!-- SterlWorld Logo -->
+  <!-- Logo -->
   <img id="logo" src="logo.png" alt="SterlWorld Logo" />
+
+  <!-- Text content -->
+  <div class="content" id="mainText">
+    <h1>Welcome to SterlWorld</h1>
+    <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
+    We’re building a new legacy of entertainment — and it’s just the beginning.</p>
+    <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
+
+    <div class="support">
+      <p>Want to support the vision?</p>
+      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
+      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+    </div>
+  </div>
 
   <script>
     const canvas = document.getElementById('warpCanvas');
     const ctx = canvas.getContext('2d');
     const logo = document.getElementById('logo');
+    const content = document.getElementById('mainText');
+
+    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+    const starImg = new Image();
+    starImg.src = sparkleImgSrc;
 
     let w, h, cx, cy;
-
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
       cx = w / 2;
       cy = h / 2;
     }
-
     window.addEventListener('resize', resize);
     resize();
 
-    // Create stars
-    const starCount = 800;
+    // Stars array
+    const starCount = 900;
     const stars = [];
-
     for (let i = 0; i < starCount; i++) {
       stars.push({
-        x: 0,
-        y: 0,
         z: Math.random() * w,
         prevZ: 0,
-        angle: Math.random() * 2 * Math.PI,
+        angle: Math.random() * 2 * Math.PI
       });
     }
 
-    let warpStartTime = null;
+    let startTime = null;
     let logoShown = false;
 
-    function animateWarp(time) {
-      if (!warpStartTime) warpStartTime = time;
-      const elapsed = time - warpStartTime;
+    function animate(time) {
+      if (!startTime) startTime = time;
+      const elapsed = time - startTime;
 
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
 
-      const speed = Math.min(20, elapsed / 50); // fast at first, then slow down
+      const speed = Math.min(20, elapsed / 50);
 
       for (let s of stars) {
         s.prevZ = s.z;
         s.z -= speed;
-
         if (s.z <= 0.5) {
           s.z = w;
           s.prevZ = w;
           s.angle = Math.random() * 2 * Math.PI;
         }
 
-        const px = cx + (Math.cos(s.angle) * s.z);
-        const py = cy + (Math.sin(s.angle) * s.z);
-        const pxPrev = cx + (Math.cos(s.angle) * s.prevZ);
-        const pyPrev = cy + (Math.sin(s.angle) * s.prevZ);
+        const px = cx + Math.cos(s.angle) * s.z;
+        const py = cy + Math.sin(s.angle) * s.z;
+        const pxPrev = cx + Math.cos(s.angle) * s.prevZ;
+        const pyPrev = cy + Math.sin(s.angle) * s.prevZ;
 
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(pxPrev, pyPrev);
-        ctx.lineTo(px, py);
-        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.5;
+        ctx.translate(px, py);
+        const size = 16;
+        ctx.drawImage(starImg, -size/2, -size/2, size, size);
+        ctx.restore();
       }
 
-      // After 3 seconds, fade in and slide up logo
       if (elapsed > 3000 && !logoShown) {
         logoShown = true;
         logo.classList.add('move-top');
+        setTimeout(() => content.classList.add('visible'), 1500);
       }
 
-      requestAnimationFrame(animateWarp);
+      requestAnimationFrame(animate);
     }
 
-    requestAnimationFrame(animateWarp);
+    // Sparkle on click/touch
+    function createSparkleBurst(x, y) {
+      const count = 6 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('img');
+        s.src = sparkleImgSrc;
+        s.className = 'sparkle-star';
+        const size = Math.random() * 12 + 6;
+        s.style.width = `${size}px`;
+        s.style.height = `${size}px`;
+        const angle = Math.random() * 2 * Math.PI;
+        const dist = Math.random() * 60 + 20;
+        const offsetX = Math.cos(angle) * dist;
+        const offsetY = Math.sin(angle) * dist;
+        s.style.left = `${x}px`;
+        s.style.top = `${y}px`;
+        s.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 1000);
+      }
+    }
+
+    document.addEventListener('click', e => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('touchstart', e => {
+      if (e.touches.length > 0) {
+        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    });
+
+    starImg.onload = () => {
+      requestAnimationFrame(animate);
+    };
   </script>
 </body>
 </html>
