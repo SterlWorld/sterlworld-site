@@ -32,7 +32,11 @@
       display: block;
     }
 
-    #starfield {
+    #stars {
+      z-index: -3;
+    }
+
+    #matrix {
       z-index: -2;
     }
 
@@ -129,9 +133,11 @@
 </head>
 <body>
 
-  <!-- Starfield Canvas -->
-  <canvas id="starfield"></canvas>
-  <!-- Sparkle Effect Canvas -->
+  <!-- NEW: Starfield Background -->
+  <canvas id="stars"></canvas>
+  <!-- Existing Background Matrix Canvas -->
+  <canvas id="matrix"></canvas>
+  <!-- Existing Sparkle Canvas -->
   <canvas id="sparkle"></canvas>
 
   <!-- Main Content -->
@@ -157,10 +163,10 @@
 
   <!-- STARFIELD SCRIPT -->
   <script>
-    const starCanvas = document.getElementById('starfield');
-    const ctx = starCanvas.getContext('2d');
-    starCanvas.width = window.innerWidth;
-    starCanvas.height = window.innerHeight;
+    const starsCanvas = document.getElementById('stars');
+    const starsCtx = starsCanvas.getContext('2d');
+    starsCanvas.width = window.innerWidth;
+    starsCanvas.height = window.innerHeight;
 
     let stars = [];
     const numStars = 200;
@@ -171,9 +177,9 @@
       }
 
       reset() {
-        this.x = Math.random() * starCanvas.width - starCanvas.width / 2;
-        this.y = Math.random() * starCanvas.height - starCanvas.height / 2;
-        this.z = Math.random() * starCanvas.width;
+        this.x = Math.random() * starsCanvas.width - starsCanvas.width / 2;
+        this.y = Math.random() * starsCanvas.height - starsCanvas.height / 2;
+        this.z = Math.random() * starsCanvas.width;
         this.pz = this.z;
       }
 
@@ -181,22 +187,22 @@
         this.z -= 4;
         if (this.z < 1) {
           this.reset();
-          this.z = starCanvas.width;
+          this.z = starsCanvas.width;
           this.pz = this.z;
         }
       }
 
       draw(ctx) {
-        const sx = (this.x / this.z) * starCanvas.width + starCanvas.width / 2;
-        const sy = (this.y / this.z) * starCanvas.height + starCanvas.height / 2;
+        const sx = (this.x / this.z) * starsCanvas.width + starsCanvas.width / 2;
+        const sy = (this.y / this.z) * starsCanvas.height + starsCanvas.height / 2;
 
-        const px = (this.x / this.pz) * starCanvas.width + starCanvas.width / 2;
-        const py = (this.y / this.pz) * starCanvas.height + starCanvas.height / 2;
+        const px = (this.x / this.pz) * starsCanvas.width + starsCanvas.width / 2;
+        const py = (this.y / this.pz) * starsCanvas.height + starsCanvas.height / 2;
 
         this.pz = this.z;
 
         ctx.beginPath();
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.75)'; // gold star trails
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.75)';
         ctx.lineWidth = 1;
         ctx.moveTo(px, py);
         ctx.lineTo(sx, sy);
@@ -212,12 +218,12 @@
     }
 
     function animateStars() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-      ctx.fillRect(0, 0, starCanvas.width, starCanvas.height);
+      starsCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      starsCtx.fillRect(0, 0, starsCanvas.width, starsCanvas.height);
 
       for (let star of stars) {
         star.update();
-        star.draw(ctx);
+        star.draw(starsCtx);
       }
 
       requestAnimationFrame(animateStars);
@@ -227,10 +233,50 @@
     animateStars();
 
     window.addEventListener('resize', () => {
-      starCanvas.width = window.innerWidth;
-      starCanvas.height = window.innerHeight;
+      starsCanvas.width = window.innerWidth;
+      starsCanvas.height = window.innerHeight;
       initStars();
     });
+  </script>
+
+  <!-- MATRIX SCRIPT -->
+  <script>
+    const matrixCanvas = document.getElementById('matrix');
+    const mCtx = matrixCanvas.getContext('2d');
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+
+    const symbols = 'アカサタナハマヤラワ0123456789∞Ωπ✧⊙∆'.split('');
+    const fontSize = 16;
+    const columns = Math.floor(matrixCanvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      mCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+      mCtx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = symbols[Math.floor(Math.random() * symbols.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        const green = Math.floor(150 + Math.random() * 100);
+        const blue = Math.floor(180 + Math.random() * 75);
+        mCtx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+
+        mCtx.fillText(text, x, y);
+
+        if (y > matrixCanvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(drawMatrix, 50);
   </script>
 
   <!-- SPARKLE SCRIPT -->
@@ -299,6 +345,8 @@
     });
 
     window.addEventListener('resize', () => {
+      matrixCanvas.width = window.innerWidth;
+      matrixCanvas.height = window.innerHeight;
       sparkleCanvas.width = window.innerWidth;
       sparkleCanvas.height = window.innerHeight;
     });
