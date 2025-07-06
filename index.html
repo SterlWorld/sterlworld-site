@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
@@ -14,11 +14,12 @@
 
     html, body {
       height: 100%;
+      width: 100%;
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow: hidden;
       cursor: crosshair;
+      overflow-x: hidden;
     }
 
     canvas#space {
@@ -26,26 +27,26 @@
       top: 0;
       left: 0;
       z-index: 0;
-      display: block;
+      width: 100%;
+      height: 100%;
     }
 
-    #logo-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transition: top 1.5s ease, transform 1.5s ease;
+    #page-wrapper {
+      position: relative;
       z-index: 10;
-    }
-
-    #logo-wrapper.move-top {
-      top: 6vh; /* Higher resting spot to avoid overlap */
-      transform: translate(-50%, 0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 120px 20px 60px;
+      min-height: 100vh;
+      text-align: center;
     }
 
     #logo {
       width: 300px;
       max-width: 80vw;
+      margin-bottom: 40px;
       opacity: 0;
       transition: opacity 1.5s ease;
     }
@@ -55,18 +56,11 @@
     }
 
     .content {
-      position: absolute;
-      top: 58%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 90%;
-      text-align: center;
+      max-width: 700px;
+      font-size: 1.1rem;
       opacity: 0;
-      transition: opacity 1.5s ease;
-      font-size: 1.2rem;
       color: #ccc;
-      z-index: 5;
-      padding-top: 20px;
+      transition: opacity 1.5s ease;
     }
 
     .content.visible {
@@ -76,17 +70,13 @@
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+      font-size: 2.2rem;
       color: white;
-    }
-
-    p {
-      line-height: 1.5;
+      margin-bottom: 1rem;
     }
 
     .support {
-      margin-top: 2.5rem;
+      margin-top: 2rem;
     }
 
     .support p {
@@ -122,33 +112,18 @@
       100% { opacity: 0; transform: scale(0.1) translateY(20px); }
     }
 
-    @media screen and (max-height: 700px) {
-      #logo-wrapper.move-top {
-        top: 4vh;
-      }
-
-      .content {
-        top: 65%;
-        font-size: 1rem;
-      }
-
-      #logo {
-        width: 200px;
-      }
-    }
-
     @media screen and (max-width: 480px) {
       #logo {
         width: 180px;
+        margin-bottom: 30px;
       }
 
       h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
       }
 
       .content {
         font-size: 1rem;
-        top: 65%;
       }
     }
   </style>
@@ -157,27 +132,25 @@
 
   <canvas id="space"></canvas>
 
-  <div id="logo-wrapper">
+  <div id="page-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
-  </div>
+    <div class="content" id="mainText">
+      <h1>Welcome to SterlWorld</h1>
+      <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
+      We’re building a new legacy of entertainment — and it’s just the beginning.</p>
+      <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
-  <div class="content" id="mainText">
-    <h1>Welcome to SterlWorld</h1>
-    <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
-    We’re building a new legacy of entertainment — and it’s just the beginning.</p>
-    <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
-
-    <div class="support">
-      <p>Want to support the vision?</p>
-      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+      <div class="support">
+        <p>Want to support the vision?</p>
+        <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
+        <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
+        <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+      </div>
     </div>
   </div>
 
   <script>
     const logo = document.getElementById('logo');
-    const logoWrapper = document.getElementById('logo-wrapper');
     const content = document.getElementById('mainText');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
@@ -216,7 +189,7 @@
       }
     });
 
-    // Starfield setup
+    // Starfield
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -265,8 +238,7 @@
         if (!warpComplete) {
           warpComplete = true;
           logo.classList.add('visible');
-          setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
-          setTimeout(() => content.classList.add('visible'), 3000);
+          setTimeout(() => content.classList.add('visible'), 1500);
         }
       }
 
