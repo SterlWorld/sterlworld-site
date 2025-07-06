@@ -149,14 +149,14 @@
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
-    We’re building a new legacy of entertainment — and it’s just the beginning. 🌌</p>
+    We’re building a new legacy of entertainment — and it’s just the beginning. </p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
     <div class="support">
-      <p>💖 Want to support the vision?</p>
+      <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">🎮 Play Crust Master / Donate</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
     </div>
   </div>
 
@@ -188,10 +188,11 @@
       }
     });
 
-    // Galaxy tunnel effect
+    // Galaxy tunnel effect with stars and symbols flying towards screen
+
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
-    let w, h, stars = [], meteors = [], symbols = [];
+    let w, h, stars = [], symbols = [];
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -200,93 +201,95 @@
     window.addEventListener('resize', resize);
     resize();
 
+    // Star object with position and depth
     function createStar() {
       return {
         x: (Math.random() - 0.5) * w,
         y: (Math.random() - 0.5) * h,
-        z: Math.random() * w
+        z: Math.random() * w,
+        size: Math.random() * 1.2 + 0.6,
+        isSymbol: false,
+        symbolChar: null,
+        symbolSize: null,
+        opacity: 1
       };
     }
 
-    function createMeteor() {
-      return {
-        x: Math.random() * w,
-        y: 0,
-        length: Math.random() * 120 + 60,
-        speed: Math.random() * 3 + 2,
-        angle: Math.PI / 3
-      };
-    }
-
+    // Create star that is a symbol
     function createSymbol() {
-      const egyptian = ['𓂀', '𓊽', '𓏏', '𓆣', '𓎼'];
+      const egyptianSymbols = ['𓂀', '𓊽', '𓏏', '𓆣', '𓎼'];
+      const char = egyptianSymbols[Math.floor(Math.random() * egyptianSymbols.length)];
       return {
-        x: Math.random() * w,
-        y: Math.random() * h,
-        char: egyptian[Math.floor(Math.random() * egyptian.length)],
-        size: Math.random() * 20 + 20,
+        x: (Math.random() - 0.5) * w,
+        y: (Math.random() - 0.5) * h,
+        z: Math.random() * w,
+        size: Math.random() * 1.5 + 1,
+        isSymbol: true,
+        symbolChar: char,
+        symbolSize: Math.random() * 20 + 20,
         opacity: 0,
-        life: Math.random() * 400 + 200,
-        fadeIn: true
+        fadingIn: true
       };
     }
 
-    for (let i = 0; i < 300; i++) stars.push(createStar());
-    for (let i = 0; i < 5; i++) symbols.push(createSymbol());
+    // Initialize stars and symbols
+    // Spaced out: fewer stars for calm effect
+    for (let i = 0; i < 150; i++) stars.push(createStar());
+    for (let i = 0; i < 15; i++) symbols.push(createSymbol());
 
     function animate() {
       ctx.fillStyle = "rgba(0,0,0,0.4)";
       ctx.fillRect(0, 0, w, h);
 
-      // Star tunnel effect
-      ctx.fillStyle = "white";
+      // Draw stars and symbols flying towards viewer
       stars.forEach((s, i) => {
-        s.z -= 4;
-        if (s.z <= 0) stars[i] = createStar();
+        s.z -= 1.5; // slower speed for relaxed vibe
+        if (s.z <= 0) {
+          if (s.isSymbol) {
+            symbols[i] = createSymbol();
+          } else {
+            stars[i] = createStar();
+          }
+          return;
+        }
 
         let k = 128.0 / s.z;
         let px = s.x * k + w / 2;
         let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) stars[i] = createStar();
-        else {
-          let size = (1 - s.z / w) * 2;
+
+        if (px < 0 || px >= w || py < 0 || py >= h) {
+          if (s.isSymbol) {
+            symbols[i] = createSymbol();
+          } else {
+            stars[i] = createStar();
+          }
+          return;
+        }
+
+        if (s.isSymbol) {
+          // handle symbol fading in and out
+          if (s.fadingIn) {
+            s.opacity += 0.007;
+            if (s.opacity >= 0.3) s.fadingIn = false;
+          } else {
+            s.opacity -= 0.002;
+            if (s.opacity <= 0) {
+              symbols[i] = createSymbol();
+              return;
+            }
+          }
+
+          ctx.font = `${s.symbolSize}px Orbitron, sans-serif`;
+          ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+          ctx.fillText(s.symbolChar, px, py);
+        } else {
+          // draw star as circle
+          let size = s.size * (1 - s.z / w) * 2;
           ctx.beginPath();
           ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fillStyle = 'white';
           ctx.fill();
         }
-      });
-
-      // Shooting meteors
-      meteors.forEach((m, i) => {
-        let x2 = m.x - m.length * Math.cos(m.angle);
-        let y2 = m.y - m.length * Math.sin(m.angle);
-        const grad = ctx.createLinearGradient(m.x, m.y, x2, y2);
-        grad.addColorStop(0, "rgba(255, 100, 0, 0.8)");
-        grad.addColorStop(1, "rgba(255, 0, 0, 0)");
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(m.x, m.y);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-        m.x += m.speed * Math.cos(m.angle);
-        m.y += m.speed * Math.sin(m.angle);
-        if (m.x < -100 || m.y > h + 100) meteors.splice(i, 1);
-      });
-      if (Math.random() < 0.005) meteors.push(createMeteor());
-
-      // Ancient symbols
-      symbols.forEach((s, i) => {
-        if (s.fadeIn) {
-          s.opacity += 0.005;
-          if (s.opacity >= 0.3) s.fadeIn = false;
-        } else {
-          s.opacity -= 0.002;
-          if (s.opacity <= 0) symbols[i] = createSymbol();
-        }
-        ctx.font = `${s.size}px Orbitron, sans-serif`;
-        ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
-        ctx.fillText(s.char, s.x, s.y);
       });
 
       requestAnimationFrame(animate);
