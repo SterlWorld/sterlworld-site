@@ -6,12 +6,7 @@
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       height: 100%;
       background: black;
@@ -104,50 +99,21 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
 
-    .sparkle-star {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      animation: sparkleFade 1s ease forwards;
-      filter: drop-shadow(0 0 6px #0ff) brightness(1.8) saturate(1.5);
-      transition: transform 1s ease, opacity 1s ease;
-    }
-
-    @keyframes sparkleFade {
-      0% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(2); }
-    }
-
     @media screen and (max-width: 480px) {
-      #logo {
-        width: 180px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .content {
-        font-size: 1rem;
-        top: 58%;
-      }
+      #logo { width: 180px; }
+      h1 { font-size: 1.8rem; }
+      .content { font-size: 1rem; top: 58%; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Starfield canvas -->
   <canvas id="space"></canvas>
 
-  <!-- Logo wrapper -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-  <!-- Main content -->
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
@@ -163,40 +129,10 @@
   </div>
 
   <script>
-    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-
-    function createSparkleBurst(x, y) {
-      const numStars = 5;
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
-        document.body.appendChild(sparkle);
-
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 40 + 10;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
-
-        sparkle.style.left = `${x}px`;
-        sparkle.style.top = `${y}px`;
-        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
-
-        setTimeout(() => sparkle.remove(), 1000);
-      }
-    }
-
-    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
-    document.addEventListener('touchstart', (e) => {
-      for (let i = 0; i < e.touches.length; i++) {
-        createSparkleBurst(e.touches[i].clientX, e.touches[i].clientY);
-      }
-    });
-
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
-    const starImage = new Image();
-    starImage.src = sparkleImgSrc;
+    const starImg = new Image();
+    starImg.src = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     let w, h, cx, cy;
     function resize() {
@@ -208,57 +144,54 @@
     window.addEventListener('resize', resize);
     resize();
 
+    const totalStars = 300;
     const stars = [];
-    for (let i = 0; i < 300; i++) {
+
+    for (let i = 0; i < totalStars; i++) {
       stars.push({
-        x: Math.random() * w - cx,
-        y: Math.random() * h - cy,
+        x: (Math.random() - 0.5) * w,
+        y: (Math.random() - 0.5) * h,
         z: Math.random() * w,
-        size: Math.random() * 1 + 0.5
+        size: Math.random() * 1 + 0.5,
+        baseZ: Math.random() * w,
       });
     }
 
     let startTime = null;
-    let logoStarted = false;
+    let logoShown = false;
 
-    function animate(time = performance.now()) {
+    function animate(time) {
       if (!startTime) startTime = time;
       const elapsed = time - startTime;
 
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
 
-      let speedFactor = 6; // Warp speed
-      if (elapsed > 2500) speedFactor = 0.5; // Settle into slow mode
+      // Calculate smooth speed transition
+      let warpProgress = Math.min(elapsed / 3000, 1); // from 0 to 1 over 3s
+      let speed = 6 - 5.5 * easeOutQuad(warpProgress); // from 6 → 0.5
 
-      stars.forEach((s, i) => {
-        s.z -= speedFactor;
+      for (let s of stars) {
+        s.z -= speed;
         if (s.z <= 0.1) {
-          s.z = w;
-          s.x = Math.random() * w - cx;
-          s.y = Math.random() * h - cy;
+          s.z = s.baseZ = w;
+          s.x = (Math.random() - 0.5) * w;
+          s.y = (Math.random() - 0.5) * h;
         }
 
-        const k = 128.0 / s.z;
-        const px = s.x * k + cx;
-        const py = s.y * k + cy;
+        let k = 128 / s.z;
+        let px = s.x * k + cx;
+        let py = s.y * k + cy;
 
-        const starSize = s.size * (1 - s.z / w) * 30;
+        const size = s.size * (1 - s.z / s.baseZ) * 30;
 
-        if (px < 0 || px >= w || py < 0 || py >= h) {
-          s.z = w;
-          return;
-        }
+        ctx.globalAlpha = (1 - s.z / s.baseZ) * 0.8;
+        ctx.drawImage(starImg, px - size / 2, py - size / 2, size, size);
+      }
 
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.drawImage(starImage, px - starSize / 2, py - starSize / 2, starSize, starSize);
-        ctx.restore();
-      });
-
-      // Trigger logo after warp
-      if (elapsed > 3000 && !logoStarted) {
-        logoStarted = true;
+      // Show logo after warp calms
+      if (elapsed > 3300 && !logoShown) {
+        logoShown = true;
         const logo = document.getElementById('logo');
         const wrapper = document.getElementById('logo-wrapper');
         const content = document.getElementById('mainText');
@@ -273,10 +206,14 @@
       requestAnimationFrame(animate);
     }
 
-    starImage.onload = () => {
+    function easeOutQuad(t) {
+      return t * (2 - t);
+    }
+
+    starImg.onload = () => {
       setTimeout(() => {
         requestAnimationFrame(animate);
-      }, 500); // Start black screen delay
+      }, 500); // 0.5s of pitch black
     };
   </script>
 </body>
