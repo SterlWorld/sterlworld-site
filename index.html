@@ -105,15 +105,14 @@
     }
 
     .sparkle-star {
+      pointer-events: none;
       position: fixed;
       width: 10px;
       height: 10px;
-      pointer-events: none;
-      z-index: 9999;
       transform: translate(-50%, -50%);
       animation: sparkleFade 1s ease forwards;
-      filter: drop-shadow(0 0 6px #0ff) brightness(1.8) saturate(1.5);
-      transition: transform 1s ease, opacity 1s ease;
+      z-index: 9999;
+      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
     }
 
     @keyframes sparkleFade {
@@ -162,20 +161,31 @@
     </div>
   </div>
 
-  <!-- JS for animation and stars -->
   <script>
+    const logo = document.getElementById('logo');
+    const logoWrapper = document.getElementById('logo-wrapper');
+    const content = document.getElementById('mainText');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
+    window.onload = () => {
+      logo.classList.add('visible');
+      setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
+      setTimeout(() => content.classList.add('visible'), 3000);
+    };
+
     function createSparkleBurst(x, y) {
-      const numStars = 5;
+      const numStars = 7 + Math.floor(Math.random() * 3); // 7–9 stars
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
         sparkle.className = 'sparkle-star';
-        document.body.appendChild(sparkle);
 
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 40 + 10;
+        const size = Math.random() * 12 + 6; // Size: 6–18px
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 60 + 20; // Burst radius: 20–80px
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
 
@@ -183,18 +193,23 @@
         sparkle.style.top = `${y}px`;
         sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
 
+        document.body.appendChild(sparkle);
         setTimeout(() => sparkle.remove(), 1000);
       }
     }
 
-    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    // Desktop click & Mobile touch
+    document.addEventListener('click', (e) => {
+      createSparkleBurst(e.clientX, e.clientY);
+    });
+
     document.addEventListener('touchstart', (e) => {
-      for (let i = 0; i < e.touches.length; i++) {
-        createSparkleBurst(e.touches[i].clientX, e.touches[i].clientY);
+      if (e.touches.length > 0) {
+        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
       }
     });
 
-    // Starfield background
+    // ----------- STARFIELD BACKGROUND -----------
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -270,16 +285,6 @@
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
       animate();
-    };
-
-    window.onload = () => {
-      const logo = document.getElementById('logo');
-      const logoWrapper = document.getElementById('logo-wrapper');
-      const content = document.getElementById('mainText');
-
-      logo.classList.add('visible');
-      setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
-      setTimeout(() => content.classList.add('visible'), 3000);
     };
   </script>
 </body>
