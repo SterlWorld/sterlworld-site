@@ -27,12 +27,6 @@
       left: 0;
       z-index: 0;
       display: block;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-    }
-
-    canvas#space.visible {
-      opacity: 1;
     }
 
     #logo-wrapper {
@@ -111,19 +105,12 @@
     }
 
     .sparkle-star {
-      pointer-events: none;
       position: fixed;
-      width: 10px;
-      height: 10px;
-      transform: translate(-50%, -50%);
-      animation: sparkleFade 1s ease forwards;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 1.5s ease-out, opacity 1.5s ease-out;
       z-index: 9999;
       filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
-    }
-
-    @keyframes sparkleFade {
-      0% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(2); }
     }
 
     @media screen and (max-width: 480px) {
@@ -175,29 +162,34 @@
     const ctx = canvas.getContext('2d');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
-    // Sparkle burst
+    // Click/Tap Sparkle Effect: Burst then Fall + Fade + Shrink
     function createSparkleBurst(x, y) {
-      const numStars = 7 + Math.floor(Math.random() * 3);
+      const numStars = 6 + Math.floor(Math.random() * 4);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
         sparkle.className = 'sparkle-star';
 
-        const size = Math.random() * 12 + 6;
+        const size = Math.random() * 12 + 10;
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
-
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 60 + 20;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
-
         sparkle.style.left = `${x}px`;
         sparkle.style.top = `${y}px`;
-        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
+        sparkle.style.opacity = 1;
+
+        const angle = Math.random() * 2 * Math.PI;
+        const radius = Math.random() * 40 + 20;
+        const offsetX = Math.cos(angle) * radius;
+        const offsetY = Math.sin(angle) * radius;
 
         document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1000);
+
+        requestAnimationFrame(() => {
+          sparkle.style.transform = `translate(${offsetX}px, ${offsetY + 100}px) scale(0.3)`;
+          sparkle.style.opacity = 0;
+        });
+
+        setTimeout(() => sparkle.remove(), 1600);
       }
     }
 
@@ -241,7 +233,6 @@
     const warpDuration = 3000;
     let warpStartTime = null;
     let warpComplete = false;
-
     let lastTime = performance.now();
 
     function animate(time = performance.now()) {
@@ -275,9 +266,9 @@
           return;
         }
 
-        const k = 128.0 / s.z;
-        const px = s.x * k + w / 2;
-        const py = s.y * k + h / 2;
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
 
         if (px < 0 || px >= w || py < 0 || py >= h) {
           stars[i] = createStar();
@@ -300,14 +291,10 @@
       requestAnimationFrame(animate);
     }
 
-    // Start animation after star image loads
     starImage.onload = () => {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
-      setTimeout(() => {
-        canvas.classList.add('visible'); // Fade in the canvas
-        animate();
-      }, 100);
+      animate();
     };
   </script>
 </body>
