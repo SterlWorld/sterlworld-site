@@ -29,20 +29,8 @@
       position: fixed;
       top: 0;
       left: 0;
-      display: block;
-    }
-
-    #stars {
-      z-index: -3;
-    }
-
-    #matrix {
-      z-index: -2;
-    }
-
-    #sparkle {
       z-index: -1;
-      pointer-events: none;
+      display: block;
     }
 
     header img {
@@ -115,6 +103,8 @@
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.25);
     }
 
+    /* Removed small text styling since it is no longer used */
+
     @media screen and (max-width: 480px) {
       .welcome-text {
         font-size: 1.8rem;
@@ -133,11 +123,9 @@
 </head>
 <body>
 
-  <!-- NEW: Starfield Background -->
-  <canvas id="stars"></canvas>
-  <!-- Existing Background Matrix Canvas -->
+  <!-- Background Matrix Canvas -->
   <canvas id="matrix"></canvas>
-  <!-- Existing Sparkle Canvas -->
+  <!-- Sparkle Canvas -->
   <canvas id="sparkle"></canvas>
 
   <!-- Main Content -->
@@ -155,92 +143,15 @@
     </a>
   </p>
 
+  <!-- Preview Section -->
   <div class="preview">
     <a href="https://sterlworld.itch.io/crust-master" target="_blank">
       <img src="Crust%20Master%20Title.png" alt="Crust Master Preview" />
     </a>
   </div>
 
-  <!-- STARFIELD SCRIPT -->
   <script>
-    const starsCanvas = document.getElementById('stars');
-    const starsCtx = starsCanvas.getContext('2d');
-    starsCanvas.width = window.innerWidth;
-    starsCanvas.height = window.innerHeight;
-
-    let stars = [];
-    const numStars = 200;
-
-    class Star {
-      constructor() {
-        this.reset();
-      }
-
-      reset() {
-        this.x = Math.random() * starsCanvas.width - starsCanvas.width / 2;
-        this.y = Math.random() * starsCanvas.height - starsCanvas.height / 2;
-        this.z = Math.random() * starsCanvas.width;
-        this.pz = this.z;
-      }
-
-      update() {
-        this.z -= 4;
-        if (this.z < 1) {
-          this.reset();
-          this.z = starsCanvas.width;
-          this.pz = this.z;
-        }
-      }
-
-      draw(ctx) {
-        const sx = (this.x / this.z) * starsCanvas.width + starsCanvas.width / 2;
-        const sy = (this.y / this.z) * starsCanvas.height + starsCanvas.height / 2;
-
-        const px = (this.x / this.pz) * starsCanvas.width + starsCanvas.width / 2;
-        const py = (this.y / this.pz) * starsCanvas.height + starsCanvas.height / 2;
-
-        this.pz = this.z;
-
-        ctx.beginPath();
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.75)';
-        ctx.lineWidth = 1;
-        ctx.moveTo(px, py);
-        ctx.lineTo(sx, sy);
-        ctx.stroke();
-      }
-    }
-
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < numStars; i++) {
-        stars.push(new Star());
-      }
-    }
-
-    function animateStars() {
-      starsCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-      starsCtx.fillRect(0, 0, starsCanvas.width, starsCanvas.height);
-
-      for (let star of stars) {
-        star.update();
-        star.draw(starsCtx);
-      }
-
-      requestAnimationFrame(animateStars);
-    }
-
-    initStars();
-    animateStars();
-
-    window.addEventListener('resize', () => {
-      starsCanvas.width = window.innerWidth;
-      starsCanvas.height = window.innerHeight;
-      initStars();
-    });
-  </script>
-
-  <!-- MATRIX SCRIPT -->
-  <script>
+    // MATRIX BACKGROUND
     const matrixCanvas = document.getElementById('matrix');
     const mCtx = matrixCanvas.getContext('2d');
     matrixCanvas.width = window.innerWidth;
@@ -255,7 +166,7 @@
       mCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
 
-      mCtx.font = `${fontSize}px monospace`;
+      mCtx.font = ${fontSize}px monospace;
 
       for (let i = 0; i < drops.length; i++) {
         const text = symbols[Math.floor(Math.random() * symbols.length)];
@@ -264,7 +175,7 @@
 
         const green = Math.floor(150 + Math.random() * 100);
         const blue = Math.floor(180 + Math.random() * 75);
-        mCtx.fillStyle = `rgba(0, ${green}, ${blue}, 0.8)`;
+        mCtx.fillStyle = rgba(0, ${green}, ${blue}, 0.8);
 
         mCtx.fillText(text, x, y);
 
@@ -277,10 +188,8 @@
     }
 
     setInterval(drawMatrix, 50);
-  </script>
 
-  <!-- SPARKLE SCRIPT -->
-  <script>
+    // SPARKLE EFFECT ON CLICK
     const sparkleCanvas = document.getElementById('sparkle');
     const sCtx = sparkleCanvas.getContext('2d');
     sparkleCanvas.width = window.innerWidth;
@@ -290,12 +199,12 @@
       constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.life = 20;
+        this.life = 20; // frames
         this.size = Math.random() * 3 + 2;
         this.speedX = (Math.random() - 0.5) * 2;
         this.speedY = (Math.random() - 0.5) * 2;
         this.opacity = 1;
-        this.color = `rgba(255, 215, 0, ${this.opacity})`;
+        this.color = rgba(255, 215, 0, ${this.opacity}); // gold color
       }
 
       update() {
@@ -303,7 +212,7 @@
         this.y += this.speedY;
         this.life--;
         this.opacity = this.life / 20;
-        this.color = `rgba(255, 215, 0, ${this.opacity})`;
+        this.color = rgba(255, 215, 0, ${this.opacity});
       }
 
       draw(ctx) {
@@ -332,6 +241,11 @@
       }
       requestAnimationFrame(animateSparkles);
     }
+
+    sparkleCanvas.style.position = 'fixed';
+    sparkleCanvas.style.top = '0';
+    sparkleCanvas.style.left = '0';
+    sparkleCanvas.style.pointerEvents = 'none';
 
     animateSparkles();
 
