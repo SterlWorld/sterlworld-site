@@ -30,39 +30,37 @@
       display: block;
     }
 
-    .center-container {
+    #logo-wrapper {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       z-index: 10;
+      transition: top 1.5s ease, transform 1.5s ease;
       opacity: 0;
-      transition: opacity 1.5s ease;
     }
 
-    .center-container.visible {
+    #logo-wrapper.visible {
       opacity: 1;
+    }
+
+    #logo-wrapper.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
     }
 
     #logo {
       width: 300px;
       max-width: 80vw;
-      transition: transform 1.5s ease;
-    }
-
-    .move-top {
-      transform: translate(-50%, 40px);
-      position: absolute;
-      top: 40px;
-      left: 50%;
     }
 
     .content {
-      margin-top: 200px;
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 90%;
       text-align: center;
       opacity: 0;
       transition: opacity 1.5s ease;
@@ -70,10 +68,6 @@
       color: #ccc;
       z-index: 5;
       padding: 0 20px;
-      position: relative;
-      max-width: 90%;
-      left: 50%;
-      transform: translateX(-50%);
     }
 
     .content.visible {
@@ -145,7 +139,7 @@
 
       .content {
         font-size: 1rem;
-        margin-top: 180px;
+        top: 120px;
       }
     }
   </style>
@@ -154,8 +148,8 @@
 
   <canvas id="space"></canvas>
 
-  <!-- Logo in center -->
-  <div class="center-container" id="centerContainer">
+  <!-- Logo -->
+  <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
@@ -175,8 +169,7 @@
   </div>
 
   <script>
-    const logo = document.getElementById('logo');
-    const centerContainer = document.getElementById('centerContainer');
+    const logoWrapper = document.getElementById('logo-wrapper');
     const content = document.getElementById('mainText');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
@@ -255,12 +248,11 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          centerContainer.classList.add('visible');
+          logoWrapper.classList.add('visible');
           setTimeout(() => {
-            centerContainer.classList.remove('visible');
-            logo.classList.add('slide-up');
+            logoWrapper.classList.add('move-top');
             setTimeout(() => content.classList.add('visible'), 1000);
-          }, 1600);
+          }, 1500);
         }
       }
 
