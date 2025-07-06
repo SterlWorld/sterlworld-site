@@ -150,14 +150,14 @@
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
-    We’re building a new legacy of entertainment — and it’s just the beginning. </p>
+    We’re building a new legacy of entertainment — and it’s just the beginning. 🌌</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
     <div class="support">
-      <p>Want to support the vision?</p>
+      <p>💖 Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">🎮 Play Crust Master / Donate</a></p>
     </div>
   </div>
 
@@ -201,39 +201,33 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Load star image from GitHub raw link
-    const starImageSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png'; // Your Star.png raw URL
+    const starImageSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const starImage = new Image();
     starImage.src = starImageSrc;
 
-    // Star object array
     let stars = [];
 
-    // Create star object
     function createStar() {
       return {
-        x: (Math.random() - 0.5) * w * 1.5, // wider spread
+        x: (Math.random() - 0.5) * w * 1.5,
         y: (Math.random() - 0.5) * h * 1.5,
         z: Math.random() * w,
-        size: Math.random() * 0.8 + 0.3,  // smaller stars
+        size: Math.random() * 0.8 + 0.3,
         rotationAngle: Math.random() * Math.PI * 2,
         rotationSpeed: (Math.random() - 0.5) * 0.01,
-        opacity: 1
       };
     }
 
-    // Create initial stars (more but spaced out)
     for (let i = 0; i < 180; i++) {
       stars.push(createStar());
     }
 
     function animate() {
-      // Semi-transparent black for trailing effect
       ctx.fillStyle = "rgba(0,0,0,0.3)";
       ctx.fillRect(0, 0, w, h);
 
       stars.forEach((s, i) => {
-        s.z -= 0.8; // slower speed for relaxed vibe
+        s.z -= 0.8;
 
         if (s.z <= 0) {
           stars[i] = createStar();
@@ -249,15 +243,14 @@
           return;
         }
 
-        // Draw star PNG with rotation & glow
         ctx.save();
         ctx.translate(px, py);
         ctx.rotate(s.rotationAngle);
         ctx.shadowBlur = 14;
-        ctx.shadowColor = 'rgba(0, 255, 255, 0.9)'; // cyan glow matching star color
-        ctx.globalAlpha = s.opacity;
-        let starSize = s.size * (1 - s.z / w) * 25; // scale by depth
-        ctx.drawImage(starImage, -starSize/2, -starSize/2, starSize, starSize);
+        ctx.shadowColor = '#f7de99'; // golden glow
+        ctx.globalAlpha = 0.35; // dim stars
+        let starSize = s.size * (1 - s.z / w) * 25;
+        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
         ctx.restore();
 
         s.rotationAngle += s.rotationSpeed;
