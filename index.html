@@ -17,11 +17,17 @@
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow-x: hidden;
+      overflow: hidden;
       cursor: crosshair;
     }
 
-    /* Logo wrapper centers it perfectly */
+    canvas#space {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -31,7 +37,6 @@
       z-index: 10;
     }
 
-    /* Slide logo to top */
     #logo-wrapper.move-top {
       top: 40px;
       transform: translate(-50%, 0);
@@ -132,7 +137,10 @@
 </head>
 <body>
 
-  <!-- Logo Wrapper for perfect centering + movement -->
+  <!-- Starfield canvas -->
+  <canvas id="space"></canvas>
+
+  <!-- Logo Wrapper -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
@@ -152,42 +160,125 @@
     </div>
   </div>
 
-  <!-- JS for animation and sparkles -->
+  <!-- Scripts -->
   <script>
+    // Logo + Content Animation
     window.onload = () => {
       const logo = document.getElementById('logo');
       const logoWrapper = document.getElementById('logo-wrapper');
       const content = document.getElementById('mainText');
 
-      // Step 1: fade in logo
       logo.classList.add('visible');
-
-      // Step 2: float up logo after 1.5s
-      setTimeout(() => {
-        logoWrapper.classList.add('move-top');
-      }, 1500);
-
-      // Step 3: fade in text content after 3s
-      setTimeout(() => {
-        content.classList.add('visible');
-      }, 3000);
+      setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
+      setTimeout(() => content.classList.add('visible'), 3000);
     };
 
-    // Sparkle effect on all clicks
+    // Sparkle effect
     document.addEventListener('click', (e) => {
       for (let i = 0; i < 5; i++) {
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
         document.body.appendChild(sparkle);
-
         const x = e.clientX + (Math.random() * 40 - 20);
         const y = e.clientY + (Math.random() * 40 - 20);
         sparkle.style.left = `${x}px`;
         sparkle.style.top = `${y}px`;
-
         setTimeout(() => sparkle.remove(), 1000);
       }
     });
+
+    // Starfield animation
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars = [], symbols = [], meteors = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function createStar() {
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 2,
+        speed: Math.random() * 1 + 0.2
+      };
+    }
+
+    function createMeteor() {
+      return {
+        x: Math.random() * w,
+        y: 0,
+        length: Math.random() * 100 + 50,
+        speed: Math.random() * 4 + 2,
+        angle: Math.PI / 4
+      };
+    }
+
+    function createSymbol() {
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        char: ['Ω', 'ψ', '₪', '★', '✶', '♒︎'][Math.floor(Math.random() * 6)],
+        size: Math.random() * 24 + 12,
+        opacity: Math.random() * 0.3 + 0.1,
+        life: Math.random() * 200 + 100
+      };
+    }
+
+    for (let i = 0; i < 150; i++) stars.push(createStar());
+    for (let i = 0; i < 10; i++) symbols.push(createSymbol());
+
+    function animate() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.fillRect(0, 0, w, h);
+
+      // Stars
+      ctx.fillStyle = "white";
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+        s.y += s.speed;
+        if (s.y > h) {
+          s.y = 0;
+          s.x = Math.random() * w;
+        }
+      });
+
+      // Symbols
+      ctx.font = "bold 20px Orbitron, monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      symbols.forEach((sym, i) => {
+        ctx.fillStyle = `rgba(255, 255, 255, ${sym.opacity})`;
+        ctx.fillText(sym.char, sym.x, sym.y);
+        sym.life--;
+        if (sym.life < 0) symbols[i] = createSymbol();
+      });
+
+      // Meteors
+      ctx.strokeStyle = "rgba(0,255,255,0.7)";
+      meteors.forEach((m, i) => {
+        ctx.beginPath();
+        ctx.moveTo(m.x, m.y);
+        ctx.lineTo(m.x - m.length * Math.cos(m.angle), m.y - m.length * Math.sin(m.angle));
+        ctx.stroke();
+        m.x += m.speed * Math.cos(m.angle);
+        m.y += m.speed * Math.sin(m.angle);
+        if (m.x < -100 || m.y > h + 100) meteors.splice(i, 1);
+      });
+
+      // Occasionally spawn meteors
+      if (Math.random() < 0.01) meteors.push(createMeteor());
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   </script>
 </body>
 </html>
