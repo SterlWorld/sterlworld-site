@@ -39,7 +39,7 @@
     }
 
     #logo-wrapper.move-top {
-      top: 40px;
+      top: 6vh; /* Higher resting spot to avoid overlap */
       transform: translate(-50%, 0);
     }
 
@@ -56,7 +56,7 @@
 
     .content {
       position: absolute;
-      top: 55%;
+      top: 58%;
       left: 50%;
       transform: translate(-50%, -50%);
       max-width: 90%;
@@ -66,6 +66,7 @@
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
+      padding-top: 20px;
     }
 
     .content.visible {
@@ -105,12 +106,35 @@
     }
 
     .sparkle-star {
-      position: fixed;
       pointer-events: none;
-      transform: translate(-50%, -50%) scale(1);
-      transition: transform 1.5s ease-out, opacity 1.5s ease-out;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform: translate(-50%, -50%);
+      animation: sparkleFade 1.4s ease-out forwards;
       z-index: 9999;
       filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
+    }
+
+    @keyframes sparkleFade {
+      0% { opacity: 1; transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { opacity: 0; transform: scale(0.1) translateY(20px); }
+    }
+
+    @media screen and (max-height: 700px) {
+      #logo-wrapper.move-top {
+        top: 4vh;
+      }
+
+      .content {
+        top: 65%;
+        font-size: 1rem;
+      }
+
+      #logo {
+        width: 200px;
+      }
     }
 
     @media screen and (max-width: 480px) {
@@ -124,22 +148,19 @@
 
       .content {
         font-size: 1rem;
-        top: 58%;
+        top: 65%;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Starfield canvas -->
   <canvas id="space"></canvas>
 
-  <!-- Logo wrapper -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-  <!-- Main content -->
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
@@ -158,49 +179,46 @@
     const logo = document.getElementById('logo');
     const logoWrapper = document.getElementById('logo-wrapper');
     const content = document.getElementById('mainText');
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
-    // Click/Tap Sparkle Effect: Burst then Fall + Fade + Shrink
     function createSparkleBurst(x, y) {
-      const numStars = 6 + Math.floor(Math.random() * 4);
+      const numStars = 5 + Math.floor(Math.random() * 3);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
         sparkle.className = 'sparkle-star';
 
-        const size = Math.random() * 12 + 10;
+        const size = Math.random() * 10 + 6;
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
-        sparkle.style.left = `${x}px`;
-        sparkle.style.top = `${y}px`;
-        sparkle.style.opacity = 1;
 
         const angle = Math.random() * 2 * Math.PI;
-        const radius = Math.random() * 40 + 20;
-        const offsetX = Math.cos(angle) * radius;
-        const offsetY = Math.sin(angle) * radius;
+        const distance = Math.random() * 50 + 10;
+        const offsetX = Math.cos(angle) * distance;
+        const offsetY = Math.sin(angle) * distance;
+
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
 
         document.body.appendChild(sparkle);
-
-        requestAnimationFrame(() => {
-          sparkle.style.transform = `translate(${offsetX}px, ${offsetY + 100}px) scale(0.3)`;
-          sparkle.style.opacity = 0;
-        });
-
-        setTimeout(() => sparkle.remove(), 1600);
+        setTimeout(() => sparkle.remove(), 1400);
       }
     }
 
-    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('click', (e) => {
+      createSparkleBurst(e.clientX, e.clientY);
+    });
+
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length > 0) {
         createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
       }
     });
 
-    // Resize canvas
+    // Starfield setup
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
     let w, h;
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -266,9 +284,9 @@
           return;
         }
 
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
+        const k = 128.0 / s.z;
+        const px = s.x * k + w / 2;
+        const py = s.y * k + h / 2;
 
         if (px < 0 || px >= w || py < 0 || py >= h) {
           stars[i] = createStar();
