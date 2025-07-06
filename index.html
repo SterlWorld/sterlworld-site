@@ -30,42 +30,39 @@
       display: block;
     }
 
-    #logo-wrapper {
+    .center-container {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 10;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      width: 100%;
-      pointer-events: none;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .center-container.visible {
+      opacity: 1;
     }
 
     #logo {
       width: 300px;
       max-width: 80vw;
-      opacity: 0;
-      position: relative;
-      transform: translateY(0);
-      transition: opacity 1.5s ease, transform 1.5s ease;
+      transition: transform 1.5s ease;
     }
 
-    #logo.visible {
-      opacity: 1;
-    }
-
-    #logo.slide-up {
-      transform: translateY(-80px);
+    .move-top {
+      transform: translate(-50%, 40px);
+      position: absolute;
+      top: 40px;
+      left: 50%;
     }
 
     .content {
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 90%;
+      margin-top: 200px;
       text-align: center;
       opacity: 0;
       transition: opacity 1.5s ease;
@@ -73,6 +70,10 @@
       color: #ccc;
       z-index: 5;
       padding: 0 20px;
+      position: relative;
+      max-width: 90%;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .content.visible {
@@ -144,18 +145,17 @@
 
       .content {
         font-size: 1rem;
-        top: 60%;
+        margin-top: 180px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Starfield canvas -->
   <canvas id="space"></canvas>
 
-  <!-- Logo wrapper -->
-  <div id="logo-wrapper">
+  <!-- Logo in center -->
+  <div class="center-container" id="centerContainer">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
@@ -176,47 +176,38 @@
 
   <script>
     const logo = document.getElementById('logo');
-    const logoWrapper = document.getElementById('logo-wrapper');
+    const centerContainer = document.getElementById('centerContainer');
     const content = document.getElementById('mainText');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
-    // Sparkle burst + fall
     function createSparkleBurst(x, y) {
-      const numStars = 5 + Math.floor(Math.random() * 3); // 5–7 stars
+      const numStars = 5 + Math.floor(Math.random() * 3);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
         sparkle.className = 'sparkle-star';
-
         const size = Math.random() * 12 + 6;
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
-
         const angle = Math.random() * 2 * Math.PI;
         const distance = Math.random() * 30;
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
-
         sparkle.style.left = `${x}px`;
         sparkle.style.top = `${y}px`;
         sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
-
         document.body.appendChild(sparkle);
         setTimeout(() => sparkle.remove(), 1000);
       }
     }
 
-    document.addEventListener('click', (e) => {
-      createSparkleBurst(e.clientX, e.clientY);
-    });
-
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length > 0) {
         createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
       }
     });
 
-    // STARFIELD BACKGROUND
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -225,6 +216,7 @@
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
+
     window.addEventListener('resize', resize);
     resize();
 
@@ -243,11 +235,8 @@
       };
     }
 
-    for (let i = 0; i < 200; i++) {
-      stars.push(createStar());
-    }
+    for (let i = 0; i < 200; i++) stars.push(createStar());
 
-    // Warp speed variables
     let warpSpeed = 30;
     const normalSpeed = 0.5;
     const warpDuration = 3000;
@@ -259,7 +248,6 @@
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
 
-      // Ease out warp speed
       if (elapsed < warpDuration) {
         const t = elapsed / warpDuration;
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
@@ -267,8 +255,9 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          logo.classList.add('visible');
+          centerContainer.classList.add('visible');
           setTimeout(() => {
+            centerContainer.classList.remove('visible');
             logo.classList.add('slide-up');
             setTimeout(() => content.classList.add('visible'), 1000);
           }, 1600);
@@ -283,21 +272,17 @@
 
       stars.forEach((s, i) => {
         s.z -= warpSpeed * delta;
-
         if (s.z <= 0) {
           stars[i] = createStar();
           return;
         }
-
         let k = 128.0 / s.z;
         let px = s.x * k + w / 2;
         let py = s.y * k + h / 2;
-
         if (px < 0 || px >= w || py < 0 || py >= h) {
           stars[i] = createStar();
           return;
         }
-
         ctx.save();
         ctx.translate(px, py);
         ctx.rotate(s.rotationAngle);
@@ -307,7 +292,6 @@
         let starSize = s.size * (1 - s.z / w) * 25;
         ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
         ctx.restore();
-
         s.rotationAngle += s.rotationSpeed;
       });
 
