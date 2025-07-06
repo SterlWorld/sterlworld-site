@@ -167,12 +167,7 @@
     const content = document.getElementById('mainText');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
-    window.onload = () => {
-      logo.classList.add('visible');
-      setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
-      setTimeout(() => content.classList.add('visible'), 3000);
-    };
-
+    // Sparkle burst on click or touch
     function createSparkleBurst(x, y) {
       const numStars = 7 + Math.floor(Math.random() * 3); // 7–9 stars
       for (let i = 0; i < numStars; i++) {
@@ -198,7 +193,6 @@
       }
     }
 
-    // Desktop click & Mobile touch
     document.addEventListener('click', (e) => {
       createSparkleBurst(e.clientX, e.clientY);
     });
@@ -240,8 +234,34 @@
       stars.push(createStar());
     }
 
+    // Warp speed effect variables
+    let warpSpeed = 30;          // initial warp speed (high)
+    const normalSpeed = 0.5;     // normal cruising speed
+    const warpDuration = 3000;   // duration of warp slow down in milliseconds
+    let warpStartTime = null;    // timestamp when warp started
+    let warpComplete = false;
+
     let lastTime = performance.now();
+
     function animate(time = performance.now()) {
+      if (!warpStartTime) warpStartTime = time;
+      const elapsed = time - warpStartTime;
+
+      // Ease warpSpeed from 30 down to normalSpeed over warpDuration (easeOutCubic)
+      if (elapsed < warpDuration) {
+        const t = elapsed / warpDuration;
+        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+      } else {
+        warpSpeed = normalSpeed;
+        if (!warpComplete) {
+          warpComplete = true;
+          // Show logo and content after warp effect finishes
+          logo.classList.add('visible');
+          setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
+          setTimeout(() => content.classList.add('visible'), 3000);
+        }
+      }
+
       const delta = (time - lastTime) / 16.67;
       lastTime = time;
 
@@ -249,7 +269,7 @@
       ctx.fillRect(0, 0, w, h);
 
       stars.forEach((s, i) => {
-        s.z -= 0.5 * delta;
+        s.z -= warpSpeed * delta;
 
         if (s.z <= 0) {
           stars[i] = createStar();
@@ -281,6 +301,7 @@
       requestAnimationFrame(animate);
     }
 
+    // Start animation only after starImage loads
     starImage.onload = () => {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
