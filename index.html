@@ -104,35 +104,25 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
 
-    .sparkle {
+    .sparkle-star {
       position: fixed;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #0ff;
+      width: 12px;
+      height: 12px;
       pointer-events: none;
       z-index: 9999;
-      animation: sparkle-fade 1s forwards;
+      transform: translate(-50%, -50%);
+      animation: sparkleFade 1s ease forwards;
     }
 
-    @keyframes sparkle-fade {
-      0% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(2); }
+    @keyframes sparkleFade {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
     }
 
     @media screen and (max-width: 480px) {
-      #logo {
-        width: 180px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .content {
-        font-size: 1rem;
-        top: 58%;
-      }
+      #logo { width: 180px; }
+      h1 { font-size: 1.8rem; }
+      .content { font-size: 1rem; top: 58%; }
     }
   </style>
 </head>
@@ -161,7 +151,7 @@
     </div>
   </div>
 
-  <!-- JS for animation and stars -->
+  <!-- JS for animation and sparkles -->
   <script>
     window.onload = () => {
       const logo = document.getElementById('logo');
@@ -173,24 +163,28 @@
       setTimeout(() => content.classList.add('visible'), 3000);
     };
 
-    // Sparkles on click
-    document.addEventListener('click', (e) => {
-      for (let i = 0; i < 5; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        document.body.appendChild(sparkle);
+    // Sparkle PNG setup
+    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
-        const x = e.clientX + (Math.random() * 40 - 20);
-        const y = e.clientY + (Math.random() * 40 - 20);
-        sparkle.style.left = `${x}px`;
-        sparkle.style.top = `${y}px`;
+    function createSparkle(x, y) {
+      const sparkle = document.createElement('img');
+      sparkle.src = sparkleImgSrc;
+      sparkle.className = 'sparkle-star';
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    }
 
-        setTimeout(() => sparkle.remove(), 1000);
+    // Mouse & Touch Support
+    document.addEventListener('mousemove', (e) => createSparkle(e.clientX, e.clientY));
+    document.addEventListener('touchstart', (e) => {
+      for (let i = 0; i < e.touches.length; i++) {
+        createSparkle(e.touches[i].clientX, e.touches[i].clientY);
       }
     });
 
-    // ---- STARFIELD with PNG Stars ----
-
+    // Starfield Background
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -199,11 +193,12 @@
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
+
     window.addEventListener('resize', resize);
     resize();
 
     const starImage = new Image();
-    starImage.src = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+    starImage.src = sparkleImgSrc;
 
     let stars = [];
     function createStar() {
@@ -231,7 +226,6 @@
 
       stars.forEach((s, i) => {
         s.z -= 0.5 * delta;
-
         if (s.z <= 0) {
           stars[i] = createStar();
           return;
