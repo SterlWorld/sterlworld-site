@@ -26,6 +26,7 @@
       top: 0;
       left: 0;
       z-index: 0;
+      display: block;
     }
 
     #logo-wrapper {
@@ -149,19 +150,19 @@
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
-    We’re building a new legacy of entertainment — and it’s just the beginning. </p>
+    We’re building a new legacy of entertainment — and it’s just the beginning. 🌌</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
     <div class="support">
-      <p>Want to support the vision?</p>
+      <p>💖 Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">🎮 Play Crust Master / Donate</a></p>
     </div>
   </div>
 
   <script>
-    // Fade-in and logo float
+    // Animation for logo fade + float + content fade
     window.onload = () => {
       const logo = document.getElementById('logo');
       const logoWrapper = document.getElementById('logo-wrapper');
@@ -188,11 +189,11 @@
       }
     });
 
-    // Galaxy tunnel effect with stars and symbols flying towards screen
+    // ---- STARFIELD with PNG Stars + Egyptian Symbols ----
 
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
-    let w, h, stars = [], symbols = [];
+    let w, h;
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -201,55 +202,61 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Star object with position and depth
-    function createStar() {
-      return {
-        x: (Math.random() - 0.5) * w,
-        y: (Math.random() - 0.5) * h,
-        z: Math.random() * w,
-        size: Math.random() * 1.2 + 0.6,
-        isSymbol: false,
-        symbolChar: null,
-        symbolSize: null,
-        opacity: 1
-      };
+    // Load star image from your GitHub
+    const starImageSrc = 'https://raw.githubusercontent.com/yourusername/yourrepo/main/Star.png'; // <-- REPLACE this with your actual GitHub raw URL
+    const starImage = new Image();
+    starImage.src = starImageSrc;
+
+    // Egyptian symbols array
+    const egyptianSymbols = ['𓂀', '𓊽', '𓏏', '𓆣', '𓎼'];
+
+    // Star and symbol object array
+    let stars = [];
+
+    function createStarOrSymbol() {
+      const isSymbol = Math.random() < 0.1; // ~10% chance star is a symbol
+      if (isSymbol) {
+        return {
+          x: (Math.random() - 0.5) * w,
+          y: (Math.random() - 0.5) * h,
+          z: Math.random() * w,
+          size: Math.random() * 1.5 + 1,
+          isSymbol: true,
+          symbolChar: egyptianSymbols[Math.floor(Math.random() * egyptianSymbols.length)],
+          symbolSize: Math.random() * 20 + 20,
+          opacity: 0,
+          fadingIn: true,
+          rotationAngle: Math.random() * Math.PI * 2
+        };
+      } else {
+        return {
+          x: (Math.random() - 0.5) * w,
+          y: (Math.random() - 0.5) * h,
+          z: Math.random() * w,
+          size: Math.random() * 1.2 + 0.6,
+          isSymbol: false,
+          rotationAngle: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.01,
+          opacity: 1
+        };
+      }
     }
 
-    // Create star that is a symbol
-    function createSymbol() {
-      const egyptianSymbols = ['𓂀', '𓊽', '𓏏', '𓆣', '𓎼'];
-      const char = egyptianSymbols[Math.floor(Math.random() * egyptianSymbols.length)];
-      return {
-        x: (Math.random() - 0.5) * w,
-        y: (Math.random() - 0.5) * h,
-        z: Math.random() * w,
-        size: Math.random() * 1.5 + 1,
-        isSymbol: true,
-        symbolChar: char,
-        symbolSize: Math.random() * 20 + 20,
-        opacity: 0,
-        fadingIn: true
-      };
+    // Create initial stars
+    for (let i = 0; i < 150; i++) {
+      stars.push(createStarOrSymbol());
     }
-
-    // Initialize stars and symbols
-    // Spaced out: fewer stars for calm effect
-    for (let i = 0; i < 150; i++) stars.push(createStar());
-    for (let i = 0; i < 15; i++) symbols.push(createSymbol());
 
     function animate() {
-      ctx.fillStyle = "rgba(0,0,0,0.4)";
+      // Semi-transparent black to create trailing effect
+      ctx.fillStyle = "rgba(0,0,0,0.3)";
       ctx.fillRect(0, 0, w, h);
 
-      // Draw stars and symbols flying towards viewer
       stars.forEach((s, i) => {
-        s.z -= 1.5; // slower speed for relaxed vibe
+        s.z -= 1.2; // slower star speed for calm
+
         if (s.z <= 0) {
-          if (s.isSymbol) {
-            symbols[i] = createSymbol();
-          } else {
-            stars[i] = createStar();
-          }
+          stars[i] = createStarOrSymbol();
           return;
         }
 
@@ -258,45 +265,58 @@
         let py = s.y * k + h / 2;
 
         if (px < 0 || px >= w || py < 0 || py >= h) {
-          if (s.isSymbol) {
-            symbols[i] = createSymbol();
-          } else {
-            stars[i] = createStar();
-          }
+          stars[i] = createStarOrSymbol();
           return;
         }
 
         if (s.isSymbol) {
-          // handle symbol fading in and out
+          // Symbol fade in/out
           if (s.fadingIn) {
-            s.opacity += 0.007;
+            s.opacity += 0.008;
             if (s.opacity >= 0.3) s.fadingIn = false;
           } else {
             s.opacity -= 0.002;
             if (s.opacity <= 0) {
-              symbols[i] = createSymbol();
+              stars[i] = createStarOrSymbol();
               return;
             }
           }
 
+          ctx.save();
           ctx.font = `${s.symbolSize}px Orbitron, sans-serif`;
           ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
-          ctx.fillText(s.symbolChar, px, py);
+          ctx.translate(px, py);
+          ctx.rotate(s.rotationAngle);
+          ctx.fillText(s.symbolChar, 0, 0);
+          ctx.restore();
+
+          // Slowly rotate symbol
+          s.rotationAngle += 0.002;
         } else {
-          // draw star as circle
-          let size = s.size * (1 - s.z / w) * 2;
-          ctx.beginPath();
-          ctx.arc(px, py, size, 0, Math.PI * 2);
-          ctx.fillStyle = 'white';
-          ctx.fill();
+          // Draw star PNG with rotation & glow
+          ctx.save();
+          ctx.translate(px, py);
+          ctx.rotate(s.rotationAngle);
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = 'rgba(0, 255, 255, 0.7)';
+          ctx.globalAlpha = s.opacity;
+          let starSize = s.size * (1 - s.z / w) * 30; // scale by depth
+          ctx.drawImage(starImage, -starSize/2, -starSize/2, starSize, starSize);
+          ctx.restore();
+
+          s.rotationAngle += s.rotationSpeed;
         }
       });
 
       requestAnimationFrame(animate);
     }
 
-    animate();
+    // Wait for starImage to load before animating
+    starImage.onload = () => {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+      animate();
+    };
   </script>
-
 </body>
 </html>
