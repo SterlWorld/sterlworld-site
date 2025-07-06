@@ -106,23 +106,34 @@
 
     .sparkle-star {
       position: fixed;
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
       animation: sparkleFade 1s ease forwards;
+      filter: drop-shadow(0 0 6px #0ff) brightness(1.8) saturate(1.5);
+      transition: transform 1s ease, opacity 1s ease;
     }
 
     @keyframes sparkleFade {
-      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(2); }
     }
 
     @media screen and (max-width: 480px) {
-      #logo { width: 180px; }
-      h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 58%; }
+      #logo {
+        width: 180px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .content {
+        font-size: 1rem;
+        top: 58%;
+      }
     }
   </style>
 </head>
@@ -151,40 +162,39 @@
     </div>
   </div>
 
-  <!-- JS for animation and sparkles -->
+  <!-- JS for animation and stars -->
   <script>
-    window.onload = () => {
-      const logo = document.getElementById('logo');
-      const logoWrapper = document.getElementById('logo-wrapper');
-      const content = document.getElementById('mainText');
-
-      logo.classList.add('visible');
-      setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
-      setTimeout(() => content.classList.add('visible'), 3000);
-    };
-
-    // Sparkle PNG setup
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
-    function createSparkle(x, y) {
-      const sparkle = document.createElement('img');
-      sparkle.src = sparkleImgSrc;
-      sparkle.className = 'sparkle-star';
-      sparkle.style.left = `${x}px`;
-      sparkle.style.top = `${y}px`;
-      document.body.appendChild(sparkle);
-      setTimeout(() => sparkle.remove(), 1000);
+    function createSparkleBurst(x, y) {
+      const numStars = 5;
+      for (let i = 0; i < numStars; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc;
+        sparkle.className = 'sparkle-star';
+        document.body.appendChild(sparkle);
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 40 + 10;
+        const offsetX = Math.cos(angle) * distance;
+        const offsetY = Math.sin(angle) * distance;
+
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
+
+        setTimeout(() => sparkle.remove(), 1000);
+      }
     }
 
-    // Mouse & Touch Support
-    document.addEventListener('mousemove', (e) => createSparkle(e.clientX, e.clientY));
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
       for (let i = 0; i < e.touches.length; i++) {
-        createSparkle(e.touches[i].clientX, e.touches[i].clientY);
+        createSparkleBurst(e.touches[i].clientX, e.touches[i].clientY);
       }
     });
 
-    // Starfield Background
+    // Starfield background
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -193,7 +203,6 @@
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
-
     window.addEventListener('resize', resize);
     resize();
 
@@ -226,6 +235,7 @@
 
       stars.forEach((s, i) => {
         s.z -= 0.5 * delta;
+
         if (s.z <= 0) {
           stars[i] = createStar();
           return;
@@ -260,6 +270,16 @@
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
       animate();
+    };
+
+    window.onload = () => {
+      const logo = document.getElementById('logo');
+      const logoWrapper = document.getElementById('logo-wrapper');
+      const content = document.getElementById('mainText');
+
+      logo.classList.add('visible');
+      setTimeout(() => logoWrapper.classList.add('move-top'), 1500);
+      setTimeout(() => content.classList.add('visible'), 3000);
     };
   </script>
 </body>
