@@ -6,39 +6,73 @@
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
-      height: 100%; width: 100%; background: black;
-      font-family: 'Poppins', sans-serif; color: white;
-      overflow: hidden; cursor: crosshair;
+      height: 100%;
+      width: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow: hidden;
+      cursor: crosshair;
     }
 
     canvas#space {
-      position: fixed; top: 0; left: 0; z-index: 0; display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      display: block;
     }
 
     #logo-wrapper {
-      position: absolute; top: 50%; left: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 10; opacity: 0;
+      z-index: 10;
+      opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
 
-    #logo-wrapper.fade-in { opacity: 1; }
-    #logo-wrapper.move-top { top: 40px; transform: translate(-50%, 0); }
-    #logo { width: 300px; max-width: 80vw; }
-
-    .content {
-      position: absolute; top: 140px; left: 50%;
-      transform: translateX(-50%);
-      width: 100%; max-width: 90%;
-      text-align: center; opacity: 0;
-      transition: opacity 1.5s ease;
-      font-size: 1.2rem; color: #ccc;
-      z-index: 5; padding: 0 20px;
+    #logo-wrapper.fade-in {
+      opacity: 1;
     }
 
-    .content.visible { opacity: 1; }
+    #logo-wrapper.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
+    }
+
+    #logo {
+      width: 300px;
+      max-width: 80vw;
+    }
+
+    .content {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
+      padding: 0 20px;
+    }
+
+    .content.visible {
+      opacity: 1;
+    }
 
     h1 {
       font-family: 'Orbitron', sans-serif;
@@ -48,13 +82,21 @@
       color: white;
     }
 
-    p { line-height: 1.5; }
+    p {
+      line-height: 1.5;
+    }
 
-    .support { margin-top: 2.5rem; }
-    .support p { margin: 0.5rem 0; }
+    .support {
+      margin-top: 2.5rem;
+    }
+
+    .support p {
+      margin: 0.5rem 0;
+    }
 
     .support a {
-      color: #0ff; font-weight: bold;
+      color: #0ff;
+      font-weight: bold;
       text-decoration: none;
       transition: text-shadow 0.3s ease, color 0.3s ease;
     }
@@ -72,7 +114,7 @@
       transform: translate(-50%, -50%);
       animation: sparkleFall 1s ease forwards;
       z-index: 9999;
-      filter: drop-shadow(0 0 6px #ffd700) brightness(2.5) saturate(2);
+      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
     }
 
     @keyframes sparkleFall {
@@ -86,11 +128,13 @@
       }
     }
 
-    /* Loading screen */
+    /* Loading screen styles */
     #loader {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: black;
       display: flex;
       flex-direction: column;
@@ -100,19 +144,44 @@
     }
 
     #loader h2 {
-      color: #0ff;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
+      color: white;
+      font-size: 2rem;
       font-family: 'Orbitron', sans-serif;
       letter-spacing: 1px;
+      user-select: none;
+      margin-bottom: 20px;
+    }
+
+    #titleGlow {
+      display: inline-block;
+      user-select: none;
+    }
+
+    #titleGlow span {
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+      color: white;
+    }
+
+    /* Gold glow for letters */
+    .glow-gold {
+      color: #ffd700;
+      text-shadow:
+        0 0 8px #ffd700,
+        0 0 15px #ffec8b,
+        0 0 20px #ffd700,
+        0 0 30px #ffec8b,
+        0 0 40px #ffd700;
     }
 
     .loading-bar {
-      width: 60%; height: 8px;
+      width: 60%;
+      height: 10px;
       background: #222;
       border: 1px solid #444;
       border-radius: 5px;
       overflow: hidden;
+      box-shadow: none;
+      margin-top: 10px;
     }
 
     .loading-bar-fill {
@@ -122,20 +191,46 @@
       transition: width 0.2s ease;
     }
 
-    .glow-gold {
-      color: gold !important;
-      text-shadow:
-        0 0 6px gold,
-        0 0 12px #ffdd55,
-        0 0 18px #fff8dc,
-        0 0 25px #fff9a1;
+    /* When full, gold color and glow + flicker */
+    .loading-bar-fill.full {
+      background: linear-gradient(to right, #ffd700, #fff68f);
+      box-shadow:
+        0 0 8px #ffd700,
+        0 0 15px #ffec8b,
+        0 0 20px #ffd700,
+        0 0 30px #ffec8b,
+        0 0 40px #ffd700;
+      animation: flicker 1.2s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%, 100% {
+        filter: drop-shadow(0 0 10px #ffd700);
+        opacity: 1;
+      }
+      50% {
+        filter: drop-shadow(0 0 20px #fff68f);
+        opacity: 0.8;
+      }
     }
 
     @media screen and (max-width: 600px) {
-      #logo { width: 180px; }
-      h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 120px; }
-      .loading-bar { width: 80%; }
+      #logo {
+        width: 180px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .content {
+        font-size: 1rem;
+        top: 120px;
+      }
+
+      .loading-bar {
+        width: 80%;
+      }
     }
   </style>
 </head>
@@ -143,9 +238,7 @@
 
   <!-- Loading Screen -->
   <div id="loader">
-    <h2>Now Loading <span id="titleGlow">
-      <span>S</span><span>t</span><span>e</span><span>r</span><span>l</span><span>W</span><span>o</span><span>r</span><span>l</span><span>d</span>
-    </span>...</h2>
+    <h2>Loading <span id="titleGlow"></span></h2>
     <div class="loading-bar">
       <div class="loading-bar-fill" id="barFill"></div>
     </div>
@@ -153,20 +246,24 @@
 
   <canvas id="space"></canvas>
 
+  <!-- Logo -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
+  <!-- Main content -->
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
+
     <div class="support">
       <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
       <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+      
       <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
   </div>
@@ -176,11 +273,22 @@
     const content = document.getElementById('mainText');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
-    const titleLetters = document.querySelectorAll('#titleGlow span');
+    const titleGlow = document.getElementById('titleGlow');
+
+    // Set the "SterlWorld" text letter-by-letter wrapped in spans for glowing effect
+    const loadingText = 'SterlWorld';
+    titleGlow.innerHTML = '';
+    for (let char of loadingText) {
+      const span = document.createElement('span');
+      span.textContent = char;
+      titleGlow.appendChild(span);
+    }
+    const titleLetters = titleGlow.querySelectorAll('span');
+
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
-      const numStars = 10;
+      const numStars = 5 + Math.floor(Math.random() * 3);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
@@ -189,7 +297,7 @@
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
         const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 40;
+        const distance = Math.random() * 30;
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
         sparkle.style.left = `${x}px`;
@@ -200,9 +308,17 @@
       }
     }
 
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    });
+
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
+
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
@@ -226,12 +342,17 @@
     }
     for (let i = 0; i < 200; i++) stars.push(createStar());
 
-    let warpSpeed = 30, normalSpeed = 0.5, warpDuration = 3000;
-    let warpStartTime = null, warpComplete = false, lastTime = performance.now();
+    let warpSpeed = 30;
+    const normalSpeed = 0.5;
+    const warpDuration = 3000;
+    let warpStartTime = null;
+    let warpComplete = false;
+    let lastTime = performance.now();
 
     function animate(time = performance.now()) {
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
+
       if (elapsed < warpDuration) {
         const t = elapsed / warpDuration;
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
@@ -249,11 +370,16 @@
 
       const delta = (time - lastTime) / 16.67;
       lastTime = time;
+
       ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
       ctx.fillRect(0, 0, w, h);
+
       stars.forEach((s, i) => {
         s.z -= warpSpeed * delta;
-        if (s.z <= 0) { stars[i] = createStar(); return; }
+        if (s.z <= 0) {
+          stars[i] = createStar();
+          return;
+        }
         let k = 128.0 / s.z;
         let px = s.x * k + w / 2;
         let py = s.y * k + h / 2;
@@ -276,27 +402,34 @@
       requestAnimationFrame(animate);
     }
 
-    // Load bar progression
+    // Function to update letter glow based on loading bar position
+    function updateLetterGlow() {
+      const barFillRect = barFill.getBoundingClientRect();
+      titleLetters.forEach((letter) => {
+        const letterRect = letter.getBoundingClientRect();
+        const letterMid = letterRect.left + letterRect.width / 2;
+        if (letterMid <= barFillRect.right) {
+          letter.classList.add('glow-gold');
+        }
+      });
+    }
+
+    // Simulate loading progress
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 10;
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
+        barFill.classList.add('full'); // Add gold glow + flicker effect when full
         setTimeout(() => {
-          loader.remove();
-          animate();
-        }, 600);
+          loader.remove(); // remove loader immediately after hold
+          animate(); // start starfield animation
+        }, 600); // Hold full bar for 600ms before disappearing
       }
-
-      // Update bar and golden glow letters
       barFill.style.width = `${progress}%`;
-      const totalLetters = titleLetters.length;
-      const activeCount = Math.floor((progress / 100) * totalLetters);
-      titleLetters.forEach((el, idx) => {
-        if (idx < activeCount) el.classList.add('glow-gold');
-      });
-    }, 140);
+      updateLetterGlow();
+    }, 130);
 
     starImage.onload = () => {
       ctx.fillStyle = 'black';
