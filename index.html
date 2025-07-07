@@ -150,16 +150,32 @@
       letter-spacing: 1px;
       user-select: none;
       margin-bottom: 20px;
+      width: 60%; /* Match loading bar width */
+      max-width: 600px;
+      display: flex;
+      justify-content: flex-start;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    #loader h2 .loading-text {
+      color: #0ff; /* Sacred blue for "Loading" */
+      font-weight: 600;
+      user-select: none;
     }
 
     #titleGlow {
-      display: inline-block;
+      display: inline-flex;
       user-select: none;
+      gap: 6px;
+      flex-wrap: nowrap;
     }
 
     #titleGlow span {
       transition: text-shadow 0.3s ease, color 0.3s ease;
       color: white;
+      font-weight: 600;
+      user-select: none;
     }
 
     /* Gold glow for letters */
@@ -231,6 +247,11 @@
       .loading-bar {
         width: 80%;
       }
+
+      #loader h2 {
+        width: 80%;
+        max-width: none;
+      }
     }
   </style>
 </head>
@@ -238,7 +259,10 @@
 
   <!-- Loading Screen -->
   <div id="loader">
-    <h2>Loading <span id="titleGlow"></span></h2>
+    <h2>
+      <span class="loading-text">Loading</span>&nbsp;
+      <span id="titleGlow"></span>
+    </h2>
     <div class="loading-bar">
       <div class="loading-bar-fill" id="barFill"></div>
     </div>
