@@ -169,8 +169,13 @@
     }
 
     .loading-bar-fill.full {
-      background: linear-gradient(to right, #ffd700, #ffcc00);
-      box-shadow: 0 0 12px 3px #ffd700, 0 0 20px 6px #ffcc00;
+      background: linear-gradient(to right, #ffd700, #ffec8b);
+      box-shadow:
+        0 0 10px 4px #ffd700,
+        0 0 20px 8px #ffdb4d,
+        0 0 30px 12px #ffdb4d,
+        0 0 40px 18px #ffea7f;
+      filter: drop-shadow(0 0 6px #ffd700);
     }
 
     @media screen and (max-width: 600px) {
