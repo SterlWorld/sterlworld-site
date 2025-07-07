@@ -144,22 +144,32 @@
     }
 
     #loader h2 {
-      color: white;
-      font-size: 2rem;
       font-family: 'Orbitron', sans-serif;
-      letter-spacing: 1px;
+      font-weight: 600;
+      font-size: 2rem;
       user-select: none;
       margin-bottom: 20px;
+      color: white;
+      letter-spacing: 0.03em;
     }
 
-    #titleGlow {
-      display: inline-block;
+    #loadingText {
       user-select: none;
+    }
+
+    #loadingText .loading-word {
+      color: #0ff; /* sacred blue */
+      margin-right: 8px;
+    }
+
+    #loadingText #titleGlow {
+      display: inline-block;
     }
 
     #titleGlow span {
       transition: text-shadow 0.3s ease, color 0.3s ease;
       color: white;
+      font-weight: 600;
     }
 
     /* Gold glow for letters */
@@ -174,7 +184,7 @@
     }
 
     .loading-bar {
-      width: 60%;
+      width: 320px; /* Matches approx width of the entire phrase */
       height: 10px;
       background: #222;
       border: 1px solid #444;
@@ -229,7 +239,8 @@
       }
 
       .loading-bar {
-        width: 80%;
+        width: 90vw;
+        max-width: 320px;
       }
     }
   </style>
@@ -238,7 +249,10 @@
 
   <!-- Loading Screen -->
   <div id="loader">
-    <h2>Loading <span id="titleGlow"></span></h2>
+    <h2 id="loadingText">
+      <span class="loading-word">Loading</span>
+      <span id="titleGlow"></span>
+    </h2>
     <div class="loading-bar">
       <div class="loading-bar-fill" id="barFill"></div>
     </div>
