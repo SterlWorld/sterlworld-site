@@ -128,38 +128,32 @@
       }
     }
 
-    /* Loading screen styles */
-    #loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
+    /* Loading container to align text and bar perfectly */
+    #loading-container {
+      width: 360px; /* exact width */
+      user-select: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      z-index: 99999;
+      margin-bottom: 20px;
     }
 
-    #loader h2 {
-      font-family: 'Orbitron', sans-serif;
+    /* Loading text style */
+    #loadingText {
+      font-family: 'Orbitron', monospace, sans-serif;
       font-weight: 600;
       font-size: 2rem;
-      user-select: none;
-      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+      width: 100%;
       color: white;
-      letter-spacing: 0.03em;
-    }
-
-    #loadingText {
-      user-select: none;
+      text-align: center;
+      margin-bottom: 10px;
+      white-space: nowrap;
     }
 
     #loadingText .loading-word {
       color: #0ff; /* sacred blue */
-      margin-right: 8px;
+      margin-right: 6px;
     }
 
     #loadingText #titleGlow {
@@ -167,9 +161,9 @@
     }
 
     #titleGlow span {
+      display: inline-block;
       transition: text-shadow 0.3s ease, color 0.3s ease;
       color: white;
-      font-weight: 600;
     }
 
     /* Gold glow for letters */
@@ -184,14 +178,13 @@
     }
 
     .loading-bar {
-      width: 320px; /* Matches approx width of the entire phrase */
+      width: 100%; /* full width of container */
       height: 10px;
       background: #222;
       border: 1px solid #444;
       border-radius: 5px;
       overflow: hidden;
       box-shadow: none;
-      margin-top: 10px;
     }
 
     .loading-bar-fill {
@@ -238,9 +231,9 @@
         top: 120px;
       }
 
-      .loading-bar {
+      #loading-container {
         width: 90vw;
-        max-width: 320px;
+        max-width: 360px;
       }
     }
   </style>
@@ -248,13 +241,15 @@
 <body>
 
   <!-- Loading Screen -->
-  <div id="loader">
-    <h2 id="loadingText">
-      <span class="loading-word">Loading</span>
-      <span id="titleGlow"></span>
-    </h2>
-    <div class="loading-bar">
-      <div class="loading-bar-fill" id="barFill"></div>
+  <div id="loader" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; position: fixed; top:0; left:0; background:black; z-index:99999;">
+    <div id="loading-container">
+      <h2 id="loadingText">
+        <span class="loading-word">Loading</span>
+        <span id="titleGlow"></span>
+      </h2>
+      <div class="loading-bar">
+        <div class="loading-bar-fill" id="barFill"></div>
+      </div>
     </div>
   </div>
 
@@ -289,7 +284,7 @@
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
 
-    // Set the "SterlWorld" text letter-by-letter wrapped in spans for glowing effect
+    // Setup "SterlWorld" text letter by letter in spans
     const loadingText = 'SterlWorld';
     titleGlow.innerHTML = '';
     for (let char of loadingText) {
@@ -416,13 +411,20 @@
       requestAnimationFrame(animate);
     }
 
-    // Function to update letter glow based on loading bar position
+    // Glow letters as loading bar grows, synced perfectly
     function updateLetterGlow() {
-      const barFillRect = barFill.getBoundingClientRect();
-      titleLetters.forEach((letter) => {
-        const letterRect = letter.getBoundingClientRect();
-        const letterMid = letterRect.left + letterRect.width / 2;
-        if (letterMid <= barFillRect.right) {
+      const barWidth = barFill.offsetWidth;
+      const containerWidth = document.getElementById('loading-container').offsetWidth;
+
+      // Portion of loading bar filled (0 to 1)
+      const progressRatio = barWidth / containerWidth;
+
+      // Number of letters to glow (SterlWorld length = 9)
+      const lettersCount = titleLetters.length;
+      const lettersToGlow = Math.floor(progressRatio * lettersCount);
+
+      titleLetters.forEach((letter, idx) => {
+        if (idx < lettersToGlow) {
           letter.classList.add('glow-gold');
         }
       });
@@ -435,11 +437,12 @@
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        barFill.classList.add('full'); // Add gold glow + flicker effect when full
+        barFill.classList.add('full'); // gold glow + flicker effect
+        updateLetterGlow(); // ensure all glow at full
         setTimeout(() => {
-          loader.remove(); // remove loader immediately after hold
-          animate(); // start starfield animation
-        }, 600); // Hold full bar for 600ms before disappearing
+          loader.remove();
+          animate();
+        }, 600);
       }
       barFill.style.width = `${progress}%`;
       updateLetterGlow();
