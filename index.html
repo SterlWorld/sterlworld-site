@@ -30,39 +30,6 @@
       display: block;
     }
 
-    #enter-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      text-align: center;
-      font-size: 1.5rem;
-      flex-direction: column;
-    }
-
-    #enter-button {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: #0ff;
-      border: none;
-      color: black;
-      font-weight: bold;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    #enter-button:hover {
-      background: white;
-    }
-
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -181,12 +148,6 @@
 
   <canvas id="space"></canvas>
 
-  <!-- Enter screen -->
-  <div id="enter-screen">
-    <p>Tap to Enter SterlWorld</p>
-    <button id="enter-button">Enter</button>
-  </div>
-
   <!-- Logo -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
@@ -207,20 +168,10 @@
     </div>
   </div>
 
-  <audio id="bgMusic" src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Runescape%2007%20-%20Forever%20(Trap%20Remix).mp3" preload="auto" loop></audio>
-
   <script>
-    const enterScreen = document.getElementById('enter-screen');
     const logoWrapper = document.getElementById('logo-wrapper');
     const content = document.getElementById('mainText');
-    const audio = document.getElementById('bgMusic');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-
-    document.getElementById('enter-button').addEventListener('click', () => {
-      audio.play().catch(() => {});
-      enterScreen.style.display = 'none';
-      startAnimation();
-    });
 
     function createSparkleBurst(x, y) {
       const numStars = 5 + Math.floor(Math.random() * 3);
@@ -286,14 +237,6 @@
     let warpComplete = false;
     let lastTime = performance.now();
 
-    function startAnimation() {
-      starImage.onload = () => {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, w, h);
-        animate();
-      };
-    }
-
     function animate(time = performance.now()) {
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
@@ -309,7 +252,7 @@
           setTimeout(() => {
             logoWrapper.classList.add('move-top');
             setTimeout(() => content.classList.add('visible'), 1000);
-          }, 1500);
+          }, 1500); // wait for fade-in to finish before sliding
         }
       }
 
@@ -346,6 +289,12 @@
 
       requestAnimationFrame(animate);
     }
+
+    starImage.onload = () => {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+      animate();
+    };
   </script>
 </body>
 </html>
