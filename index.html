@@ -1,3 +1,4 @@
+<!-- START OF index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,9 @@
       overflow: hidden;
       cursor: crosshair;
     }
+
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
+
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -26,9 +29,11 @@
       opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
+
     #logo-wrapper.fade-in { opacity: 1; }
     #logo-wrapper.move-top { top: 40px; transform: translate(-50%, 0); }
     #logo { width: 300px; max-width: 80vw; }
+
     .content {
       position: absolute;
       top: 140px;
@@ -44,7 +49,9 @@
       z-index: 5;
       padding: 0 20px;
     }
+
     .content.visible { opacity: 1; }
+
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
@@ -52,10 +59,13 @@
       margin-bottom: 1rem;
       color: white;
     }
+
     p { line-height: 1.5; }
+
     .support {
       margin-top: 2.5rem;
     }
+
     .support p { margin: 0.5rem 0; }
     .support a {
       color: #0ff;
@@ -67,6 +77,18 @@
       color: #fff;
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
+
+    .dream-video {
+      margin: 2rem auto 0;
+      max-width: 90vw;
+      width: 500px;
+      border-radius: 20px;
+      filter: blur(3px) brightness(1.1) saturate(1.2);
+      opacity: 0.7;
+      transition: all 0.4s ease;
+      pointer-events: none;
+    }
+
     .sparkle-star {
       pointer-events: none;
       position: fixed;
@@ -77,6 +99,7 @@
       z-index: 9999;
       filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
     }
+
     @keyframes sparkleFall {
       0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
       100% { opacity: 0; transform: translate(-50%, 40px) scale(0.2); }
@@ -100,30 +123,14 @@
       font-size: clamp(1.5rem, 5vw, 2.5rem);
       font-family: 'Orbitron', sans-serif;
       letter-spacing: 1px;
-      user-select: none;
       margin-bottom: 20px;
-      width: 100%;
-      max-width: 90vw;
-      display: flex;
-      justify-content: center;
-      gap: 2px;
-      white-space: nowrap;
     }
 
-    #loader h2 .loading-text {
-      color: #0ff;
-      font-weight: 600;
-      user-select: none;
-      white-space: nowrap;
-    }
+    #loader h2 .loading-text { color: #0ff; }
 
     #titleGlow {
       display: inline-flex;
       user-select: none;
-      gap: 0;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
     }
 
     #titleGlow span {
@@ -131,7 +138,6 @@
       color: white;
       font-weight: 600;
       font-size: clamp(1.5rem, 5vw, 2.5rem);
-      line-height: 1;
       padding: 0 0.5px;
     }
 
@@ -153,7 +159,6 @@
       border: 1px solid #444;
       border-radius: 5px;
       overflow: hidden;
-      box-shadow: none;
       margin: 0 auto 10px;
     }
 
@@ -166,12 +171,7 @@
 
     .loading-bar-fill.full {
       background: linear-gradient(to right, #ffd700, #fff68f);
-      box-shadow:
-        0 0 8px #ffd700,
-        0 0 15px #ffec8b,
-        0 0 20px #ffd700,
-        0 0 30px #ffec8b,
-        0 0 40px #ffd700;
+      box-shadow: 0 0 8px #ffd700, 0 0 20px #ffec8b, 0 0 40px #ffd700;
       animation: flicker 1.2s infinite alternate;
     }
 
@@ -188,27 +188,29 @@
   </style>
 </head>
 <body>
+  <!-- Loader -->
   <div id="loader">
-    <h2>
-      <span class="loading-text">Loading</span>&nbsp;
-      <span id="titleGlow"></span>
-    </h2>
-    <div class="loading-bar">
-      <div class="loading-bar-fill" id="barFill"></div>
-    </div>
+    <h2><span class="loading-text">Loading</span> <span id="titleGlow"></span></h2>
+    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
   </div>
 
   <canvas id="space"></canvas>
 
-  <div id="logo-wrapper">
-    <img src="logo.png" id="logo" alt="SterlWorld Logo" />
-  </div>
+  <!-- Logo -->
+  <div id="logo-wrapper"><img src="logo.png" id="logo" alt="SterlWorld Logo" /></div>
 
+  <!-- Main Content -->
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
+
+    <!-- Dreamlike Game Vision -->
+    <video class="dream-video" autoplay muted loop playsinline>
+      <source src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/DraftResource_1747873512.964055.mov" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
 
     <div class="support">
       <p>Want to support the vision?</p>
@@ -223,41 +225,43 @@
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
-    const loadingText = 'SterlWorld';
-    for (let char of loadingText) {
-      const span = document.createElement('span');
-      span.textContent = char;
-      titleGlow.appendChild(span);
+    const letters = 'SterlWorld';
+
+    for (let c of letters) {
+      const s = document.createElement('span');
+      s.textContent = c;
+      titleGlow.appendChild(s);
     }
+
+    const logoWrapper = document.getElementById('logo-wrapper');
+    const content = document.getElementById('mainText');
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
-      const numStars = 5 + Math.floor(Math.random() * 3);
+      const numStars = 6 + Math.floor(Math.random() * 3);
       for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
+        const star = document.createElement('img');
+        star.src = sparkleImgSrc;
+        star.className = 'sparkle-star';
         const size = Math.random() * 12 + 6;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
         const angle = Math.random() * 2 * Math.PI;
         const distance = Math.random() * 30;
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
-        sparkle.style.left = `${x}px`;
-        sparkle.style.top = `${y}px`;
-        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1000);
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
+        document.body.appendChild(star);
+        setTimeout(() => star.remove(), 1000);
       }
     }
 
     document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 0) {
-        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
-      }
+      if (e.touches.length > 0) createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
     });
 
     const canvas = document.getElementById('space');
@@ -274,18 +278,14 @@
     const starImage = new Image();
     starImage.src = sparkleImgSrc;
 
-    let stars = [];
-    function createStar() {
-      return {
-        x: (Math.random() - 0.5) * w * 1.5,
-        y: (Math.random() - 0.5) * h * 1.5,
-        z: Math.random() * w,
-        size: Math.random() * 0.8 + 0.3,
-        rotationAngle: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.01,
-      };
-    }
-    for (let i = 0; i < 200; i++) stars.push(createStar());
+    let stars = Array.from({ length: 200 }, () => ({
+      x: (Math.random() - 0.5) * w * 1.5,
+      y: (Math.random() - 0.5) * h * 1.5,
+      z: Math.random() * w,
+      size: Math.random() * 0.8 + 0.3,
+      rotationAngle: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.01,
+    }));
 
     let warpSpeed = 30;
     const normalSpeed = 0.5;
@@ -298,19 +298,17 @@
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
 
-      if (elapsed < warpDuration) {
-        const t = elapsed / warpDuration;
-        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
-      } else {
-        warpSpeed = normalSpeed;
-        if (!warpComplete) {
-          warpComplete = true;
-          document.getElementById('logo-wrapper').classList.add('fade-in');
-          setTimeout(() => {
-            document.getElementById('logo-wrapper').classList.add('move-top');
-            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
-          }, 1500);
-        }
+      warpSpeed = elapsed < warpDuration
+        ? 30 * (1 - (elapsed / warpDuration) ** 3) + normalSpeed * ((elapsed / warpDuration) ** 3)
+        : normalSpeed;
+
+      if (elapsed >= warpDuration && !warpComplete) {
+        warpComplete = true;
+        logoWrapper.classList.add('fade-in');
+        setTimeout(() => {
+          logoWrapper.classList.add('move-top');
+          setTimeout(() => content.classList.add('visible'), 1000);
+        }, 1500);
       }
 
       const delta = (time - lastTime) / 16.67;
@@ -322,23 +320,30 @@
       stars.forEach((s, i) => {
         s.z -= warpSpeed * delta;
         if (s.z <= 0) {
-          stars[i] = createStar();
+          stars[i] = {
+            x: (Math.random() - 0.5) * w * 1.5,
+            y: (Math.random() - 0.5) * h * 1.5,
+            z: w,
+            size: Math.random() * 0.8 + 0.3,
+            rotationAngle: Math.random() * Math.PI * 2,
+            rotationSpeed: (Math.random() - 0.5) * 0.01,
+          };
           return;
         }
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) {
-          stars[i] = createStar();
-          return;
-        }
+
+        const k = 128.0 / s.z;
+        const px = s.x * k + w / 2;
+        const py = s.y * k + h / 2;
+
+        if (px < 0 || px >= w || py < 0 || py >= h) return;
+
         ctx.save();
         ctx.translate(px, py);
         ctx.rotate(s.rotationAngle);
         ctx.shadowBlur = 14;
         ctx.shadowColor = '#f7de99';
         ctx.globalAlpha = 0.35;
-        let starSize = s.size * (1 - s.z / w) * 25;
+        const starSize = s.size * (1 - s.z / w) * 25;
         ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
         ctx.restore();
         s.rotationAngle += s.rotationSpeed;
@@ -350,9 +355,8 @@
     function updateLetterGlow() {
       const barFillRect = barFill.getBoundingClientRect();
       titleLetters.forEach((letter) => {
-        const letterRect = letter.getBoundingClientRect();
-        const letterMid = letterRect.left + letterRect.width / 2;
-        if (letterMid <= barFillRect.right) {
+        const rect = letter.getBoundingClientRect();
+        if (rect.left + rect.width / 2 <= barFillRect.right) {
           letter.classList.add('glow-gold');
         }
       });
@@ -362,16 +366,17 @@
     const interval = setInterval(() => {
       progress += Math.random() * 10;
       if (progress >= 100) {
-        progress = 100;
         clearInterval(interval);
-        barFill.classList.add('full');
+        barFill.style.width = "100%";
+        barFill.classList.add("full");
         setTimeout(() => {
           loader.remove();
           animate();
         }, 600);
+      } else {
+        barFill.style.width = `${progress}%`;
+        updateLetterGlow();
       }
-      barFill.style.width = `${progress}%`;
-      updateLetterGlow();
     }, 130);
 
     starImage.onload = () => {
@@ -385,3 +390,4 @@
   </footer>
 </body>
 </html>
+<!-- END OF index.html -->
