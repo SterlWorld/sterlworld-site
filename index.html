@@ -165,7 +165,12 @@
       height: 100%;
       background: linear-gradient(to right, #0ff, #00f2ff);
       width: 0%;
-      transition: width 0.2s ease;
+      transition: width 0.2s ease, background 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .loading-bar-fill.full {
+      background: linear-gradient(to right, #ffd700, #ffcc00);
+      box-shadow: 0 0 12px 3px #ffd700, 0 0 20px 6px #ffcc00;
     }
 
     @media screen and (max-width: 600px) {
@@ -354,8 +359,9 @@
         progress = 100;
         clearInterval(interval);
         barFill.style.width = `100%`;
+        barFill.classList.add('full'); // Add gold + glow class
         setTimeout(() => {
-          loader.style.display = 'none'; // hide immediately after half a second showing full bar
+          loader.style.display = 'none'; // hide immediately after half a second showing full gold bar
           animate(); // start animation
         }, 500);
       }
