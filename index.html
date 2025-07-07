@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
@@ -18,8 +18,10 @@
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow: hidden;
+      overflow-x: hidden;
       cursor: crosshair;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     canvas#space {
@@ -28,6 +30,8 @@
       left: 0;
       z-index: 0;
       display: block;
+      width: 100vw !important;
+      height: 100vh !important;
     }
 
     #logo-wrapper {
@@ -38,6 +42,7 @@
       z-index: 10;
       opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
+      max-width: 90vw;
     }
 
     #logo-wrapper.fade-in {
@@ -52,6 +57,9 @@
     #logo {
       width: 300px;
       max-width: 80vw;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
     }
 
     .content {
@@ -68,6 +76,7 @@
       color: #ccc;
       z-index: 5;
       padding: 0 20px;
+      user-select: none;
     }
 
     .content.visible {
@@ -99,6 +108,7 @@
       font-weight: bold;
       text-decoration: none;
       transition: text-shadow 0.3s ease, color 0.3s ease;
+      word-break: break-word;
     }
 
     .support a:hover {
@@ -138,11 +148,12 @@
       background: black;
       display: flex;
       flex-direction: column;
-      align-items: center; /* center horizontally */
+      align-items: center;
       justify-content: center;
       z-index: 99999;
       padding: 0 20px;
       text-align: center;
+      overflow: hidden;
     }
 
     #loader h2 {
@@ -152,18 +163,18 @@
       letter-spacing: 1px;
       user-select: none;
       margin-bottom: 20px;
-      width: 50%;           /* SHORTER width */
+      width: 50%;
       max-width: 500px;
       display: flex;
-      justify-content: center; /* center text horizontally */
+      justify-content: center;
       gap: 6px;
       white-space: nowrap;
-      margin-left: auto;    /* center block */
+      margin-left: auto;
       margin-right: auto;
     }
 
     #loader h2 .loading-text {
-      color: #0ff; /* Sacred blue for "Loading" */
+      color: #0ff;
       font-weight: 600;
       user-select: none;
     }
@@ -180,9 +191,10 @@
       color: white;
       font-weight: 600;
       user-select: none;
+      font-size: 2rem;
+      line-height: 1;
     }
 
-    /* Gold glow for letters */
     .glow-gold {
       color: #ffd700;
       text-shadow:
@@ -194,14 +206,15 @@
     }
 
     .loading-bar {
-      width: 50%; /* match loader h2 width */
+      width: 50%;
       height: 10px;
       background: #222;
       border: 1px solid #444;
       border-radius: 5px;
       overflow: hidden;
       box-shadow: none;
-      margin: 0 auto 10px; /* center horizontally */
+      margin: 0 auto 10px;
+      user-select: none;
     }
 
     .loading-bar-fill {
@@ -211,7 +224,6 @@
       transition: width 0.2s ease;
     }
 
-    /* When full, gold color and glow + flicker */
     .loading-bar-fill.full {
       background: linear-gradient(to right, #ffd700, #fff68f);
       box-shadow:
@@ -248,13 +260,24 @@
         top: 120px;
       }
 
-      .loading-bar {
-        width: 70%;
+      #loader h2 {
+        width: 80%;
+        font-size: 1.6rem;
+        white-space: normal;
+        gap: 4px;
       }
 
-      #loader h2 {
-        width: 70%;
-        max-width: none;
+      #titleGlow span {
+        font-size: 1.6rem;
+      }
+
+      .loading-bar {
+        width: 80%;
+        height: 8px;
+      }
+
+      .loading-bar-fill {
+        height: 100%;
       }
     }
   </style>
@@ -288,11 +311,11 @@
 
     <div class="support">
       <p>Want to support the vision?</p>
-      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank" rel="noopener noreferrer">@sterlworld_business</a></p>
+      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank" rel="noopener noreferrer">$SterlWorldx2</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank" rel="noopener noreferrer">Play Crust Master / Donate</a></p>
       
-      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
+      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank" rel="noopener noreferrer">Portfolio</a></p>
     </div>
   </div>
 
@@ -303,7 +326,6 @@
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
 
-    // Set the "SterlWorld" text letter-by-letter wrapped in spans for glowing effect
     const loadingText = 'SterlWorld';
     titleGlow.innerHTML = '';
     for (let char of loadingText) {
@@ -348,8 +370,12 @@
     let w, h;
 
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      w = canvas.width = window.innerWidth * window.devicePixelRatio;
+      h = canvas.height = window.innerHeight * window.devicePixelRatio;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     }
     window.addEventListener('resize', resize);
     resize();
@@ -430,7 +456,6 @@
       requestAnimationFrame(animate);
     }
 
-    // Function to update letter glow based on loading bar position
     function updateLetterGlow() {
       const barFillRect = barFill.getBoundingClientRect();
       titleLetters.forEach((letter) => {
@@ -442,18 +467,17 @@
       });
     }
 
-    // Simulate loading progress
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 10;
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        barFill.classList.add('full'); // Add gold glow + flicker effect when full
+        barFill.classList.add('full');
         setTimeout(() => {
-          loader.remove(); // remove loader immediately after hold
-          animate(); // start starfield animation
-        }, 600); // Hold full bar for 600ms before disappearing
+          loader.remove();
+          animate();
+        }, 600);
       }
       barFill.style.width = `${progress}%`;
       updateLetterGlow();
