@@ -114,7 +114,7 @@
       transform: translate(-50%, -50%);
       animation: sparkleFall 1s ease forwards;
       z-index: 9999;
-      filter: drop-shadow(0 0 6px gold) brightness(2.5) saturate(2.2);
+      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
     }
 
     @keyframes sparkleFall {
@@ -158,38 +158,30 @@
       border: 1px solid #444;
       border-radius: 5px;
       overflow: hidden;
-      position: relative;
-      animation: goldFlicker 0.2s infinite alternate;
     }
 
     .loading-bar-fill {
       height: 100%;
-      background: linear-gradient(to right, gold, #f7c400);
+      background: linear-gradient(to right, #0ff, #00f2ff);
       width: 0%;
       transition: width 0.2s ease;
     }
 
-    .loading-bar.full {
+    .loading-bar-fill.full {
+      background: linear-gradient(to right, #ffd700, #ffec8b);
+      animation: flickerGold 0.5s ease-in-out;
       box-shadow:
-        0 0 12px gold,
-        0 0 24px gold,
-        0 0 36px #f7c400,
-        0 0 48px #ffea00;
+        0 0 6px #ffd700,
+        0 0 12px #ffd700,
+        0 0 18px #ffea00;
+      filter: drop-shadow(0 0 4px #ffe97f);
     }
 
-    @keyframes goldFlicker {
-      from {
-        box-shadow:
-          0 0 8px gold,
-          0 0 16px gold,
-          0 0 24px #f7c400;
-      }
-      to {
-        box-shadow:
-          0 0 14px gold,
-          0 0 28px #ffd700,
-          0 0 36px #ffea00;
-      }
+    @keyframes flickerGold {
+      0%, 100% { opacity: 1; }
+      25% { opacity: 0.85; }
+      50% { opacity: 1; }
+      75% { opacity: 0.9; }
     }
 
     @media screen and (max-width: 600px) {
@@ -217,7 +209,7 @@
   <!-- Loading Screen -->
   <div id="loader">
     <h2>Loading SterlWorld...</h2>
-    <div class="loading-bar" id="loadingBar">
+    <div class="loading-bar">
       <div class="loading-bar-fill" id="barFill"></div>
     </div>
   </div>
@@ -250,12 +242,10 @@
     const content = document.getElementById('mainText');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
-    const loadingBar = document.getElementById('loadingBar');
-
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
-      const numStars = 8 + Math.floor(Math.random() * 5);
+      const numStars = 5 + Math.floor(Math.random() * 3);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
@@ -264,7 +254,7 @@
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
         const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 80;
+        const distance = Math.random() * 30;
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
         sparkle.style.left = `${x}px`;
@@ -274,6 +264,13 @@
         setTimeout(() => sparkle.remove(), 1000);
       }
     }
+
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    });
 
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
@@ -371,17 +368,11 @@
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-
-        // Gold glow
-        loadingBar.classList.add('full');
-
-        // Pause to show glow, then explode and hide
+        barFill.classList.add('full');
         setTimeout(() => {
-          const rect = loadingBar.getBoundingClientRect();
-          createSparkleBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
-          loader.style.display = 'none';
+          document.getElementById('loader').remove();
           animate();
-        }, 500);
+        }, 500); // show gold glow for 0.5s
       }
       barFill.style.width = `${progress}%`;
     }, 150);
