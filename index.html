@@ -6,73 +6,39 @@
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      height: 100%;
-      width: 100%;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow: hidden;
-      cursor: crosshair;
+      height: 100%; width: 100%; background: black;
+      font-family: 'Poppins', sans-serif; color: white;
+      overflow: hidden; cursor: crosshair;
     }
 
     canvas#space {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      display: block;
+      position: fixed; top: 0; left: 0; z-index: 0; display: block;
     }
 
     #logo-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
+      position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 10;
-      opacity: 0;
+      z-index: 10; opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
 
-    #logo-wrapper.fade-in {
-      opacity: 1;
-    }
-
-    #logo-wrapper.move-top {
-      top: 40px;
-      transform: translate(-50%, 0);
-    }
-
-    #logo {
-      width: 300px;
-      max-width: 80vw;
-    }
+    #logo-wrapper.fade-in { opacity: 1; }
+    #logo-wrapper.move-top { top: 40px; transform: translate(-50%, 0); }
+    #logo { width: 300px; max-width: 80vw; }
 
     .content {
-      position: absolute;
-      top: 140px;
-      left: 50%;
+      position: absolute; top: 140px; left: 50%;
       transform: translateX(-50%);
-      width: 100%;
-      max-width: 90%;
-      text-align: center;
-      opacity: 0;
+      width: 100%; max-width: 90%;
+      text-align: center; opacity: 0;
       transition: opacity 1.5s ease;
-      font-size: 1.2rem;
-      color: #ccc;
-      z-index: 5;
-      padding: 0 20px;
+      font-size: 1.2rem; color: #ccc;
+      z-index: 5; padding: 0 20px;
     }
 
-    .content.visible {
-      opacity: 1;
-    }
+    .content.visible { opacity: 1; }
 
     h1 {
       font-family: 'Orbitron', sans-serif;
@@ -82,21 +48,13 @@
       color: white;
     }
 
-    p {
-      line-height: 1.5;
-    }
+    p { line-height: 1.5; }
 
-    .support {
-      margin-top: 2.5rem;
-    }
-
-    .support p {
-      margin: 0.5rem 0;
-    }
+    .support { margin-top: 2.5rem; }
+    .support p { margin: 0.5rem 0; }
 
     .support a {
-      color: #0ff;
-      font-weight: bold;
+      color: #0ff; font-weight: bold;
       text-decoration: none;
       transition: text-shadow 0.3s ease, color 0.3s ease;
     }
@@ -114,7 +72,7 @@
       transform: translate(-50%, -50%);
       animation: sparkleFall 1s ease forwards;
       z-index: 9999;
-      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
+      filter: drop-shadow(0 0 6px #ffd700) brightness(2.5) saturate(2);
     }
 
     @keyframes sparkleFall {
@@ -128,13 +86,11 @@
       }
     }
 
-    /* Loading screen styles */
+    /* Loading screen */
     #loader {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: black;
       display: flex;
       flex-direction: column;
@@ -152,8 +108,7 @@
     }
 
     .loading-bar {
-      width: 60%;
-      height: 8px;
+      width: 60%; height: 8px;
       background: #222;
       border: 1px solid #444;
       border-radius: 5px;
@@ -167,40 +122,20 @@
       transition: width 0.2s ease;
     }
 
-    .loading-bar-fill.full {
-      background: linear-gradient(to right, #ffd700, #ffec8b);
-      animation: flickerGold 0.5s ease-in-out;
-      box-shadow:
-        0 0 6px #ffd700,
-        0 0 12px #ffd700,
-        0 0 18px #ffea00;
-      filter: drop-shadow(0 0 4px #ffe97f);
-    }
-
-    @keyframes flickerGold {
-      0%, 100% { opacity: 1; }
-      25% { opacity: 0.85; }
-      50% { opacity: 1; }
-      75% { opacity: 0.9; }
+    .glow-gold {
+      color: gold !important;
+      text-shadow:
+        0 0 6px gold,
+        0 0 12px #ffdd55,
+        0 0 18px #fff8dc,
+        0 0 25px #fff9a1;
     }
 
     @media screen and (max-width: 600px) {
-      #logo {
-        width: 180px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .content {
-        font-size: 1rem;
-        top: 120px;
-      }
-
-      .loading-bar {
-        width: 80%;
-      }
+      #logo { width: 180px; }
+      h1 { font-size: 1.8rem; }
+      .content { font-size: 1rem; top: 120px; }
+      .loading-bar { width: 80%; }
     }
   </style>
 </head>
@@ -208,7 +143,9 @@
 
   <!-- Loading Screen -->
   <div id="loader">
-    <h2>Loading SterlWorld...</h2>
+    <h2>Now Loading <span id="titleGlow">
+      <span>S</span><span>t</span><span>e</span><span>r</span><span>l</span><span>W</span><span>o</span><span>r</span><span>l</span><span>d</span>
+    </span>...</h2>
     <div class="loading-bar">
       <div class="loading-bar-fill" id="barFill"></div>
     </div>
@@ -216,18 +153,15 @@
 
   <canvas id="space"></canvas>
 
-  <!-- Logo -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-  <!-- Main content -->
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
-
     <div class="support">
       <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
@@ -242,10 +176,11 @@
     const content = document.getElementById('mainText');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
+    const titleLetters = document.querySelectorAll('#titleGlow span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
-      const numStars = 5 + Math.floor(Math.random() * 3);
+      const numStars = 10;
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
@@ -254,7 +189,7 @@
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
         const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 30;
+        const distance = Math.random() * 40;
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
         sparkle.style.left = `${x}px`;
@@ -265,22 +200,13 @@
       }
     }
 
-    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
-    document.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 0) {
-        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    });
-
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
-
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
-
     window.addEventListener('resize', resize);
     resize();
 
@@ -298,20 +224,14 @@
         rotationSpeed: (Math.random() - 0.5) * 0.01,
       };
     }
-
     for (let i = 0; i < 200; i++) stars.push(createStar());
 
-    let warpSpeed = 30;
-    const normalSpeed = 0.5;
-    const warpDuration = 3000;
-    let warpStartTime = null;
-    let warpComplete = false;
-    let lastTime = performance.now();
+    let warpSpeed = 30, normalSpeed = 0.5, warpDuration = 3000;
+    let warpStartTime = null, warpComplete = false, lastTime = performance.now();
 
     function animate(time = performance.now()) {
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
-
       if (elapsed < warpDuration) {
         const t = elapsed / warpDuration;
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
@@ -329,16 +249,11 @@
 
       const delta = (time - lastTime) / 16.67;
       lastTime = time;
-
       ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
       ctx.fillRect(0, 0, w, h);
-
       stars.forEach((s, i) => {
         s.z -= warpSpeed * delta;
-        if (s.z <= 0) {
-          stars[i] = createStar();
-          return;
-        }
+        if (s.z <= 0) { stars[i] = createStar(); return; }
         let k = 128.0 / s.z;
         let px = s.x * k + w / 2;
         let py = s.y * k + h / 2;
@@ -361,21 +276,27 @@
       requestAnimationFrame(animate);
     }
 
-    // Simulate loading progress
+    // Load bar progression
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 10;
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        barFill.classList.add('full');
         setTimeout(() => {
-          document.getElementById('loader').remove();
+          loader.remove();
           animate();
-        }, 500); // show gold glow for 0.5s
+        }, 600);
       }
+
+      // Update bar and golden glow letters
       barFill.style.width = `${progress}%`;
-    }, 150);
+      const totalLetters = titleLetters.length;
+      const activeCount = Math.floor((progress / 100) * totalLetters);
+      titleLetters.forEach((el, idx) => {
+        if (idx < activeCount) el.classList.add('glow-gold');
+      });
+    }, 140);
 
     starImage.onload = () => {
       ctx.fillStyle = 'black';
