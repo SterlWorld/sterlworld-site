@@ -128,6 +128,51 @@
       }
     }
 
+    /* Loading screen styles */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      transition: opacity 1s ease;
+    }
+
+    #loader h2 {
+      color: #0ff;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .loading-bar {
+      width: 60%;
+      height: 8px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .loading-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, #0ff, #00f2ff);
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+
+    #loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     @media screen and (max-width: 600px) {
       #logo {
         width: 180px;
@@ -141,10 +186,22 @@
         font-size: 1rem;
         top: 120px;
       }
+
+      .loading-bar {
+        width: 80%;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Loading Screen -->
+  <div id="loader">
+    <h2>Loading SterlWorld...</h2>
+    <div class="loading-bar">
+      <div class="loading-bar-fill" id="barFill"></div>
+    </div>
+  </div>
 
   <canvas id="space"></canvas>
 
@@ -173,6 +230,8 @@
   <script>
     const logoWrapper = document.getElementById('logo-wrapper');
     const content = document.getElementById('mainText');
+    const loader = document.getElementById('loader');
+    const barFill = document.getElementById('barFill');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
@@ -292,10 +351,22 @@
       requestAnimationFrame(animate);
     }
 
+    // Simulate loading progress
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        loader.classList.add('fade-out');
+        setTimeout(() => animate(), 1000); // Start canvas animation
+      }
+      barFill.style.width = `${progress}%`;
+    }, 150);
+
     starImage.onload = () => {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
-      animate();
     };
   </script>
 
