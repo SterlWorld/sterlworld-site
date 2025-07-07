@@ -1,461 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SterlWorld</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SterlWorld</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-    html, body {
-      height: 100%;
-      width: 100%;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow: hidden;
-      cursor: crosshair;
-    }
+  html, body {
+    height: 100%;
+    width: 100%;
+    background: black;
+    font-family: 'Orbitron', monospace, sans-serif;
+    color: white;
+    overflow: hidden;
+    cursor: crosshair;
+  }
 
-    canvas#space {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      display: block;
-    }
+  #loading-container {
+    width: 440px; /* fixed width matching text + bar */
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
-    #logo-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      opacity: 0;
-      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
-    }
+  #loadingText {
+    font-weight: 600;
+    font-size: 2rem;
+    letter-spacing: 0.07em; /* tweak spacing for perfect fit */
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+    cursor: default;
+  }
 
-    #logo-wrapper.fade-in {
+  #loadingText span {
+    display: inline-block;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    color: white;
+  }
+
+  #loadingText span.loading {
+    color: #0ff; /* sacred blue */
+  }
+
+  #loadingText span.glow-gold {
+    color: #ffd700;
+    text-shadow:
+      0 0 8px #ffd700,
+      0 0 15px #ffec8b,
+      0 0 20px #ffd700,
+      0 0 30px #ffec8b,
+      0 0 40px #ffd700;
+  }
+
+  .loading-bar {
+    width: 100%;
+    height: 10px;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: none;
+  }
+
+  .loading-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, #0ff, #00f2ff);
+    width: 0%;
+    transition: width 0.2s ease;
+  }
+
+  .loading-bar-fill.full {
+    background: linear-gradient(to right, #ffd700, #fff68f);
+    box-shadow:
+      0 0 8px #ffd700,
+      0 0 15px #ffec8b,
+      0 0 20px #ffd700,
+      0 0 30px #ffec8b,
+      0 0 40px #ffd700;
+    animation: flicker 1.2s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0%, 100% {
+      filter: drop-shadow(0 0 10px #ffd700);
       opacity: 1;
     }
-
-    #logo-wrapper.move-top {
-      top: 40px;
-      transform: translate(-50%, 0);
+    50% {
+      filter: drop-shadow(0 0 20px #fff68f);
+      opacity: 0.8;
     }
-
-    #logo {
-      width: 300px;
-      max-width: 80vw;
-    }
-
-    .content {
-      position: absolute;
-      top: 140px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 90%;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      font-size: 1.2rem;
-      color: #ccc;
-      z-index: 5;
-      padding: 0 20px;
-    }
-
-    .content.visible {
-      opacity: 1;
-    }
-
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 600;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: white;
-    }
-
-    p {
-      line-height: 1.5;
-    }
-
-    .support {
-      margin-top: 2.5rem;
-    }
-
-    .support p {
-      margin: 0.5rem 0;
-    }
-
-    .support a {
-      color: #0ff;
-      font-weight: bold;
-      text-decoration: none;
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-    }
-
-    .support a:hover {
-      color: #fff;
-      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
-    }
-
-    .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform: translate(-50%, -50%);
-      animation: sparkleFall 1s ease forwards;
-      z-index: 9999;
-      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
-    }
-
-    @keyframes sparkleFall {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, 40px) scale(0.2);
-      }
-    }
-
-    /* Loading container to align text and bar perfectly */
-    #loading-container {
-      width: 360px; /* exact width */
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    /* Loading text style */
-    #loadingText {
-      font-family: 'Orbitron', monospace, sans-serif;
-      font-weight: 600;
-      font-size: 2rem;
-      letter-spacing: 0.05em;
-      width: 100%;
-      color: white;
-      text-align: center;
-      margin-bottom: 10px;
-      white-space: nowrap;
-    }
-
-    #loadingText .loading-word {
-      color: #0ff; /* sacred blue */
-      margin-right: 6px;
-    }
-
-    #loadingText #titleGlow {
-      display: inline-block;
-    }
-
-    #titleGlow span {
-      display: inline-block;
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-      color: white;
-    }
-
-    /* Gold glow for letters */
-    .glow-gold {
-      color: #ffd700;
-      text-shadow:
-        0 0 8px #ffd700,
-        0 0 15px #ffec8b,
-        0 0 20px #ffd700,
-        0 0 30px #ffec8b,
-        0 0 40px #ffd700;
-    }
-
-    .loading-bar {
-      width: 100%; /* full width of container */
-      height: 10px;
-      background: #222;
-      border: 1px solid #444;
-      border-radius: 5px;
-      overflow: hidden;
-      box-shadow: none;
-    }
-
-    .loading-bar-fill {
-      height: 100%;
-      background: linear-gradient(to right, #0ff, #00f2ff);
-      width: 0%;
-      transition: width 0.2s ease;
-    }
-
-    /* When full, gold color and glow + flicker */
-    .loading-bar-fill.full {
-      background: linear-gradient(to right, #ffd700, #fff68f);
-      box-shadow:
-        0 0 8px #ffd700,
-        0 0 15px #ffec8b,
-        0 0 20px #ffd700,
-        0 0 30px #ffec8b,
-        0 0 40px #ffd700;
-      animation: flicker 1.2s infinite alternate;
-    }
-
-    @keyframes flicker {
-      0%, 100% {
-        filter: drop-shadow(0 0 10px #ffd700);
-        opacity: 1;
-      }
-      50% {
-        filter: drop-shadow(0 0 20px #fff68f);
-        opacity: 0.8;
-      }
-    }
-
-    @media screen and (max-width: 600px) {
-      #logo {
-        width: 180px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .content {
-        font-size: 1rem;
-        top: 120px;
-      }
-
-      #loading-container {
-        width: 90vw;
-        max-width: 360px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-  <!-- Loading Screen -->
-  <div id="loader" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; position: fixed; top:0; left:0; background:black; z-index:99999;">
-    <div id="loading-container">
-      <h2 id="loadingText">
-        <span class="loading-word">Loading</span>
-        <span id="titleGlow"></span>
-      </h2>
-      <div class="loading-bar">
-        <div class="loading-bar-fill" id="barFill"></div>
-      </div>
+<div id="loader" style="display:flex; flex-direction: column; align-items:center; justify-content:center; height:100vh; width:100vw; position:fixed; top:0; left:0; background:black; z-index:99999;">
+  <div id="loading-container">
+    <h2 id="loadingText"></h2>
+    <div class="loading-bar">
+      <div class="loading-bar-fill" id="barFill"></div>
     </div>
   </div>
+</div>
 
-  <canvas id="space"></canvas>
+<script>
+  const loader = document.getElementById('loader');
+  const barFill = document.getElementById('barFill');
+  const loadingText = document.getElementById('loadingText');
 
-  <!-- Logo -->
-  <div id="logo-wrapper">
-    <img src="logo.png" id="logo" alt="SterlWorld Logo" />
-  </div>
+  // Full phrase including space, each letter as span
+  const phrase = 'Loading SterlWorld';
+  loadingText.innerHTML = '';
 
-  <!-- Main content -->
-  <div class="content" id="mainText">
-    <h1>Welcome to SterlWorld</h1>
-    <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
-    We’re building a new legacy of entertainment — and it’s just the beginning.</p>
-    <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
-
-    <div class="support">
-      <p>Want to support the vision?</p>
-      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
-      
-      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
-    </div>
-  </div>
-
-  <script>
-    const logoWrapper = document.getElementById('logo-wrapper');
-    const content = document.getElementById('mainText');
-    const loader = document.getElementById('loader');
-    const barFill = document.getElementById('barFill');
-    const titleGlow = document.getElementById('titleGlow');
-
-    // Setup "SterlWorld" text letter by letter in spans
-    const loadingText = 'SterlWorld';
-    titleGlow.innerHTML = '';
-    for (let char of loadingText) {
-      const span = document.createElement('span');
-      span.textContent = char;
-      titleGlow.appendChild(span);
+  // Create spans for each letter
+  for (const ch of phrase) {
+    const span = document.createElement('span');
+    span.textContent = ch;
+    // "Loading" letters in blue (indices 0-6)
+    if (phrase.indexOf(ch) < 7) {
+      span.classList.add('loading');
     }
-    const titleLetters = titleGlow.querySelectorAll('span');
+    loadingText.appendChild(span);
+  }
 
-    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+  const letters = loadingText.querySelectorAll('span');
+  const loadingWidth = document.getElementById('loading-container').offsetWidth;
 
-    function createSparkleBurst(x, y) {
-      const numStars = 5 + Math.floor(Math.random() * 3);
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
-        const size = Math.random() * 12 + 6;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 30;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
-        sparkle.style.left = `${x}px`;
-        sparkle.style.top = `${y}px`;
-        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1000);
-      }
-    }
+  function updateGlow() {
+    const barWidth = barFill.offsetWidth;
+    const progressRatio = barWidth / loadingWidth;
+    const totalLetters = letters.length;
 
-    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
-    document.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 0) {
-        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+    // How many letters total based on progress
+    let lettersToGlow = Math.floor(progressRatio * totalLetters);
+
+    // The "Loading " part is first 8 chars (including space), we only glow SterlWorld letters (index >=8)
+    letters.forEach((letter, i) => {
+      if (i >= 8 && i < lettersToGlow) {
+        letter.classList.add('glow-gold');
+      } else if (!letter.classList.contains('loading')) {
+        letter.classList.remove('glow-gold');
       }
     });
+  }
 
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+  // Simulate loading progress
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += Math.random() * 10;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      barFill.classList.add('full'); // gold glow + flicker
+      updateGlow(); // glow all letters at full progress
+      setTimeout(() => {
+        loader.remove();
+        // start other animations or page logic here after loading
+      }, 600);
     }
-    window.addEventListener('resize', resize);
-    resize();
+    barFill.style.width = `${progress}%`;
+    updateGlow();
+  }, 130);
 
-    const starImage = new Image();
-    starImage.src = sparkleImgSrc;
+</script>
 
-    let stars = [];
-    function createStar() {
-      return {
-        x: (Math.random() - 0.5) * w * 1.5,
-        y: (Math.random() - 0.5) * h * 1.5,
-        z: Math.random() * w,
-        size: Math.random() * 0.8 + 0.3,
-        rotationAngle: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.01,
-      };
-    }
-    for (let i = 0; i < 200; i++) stars.push(createStar());
-
-    let warpSpeed = 30;
-    const normalSpeed = 0.5;
-    const warpDuration = 3000;
-    let warpStartTime = null;
-    let warpComplete = false;
-    let lastTime = performance.now();
-
-    function animate(time = performance.now()) {
-      if (!warpStartTime) warpStartTime = time;
-      const elapsed = time - warpStartTime;
-
-      if (elapsed < warpDuration) {
-        const t = elapsed / warpDuration;
-        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
-      } else {
-        warpSpeed = normalSpeed;
-        if (!warpComplete) {
-          warpComplete = true;
-          logoWrapper.classList.add('fade-in');
-          setTimeout(() => {
-            logoWrapper.classList.add('move-top');
-            setTimeout(() => content.classList.add('visible'), 1000);
-          }, 1500);
-        }
-      }
-
-      const delta = (time - lastTime) / 16.67;
-      lastTime = time;
-
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-      ctx.fillRect(0, 0, w, h);
-
-      stars.forEach((s, i) => {
-        s.z -= warpSpeed * delta;
-        if (s.z <= 0) {
-          stars[i] = createStar();
-          return;
-        }
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) {
-          stars[i] = createStar();
-          return;
-        }
-        ctx.save();
-        ctx.translate(px, py);
-        ctx.rotate(s.rotationAngle);
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = '#f7de99';
-        ctx.globalAlpha = 0.35;
-        let starSize = s.size * (1 - s.z / w) * 25;
-        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
-        ctx.restore();
-        s.rotationAngle += s.rotationSpeed;
-      });
-
-      requestAnimationFrame(animate);
-    }
-
-    // Glow letters as loading bar grows, synced perfectly
-    function updateLetterGlow() {
-      const barWidth = barFill.offsetWidth;
-      const containerWidth = document.getElementById('loading-container').offsetWidth;
-
-      // Portion of loading bar filled (0 to 1)
-      const progressRatio = barWidth / containerWidth;
-
-      // Number of letters to glow (SterlWorld length = 9)
-      const lettersCount = titleLetters.length;
-      const lettersToGlow = Math.floor(progressRatio * lettersCount);
-
-      titleLetters.forEach((letter, idx) => {
-        if (idx < lettersToGlow) {
-          letter.classList.add('glow-gold');
-        }
-      });
-    }
-
-    // Simulate loading progress
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 10;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        barFill.classList.add('full'); // gold glow + flicker effect
-        updateLetterGlow(); // ensure all glow at full
-        setTimeout(() => {
-          loader.remove();
-          animate();
-        }, 600);
-      }
-      barFill.style.width = `${progress}%`;
-      updateLetterGlow();
-    }, 130);
-
-    starImage.onload = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, w, h);
-    };
-  </script>
-
-  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none; z-index: 20;">
-    © 1992–2025 SterlWorld • Beyond This Realm
-  </footer>
 </body>
 </html>
