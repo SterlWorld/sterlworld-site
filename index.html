@@ -150,25 +150,15 @@
       margin-bottom: 20px;
       font-family: 'Orbitron', sans-serif;
       letter-spacing: 1px;
-      /* Added pixelated aliasing style */
-      image-rendering: pixelated;
-      -webkit-font-smoothing: none;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     .loading-bar {
       width: 60%;
-      height: 10px;
-      background: #111;
-      border: 3px solid #0ff;
-      border-radius: 0;
+      height: 8px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 5px;
       overflow: hidden;
-      image-rendering: pixelated;
-      box-shadow:
-        0 0 6px #0ff inset,
-        0 0 12px #0ff inset,
-        0 0 2px #0ff;
-      filter: contrast(140%);
     }
 
     .loading-bar-fill {
@@ -176,29 +166,6 @@
       background: linear-gradient(to right, #0ff, #00f2ff);
       width: 0%;
       transition: width 0.2s ease;
-      image-rendering: pixelated;
-      /* For smooth "pixelated" fill edges */
-      will-change: width;
-      box-shadow: none;
-    }
-
-    /* Glow effect when full */
-    .loading-bar-fill.full-glow {
-      box-shadow:
-        0 0 8px #0ff,
-        0 0 16px #0ff,
-        0 0 24px #0ff,
-        0 0 36px #00f2ff;
-      animation: pulseGlow 1.5s infinite alternate ease-in-out;
-    }
-
-    @keyframes pulseGlow {
-      from {
-        filter: drop-shadow(0 0 8px #0ff);
-      }
-      to {
-        filter: drop-shadow(0 0 20px #0ff);
-      }
     }
 
     #loader.fade-out {
@@ -231,7 +198,7 @@
   <!-- Loading Screen -->
   <div id="loader">
     <h2>Loading SterlWorld...</h2>
-    <div class="loading-bar" id="loadingBar">
+    <div class="loading-bar">
       <div class="loading-bar-fill" id="barFill"></div>
     </div>
   </div>
@@ -265,32 +232,7 @@
     const content = document.getElementById('mainText');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
-    const loadingBar = document.getElementById('loadingBar');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-
-    // Star burst on loading complete
-    function createStarBurst(centerX, centerY) {
-      const numStars = 12 + Math.floor(Math.random() * 6);
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
-        const size = Math.random() * 16 + 8;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
-        // Angle evenly distributed plus some randomness
-        const baseAngle = (2 * Math.PI / numStars) * i;
-        const angle = baseAngle + (Math.random() - 0.5) * 0.4;
-        const distance = 40 + Math.random() * 40;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
-        sparkle.style.left = `${centerX}px`;
-        sparkle.style.top = `${centerY}px`;
-        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1200);
-      }
-    }
 
     function createSparkleBurst(x, y) {
       const numStars = 5 + Math.floor(Math.random() * 3);
@@ -409,31 +351,15 @@
       requestAnimationFrame(animate);
     }
 
-    // Simulate loading progress with glow & star burst on full
+    // Simulate loading progress
     let progress = 0;
-    let burstDone = false;
     const interval = setInterval(() => {
       progress += Math.random() * 10;
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-
-        // Add glow class
-        barFill.classList.add('full-glow');
-
-        // Calculate center of loading bar fill for burst
-        const loadingBarRect = loadingBar.getBoundingClientRect();
-        const centerX = loadingBarRect.left + loadingBarRect.width;
-        const centerY = loadingBarRect.top + loadingBarRect.height / 2;
-
-        // Create star burst at the right edge of the bar
-        createStarBurst(centerX, centerY);
-
-        // After a short delay, fade out loader and start animation
-        setTimeout(() => {
-          loader.classList.add('fade-out');
-          setTimeout(() => animate(), 1000); // Start canvas animation
-        }, 1200);
+        loader.classList.add('fade-out');
+        setTimeout(() => animate(), 1000); // Start canvas animation
       }
       barFill.style.width = `${progress}%`;
     }, 150);
