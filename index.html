@@ -16,7 +16,15 @@
       overflow: hidden;
       cursor: crosshair;
     }
-    canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
+
+    canvas#space {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      display: block;
+    }
+
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -26,13 +34,16 @@
       opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
+
     #logo-wrapper.fade-in { opacity: 1; }
     #logo-wrapper.move-top {
       top: 40px;
       transform: translate(-50%, 0);
       position: fixed;
     }
+
     #logo { width: 300px; max-width: 80vw; }
+
     .content {
       position: absolute;
       top: 140px;
@@ -50,7 +61,22 @@
       overflow-y: auto;
       height: calc(100% - 140px);
     }
+
+    .content::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.4));
+      z-index: -1;
+    }
+
     .content.visible { opacity: 1; }
+
+    h1, h2, p, .support a {
+      text-shadow: 0 0 4px #000, 0 0 8px rgba(0,0,0,0.6);
+    }
+
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
@@ -58,21 +84,27 @@
       margin-bottom: 1rem;
       color: white;
     }
+
     p { line-height: 1.5; }
+
     .support {
       margin-top: 2.5rem;
     }
+
     .support p { margin: 0.5rem 0; }
+
     .support a {
       color: #0ff;
       font-weight: bold;
       text-decoration: none;
       transition: text-shadow 0.3s ease, color 0.3s ease;
     }
+
     .support a:hover {
       color: #fff;
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
+
     .sparkle-star {
       pointer-events: none;
       position: fixed;
@@ -83,6 +115,7 @@
       z-index: 9999;
       filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
     }
+
     @keyframes sparkleFall {
       0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
       100% { opacity: 0; transform: translate(-50%, 40px) scale(0.2); }
@@ -212,8 +245,7 @@
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
     <div style="margin-top: 2rem; position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; margin-left: auto; margin-right: auto; border: 2px solid #0ff; box-shadow: 0 0 20px #0ff;">
-      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
-        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border: none;"></iframe>
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border: none;"></iframe>
     </div>
 
     <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
@@ -237,22 +269,24 @@
       <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
       <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
-
-    <footer style="margin-top: 4rem; padding-bottom: 40px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
-      © 1992–2025 SterlWorld • Beyond This Realm
-    </footer>
   </div>
+
+  <footer style="position: relative; bottom: 10px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none; z-index: 20; margin-top: 2rem;">
+    © 1992–2025 SterlWorld • Beyond This Realm
+  </footer>
 
   <script>
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
     const loadingText = 'SterlWorld';
+
     for (let char of loadingText) {
       const span = document.createElement('span');
       span.textContent = char;
       titleGlow.appendChild(span);
     }
+
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
@@ -292,6 +326,7 @@
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
+
     window.addEventListener('resize', resize);
     resize();
 
@@ -309,6 +344,7 @@
         rotationSpeed: (Math.random() - 0.5) * 0.01,
       };
     }
+
     for (let i = 0; i < 200; i++) stars.push(createStar());
 
     let warpSpeed = 30;
@@ -349,13 +385,16 @@
           stars[i] = createStar();
           return;
         }
+
         let k = 128.0 / s.z;
         let px = s.x * k + w / 2;
         let py = s.y * k + h / 2;
+
         if (px < 0 || px >= w || py < 0 || py >= h) {
           stars[i] = createStar();
           return;
         }
+
         ctx.save();
         ctx.translate(px, py);
         ctx.rotate(s.rotationAngle);
