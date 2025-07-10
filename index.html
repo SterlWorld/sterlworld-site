@@ -30,7 +30,7 @@
     #logo-wrapper.move-top {
       top: 40px;
       transform: translate(-50%, 0);
-      position: fixed; /* <-- Added this to lock the logo on scroll */
+      position: fixed;
     }
     #logo { width: 300px; max-width: 80vw; }
     .content {
@@ -195,13 +195,8 @@
 </head>
 <body>
   <div id="loader">
-    <h2>
-      <span class="loading-text">Loading</span>&nbsp;
-      <span id="titleGlow"></span>
-    </h2>
-    <div class="loading-bar">
-      <div class="loading-bar-fill" id="barFill"></div>
-    </div>
+    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
+    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
   </div>
 
   <canvas id="space"></canvas>
@@ -222,7 +217,7 @@
         style="border: none;"></iframe>
     </div>
 
-    <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">🍕 Pizza Dales: A Game. A World. A Legacy.</h2>
+    <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
     <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
       <strong>Pizza Dales is the first seed of SterlWorld</strong> — our indie universe of style, soul, and story.  
       We're building an original IP from the ground up, with one clear vision:  
@@ -244,6 +239,10 @@
       <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
   </div>
+
+  <footer style="position: relative; margin-top: 4rem; padding-bottom: 40px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
+    © 1992–2025 SterlWorld • Beyond This Realm
+  </footer>
 
   <script>
     const loader = document.getElementById('loader');
@@ -405,9 +404,5 @@
       ctx.fillRect(0, 0, w, h);
     };
   </script>
-
-  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none; z-index: 20;">
-    © 1992–2025 SterlWorld • Beyond This Realm
-  </footer>
 </body>
 </html>
