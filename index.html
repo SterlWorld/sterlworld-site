@@ -13,7 +13,8 @@
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       cursor: crosshair;
     }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
@@ -30,8 +31,8 @@
     #logo-wrapper.move-top { top: 40px; transform: translate(-50%, 0); }
     #logo { width: 300px; max-width: 80vw; }
     .content {
-      position: absolute;
-      top: 140px;
+      position: relative;
+      margin-top: 160px;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -42,7 +43,7 @@
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
-      padding: 0 20px;
+      padding: 0 20px 80px;
     }
     .content.visible { opacity: 1; }
     h1 {
@@ -183,7 +184,7 @@
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
       h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 120px; }
+      .content { font-size: 1rem; margin-top: 120px; }
     }
   </style>
 </head>
@@ -246,7 +247,7 @@
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
-      const numStars = 5 + Math.floor(Math * 3);
+      const numStars = 5 + Math.floor(Math.random() * 3);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
@@ -393,7 +394,7 @@
     };
   </script>
 
-  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none; z-index: 20;">
+  <footer style="position: relative; bottom: 10px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none; z-index: 20; margin-top: 3rem;">
     © 1992–2025 SterlWorld • Beyond This Realm
   </footer>
 </body>
