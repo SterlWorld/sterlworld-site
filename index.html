@@ -13,8 +13,7 @@
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
       cursor: crosshair;
     }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
@@ -28,11 +27,15 @@
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
     #logo-wrapper.fade-in { opacity: 1; }
-    #logo-wrapper.move-top { top: 40px; transform: translate(-50%, 0); }
+    #logo-wrapper.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
+      position: fixed; /* <-- Added this to lock the logo on scroll */
+    }
     #logo { width: 300px; max-width: 80vw; }
     .content {
-      position: relative;
-      margin-top: 160px;
+      position: absolute;
+      top: 140px;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -43,7 +46,9 @@
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
-      padding: 0 20px 80px;
+      padding: 0 20px;
+      overflow-y: auto;
+      height: calc(100% - 140px);
     }
     .content.visible { opacity: 1; }
     h1 {
@@ -184,7 +189,7 @@
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
       h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; margin-top: 120px; }
+      .content { font-size: 1rem; top: 120px; overflow-y: auto; height: calc(100% - 120px); }
     }
   </style>
 </head>
@@ -217,11 +222,18 @@
         style="border: none;"></iframe>
     </div>
 
-    <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #0ff;">🍕 Pizza Dales: A Game. A World. A Lifestyle. 🛸</h2>
-    <p style="margin-top: 1rem;">
-      This is the early vision — raw, real, and built with soul.  
-      You're witnessing the first spark of a universe in the making.  
-      Pizza Dales isn’t just a game — it’s an indie legacy in the oven.
+    <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">🍕 Pizza Dales: A Game. A World. A Legacy.</h2>
+    <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
+      <strong>Pizza Dales is the first seed of SterlWorld</strong> — our indie universe of style, soul, and story.  
+      We're building an original IP from the ground up, with one clear vision:  
+      to launch Pizza Dales onto the <span style="color:#0ff; font-weight:bold;">Nintendo Switch</span> and craft a new legacy in gaming.
+
+      This isn’t just about playing a game.  
+      It’s about creating something that lives on.  
+      Every pixel, every beat, every line of code — it's built with purpose.
+
+      When you support this, you're not just helping us finish a game —  
+      <strong>you're helping us start a movement.</strong>
     </p>
 
     <div class="support" style="margin-top: 3rem;">
@@ -394,7 +406,7 @@
     };
   </script>
 
-  <footer style="position: relative; bottom: 10px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none; z-index: 20; margin-top: 3rem;">
+  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none; z-index: 20;">
     © 1992–2025 SterlWorld • Beyond This Realm
   </footer>
 </body>
