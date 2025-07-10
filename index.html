@@ -210,7 +210,20 @@
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
-    <div class="support">
+    <div style="margin-top: 2rem; position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; margin-left: auto; margin-right: auto; border: 2px solid #0ff; box-shadow: 0 0 20px #0ff;">
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
+        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+        style="border: none;"></iframe>
+    </div>
+
+    <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #0ff;">🍕 Pizza Dales: A Game. A World. A Lifestyle. 🛸</h2>
+    <p style="margin-top: 1rem;">
+      This is the early vision — raw, real, and built with soul.  
+      You're witnessing the first spark of a universe in the making.  
+      Pizza Dales isn’t just a game — it’s an indie legacy in the oven.
+    </p>
+
+    <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
@@ -233,7 +246,7 @@
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
-      const numStars = 5 + Math.floor(Math.random() * 3);
+      const numStars = 5 + Math.floor(Math * 3);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
