@@ -255,52 +255,42 @@
     </div>
 
     <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
-    <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
-      <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
-      The first spark in a brand-new original universe called  
-      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
-      stitched together with style, heart, and legacy.
+<p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
+  <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
+  The first spark in a brand-new original universe called  
+  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
+  stitched together with style, heart, and legacy.
 
-      <br /><br />
-      Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
-      it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
-      Our vision is crystal clear: to bring this world to the  
-      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
+  <br /><br />
+  Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
+  it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
+  Our vision is crystal clear: to bring this world to the  
+  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
 
-      <br /><br />
-      What you're seeing above is real.  
-      Behind-the-scenes footage from the main game —  
-      plus a sneak peek at our mobile endless runner,  
-      <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
+  <br /><br />
+  What you're seeing above is real.  
+  Behind-the-scenes footage from the main game —  
+  plus a sneak peek at our mobile endless runner,  
+  <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
 
-      <br /><br />
-      No team. No studio. Just one creator —  
-      doing the work of many with the belief of millions.  
-      I say "we" because I know this is bigger than me.  
-      <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
+  <br /><br />
+  No team. No studio. Just one creator —  
+  doing the work of many with the belief of millions.  
+  I say "we" because I know this is bigger than me.  
+  <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
 
-      <br /><br />
-      This site is more than a homepage —  
-      it’s my living portfolio.  
-      Game design. Animation. Web development. Worldbuilding.  
-      It's all here. It's all real.
+  <br /><br />
+  This site is more than a homepage —  
+  it’s my living portfolio.  
+  Game design. Animation. Web development. Worldbuilding.  
+  It's all here. It's all real.
 
-      <br /><br />
-      When you support this,  
-      <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
-      <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
-    </p>
+  <br /><br />
+  When you support this,  
+  <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
+  <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
+</p>
 
-    <!-- Dynamic Phrase Container -->
-    <div id="phrase-container" style="
-      margin-top: 2rem;
-      text-align: center;
-      font-size: 1.2rem;
-      color: #d8baff;
-      font-weight: bold;
-      font-family: 'Poppins', sans-serif;
-      text-shadow: 0 0 6px #d8baff, 0 0 12px #d8baff;
-    "></div>
 
     <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
@@ -335,15 +325,15 @@
         sparkle.src = sparkleImgSrc;
         sparkle.className = 'sparkle-star';
         const size = Math.random() * 12 + 6;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
+        sparkle.style.width = ${size}px;
+        sparkle.style.height = ${size}px;
         const angle = Math.random() * 2 * Math.PI;
         const distance = Math.random() * 30;
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
-        sparkle.style.left = `${x}px`;
-        sparkle.style.top = `${y}px`;
-        sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1)`;
+        sparkle.style.left = ${x}px;
+        sparkle.style.top = ${y}px;
+        sparkle.style.transform = translate(${offsetX}px, ${offsetY}px) scale(1);
         document.body.appendChild(sparkle);
         setTimeout(() => sparkle.remove(), 1000);
       }
@@ -417,83 +407,63 @@
 
       stars.forEach((s, i) => {
         s.z -= warpSpeed * delta;
-        if (s.z < 1) {
+        if (s.z <= 0) {
           stars[i] = createStar();
-          stars[i].z = w;
+          return;
         }
-        const sx = (s.x / s.z) * w + w / 2;
-        const sy = (s.y / s.z) * h + h / 2;
-
-        if (sx < 0 || sx > w || sy < 0 || sy > h) return;
-
-        const size = s.size * (w / s.z);
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) {
+          stars[i] = createStar();
+          return;
+        }
         ctx.save();
-        ctx.translate(sx, sy);
-        s.rotationAngle += s.rotationSpeed;
+        ctx.translate(px, py);
         ctx.rotate(s.rotationAngle);
-        ctx.drawImage(starImage, -size / 2, -size / 2, size, size);
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#f7de99';
+        ctx.globalAlpha = 0.35;
+        let starSize = s.size * (1 - s.z / w) * 25;
+        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
         ctx.restore();
+        s.rotationAngle += s.rotationSpeed;
       });
 
       requestAnimationFrame(animate);
     }
 
-    starImage.onload = () => animate();
-
-    // Loader animation
-    let loadProgress = 0;
-    const loadIncrement = 1;
-    const loadInterval = setInterval(() => {
-      loadProgress += loadIncrement;
-      if (loadProgress > 100) {
-        loadProgress = 100;
-        clearInterval(loadInterval);
-        barFill.classList.add('full');
-        setTimeout(() => loader.style.display = 'none', 1200);
-      }
-      barFill.style.width = `${loadProgress}%`;
-
-      // Animate the glow letters
-      titleLetters.forEach((span, i) => {
-        if (i < (loadProgress / 10)) {
-          span.classList.add('glow-gold');
+    function updateLetterGlow() {
+      const barFillRect = barFill.getBoundingClientRect();
+      titleLetters.forEach((letter) => {
+        const letterRect = letter.getBoundingClientRect();
+        const letterMid = letterRect.left + letterRect.width / 2;
+        if (letterMid <= barFillRect.right) {
+          letter.classList.add('glow-gold');
         }
       });
-    }, 40);
-
-    // === DYNAMIC PHRASE GENERATOR ===
-    function generatePhrase() {
-      const openings = [
-        "Built with", "Powered by", "Awakened through", "Sparked by", "Fueled with",
-        "Born from", "Crafted with", "Driven by", "Manifested through", "Blessed by"
-      ];
-      const values = [
-        "purpose", "legacy", "divine force", "vision", "cosmic energy", "truth",
-        "love", "black genius", "spirit", "alignment", "faith", "discipline", "imagination"
-      ];
-      const endings = [
-        ".", " alone.", " and nothing else.", " — forever.", " for real.",
-        ", endlessly.", ", from scratch.", ", unapologetically.", ", no compromise."
-      ];
-      const start = openings[Math.floor(Math.random() * openings.length)];
-      const middle = values[Math.floor(Math.random() * values.length)];
-      const end = endings[Math.floor(Math.random() * endings.length)];
-      return `${start} ${middle}${end}`;
     }
 
-    function displayGeneratedPhrase() {
-      const container = document.getElementById('phrase-container');
-      if (container) {
-        container.textContent = generatePhrase();
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        barFill.classList.add('full');
+        setTimeout(() => {
+          loader.remove();
+          animate();
+        }, 600);
       }
-    }
+      barFill.style.width = ${progress}%;
+      updateLetterGlow();
+    }, 130);
 
-    window.addEventListener('DOMContentLoaded', () => {
-      displayGeneratedPhrase();
-
-      // Optional: rotate phrase every 10 seconds
-      setInterval(displayGeneratedPhrase, 10000);
-    });
+    starImage.onload = () => {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+    };
   </script>
 </body>
 </html>
