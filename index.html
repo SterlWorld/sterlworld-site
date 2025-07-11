@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,6 +73,73 @@
       color: #fff;
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
+    /* Magical Portfolio Link Enhancements */
+    .magical-portfolio-link {
+      position: relative;
+      font-weight: 700;
+      color: #ffd700;
+      background: linear-gradient(90deg, #0ff, #ffd700, #0ff);
+      background-size: 200% 100%;
+      background-position: 0% 0%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow:
+        0 0 8px #ffd700,
+        0 0 15px #ffec8b,
+        0 0 20px #ffd700,
+        0 0 30px #ffec8b;
+      transition: background-position 3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+      cursor: pointer;
+      display: inline-block;
+      user-select: none;
+      filter: drop-shadow(0 0 5px #0ff);
+    }
+
+    .magical-portfolio-link::before {
+      content: '';
+      position: absolute;
+      top: -4px; bottom: -4px; left: -6px; right: -6px;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      box-shadow:
+        0 0 15px 3px #0ff,
+        0 0 30px 5px #ffd700;
+      transition: opacity 0.4s ease;
+      filter: blur(3px);
+      z-index: -1;
+    }
+
+    .magical-portfolio-link:hover {
+      background-position: 100% 0%;
+      text-shadow:
+        0 0 15px #0ff,
+        0 0 25px #ffd700,
+        0 0 40px #ffec8b;
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 10px #0ff);
+    }
+
+    .magical-portfolio-link:hover::before {
+      opacity: 1;
+      animation: sparklePulse 2.5s infinite ease-in-out alternate;
+    }
+
+    @keyframes sparklePulse {
+      0%, 100% {
+        box-shadow:
+          0 0 15px 3px #0ff,
+          0 0 30px 5px #ffd700,
+          0 0 45px 7px #0ff;
+      }
+      50% {
+        box-shadow:
+          0 0 20px 4px #0ff,
+          0 0 35px 7px #ffd700,
+          0 0 55px 9px #0ff;
+      }
+    }
+
     .sparkle-star {
       pointer-events: none;
       position: fixed;
@@ -243,7 +302,10 @@
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
       <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
-      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
+      <p>
+        Check out some art from SterlWorld: 
+        <a href="https://sterlworld.artstation.com" target="_blank" class="magical-portfolio-link">Portfolio</a>
+      </p>
     </div>
 
     <footer style="margin-top: 4rem; padding-bottom: 40px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
