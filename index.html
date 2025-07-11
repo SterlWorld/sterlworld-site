@@ -14,7 +14,7 @@
       font-family: 'Poppins', sans-serif;
       color: white;
       overflow: hidden;
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor.png') 12 12, auto;
+      cursor: crosshair;
     }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
     #logo-wrapper {
@@ -186,43 +186,6 @@
       50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
 
-    /* NEW: faded edges for video container */
-    .video-fade-container {
-      position: relative;
-      margin-top: 2rem;
-      width: 100%;
-      max-width: 800px;
-      aspect-ratio: 16 / 9;
-      margin-left: auto;
-      margin-right: auto;
-      /* Remove old border */
-      border: none;
-      box-shadow: 0 0 20px #0ff;
-      overflow: hidden;
-      border-radius: 12px;
-    }
-    .video-fade-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-      position: relative;
-      z-index: 1;
-      border-radius: 12px;
-    }
-    .video-fade-container::before {
-      content: "";
-      pointer-events: none;
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 12px;
-      z-index: 2;
-      background:
-        linear-gradient(to right, black 0%, transparent 15%, transparent 85%, black 100%),
-        linear-gradient(to top, black 0%, transparent 15%, transparent 85%, black 100%);
-      mix-blend-mode: multiply;
-    }
-
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
       h1 { font-size: 1.8rem; }
@@ -248,10 +211,9 @@
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">Website under sacred construction.</p>
 
-    <!-- Updated video container with faded edges -->
-    <div class="video-fade-container">
-      <iframe src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
-        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div style="margin-top: 2rem; position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; margin-left: auto; margin-right: auto; border: 2px solid #0ff; box-shadow: 0 0 20px #0ff;">
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
+        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border: none;"></iframe>
     </div>
 
     <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
