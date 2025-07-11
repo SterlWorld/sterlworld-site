@@ -64,67 +64,15 @@
     }
     .support p { margin: 0.5rem 0; }
     .support a {
+      color: #0ff;
       font-weight: bold;
       text-decoration: none;
       transition: text-shadow 0.3s ease, color 0.3s ease;
-      user-select: none;
     }
     .support a:hover {
       color: #fff;
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
-    /* Magical Portfolio Link Styles */
-    .magical-portfolio-link {
-      position: relative;
-      font-weight: 700;
-      color: #ffd700; /* solid gold */
-      text-shadow:
-        0 0 6px #ffd700,
-        0 0 12px #ffec8b;
-      cursor: pointer;
-      display: inline-block;
-      user-select: none;
-      transition: filter 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
-      filter: drop-shadow(0 0 3px #ffd700);
-    }
-    .magical-portfolio-link::before {
-      content: '';
-      position: absolute;
-      top: -6px; bottom: -6px; left: -8px; right: -8px;
-      border-radius: 12px;
-      pointer-events: none;
-      opacity: 0;
-      box-shadow:
-        0 0 15px 4px #0ff,
-        0 0 30px 6px #0ff;
-      transition: opacity 0.4s ease;
-      filter: blur(4px);
-      z-index: -1;
-    }
-    .magical-portfolio-link:hover {
-      transform: scale(1.1);
-      filter: drop-shadow(0 0 8px #0ff) drop-shadow(0 0 12px #ffd700);
-      text-shadow:
-        0 0 10px #ffd700,
-        0 0 20px #ffec8b;
-    }
-    .magical-portfolio-link:hover::before {
-      opacity: 1;
-      animation: sparklePulse 2.5s infinite ease-in-out alternate;
-    }
-    @keyframes sparklePulse {
-      0%, 100% {
-        box-shadow:
-          0 0 15px 4px #0ff,
-          0 0 30px 6px #0ff;
-      }
-      50% {
-        box-shadow:
-          0 0 20px 6px #0ff,
-          0 0 40px 9px #0ff;
-      }
-    }
-
     .sparkle-star {
       pointer-events: none;
       position: fixed;
@@ -285,9 +233,9 @@
     <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterlWorldx2</a></p>
+      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
       <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
-      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank" class="magical-portfolio-link">Portfolio</a></p>
+      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
 
     <footer style="margin-top: 4rem; padding-bottom: 40px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
@@ -423,29 +371,37 @@
       requestAnimationFrame(animate);
     }
 
-    starImage.onload = () => animate();
+    function updateLetterGlow() {
+      const barFillRect = barFill.getBoundingClientRect();
+      titleLetters.forEach((letter) => {
+        const letterRect = letter.getBoundingClientRect();
+        const letterMid = letterRect.left + letterRect.width / 2;
+        if (letterMid <= barFillRect.right) {
+          letter.classList.add('glow-gold');
+        }
+      });
+    }
 
-    // Loading bar progress simulation
     let progress = 0;
-    let interval = setInterval(() => {
-      progress += Math.random() * 10 + 5;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
         barFill.classList.add('full');
         setTimeout(() => {
-          loader.style.opacity = 0;
-          setTimeout(() => loader.style.display = 'none', 600);
-        }, 1200);
+          loader.remove();
+          animate();
+        }, 600);
       }
-      barFill.style.width = progress + '%';
-    }, 200);
+      barFill.style.width = `${progress}%`;
+      updateLetterGlow();
+    }, 130);
 
-    // Magical portfolio flicker fix: prevent flicker by removing conflicting shadows on hover
-    const portfolioLink = document.querySelector('.magical-portfolio-link');
-    portfolioLink.addEventListener('mouseenter', () => {
-      // nothing extra needed — CSS handles it smoothly now
-    });
+    starImage.onload = () => {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+    };
   </script>
 </body>
 </html>
