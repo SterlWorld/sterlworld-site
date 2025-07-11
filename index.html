@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +68,7 @@
     }
     p { line-height: 1.5; }
     .support {
-      margin-top: 3rem;
+      margin-top: 2.5rem;
     }
     .support p { margin: 0.5rem 0; }
     .support a {
@@ -72,14 +80,6 @@
     .support a:hover {
       color: #fff;
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
-    }
-    /* Fade-in animation for portfolio link */
-    .portfolio-link {
-      opacity: 0;
-      transition: opacity 2s ease;
-    }
-    .portfolio-link.visible {
-      opacity: 1;
     }
     .sparkle-star {
       pointer-events: none;
@@ -226,14 +226,16 @@
 
     <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
     <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
-      <strong>Pizza Dales is the first seed of SterlWorld</strong> — our indie universe of style, soul, and story.<br />
-      We're crafting an original IP with a bold vision:<br />
-      to launch Pizza Dales on the <span style="color:#0ff; font-weight:bold;">Nintendo Switch</span> and beyond.<br /><br />
-      This is more than a game — it’s a living world.<br />
-      Every pixel, every beat, every line of code is built with purpose and passion.<br /><br />
-      Alongside the flagship platformer, explore the fast-paced mobile spin-off, <em>Dale's Dash</em>, coming soon to itch.io, Android, and iOS.<br /><br />
-      When you support this vision, you're not just helping us finish a game —<br />
-      <strong>you're helping start a movement.</strong>
+      <strong>Pizza Dales is the first seed of SterlWorld</strong> — our indie universe of style, soul, and story.  
+      We're building an original IP from the ground up, with one clear vision:  
+      to launch Pizza Dales onto the <span style="color:#0ff; font-weight:bold;">Nintendo Switch</span> and craft a new legacy in gaming.
+
+      This isn’t just about playing a game.  
+      It’s about creating something that lives on.  
+      Every pixel, every beat, every line of code — it's built with purpose.
+
+      When you support this, you're not just helping us finish a game —  
+      <strong>you're helping us start a movement.</strong>
     </p>
 
     <div class="support" style="margin-top: 3rem;">
@@ -241,7 +243,7 @@
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
       <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
       <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
-      <p class="portfolio-link" id="portfolioLink">Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
+      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
 
     <footer style="margin-top: 4rem; padding-bottom: 40px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
@@ -271,7 +273,6 @@
         const size = Math.random() * 12 + 6;
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
-        const angle = Math.random() *
         const angle = Math.random() * 2 * Math.PI;
         const distance = Math.random() * 30;
         const offsetX = Math.cos(angle) * distance;
@@ -399,12 +400,6 @@
         setTimeout(() => {
           loader.remove();
           animate();
-
-          // Reveal portfolio link with fade-in after page fully loads
-          const portfolioLink = document.getElementById('portfolioLink');
-          if (portfolioLink) {
-            portfolioLink.classList.add('visible');
-          }
         }, 600);
       }
       barFill.style.width = `${progress}%`;
@@ -418,4 +413,3 @@
   </script>
 </body>
 </html>
-  
