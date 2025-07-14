@@ -286,7 +286,7 @@
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
 
     function createSparkleBurst(x, y) {
-  const numStars = 8 + Math.floor(Math.random() * 5); // more stars per burst
+  const numStars = 8 + Math.floor(Math.random() * 5);
   for (let i = 0; i < numStars; i++) {
     const sparkle = document.createElement('img');
     sparkle.src = sparkleImgSrc;
@@ -294,17 +294,32 @@
     const size = Math.random() * 12 + 6;
     sparkle.style.width = `${size}px`;
     sparkle.style.height = `${size}px`;
+    sparkle.style.left = `${x}px`;
+    sparkle.style.top = `${y}px`;
+
+    // Initial position
+    sparkle.style.transform = `translate(-50%, -50%) scale(1)`;
+    sparkle.style.opacity = '1';
+    sparkle.style.transition = 'transform 0.6s ease-out, opacity 0.6s ease-out';
+
+    document.body.appendChild(sparkle);
+
+    // Force a reflow to apply initial styles before transitioning
+    void sparkle.offsetWidth;
+
     const angle = Math.random() * 2 * Math.PI;
-    const distance = Math.random() * 40; // slightly larger spread
+    const distance = Math.random() * 60 + 20; // explode farther
     const offsetX = Math.cos(angle) * distance;
     const offsetY = Math.sin(angle) * distance;
-    sparkle.style.left = `${x + offsetX}px`;
-    sparkle.style.top = `${y + offsetY}px`;
-    sparkle.style.transform = `translate(-50%, -50%) scale(1)`;
-    document.body.appendChild(sparkle);
-    setTimeout(() => sparkle.remove(), 1000);
+
+    // Move outward + fade out
+    sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(0.5)`;
+    sparkle.style.opacity = '0';
+
+    setTimeout(() => sparkle.remove(), 600);
   }
 }
+
 
 
     document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
