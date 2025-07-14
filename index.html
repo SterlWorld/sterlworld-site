@@ -8,14 +8,14 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-  height: 100%;
-  width: 100%;
-  background: black;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  overflow-y: auto;
-  cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
-}
+      height: 100%;
+      width: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow-y: auto;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+    }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
     #logo-wrapper {
       position: absolute;
@@ -33,24 +33,37 @@
       position: fixed;
     }
     #logo { width: 300px; max-width: 80vw; }
-   .content {
-  position: relative;
-  margin: 140px auto 0 auto;
-  width: 100%;
-  max-width: 90%;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 1.5s ease;
-  font-size: 1.2rem;
-  color: #ccc;
-  z-index: 5;
-  padding: 0 20px;
-  overflow: visible;
-  height: auto;
-  transform: none;
-}
 
+    /* NEW: Fade overlay */
+    #fade-overlay {
+      position: fixed;
+      top: 80px; /* just below the fixed logo */
+      left: 0;
+      width: 100%;
+      height: 60px;
+      pointer-events: none;
+      z-index: 9; /* below logo (10), above content (5) */
+      background: linear-gradient(to bottom, black 0%, transparent 100%);
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
 
+    .content {
+      position: relative;
+      margin: 140px auto 0 auto;
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
+      padding: 0 20px;
+      overflow: visible;
+      height: auto;
+      transform: none;
+    }
 
     .content.visible { opacity: 1; }
     h1 {
@@ -76,25 +89,22 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
     .sparkle-star {
-  pointer-events: none;
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  /* Remove translate from here */
-  transform-origin: center center;
-  z-index: 9999;
-  transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-  opacity: 1;
-  filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-  animation: spin 0.6s linear;
-}
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform-origin: center center;
+      z-index: 9999;
+      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+      animation: spin 0.6s linear;
+    }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
 
     #loader {
       position: fixed;
@@ -213,20 +223,20 @@
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-   <div class="content" id="mainText">
+  <!-- NEW fade overlay just below logo-wrapper -->
+  <div id="fade-overlay"></div>
+
+  <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">
-  <div class="support">
-    <a href="about.html">
-  Learn more about SterlWorld → About Page
-</a>
-  </div>
-</p>
-
-
-
+      <div class="support">
+        <a href="about.html">
+          Learn more about SterlWorld → About Page
+        </a>
+      </div>
+    </p>
 
     <div style="margin-top: 2rem; position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; margin-left: auto; margin-right: auto; border: 2px solid #0ff; box-shadow: 0 0 20px #0ff;">
       <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
@@ -234,41 +244,41 @@
     </div>
 
     <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
-<p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
-  <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
-  The first spark in a brand-new original universe called  
-  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
-  stitched together with style, heart, and legacy.
+    <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
+      <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
+      The first spark in a brand-new original universe called  
+      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
+      stitched together with style, heart, and legacy.
 
-  <br /><br />
-  Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
-  it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
-  Our vision is crystal clear: to bring this world to the  
-  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
+      <br /><br />
+      Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
+      it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
+      Our vision is crystal clear: to bring this world to the  
+      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
 
-  <br /><br />
-  What you're seeing above is real.  
-  Behind-the-scenes footage from the main game —  
-  plus a sneak peek at our mobile endless runner,  
-  <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
+      <br /><br />
+      What you're seeing above is real.  
+      Behind-the-scenes footage from the main game —  
+      plus a sneak peek at our mobile endless runner,  
+      <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
 
-  <br /><br />
-  No team. No studio. Just one creator —  
-  doing the work of many with the belief of millions.  
-  I say "we" because I know this is bigger than me.  
-  <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
+      <br /><br />
+      No team. No studio. Just one creator —  
+      doing the work of many with the belief of millions.  
+      I say "we" because I know this is bigger than me.  
+      <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
 
-  <br /><br />
-  This site is more than a homepage —  
-  it’s my living portfolio.  
-  Game design. Animation. Web development. Worldbuilding.  
-  It's all here. It's all real.
+      <br /><br />
+      This site is more than a homepage —  
+      it’s my living portfolio.  
+      Game design. Animation. Web development. Worldbuilding.  
+      It's all here. It's all real.
 
-  <br /><br />
-  When you support this,  
-  <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
-  <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
-</p>
+      <br /><br />
+      When you support this,  
+      <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
+      <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
+    </p>
 
     <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
@@ -278,16 +288,13 @@
       <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
 
-    
     <footer style="margin-top: 6rem; padding-bottom: 0px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
       © 1992–2025 SterlWorld • Beyond This Realm
     </footer>
- <p style="margin-top: 0rem; text-align: center; font-size: 0.8rem; color: #777;">
-  Hand-coded & designed by <strong>Sterlin Griffin</strong> • A <span style="color:#0ff;">SterlWorld</span> Production
-</p>
+    <p style="margin-top: 0rem; text-align: center; font-size: 0.8rem; color: #777;">
+      Hand-coded & designed by <strong>Sterlin Griffin</strong> • A <span style="color:#0ff;">SterlWorld</span> Production
+    </p>
   </div>
-  
-
 
   <script>
     const loader = document.getElementById('loader');
@@ -301,53 +308,49 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-function createSparkleBurst(x, y) {
-  const numStars = 12 + Math.floor(Math.random() * 6);
+    function createSparkleBurst(x, y) {
+      const numStars = 12 + Math.floor(Math.random() * 6);
 
-  for (let i = 0; i < numStars; i++) {
-    const sparkle = document.createElement('img');
-    sparkle.src = sparkleImgSrc;
-    sparkle.className = 'sparkle-star';
+      for (let i = 0; i < numStars; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc;
+        sparkle.className = 'sparkle-star';
 
-    const size = Math.random() * 16 + 8;
-sparkle.style.width = ${size}px;
-sparkle.style.height = ${size}px;
+        const size = Math.random() * 16 + 8;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
 
-// Center the sparkle image on click point:
-sparkle.style.left = ${x - size / 2}px;
-sparkle.style.top = ${y - size / 2}px;
+        // Center the sparkle image on click point:
+        sparkle.style.left = `${x - size / 2}px`;
+        sparkle.style.top = `${y - size / 2}px`;
 
+        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
-    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-    sparkle.style.filter = drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8);
+        sparkle.style.opacity = '1';
+        document.body.appendChild(sparkle);
 
-    sparkle.style.opacity = '1';
-    document.body.appendChild(sparkle);
+        // Force reflow
+        void sparkle.offsetWidth;
 
-    // Force reflow
-    void sparkle.offsetWidth;
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 60;
+        const offsetX = Math.cos(angle) * distance;
+        const offsetY = Math.sin(angle) * distance;
 
-    const angle = Math.random() * 2 * Math.PI;
-    const distance = 40 + Math.random() * 60;
-    const offsetX = Math.cos(angle) * distance;
-    const offsetY = Math.sin(angle) * distance;
+        // Animate movement by changing left/top
+        sparkle.style.left = `${x + offsetX}px`;
+        sparkle.style.top = `${y + offsetY}px`;
 
-    // Animate movement by changing left/top
-    sparkle.style.left = ${x + offsetX}px;
-    sparkle.style.top = ${y + offsetY}px;
+        // Scale down and fade out
+        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+        sparkle.style.opacity = '0';
 
-    // Scale down and fade out
-    sparkle.style.transform = scale(0.5) rotate(${Math.random() * 360}deg);
-    sparkle.style.opacity = '0';
-
-    setTimeout(() => sparkle.remove(), 600);
-  }
-}
-
-
-
+        setTimeout(() => sparkle.remove(), 600);
+      }
+    }
 
     document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
@@ -402,78 +405,74 @@ sparkle.style.top = ${y - size / 2}px;
         if (!warpComplete) {
           warpComplete = true;
           document.getElementById('logo-wrapper').classList.add('fade-in');
-          setTimeout(() => {
-            document.getElementById('logo-wrapper').classList.add('move-top');
-            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
-          }, 1500);
+          document.getElementById('mainText').classList.add('visible');
+          loader.style.opacity = '0';
+          setTimeout(() => loader.style.display = 'none', 1600);
         }
       }
 
-      const delta = (time - lastTime) / 16.67;
-      lastTime = time;
-
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#000';
       ctx.fillRect(0, 0, w, h);
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
 
-      stars.forEach((s, i) => {
-        s.z -= warpSpeed * delta;
-        if (s.z <= 0) {
-          stars[i] = createStar();
-          return;
+      for (const star of stars) {
+        star.z -= warpSpeed;
+        if (star.z <= 1) {
+          Object.assign(star, createStar());
+          star.z = w;
         }
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) {
-          stars[i] = createStar();
-          return;
-        }
+
+        const sx = (star.x / star.z) * w;
+        const sy = (star.y / star.z) * h;
+        const size = star.size * (w / star.z);
+
         ctx.save();
-        ctx.translate(px, py);
-        ctx.rotate(s.rotationAngle);
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = '#f7de99';
-        ctx.globalAlpha = 0.35;
-        let starSize = s.size * (1 - s.z / w) * 25;
-        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        ctx.translate(sx, sy);
+        star.rotationAngle += star.rotationSpeed;
+        ctx.rotate(star.rotationAngle);
+        ctx.drawImage(starImage, -size / 2, -size / 2, size, size);
         ctx.restore();
-        s.rotationAngle += s.rotationSpeed;
-      });
+      }
 
+      ctx.restore();
       requestAnimationFrame(animate);
     }
+    starImage.onload = () => animate();
 
-    function updateLetterGlow() {
-      const barFillRect = barFill.getBoundingClientRect();
-      titleLetters.forEach((letter) => {
-        const letterRect = letter.getBoundingClientRect();
-        const letterMid = letterRect.left + letterRect.width / 2;
-        if (letterMid <= barFillRect.right) {
-          letter.classList.add('glow-gold');
-        }
-      });
-    }
-
+    // Loading bar animation simulation
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 10;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        barFill.classList.add('full');
-        setTimeout(() => {
-          loader.remove();
-          animate();
-        }, 600);
-      }
-      barFill.style.width = ${progress}%;
-      updateLetterGlow();
-    }, 130);
+      progress += Math.random() * 0.1;
+      if (progress >= 1) progress = 1;
+      barFill.style.width = (progress * 100) + '%';
 
-    starImage.onload = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, w, h);
-    };
+      if (progress === 1) {
+        barFill.classList.add('full');
+        clearInterval(interval);
+      }
+    }, 300);
+
+    // Title glow animation - cycle glow on letters
+    let glowIndex = 0;
+    setInterval(() => {
+      titleLetters.forEach((span, i) => {
+        span.classList.toggle('glow-gold', i === glowIndex);
+      });
+      glowIndex = (glowIndex + 1) % titleLetters.length;
+    }, 120);
+
+    // Fade overlay scroll logic
+    const fadeOverlay = document.getElementById('fade-overlay');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      if (scrollY > 100) {
+        fadeOverlay.style.opacity = '0';
+      } else {
+        fadeOverlay.style.opacity = '1';
+      }
+    });
   </script>
 </body>
 </html>
