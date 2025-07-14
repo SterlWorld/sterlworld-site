@@ -8,14 +8,14 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-  height: 100%;
-  width: 100%;
-  background: black;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  overflow-y: auto;
-  cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
-}
+      height: 100%;
+      width: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow-y: auto;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+    }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
     #logo-wrapper {
       position: absolute;
@@ -27,31 +27,37 @@
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
     #logo-wrapper.fade-in { opacity: 1; }
+    /* This style is for when logo is moved to top, fixed */
     #logo-wrapper.move-top {
       top: 40px;
       transform: translate(-50%, 0);
       position: fixed;
     }
+    /* This style is for when logo scrolls with content */
+    #logo-wrapper.scroll-with-content {
+      position: relative;
+      top: auto;
+      left: auto;
+      transform: none;
+      margin: 40px auto 0 auto;
+    }
     #logo { width: 300px; max-width: 80vw; }
-   .content {
-  position: relative;
-  margin: 140px auto 0 auto;
-  width: 100%;
-  max-width: 90%;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 1.5s ease;
-  font-size: 1.2rem;
-  color: #ccc;
-  z-index: 5;
-  padding: 0 20px;
-  overflow: visible;
-  height: auto;
-  transform: none;
-}
-
-
-
+    .content {
+      position: relative;
+      margin: 140px auto 0 auto;
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
+      padding: 0 20px;
+      overflow: visible;
+      height: auto;
+      transform: none;
+    }
     .content.visible { opacity: 1; }
     h1 {
       font-family: 'Orbitron', sans-serif;
@@ -76,26 +82,22 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
     .sparkle-star {
-  pointer-events: none;
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  /* Remove translate from here */
-  transform-origin: center center;
-  z-index: 9999;
-  transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-  opacity: 1;
-  filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-  animation: spin 0.6s linear;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-
-
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      /* Remove translate from here */
+      transform-origin: center center;
+      z-index: 9999;
+      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+      animation: spin 0.6s linear;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
     #loader {
       position: fixed;
       top: 0; left: 0;
@@ -108,7 +110,6 @@
       z-index: 99999;
       padding: 0 15px;
     }
-
     #loader h2 {
       color: white;
       font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -123,14 +124,12 @@
       gap: 2px;
       white-space: nowrap;
     }
-
     #loader h2 .loading-text {
       color: #0ff;
       font-weight: 600;
       user-select: none;
       white-space: nowrap;
     }
-
     #titleGlow {
       display: inline-flex;
       user-select: none;
@@ -139,7 +138,6 @@
       justify-content: center;
       align-items: center;
     }
-
     #titleGlow span {
       transition: text-shadow 0.3s ease, color 0.3s ease;
       color: white;
@@ -148,7 +146,6 @@
       line-height: 1;
       padding: 0 0.5px;
     }
-
     .glow-gold {
       color: #ffd700;
       text-shadow:
@@ -158,7 +155,6 @@
         0 0 30px #ffec8b,
         0 0 40px #ffd700;
     }
-
     .loading-bar {
       width: 100%;
       max-width: 90vw;
@@ -170,14 +166,12 @@
       box-shadow: none;
       margin: 0 auto 10px;
     }
-
     .loading-bar-fill {
       height: 100%;
       background: linear-gradient(to right, #0ff, #00f2ff);
       width: 0%;
       transition: width 0.2s ease;
     }
-
     .loading-bar-fill.full {
       background: linear-gradient(to right, #ffd700, #fff68f);
       box-shadow:
@@ -188,12 +182,10 @@
         0 0 40px #ffd700;
       animation: flicker 1.2s infinite alternate;
     }
-
     @keyframes flicker {
       0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
       50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
-
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
       h1 { font-size: 1.8rem; }
@@ -224,52 +216,41 @@
 </a>
   </div>
 </p>
-
-
-
-
     <div style="margin-top: 2rem; position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; margin-left: auto; margin-right: auto; border: 2px solid #0ff; box-shadow: 0 0 20px #0ff;">
       <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border: none;"></iframe>
     </div>
-
     <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
-<p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
-  <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
-  The first spark in a brand-new original universe called  
-  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
-  stitched together with style, heart, and legacy.
-
-  <br /><br />
-  Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
-  it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
-  Our vision is crystal clear: to bring this world to the  
-  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
-
-  <br /><br />
-  What you're seeing above is real.  
-  Behind-the-scenes footage from the main game —  
-  plus a sneak peek at our mobile endless runner,  
-  <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
-
-  <br /><br />
-  No team. No studio. Just one creator —  
-  doing the work of many with the belief of millions.  
-  I say "we" because I know this is bigger than me.  
-  <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
-
-  <br /><br />
-  This site is more than a homepage —  
-  it’s my living portfolio.  
-  Game design. Animation. Web development. Worldbuilding.  
-  It's all here. It's all real.
-
-  <br /><br />
-  When you support this,  
-  <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
-  <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
-</p>
-
+    <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
+      <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
+      The first spark in a brand-new original universe called  
+      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
+      stitched together with style, heart, and legacy.
+      <br /><br />
+      Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
+      it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
+      Our vision is crystal clear: to bring this world to the  
+      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
+      <br /><br />
+      What you're seeing above is real.  
+      Behind-the-scenes footage from the main game —  
+      plus a sneak peek at our mobile endless runner,  
+      <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
+      <br /><br />
+      No team. No studio. Just one creator —  
+      doing the work of many with the belief of millions.  
+      I say "we" because I know this is bigger than me.  
+      <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
+      <br /><br />
+      This site is more than a homepage —  
+      it’s my living portfolio.  
+      Game design. Animation. Web development. Worldbuilding.  
+      It's all here. It's all real.
+      <br /><br />
+      When you support this,  
+      <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
+      <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
+    </p>
     <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
@@ -277,17 +258,13 @@
       <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
       <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
-
-    
     <footer style="margin-top: 6rem; padding-bottom: 0px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
       © 1992–2025 SterlWorld • Beyond This Realm
     </footer>
- <p style="margin-top: 0rem; text-align: center; font-size: 0.8rem; color: #777;">
-  Hand-coded & designed by <strong>Sterlin Griffin</strong> • A <span style="color:#0ff;">SterlWorld</span> Production
-</p>
+    <p style="margin-top: 0rem; text-align: center; font-size: 0.8rem; color: #777;">
+      Hand-coded & designed by <strong>Sterlin Griffin</strong> • A <span style="color:#0ff;">SterlWorld</span> Production
+    </p>
   </div>
-  
-
 
   <script>
     const loader = document.getElementById('loader');
@@ -301,53 +278,49 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-function createSparkleBurst(x, y) {
-  const numStars = 12 + Math.floor(Math.random() * 6);
+    function createSparkleBurst(x, y) {
+      const numStars = 12 + Math.floor(Math.random() * 6);
 
-  for (let i = 0; i < numStars; i++) {
-    const sparkle = document.createElement('img');
-    sparkle.src = sparkleImgSrc;
-    sparkle.className = 'sparkle-star';
+      for (let i = 0; i < numStars; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc;
+        sparkle.className = 'sparkle-star';
 
-    const size = Math.random() * 16 + 8;
-sparkle.style.width = `${size}px`;
-sparkle.style.height = `${size}px`;
+        const size = Math.random() * 16 + 8;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
 
-// Center the sparkle image on click point:
-sparkle.style.left = `${x - size / 2}px`;
-sparkle.style.top = `${y - size / 2}px`;
+        // Center the sparkle image on click point:
+        sparkle.style.left = `${x - size / 2}px`;
+        sparkle.style.top = `${y - size / 2}px`;
 
+        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
-    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-    sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+        sparkle.style.opacity = '1';
+        document.body.appendChild(sparkle);
 
-    sparkle.style.opacity = '1';
-    document.body.appendChild(sparkle);
+        // Force reflow
+        void sparkle.offsetWidth;
 
-    // Force reflow
-    void sparkle.offsetWidth;
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 60;
+        const offsetX = Math.cos(angle) * distance;
+        const offsetY = Math.sin(angle) * distance;
 
-    const angle = Math.random() * 2 * Math.PI;
-    const distance = 40 + Math.random() * 60;
-    const offsetX = Math.cos(angle) * distance;
-    const offsetY = Math.sin(angle) * distance;
+        // Animate movement by changing left/top
+        sparkle.style.left = `${x + offsetX}px`;
+        sparkle.style.top = `${y + offsetY}px`;
 
-    // Animate movement by changing left/top
-    sparkle.style.left = `${x + offsetX}px`;
-    sparkle.style.top = `${y + offsetY}px`;
+        // Scale down and fade out
+        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+        sparkle.style.opacity = '0';
 
-    // Scale down and fade out
-    sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-    sparkle.style.opacity = '0';
-
-    setTimeout(() => sparkle.remove(), 600);
-  }
-}
-
-
-
+        setTimeout(() => sparkle.remove(), 600);
+      }
+    }
 
     document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
@@ -401,10 +374,26 @@ sparkle.style.top = `${y - size / 2}px`;
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          document.getElementById('logo-wrapper').classList.add('fade-in');
+          const logoWrapper = document.getElementById('logo-wrapper');
+          const mainText = document.getElementById('mainText');
+
+          logoWrapper.classList.add('fade-in');
+
+          // After fade-in (1.5s), add move-top (fixed)
           setTimeout(() => {
-            document.getElementById('logo-wrapper').classList.add('move-top');
-            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
+            logoWrapper.classList.add('move-top');
+
+            // After move-top transition (1.5s), fade-in content
+            setTimeout(() => {
+              mainText.classList.add('visible');
+
+              // After content visible, switch logo to scroll with content
+              setTimeout(() => {
+                logoWrapper.classList.remove('move-top', 'fade-in');
+                logoWrapper.classList.add('scroll-with-content');
+              }, 1700); // give content fade-in 1.5s + 200ms buffer
+
+            }, 1500);
           }, 1500);
         }
       }
