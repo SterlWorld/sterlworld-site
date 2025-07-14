@@ -17,6 +17,8 @@
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
+
+    /* Animated logo wrapper */
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -27,21 +29,32 @@
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
     #logo-wrapper.fade-in { opacity: 1; }
-    /* This style is for when logo is moved to top, fixed */
     #logo-wrapper.move-top {
       top: 40px;
       transform: translate(-50%, 0);
       position: fixed;
     }
-    /* This style is for when logo scrolls with content */
-    #logo-wrapper.scroll-with-content {
-      position: relative;
-      top: auto;
-      left: auto;
-      transform: none;
-      margin: 40px auto 0 auto;
+    /* Hide animated logo when animation finishes */
+    #logo-wrapper.hidden {
+      display: none;
     }
-    #logo { width: 300px; max-width: 80vw; }
+
+    /* Static logo container — hidden initially */
+    #static-logo-container {
+      display: none;
+      margin: 40px auto 0 auto;
+      width: 300px;
+      max-width: 80vw;
+      text-align: center;
+      user-select: none;
+      z-index: 10;
+    }
+    #static-logo-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .content {
       position: relative;
       margin: 140px auto 0 auto;
@@ -59,6 +72,7 @@
       transform: none;
     }
     .content.visible { opacity: 1; }
+
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
@@ -86,7 +100,6 @@
       position: fixed;
       width: 10px;
       height: 10px;
-      /* Remove translate from here */
       transform-origin: center center;
       z-index: 9999;
       transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
@@ -187,7 +200,8 @@
       50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
     @media screen and (max-width: 600px) {
-      #logo { width: 180px; }
+      #logo-wrapper { width: 180px; }
+      #static-logo-container { width: 180px; }
       h1 { font-size: 1.8rem; }
       .content { font-size: 1rem; top: 120px; overflow-y: auto; height: calc(100% - 120px); }
     }
@@ -201,21 +215,27 @@
 
   <canvas id="space"></canvas>
 
+  <!-- Animated Logo -->
   <div id="logo-wrapper">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-   <div class="content" id="mainText">
+  <!-- Static logo shown after animation -->
+  <div id="static-logo-container" aria-hidden="true">
+    <img src="logo.png" alt="SterlWorld Logo" />
+  </div>
+
+  <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">
-  <div class="support">
-    <a href="about.html">
-  Learn more about SterlWorld → About Page
-</a>
-  </div>
-</p>
+      <div class="support">
+        <a href="about.html">
+          Learn more about SterlWorld → About Page
+        </a>
+      </div>
+    </p>
     <div style="margin-top: 2rem; position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; margin-left: auto; margin-right: auto; border: 2px solid #0ff; box-shadow: 0 0 20px #0ff;">
       <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border: none;"></iframe>
@@ -253,10 +273,10 @@
     </p>
     <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
-      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
-      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
+      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank" rel="noopener noreferrer">@sterlworld_business</a></p>
+      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank" rel="noopener noreferrer">$SterWorldx2</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank" rel="noopener noreferrer">Play Crust Master / Donate</a></p>
+      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank" rel="noopener noreferrer">Portfolio</a></p>
     </div>
     <footer style="margin-top: 6rem; padding-bottom: 0px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
       © 1992–2025 SterlWorld • Beyond This Realm
@@ -267,6 +287,7 @@
   </div>
 
   <script>
+    // Loading screen animation letters
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
@@ -329,6 +350,7 @@
       }
     });
 
+    // Canvas starfield
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -360,7 +382,6 @@
     const normalSpeed = 0.5;
     const warpDuration = 3000;
     let warpStartTime = null;
-    let warpComplete = false;
     let lastTime = performance.now();
 
     function animate(time = performance.now()) {
@@ -372,97 +393,103 @@
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
       } else {
         warpSpeed = normalSpeed;
-        if (!warpComplete) {
-          warpComplete = true;
-          const logoWrapper = document.getElementById('logo-wrapper');
-          const mainText = document.getElementById('mainText');
-
-          logoWrapper.classList.add('fade-in');
-
-          // After fade-in (1.5s), add move-top (fixed)
-          setTimeout(() => {
-            logoWrapper.classList.add('move-top');
-
-            // After move-top transition (1.5s), fade-in content
-            setTimeout(() => {
-              mainText.classList.add('visible');
-
-              // After content visible, switch logo to scroll with content
-              setTimeout(() => {
-                logoWrapper.classList.remove('move-top', 'fade-in');
-                logoWrapper.classList.add('scroll-with-content');
-              }, 1700); // give content fade-in 1.5s + 200ms buffer
-
-            }, 1500);
-          }, 1500);
-        }
       }
 
-      const delta = (time - lastTime) / 16.67;
+      const dt = time - lastTime;
       lastTime = time;
 
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-      ctx.fillRect(0, 0, w, h);
+            ctx.clearRect(0, 0, w, h);
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
 
-      stars.forEach((s, i) => {
-        s.z -= warpSpeed * delta;
-        if (s.z <= 0) {
-          stars[i] = createStar();
-          return;
+      stars.forEach(star => {
+        star.z -= warpSpeed;
+        if (star.z <= 0) {
+          Object.assign(star, createStar());
+          star.z = w;
         }
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) {
-          stars[i] = createStar();
-          return;
-        }
+
+        const sx = (star.x / star.z) * w;
+        const sy = (star.y / star.z) * h;
+
+        const size = star.size * (w / star.z);
+        const alpha = 1 - star.z / w;
+
         ctx.save();
-        ctx.translate(px, py);
-        ctx.rotate(s.rotationAngle);
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = '#f7de99';
-        ctx.globalAlpha = 0.35;
-        let starSize = s.size * (1 - s.z / w) * 25;
-        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        ctx.globalAlpha = alpha > 1 ? 1 : alpha < 0 ? 0 : alpha;
+        ctx.translate(sx, sy);
+        star.rotationAngle += star.rotationSpeed * dt;
+        ctx.rotate(star.rotationAngle);
+        ctx.drawImage(starImage, -size / 2, -size / 2, size, size);
         ctx.restore();
-        s.rotationAngle += s.rotationSpeed;
       });
 
+      ctx.restore();
       requestAnimationFrame(animate);
     }
+    starImage.onload = () => requestAnimationFrame(animate);
 
-    function updateLetterGlow() {
-      const barFillRect = barFill.getBoundingClientRect();
-      titleLetters.forEach((letter) => {
-        const letterRect = letter.getBoundingClientRect();
-        const letterMid = letterRect.left + letterRect.width / 2;
-        if (letterMid <= barFillRect.right) {
-          letter.classList.add('glow-gold');
-        }
+    // Loading screen text flicker effect
+    let flickerIndex = 0;
+    function flickerGlow() {
+      titleLetters.forEach((span, i) => {
+        span.classList.toggle('glow-gold', i === flickerIndex);
       });
+      flickerIndex = (flickerIndex + 1) % titleLetters.length;
+      setTimeout(flickerGlow, 150);
     }
+    flickerGlow();
 
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 10;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
+    // Loading bar fill animation
+    let loadPercent = 0;
+    const loadSpeed = 0.8; // percent per frame approx
+    function loadAnimation() {
+      loadPercent += loadSpeed;
+      if (loadPercent > 100) loadPercent = 100;
+      barFill.style.width = loadPercent + '%';
+      if (loadPercent === 100) {
         barFill.classList.add('full');
         setTimeout(() => {
-          loader.remove();
-          animate();
-        }, 600);
+          fadeOutLoader();
+        }, 800);
+      } else {
+        requestAnimationFrame(loadAnimation);
       }
-      barFill.style.width = `${progress}%`;
-      updateLetterGlow();
-    }, 130);
+    }
+    loadAnimation();
 
-    starImage.onload = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, w, h);
-    };
+    // Fade out loader and show content and animate logo
+    const loaderDiv = document.getElementById('loader');
+    const logoWrapper = document.getElementById('logo-wrapper');
+    const staticLogoContainer = document.getElementById('static-logo-container');
+    const contentDiv = document.getElementById('mainText');
+
+    function fadeOutLoader() {
+      loaderDiv.style.transition = 'opacity 1.5s ease';
+      loaderDiv.style.opacity = '0';
+      setTimeout(() => {
+        loaderDiv.style.display = 'none';
+        startLogoAnimation();
+      }, 1500);
+    }
+
+    function startLogoAnimation() {
+      // Fade in logo
+      logoWrapper.classList.add('fade-in');
+
+      setTimeout(() => {
+        // Move logo to top fixed position
+        logoWrapper.classList.add('move-top');
+      }, 1500);
+
+      setTimeout(() => {
+        // After animation, hide animated logo and show static logo
+        logoWrapper.classList.add('hidden');
+        staticLogoContainer.style.display = 'block';
+        contentDiv.classList.add('visible');
+      }, 4000);
+    }
   </script>
 </body>
 </html>
+
