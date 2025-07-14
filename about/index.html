@@ -30,7 +30,6 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
-      cursor: pointer;
     }
     #logo {
       width: 180px;
@@ -72,28 +71,12 @@
       padding: 20px 10px;
       user-select: none;
     }
-    .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform-origin: center center;
-      z-index: 9999;
-      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-      opacity: 1;
-      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-      animation: spin 0.6s linear;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
   <canvas id="space"></canvas>
 
-  <div id="logo-wrapper" onclick="location.href='index.html'">
+  <div id="logo-wrapper" onclick="window.location.href='https://sterlworld.com'">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
@@ -203,12 +186,13 @@
       animate();
     };
 
-    // Star sparkle click effect
+    // Sparkle on click
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
     function createSparkleBurst(x, y) {
       const numStars = 12 + Math.floor(Math.random() * 6);
+
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
         sparkle.src = sparkleImgSrc;
@@ -217,14 +201,19 @@
         const size = Math.random() * 16 + 8;
         sparkle.style.width = `${size}px`;
         sparkle.style.height = `${size}px`;
+        sparkle.style.position = 'fixed';
         sparkle.style.left = `${x - size / 2}px`;
         sparkle.style.top = `${y - size / 2}px`;
-
-        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+        sparkle.style.zIndex = 9999;
+        sparkle.style.pointerEvents = 'none';
+        sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
+        sparkle.style.filter = `drop-shadow(0 0 6px ${sparkleColors[Math.floor(Math.random() * sparkleColors.length)]}) brightness(2.2) saturate(1.8)`;
+        sparkle.style.opacity = '1';
+        sparkle.style.animation = 'spin 0.6s linear';
 
         document.body.appendChild(sparkle);
-        void sparkle.offsetWidth; // Force reflow
+
+        void sparkle.offsetWidth;
 
         const angle = Math.random() * 2 * Math.PI;
         const distance = 40 + Math.random() * 60;
@@ -247,5 +236,11 @@
       }
     });
   </script>
+  <style>
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </body>
 </html>
