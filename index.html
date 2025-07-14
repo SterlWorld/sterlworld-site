@@ -50,6 +50,17 @@
       overflow-y: auto;
       height: calc(100% - 140px);
     }
+    /* Hide scrollbar for body and .content */
+body::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+body, .content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
     .content.visible { opacity: 1; }
     h1 {
       font-family: 'Orbitron', sans-serif;
