@@ -18,15 +18,14 @@
 }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
     #logo-wrapper {
-  position: fixed; /* changed from absolute */
-  top: 40px;       /* fixed near top */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  opacity: 0;
-  transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
-}
-
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
+    }
     #logo-wrapper.fade-in { opacity: 1; }
     #logo-wrapper.move-top {
       top: 40px;
@@ -49,10 +48,6 @@
   overflow: visible;
   height: auto;
   transform: none;
-
-     -webkit-mask-image: linear-gradient(to bottom, transparent 0px, black 140px);
-mask-image: linear-gradient(to bottom, transparent 0px, black 140px);
-
 }
 
 
