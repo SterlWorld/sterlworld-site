@@ -74,19 +74,23 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
     .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform: translate(-50%, -50%);
-      animation: sparkleFall 1s ease forwards;
-      z-index: 9999;
-      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
-    }
-    @keyframes sparkleFall {
-      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, 40px) scale(0.2); }
-    }
+  pointer-events: none;
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 9999;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+  opacity: 1;
+  filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+  animation: spin 0.6s linear;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 
     #loader {
       position: fixed;
@@ -284,36 +288,37 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-    function createSparkleBurst(x, y) {
-  const numStars = 8 + Math.floor(Math.random() * 5);
+function createSparkleBurst(x, y) {
+  const numStars = 12 + Math.floor(Math.random() * 6);
+
   for (let i = 0; i < numStars; i++) {
     const sparkle = document.createElement('img');
     sparkle.src = sparkleImgSrc;
     sparkle.className = 'sparkle-star';
-    const size = Math.random() * 12 + 6;
+
+    const size = Math.random() * 16 + 8;
     sparkle.style.width = `${size}px`;
     sparkle.style.height = `${size}px`;
     sparkle.style.left = `${x}px`;
     sparkle.style.top = `${y}px`;
 
-    // Initial position
-    sparkle.style.transform = `translate(-50%, -50%) scale(1)`;
-    sparkle.style.opacity = '1';
-    sparkle.style.transition = 'transform 0.6s ease-out, opacity 0.6s ease-out';
+    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+    sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
+    sparkle.style.transform = 'translate(-50%, -50%) scale(1)';
+    sparkle.style.opacity = '1';
     document.body.appendChild(sparkle);
 
-    // Force a reflow to apply initial styles before transitioning
-    void sparkle.offsetWidth;
+    void sparkle.offsetWidth; // Force reflow
 
     const angle = Math.random() * 2 * Math.PI;
-    const distance = Math.random() * 60 + 20; // explode farther
+    const distance = 40 + Math.random() * 60;
     const offsetX = Math.cos(angle) * distance;
     const offsetY = Math.sin(angle) * distance;
-
-    // Move outward + fade out
-    sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(0.5)`;
+    
+    sparkle.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(0.5) rotate(${Math.random() * 360}deg)`;
     sparkle.style.opacity = '0';
 
     setTimeout(() => sparkle.remove(), 600);
