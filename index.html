@@ -476,18 +476,23 @@ sparkle.style.top = `${y - size / 2}px`;
     };
     window.addEventListener('scroll', () => {
   const content = document.getElementById('mainText');
+  const logo = document.getElementById('logo');
   const contentRect = content.getBoundingClientRect();
+  const logoRect = logo.getBoundingClientRect();
 
-  const fadeStart = 120;  // start fading when content gets this close to top
-  const fadeEnd = 40;     // fully transparent when this close
+  // We want to fade content as it scrolls up to the bottom edge of the logo
+  const fadeStart = logoRect.bottom;        // bottom edge of the logo (in viewport coords)
+  const fadeEnd = fadeStart + 80;           // fade out fully over 80px below logo bottom
 
   if (contentRect.top < fadeStart) {
-    const opacity = Math.max(0, Math.min(1, (contentRect.top - fadeEnd) / (fadeStart - fadeEnd)));
-    content.style.opacity = opacity;
+    // Calculate opacity from 1 at fadeStart to 0 at fadeEnd
+    const opacity = Math.max(0, Math.min(1, (fadeEnd - contentRect.top) / (fadeEnd - fadeStart)));
+    content.style.opacity = 1 - opacity;  // reverse: opacity 1 when far, 0 when at fadeEnd
   } else {
     content.style.opacity = 1;
   }
 });
+
   </script>
 </body>
 </html>
