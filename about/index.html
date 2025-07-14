@@ -199,15 +199,15 @@
         sparkle.className = 'sparkle-star';
 
         const size = Math.random() * 16 + 8;
-        sparkle.style.width = ${size}px;
-        sparkle.style.height = ${size}px;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
         sparkle.style.position = 'fixed';
-        sparkle.style.left = ${x - size / 2}px;
-        sparkle.style.top = ${y - size / 2}px;
+        sparkle.style.left = `${x - size / 2}px`;
+        sparkle.style.top = `${y - size / 2}px`;
         sparkle.style.zIndex = 9999;
         sparkle.style.pointerEvents = 'none';
         sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
-        sparkle.style.filter = drop-shadow(0 0 6px ${sparkleColors[Math.floor(Math.random() * sparkleColors.length)]}) brightness(2.2) saturate(1.8);
+        sparkle.style.filter = `drop-shadow(0 0 6px ${sparkleColors[Math.floor(Math.random() * sparkleColors.length)]}) brightness(2.2) saturate(1.8)`;
         sparkle.style.opacity = '1';
         sparkle.style.animation = 'spin 0.6s linear';
 
@@ -220,9 +220,9 @@
         const offsetX = Math.cos(angle) * distance;
         const offsetY = Math.sin(angle) * distance;
 
-        sparkle.style.left = ${x + offsetX}px;
-        sparkle.style.top = ${y + offsetY}px;
-        sparkle.style.transform = scale(0.5) rotate(${Math.random() * 360}deg);
+        sparkle.style.left = `${x + offsetX}px`;
+        sparkle.style.top = `${y + offsetY}px`;
+        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
         sparkle.style.opacity = '0';
 
         setTimeout(() => sparkle.remove(), 600);
