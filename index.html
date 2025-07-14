@@ -474,6 +474,20 @@ sparkle.style.top = `${y - size / 2}px`;
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
     };
+    window.addEventListener('scroll', () => {
+  const content = document.getElementById('mainText');
+  const contentRect = content.getBoundingClientRect();
+
+  const fadeStart = 120;  // start fading when content gets this close to top
+  const fadeEnd = 40;     // fully transparent when this close
+
+  if (contentRect.top < fadeStart) {
+    const opacity = Math.max(0, Math.min(1, (contentRect.top - fadeEnd) / (fadeStart - fadeEnd)));
+    content.style.opacity = opacity;
+  } else {
+    content.style.opacity = 1;
+  }
+});
   </script>
 </body>
 </html>
