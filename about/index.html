@@ -14,7 +14,7 @@
   font-family: 'Poppins', sans-serif;
   color: white;
   overflow: hidden;
-  cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor.png') 0 4, auto;
+  cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
 }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
     #logo-wrapper {
@@ -74,19 +74,25 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
     .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform: translate(-50%, -50%);
-      animation: sparkleFall 1s ease forwards;
-      z-index: 9999;
-      filter: drop-shadow(0 0 6px #0ff) brightness(2.2) saturate(1.8);
-    }
-    @keyframes sparkleFall {
-      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, 40px) scale(0.2); }
-    }
+  pointer-events: none;
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  /* Remove translate from here */
+  transform-origin: center center;
+  z-index: 9999;
+  transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+  opacity: 1;
+  filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+  animation: spin 0.6s linear;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
 
     #loader {
       position: fixed;
@@ -284,27 +290,53 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-    function createSparkleBurst(x, y) {
-      const numStars = 5 + Math.floor(Math.random() * 3);
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
-        const size = Math.random() * 12 + 6;
-        sparkle.style.width = ${size}px;
-        sparkle.style.height = ${size}px;
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 30;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
-        sparkle.style.left = ${x}px;
-        sparkle.style.top = ${y}px;
-        sparkle.style.transform = translate(${offsetX}px, ${offsetY}px) scale(1);
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1000);
-      }
-    }
+function createSparkleBurst(x, y) {
+  const numStars = 12 + Math.floor(Math.random() * 6);
+
+  for (let i = 0; i < numStars; i++) {
+    const sparkle = document.createElement('img');
+    sparkle.src = sparkleImgSrc;
+    sparkle.className = 'sparkle-star';
+
+    const size = Math.random() * 16 + 8;
+sparkle.style.width = ${size}px;
+sparkle.style.height = ${size}px;
+
+// Center the sparkle image on click point:
+sparkle.style.left = ${x - size / 2}px;
+sparkle.style.top = ${y - size / 2}px;
+
+
+    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+    sparkle.style.filter = drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8);
+
+    sparkle.style.opacity = '1';
+    document.body.appendChild(sparkle);
+
+    // Force reflow
+    void sparkle.offsetWidth;
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 40 + Math.random() * 60;
+    const offsetX = Math.cos(angle) * distance;
+    const offsetY = Math.sin(angle) * distance;
+
+    // Animate movement by changing left/top
+    sparkle.style.left = ${x + offsetX}px;
+    sparkle.style.top = ${y + offsetY}px;
+
+    // Scale down and fade out
+    sparkle.style.transform = scale(0.5) rotate(${Math.random() * 360}deg);
+    sparkle.style.opacity = '0';
+
+    setTimeout(() => sparkle.remove(), 600);
+  }
+}
+
+
+
 
     document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
