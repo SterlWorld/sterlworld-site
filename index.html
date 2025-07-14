@@ -13,7 +13,7 @@
   background: black;
   font-family: 'Poppins', sans-serif;
   color: white;
-  overflow-y: auto;
+  overflow: hidden;
   cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
 }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
@@ -33,25 +33,23 @@
       position: fixed;
     }
     #logo { width: 300px; max-width: 80vw; }
-   .content {
-  position: relative;
-  margin: 140px auto 0 auto;
-  width: 100%;
-  max-width: 90%;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 1.5s ease;
-  font-size: 1.2rem;
-  color: #ccc;
-  z-index: 5;
-  padding: 0 20px;
-  overflow: visible;
-  height: auto;
-  transform: none;
-}
-
-
-
+    .content {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
+      padding: 0 20px;
+      overflow-y: auto;
+      height: calc(100% - 140px);
+    }
     .content.visible { opacity: 1; }
     h1 {
       font-family: 'Orbitron', sans-serif;
@@ -213,15 +211,15 @@
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-   <div class="content" id="mainText">
+  <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
     <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
     We’re building a new legacy of entertainment — and it’s just the beginning.</p>
     <p style="margin-top:1rem; font-weight:bold;">
   <div class="support">
-    <a href="about.html">
-  Learn more about SterlWorld → About Page
-</a>
+    <a href="about.html" target="_blank" rel="noopener noreferrer">
+      Learn more about SterlWorld → About Page
+    </a>
   </div>
 </p>
 
