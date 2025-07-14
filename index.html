@@ -13,7 +13,7 @@
   background: black;
   font-family: 'Poppins', sans-serif;
   color: white;
-  overflow-y: auto;
+  overflow: hidden;
   cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
 }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
@@ -34,8 +34,10 @@
     }
     #logo { width: 300px; max-width: 80vw; }
    .content {
-  position: relative;
-  margin: 140px auto 0 auto;
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   max-width: 90%;
   text-align: center;
@@ -45,10 +47,10 @@
   color: #ccc;
   z-index: 5;
   padding: 0 20px;
-  overflow: visible;
-  height: auto;
-  transform: none;
+  overflow-y: auto;
+  height: calc(100% - 140px);
 }
+
 
 
 
