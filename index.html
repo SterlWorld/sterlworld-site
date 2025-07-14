@@ -301,10 +301,13 @@ function createSparkleBurst(x, y) {
     sparkle.className = 'sparkle-star';
 
     const size = Math.random() * 16 + 8;
-    sparkle.style.width = `${size}px`;
-    sparkle.style.height = `${size}px`;
-    sparkle.style.left = `${x}px`;
-    sparkle.style.top = `${y}px`;
+sparkle.style.width = `${size}px`;
+sparkle.style.height = `${size}px`;
+
+// Center the sparkle image on click point:
+sparkle.style.left = `${x - size / 2}px`;
+sparkle.style.top = `${y - size / 2}px`;
+
 
     const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
     sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
