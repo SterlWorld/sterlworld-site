@@ -30,6 +30,7 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
+      cursor: pointer;
     }
     #logo {
       width: 180px;
@@ -71,12 +72,28 @@
       padding: 20px 10px;
       user-select: none;
     }
+    .sparkle-star {
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform-origin: center center;
+      z-index: 9999;
+      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+      animation: spin 0.6s linear;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <canvas id="space"></canvas>
 
-  <div id="logo-wrapper">
+  <div id="logo-wrapper" onclick="location.href='index.html'">
     <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
@@ -116,7 +133,6 @@
   </footer>
 
   <script>
-    // Starry cosmic background animation (same as main page)
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -186,6 +202,50 @@
       ctx.fillRect(0, 0, w, h);
       animate();
     };
+
+    // Star sparkle click effect
+    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+
+    function createSparkleBurst(x, y) {
+      const numStars = 12 + Math.floor(Math.random() * 6);
+      for (let i = 0; i < numStars; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc;
+        sparkle.className = 'sparkle-star';
+
+        const size = Math.random() * 16 + 8;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${x - size / 2}px`;
+        sparkle.style.top = `${y - size / 2}px`;
+
+        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+
+        document.body.appendChild(sparkle);
+        void sparkle.offsetWidth; // Force reflow
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 60;
+        const offsetX = Math.cos(angle) * distance;
+        const offsetY = Math.sin(angle) * distance;
+
+        sparkle.style.left = `${x + offsetX}px`;
+        sparkle.style.top = `${y + offsetY}px`;
+        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+        sparkle.style.opacity = '0';
+
+        setTimeout(() => sparkle.remove(), 600);
+      }
+    }
+
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    });
   </script>
 </body>
 </html>
