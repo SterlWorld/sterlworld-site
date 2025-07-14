@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About SterlWorld</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow: auto;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+    }
+    canvas#space {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      display: block;
+      pointer-events: none;
+    }
+    #logo-wrapper {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    #logo {
+      width: 180px;
+      max-width: 80vw;
+    }
+    main {
+      position: relative;
+      max-width: 850px;
+      margin: 110px auto 60px auto;
+      padding: 0 20px;
+      color: #ccc;
+      z-index: 5;
+      user-select: text;
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 3rem;
+      color: #0ff;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #0ff;
+    }
+    p {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      color: #ddd;
+    }
+    p.highlight {
+      color: #ffd700;
+      font-weight: 600;
+      text-shadow: 0 0 8px #ffd700;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      padding: 20px 10px;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="space"></canvas>
+
+  <div id="logo-wrapper">
+    <img src="logo.png" id="logo" alt="SterlWorld Logo" />
+  </div>
+
+  <main>
+    <h1>About SterlWorld</h1>
+    <p>
+      Welcome to <strong>SterlWorld</strong>, a cosmic playground for creation, magic, and inspiration.
+      It’s a universe built for <em>everyone</em> — no matter your background or story —  
+      a place where unity, peace, and your truest power can flourish.
+    </p>
+    <p>
+      Here, we craft brand new worlds through games, animations, stories, and art —  
+      igniting imagination and making the impossible possible.
+    </p>
+    <p class="highlight">
+      SterlWorld is more than a project — it’s a creative hub destined to grow into something huge:  
+      comics, series, merchandise, streaming, even amusement parks.  
+      A new world brought to life with love, magic, and endless possibility.
+    </p>
+    <p>
+      We believe in the power of creativity to heal, uplift, and unite.  
+      This is a place for dreamers and doers — for those ready to discover and express their highest potential.
+    </p>
+    <p>
+      Though we start small, our vision is vast.  
+      SterlWorld will become a beacon of light, hope, and opportunity —  
+      an ever-expanding universe where creators and fans alike can belong and thrive.
+    </p>
+    <p class="highlight">
+      Join us on this journey to build a legacy of wonder and joy.  
+      The adventure is just beginning — and it’s a place for <strong>all of us</strong>.
+    </p>
+  </main>
+
+  <footer>
+    © 1992–2025 SterlWorld • Beyond This Realm
+  </footer>
+
+  <script>
+    // Starry cosmic background animation (same as main page)
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const starImage = new Image();
+    starImage.src = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+
+    let stars = [];
+    function createStar() {
+      return {
+        x: (Math.random() - 0.5) * w * 1.5,
+        y: (Math.random() - 0.5) * h * 1.5,
+        z: Math.random() * w,
+        size: Math.random() * 0.8 + 0.3,
+        rotationAngle: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
+      };
+    }
+    for (let i = 0; i < 200; i++) stars.push(createStar());
+
+    let lastTime = performance.now();
+
+    function animate(time = performance.now()) {
+      const delta = (time - lastTime) / 16.67;
+      lastTime = time;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+      ctx.fillRect(0, 0, w, h);
+
+      stars.forEach((s, i) => {
+        s.z -= 0.5 * delta;
+        if (s.z <= 0) {
+          stars[i] = createStar();
+          return;
+        }
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) {
+          stars[i] = createStar();
+          return;
+        }
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(s.rotationAngle);
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#f7de99';
+        ctx.globalAlpha = 0.35;
+        let starSize = s.size * (1 - s.z / w) * 25;
+        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        ctx.restore();
+        s.rotationAngle += s.rotationSpeed;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    starImage.onload = () => {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+      animate();
+    };
+  </script>
+</body>
+</html>
