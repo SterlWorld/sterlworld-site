@@ -8,14 +8,14 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      height: 100%;
-      width: 100%;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow: hidden;
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
-    }
+  height: 100%;
+  width: 100%;
+  background: black;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  overflow: hidden;
+  cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+}
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
     #logo-wrapper {
       position: absolute;
@@ -51,15 +51,15 @@
       height: calc(100% - 140px);
     }
     /* Hide scrollbar for body and .content */
-    body::-webkit-scrollbar,
-    .content::-webkit-scrollbar {
-      display: none;
-    }
+body::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+  display: none;
+}
 
-    body, .content {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;     /* Firefox */
-    }
+body, .content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
 
     .content.visible { opacity: 1; }
     h1 {
@@ -84,36 +84,26 @@
       color: #fff;
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
-    /* Added .support-link class for matching glow effect */
-    .support-link {
-      color: #0ff;
-      font-weight: bold;
-      text-decoration: none;
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-    }
-    .support-link:hover {
-      color: #fff;
-      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
-    }
-
     .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      /* Remove translate from here */
-      transform-origin: center center;
-      z-index: 9999;
-      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-      opacity: 1;
-      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-      animation: spin 0.6s linear;
-    }
+  pointer-events: none;
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  /* Remove translate from here */
+  transform-origin: center center;
+  z-index: 9999;
+  transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+  opacity: 1;
+  filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+  animation: spin 0.6s linear;
+}
 
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
 
     #loader {
       position: fixed;
@@ -233,25 +223,29 @@
   </div>
 
   <div class="content" id="mainText">
-    <h1>Welcome to SterlWorld</h1>
-    <p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
-    We’re building a new legacy of entertainment — and it’s just the beginning.</p>
+   <h1>Welcome to SterlWorld</h1>
+<p>A cosmic creative studio crafting experiences through gaming, music, animation, and art.<br />
+We’re building a new legacy of entertainment — and it’s just the beginning.</p>
 
-    <p style="margin-top:1rem; font-weight:bold;">
-      <a href="about.html" target="_blank" class="support-link">
-        Click here to learn more about SterlWorld
-      </a>
-    </p>
+<p style="margin-top:1rem; font-weight:bold;">
+  <a href="about.html" target="_blank" class="support-link">
+    Click here to learn more about SterlWorld
+  </a>
+</p>
 
-    <div class="support" style="margin-top:2rem;">
-      <h2 style="color:#ffd700;">The Official SterlWorld Store is Now Live</h2>
-      <p>Support the vision. Represent the world. Every purchase fuels the legacy we're building.</p>
-      <p>
-        <a href="https://store.sterlworld.com" target="_blank" class="support-link">
-          Visit the SterlWorld Store
-        </a>
-      </p>
-    </div>
+<div class="support" style="margin-top:2rem;">
+  <h2 style="color:#ffd700;">The Official SterlWorld Store is Now Live</h2>
+  <p>Support the vision. Represent the world. Every purchase fuels the legacy we're building.</p>
+  <p>
+    <a href="https://store.sterlworld.com" target="_blank" class="support-link">
+      Visit the SterlWorld Store
+    </a>
+  </p>
+</div>
+
+
+
+</p>
 
     <div style="margin-top: 2rem; position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; margin-left: auto; margin-right: auto; border: 2px solid #0ff; box-shadow: 0 0 20px #0ff;">
       <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4E8G7myjPA?autoplay=1&mute=1&loop=1&playlist=z4E8G7myjPA"
@@ -259,57 +253,60 @@
     </div>
 
     <h2 style="margin-top: 2rem; font-family: 'Orbitron', sans-serif; color: #ffd700;">Pizza Dales: A Game. A World. A Legacy.</h2>
-    <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
-      <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
-      The first spark in a brand-new original universe called  
-      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
-      stitched together with style, heart, and legacy.
+<p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.75;">
+  <strong><span style="color:#ffd700; text-shadow: 0 0 6px #ffd700;">Pizza Dales is the beginning</span></strong>.  
+  The first spark in a brand-new original universe called  
+  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 6px #0ff;">SterlWorld</span> — a cosmic playground of characters, worlds, and stories  
+  stitched together with style, heart, and legacy.
 
-      <br /><br />
-      Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
-      it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
-      Our vision is crystal clear: to bring this world to the  
-      <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
+  <br /><br />
+  Built entirely from scratch, <strong>Pizza Dales</strong> isn’t just a game —  
+  it’s the launchpad for a full-blown IP meant to stand tall next to the greats.  
+  Our vision is crystal clear: to bring this world to the  
+  <span style="color:#0ff; font-weight:bold; text-shadow: 0 0 8px #0ff;">Nintendo Switch</span> and beyond.
 
-      <br /><br />
-      What you're seeing above is real.  
-      Behind-the-scenes footage from the main game —  
-      plus a sneak peek at our mobile endless runner,  
-      <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
+  <br /><br />
+  What you're seeing above is real.  
+  Behind-the-scenes footage from the main game —  
+  plus a sneak peek at our mobile endless runner,  
+  <span style="color:#ffd700; font-weight:bold;">Dale’s Dash</span>.
 
-      <br /><br />
-      No team. No studio. Just one creator —  
-      doing the work of many with the belief of millions.  
-      I say "we" because I know this is bigger than me.  
-      <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
+  <br /><br />
+  No team. No studio. Just one creator —  
+  doing the work of many with the belief of millions.  
+  I say "we" because I know this is bigger than me.  
+  <span style="color:#0ff; text-shadow: 0 0 6px #0ff;">And one day, it will be.</span>
 
-      <br /><br />
-      This site is more than a homepage —  
-      it’s my living portfolio.  
-      Game design. Animation. Web development. Worldbuilding.  
-      It's all here. It's all real.
+  <br /><br />
+  This site is more than a homepage —  
+  it’s my living portfolio.  
+  Game design. Animation. Web development. Worldbuilding.  
+  It's all here. It's all real.
 
-      <br /><br />
-      When you support this,  
-      <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
-      <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
-    </p>
+  <br /><br />
+  When you support this,  
+  <strong style="color:#ffd700; text-shadow: 0 0 10px #ffd700;">you’re not just backing a game</strong> —  
+  <strong style="color:#fff; text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;">you’re helping launch a legacy</strong>.
+</p>
 
     <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
-      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank" class="support-link">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/SterlWorldx2" target="_blank" class="support-link">$SterlWorldx2</a></p>
-      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank" class="support-link">Play Crust Master / Donate</a></p>
-      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank" class="support-link">Portfolio</a></p>
+      <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
+      <p>Cash App: <a href="https://cash.app/SterlWorldx2" target="_blank">$SterlWorldx2</a></p>
+      <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
+      <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
 
+    
     <footer style="margin-top: 6rem; padding-bottom: 0px; width: 100%; text-align: center; color: #666; font-size: 0.9rem; font-family: 'Poppins', sans-serif; user-select: none;">
       © 1992–2025 SterlWorld • Beyond This Realm
     </footer>
-    <p style="margin-top: 0rem; text-align: center; font-size: 0.8rem; color: #777;">
-      Hand-coded & designed by <strong>Sterlin Griffin</strong> • A <span style="color:#0ff;">SterlWorld</span> Production
-    </p>
+ <p style="margin-top: 0rem; text-align: center; font-size: 0.8rem; color: #777;">
+  Hand-coded & designed by <strong>Sterlin Griffin</strong> • A <span style="color:#0ff;">SterlWorld</span> Production
+</p>
   </div>
+  
+
 
   <script>
     const loader = document.getElementById('loader');
@@ -323,49 +320,53 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-    function createSparkleBurst(x, y) {
-      const numStars = 12 + Math.floor(Math.random() * 6);
+function createSparkleBurst(x, y) {
+  const numStars = 12 + Math.floor(Math.random() * 6);
 
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
+  for (let i = 0; i < numStars; i++) {
+    const sparkle = document.createElement('img');
+    sparkle.src = sparkleImgSrc;
+    sparkle.className = 'sparkle-star';
 
-        const size = Math.random() * 16 + 8;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
+    const size = Math.random() * 16 + 8;
+sparkle.style.width = ${size}px;
+sparkle.style.height = ${size}px;
 
-        // Center the sparkle image on click point:
-        sparkle.style.left = `${x - size / 2}px`;
-        sparkle.style.top = `${y - size / 2}px`;
+// Center the sparkle image on click point:
+sparkle.style.left = ${x - size / 2}px;
+sparkle.style.top = ${y - size / 2}px;
 
-        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
-        sparkle.style.opacity = '1';
-        document.body.appendChild(sparkle);
+    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+    sparkle.style.filter = drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8);
 
-        // Force reflow
-        void sparkle.offsetWidth;
+    sparkle.style.opacity = '1';
+    document.body.appendChild(sparkle);
 
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 60;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
+    // Force reflow
+    void sparkle.offsetWidth;
 
-        // Animate movement by changing left/top
-        sparkle.style.left = `${x + offsetX}px`;
-        sparkle.style.top = `${y + offsetY}px`;
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 40 + Math.random() * 60;
+    const offsetX = Math.cos(angle) * distance;
+    const offsetY = Math.sin(angle) * distance;
 
-        // Scale down and fade out
-        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-        sparkle.style.opacity = '0';
+    // Animate movement by changing left/top
+    sparkle.style.left = ${x + offsetX}px;
+    sparkle.style.top = ${y + offsetY}px;
 
-        setTimeout(() => sparkle.remove(), 600);
-      }
-    }
+    // Scale down and fade out
+    sparkle.style.transform = scale(0.5) rotate(${Math.random() * 360}deg);
+    sparkle.style.opacity = '0';
+
+    setTimeout(() => sparkle.remove(), 600);
+  }
+}
+
+
+
 
     document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
@@ -401,67 +402,97 @@
     }
     for (let i = 0; i < 200; i++) stars.push(createStar());
 
-    let warpSpeed = 0;
-    function animateStars() {
-      ctx.clearRect(0, 0, w, h);
-      const cx = w / 2;
-      const cy = h / 2;
+    let warpSpeed = 30;
+    const normalSpeed = 0.5;
+    const warpDuration = 3000;
+    let warpStartTime = null;
+    let warpComplete = false;
+    let lastTime = performance.now();
 
-      for (let star of stars) {
-        star.z -= 6 + warpSpeed;
-        if (star.z < 1) {
-          Object.assign(star, createStar());
-          star.z = w;
-        }
+    function animate(time = performance.now()) {
+      if (!warpStartTime) warpStartTime = time;
+      const elapsed = time - warpStartTime;
 
-        const sx = cx + (star.x / star.z) * w;
-        const sy = cy + (star.y / star.z) * h;
-        const size = star.size * (w / star.z);
-        star.rotationAngle += star.rotationSpeed;
-
-        ctx.save();
-        ctx.translate(sx, sy);
-        ctx.rotate(star.rotationAngle);
-        ctx.globalAlpha = 0.75;
-        ctx.drawImage(starImage, -size / 2, -size / 2, size, size);
-        ctx.restore();
-      }
-      requestAnimationFrame(animateStars);
-    }
-    starImage.onload = animateStars;
-
-    // Loader animation logic
-    let loadPercent = 0;
-    function updateLoader() {
-      loadPercent += 1 + Math.random() * 5;
-      if (loadPercent >= 100) {
-        loadPercent = 100;
-        barFill.style.width = '100%';
-        barFill.classList.add('full');
-        loader.querySelector('.loading-text').textContent = 'Ready';
-        setTimeout(() => {
-          loader.style.display = 'none';
+      if (elapsed < warpDuration) {
+        const t = elapsed / warpDuration;
+        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+      } else {
+        warpSpeed = normalSpeed;
+        if (!warpComplete) {
+          warpComplete = true;
           document.getElementById('logo-wrapper').classList.add('fade-in');
           setTimeout(() => {
-            const logoWrap = document.getElementById('logo-wrapper');
-            logoWrap.classList.add('move-top');
-            const mainContent = document.getElementById('mainText');
-            mainContent.classList.add('visible');
+            document.getElementById('logo-wrapper').classList.add('move-top');
+            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
           }, 1500);
-        }, 1200);
-      } else {
-        barFill.style.width = loadPercent + '%';
-        // Glow animation on title letters based on loadPercent
-        const activeIndex = Math.floor((loadPercent / 100) * titleLetters.length);
-        titleLetters.forEach((span, i) => {
-          span.style.color = i <= activeIndex ? '#0ff' : 'white';
-          span.style.textShadow = i <= activeIndex ? '0 0 8px #0ff, 0 0 15px #0ff' : 'none';
-        });
-        setTimeout(updateLoader, 50 + Math.random() * 150);
+        }
       }
-    }
-    updateLoader();
 
+      const delta = (time - lastTime) / 16.67;
+      lastTime = time;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.fillRect(0, 0, w, h);
+
+      stars.forEach((s, i) => {
+        s.z -= warpSpeed * delta;
+        if (s.z <= 0) {
+          stars[i] = createStar();
+          return;
+        }
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) {
+          stars[i] = createStar();
+          return;
+        }
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(s.rotationAngle);
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#f7de99';
+        ctx.globalAlpha = 0.35;
+        let starSize = s.size * (1 - s.z / w) * 25;
+        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        ctx.restore();
+        s.rotationAngle += s.rotationSpeed;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    function updateLetterGlow() {
+      const barFillRect = barFill.getBoundingClientRect();
+      titleLetters.forEach((letter) => {
+        const letterRect = letter.getBoundingClientRect();
+        const letterMid = letterRect.left + letterRect.width / 2;
+        if (letterMid <= barFillRect.right) {
+          letter.classList.add('glow-gold');
+        }
+      });
+    }
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        barFill.classList.add('full');
+        setTimeout(() => {
+          loader.remove();
+          animate();
+        }, 600);
+      }
+      barFill.style.width = ${progress}%;
+      updateLetterGlow();
+    }, 130);
+
+    starImage.onload = () => {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+    };
   </script>
 </body>
 </html>
