@@ -50,17 +50,6 @@
       overflow-y: auto;
       height: calc(100% - 140px);
     }
-    /* Hide scrollbar for body and .content */
-body::-webkit-scrollbar,
-.content::-webkit-scrollbar {
-  display: none;
-}
-
-body, .content {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
-}
-
     .content.visible { opacity: 1; }
     h1 {
       font-family: 'Orbitron', sans-serif;
@@ -279,7 +268,7 @@ body, .content {
     <div class="support" style="margin-top: 3rem;">
       <p>Want to support the vision?</p>
       <p>Venmo: <a href="https://venmo.com/sterlworld_business" target="_blank">@sterlworld_business</a></p>
-      <p>Cash App: <a href="https://cash.app/SterlWorldx2" target="_blank">$SterlWorldx2</a></p>
+      <p>Cash App: <a href="https://cash.app/$SterWorldx2" target="_blank">$SterWorldx2</a></p>
       <p><a href="https://sterlworld.itch.io/crust-master" target="_blank">Play Crust Master / Donate</a></p>
       <p>Check out some art from SterlWorld: <a href="https://sterlworld.artstation.com" target="_blank">Portfolio</a></p>
     </div>
@@ -318,16 +307,16 @@ function createSparkleBurst(x, y) {
     sparkle.className = 'sparkle-star';
 
     const size = Math.random() * 16 + 8;
-sparkle.style.width = ${size}px;
-sparkle.style.height = ${size}px;
+sparkle.style.width = `${size}px`;
+sparkle.style.height = `${size}px`;
 
 // Center the sparkle image on click point:
-sparkle.style.left = ${x - size / 2}px;
-sparkle.style.top = ${y - size / 2}px;
+sparkle.style.left = `${x - size / 2}px`;
+sparkle.style.top = `${y - size / 2}px`;
 
 
     const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-    sparkle.style.filter = drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8);
+    sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
     sparkle.style.opacity = '1';
     document.body.appendChild(sparkle);
@@ -341,11 +330,11 @@ sparkle.style.top = ${y - size / 2}px;
     const offsetY = Math.sin(angle) * distance;
 
     // Animate movement by changing left/top
-    sparkle.style.left = ${x + offsetX}px;
-    sparkle.style.top = ${y + offsetY}px;
+    sparkle.style.left = `${x + offsetX}px`;
+    sparkle.style.top = `${y + offsetY}px`;
 
     // Scale down and fade out
-    sparkle.style.transform = scale(0.5) rotate(${Math.random() * 360}deg);
+    sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
     sparkle.style.opacity = '0';
 
     setTimeout(() => sparkle.remove(), 600);
@@ -472,7 +461,7 @@ sparkle.style.top = ${y - size / 2}px;
           animate();
         }, 600);
       }
-      barFill.style.width = ${progress}%;
+      barFill.style.width = `${progress}%`;
       updateLetterGlow();
     }, 130);
 
