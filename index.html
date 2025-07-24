@@ -193,12 +193,10 @@
     }
 
     @media screen and (max-width: 600px) {
-      #logo {
-  width: auto;
-  max-width: 80vw;
-  max-height: 160px;
-}
-
+      #logo { width: 180px; }
+      h1 { font-size: 1.8rem; }
+      .content { font-size: 1rem; top: 120px; overflow-y: auto; height: calc(100% - 120px); }
+    }
   </style>
 </head>
 <body>
@@ -210,7 +208,7 @@
   <canvas id="space"></canvas>
 
   <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+    <img src="logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
   <div class="content" id="mainText">
@@ -318,16 +316,16 @@ function createSparkleBurst(x, y) {
     sparkle.className = 'sparkle-star';
 
     const size = Math.random() * 16 + 8;
-sparkle.style.width = `${size}px`;
-sparkle.style.height = `${size}px`;
+sparkle.style.width = ${size}px;
+sparkle.style.height = ${size}px;
 
 // Center the sparkle image on click point:
-sparkle.style.left = `${x - size / 2}px`;
-sparkle.style.top = `${y - size / 2}px`;
+sparkle.style.left = ${x - size / 2}px;
+sparkle.style.top = ${y - size / 2}px;
 
 
     const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-    sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+    sparkle.style.filter = drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8);
 
     sparkle.style.opacity = '1';
     document.body.appendChild(sparkle);
@@ -341,11 +339,11 @@ sparkle.style.top = `${y - size / 2}px`;
     const offsetY = Math.sin(angle) * distance;
 
     // Animate movement by changing left/top
-    sparkle.style.left = `${x + offsetX}px`;
-    sparkle.style.top = `${y + offsetY}px`;
+    sparkle.style.left = ${x + offsetX}px;
+    sparkle.style.top = ${y + offsetY}px;
 
     // Scale down and fade out
-    sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+    sparkle.style.transform = scale(0.5) rotate(${Math.random() * 360}deg);
     sparkle.style.opacity = '0';
 
     setTimeout(() => sparkle.remove(), 600);
@@ -472,7 +470,7 @@ sparkle.style.top = `${y - size / 2}px`;
           animate();
         }, 600);
       }
-      barFill.style.width = `${progress}%`;
+      barFill.style.width = ${progress}%;
       updateLetterGlow();
     }, 130);
 
