@@ -478,6 +478,28 @@ sparkle.style.top = `${y - size / 2}px`;
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, w, h);
     };
+
+    const logo = document.getElementById('logo');
+
+function triggerPulse() {
+  logo.style.animation = 'logoPulse 1.2s ease-in-out';
+  setTimeout(() => {
+    logo.style.animation = '';
+  }, 1200);
+}
+
+function randomPulseLoop() {
+  const delay = 8000 + Math.random() * 12000;
+  setTimeout(() => {
+    triggerPulse();
+    randomPulseLoop();
+  }, delay);
+}
+
+window.addEventListener('load', () => {
+  setTimeout(randomPulseLoop, 2000);
+});
+
   </script>
 </body>
 </html>
