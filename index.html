@@ -31,6 +31,15 @@
       padding-top: 20vh;
     }
 
+    canvas#twinkle-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1; /* BELOW everything */
+  display: block;
+}
+
+
     #logo {
       font-family: 'Orbitron', sans-serif;
       font-size: 3.8rem;
@@ -69,6 +78,7 @@
   </style>
 </head>
 <body>
+  <canvas id="twinkle-stars"></canvas>
   <canvas id="starCanvas"></canvas>
   <div class="content">
     <div id="logo">Welcome to SterlWorld</div>
@@ -150,6 +160,45 @@
     window.addEventListener('load', () => {
       setTimeout(randomPulseLoop, 2000);
     });
-  </script>
+  <script>
+  const twinkleCanvas = document.getElementById('twinkle-stars');
+  const twinkleCtx = twinkleCanvas.getContext('2d');
+  let twinkleW, twinkleH;
+
+  function resizeTwinkle() {
+    twinkleW = twinkleCanvas.width = window.innerWidth;
+    twinkleH = twinkleCanvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeTwinkle);
+  resizeTwinkle();
+
+  const twinkleStars = Array.from({ length: 200 }, () => ({
+    x: Math.random() * twinkleW,
+    y: Math.random() * twinkleH,
+    radius: Math.random() * 1.2 + 0.4,
+    alpha: Math.random(),
+    delta: (Math.random() * 0.015) + 0.005
+  }));
+
+  function drawTwinkleStars() {
+    twinkleCtx.clearRect(0, 0, twinkleW, twinkleH);
+    twinkleStars.forEach(star => {
+      star.alpha += star.delta;
+      if (star.alpha <= 0 || star.alpha >= 1) star.delta *= -1;
+
+      twinkleCtx.beginPath();
+      twinkleCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      twinkleCtx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+      twinkleCtx.shadowBlur = 6;
+      twinkleCtx.shadowColor = '#ffffff';
+      twinkleCtx.fill();
+    });
+
+    requestAnimationFrame(drawTwinkleStars);
+  }
+
+  drawTwinkleStars();
+</script>
 </body>
 </html>
