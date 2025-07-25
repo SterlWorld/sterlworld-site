@@ -33,6 +33,20 @@
       position: fixed;
     }
     #logo { width: 300px; max-width: 80vw; }
+    #logo {
+  animation: logoPulse 4s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
     .content {
       position: absolute;
       top: 140px;
@@ -272,19 +286,7 @@
   </p>
 </div>
 
-  #logo {
-  animation: logoPulse 4s ease-in-out infinite;
-  transform-origin: center center;
-}
-
-@keyframes logoPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
+  
 
 
 
