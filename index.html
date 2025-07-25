@@ -14,33 +14,43 @@
       font-family: 'Poppins', sans-serif;
       color: white;
       overflow: hidden;
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/dale-glove-cursor.png') 4 0, auto;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
 
+    /* Logo wrapper container */
     #logo-wrapper {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      width: 300px;           /* fixed container width */
+      height: auto;
+      transform: translate(-50%, -50%) scale(1);
       z-index: 10;
       opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
-    #logo-wrapper.fade-in { opacity: 1; }
+    #logo-wrapper.fade-in {
+      opacity: 1;
+    }
     #logo-wrapper.move-top {
       top: 40px;
-      transform: translate(-50%, 0);
+      left: 50%;
       position: fixed;
-    }
-    #logo {
-      width: 300px;
-      max-width: 80vw;
+      transform: translate(-50%, 0) scale(0.45); /* shrink to 45% */
+      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
 
+    #logo-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Content container */
     .content {
       position: absolute;
-      top: 140px;
+      top: 110px;    /* moved up slightly to sit nicely below small logo */
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -53,9 +63,11 @@
       z-index: 5;
       padding: 0 20px;
       overflow-y: auto;
-      height: calc(100% - 140px);
+      height: calc(100% - 110px);
     }
-    .content.visible { opacity: 1; }
+    .content.visible {
+      opacity: 1;
+    }
 
     h1 {
       font-family: 'Orbitron', sans-serif;
@@ -65,8 +77,40 @@
       color: white;
     }
     p { line-height: 1.5; }
+    .support {
+      margin-top: 2.5rem;
+    }
+    .support p { margin: 0.5rem 0; }
+    .support a {
+      color: #0ff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+    }
+    .support a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
+    }
 
-    /* Loading styles */
+    /* Sparkle star styles */
+    .sparkle-star {
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform-origin: center center;
+      z-index: 9999;
+      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+      animation: spin 0.6s linear;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Loader styles */
     #loader {
       position: fixed;
       top: 0; left: 0;
@@ -157,9 +201,9 @@
     }
 
     @media screen and (max-width: 600px) {
-      #logo { width: 180px; }
+      #logo-wrapper { width: 180px; }
       h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 120px; overflow-y: auto; height: calc(100% - 120px); }
+      .content { font-size: 1rem; top: 90px; overflow-y: auto; height: calc(100% - 90px); }
     }
   </style>
 </head>
@@ -172,12 +216,11 @@
   <canvas id="space"></canvas>
 
   <div id="logo-wrapper">
-    <!-- Replace this src with your new logo URL -->
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" />
+    <!-- Replace src with your new logo URL -->
+    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" alt="SterlWorld Logo" />
   </div>
 
   <div class="content" id="mainText">
-    <!-- UNDER CONSTRUCTION message replacing all original content -->
     <h1>Site Under Construction</h1>
     <p>
       Thanks for visiting SterlWorld.<br />
@@ -187,11 +230,11 @@
   </div>
 
   <script>
-    // Loading bar + text animation
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
     const loadingText = 'SterlWorld';
+
     for (let char of loadingText) {
       const span = document.createElement('span');
       span.textContent = char;
@@ -226,6 +269,58 @@
       updateLetterGlow();
     }, 130);
 
+    // Sparkle click effect setup
+    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+
+    function createSparkleBurst(x, y) {
+      const numStars = 12 + Math.floor(Math.random() * 6);
+      for (let i = 0; i < numStars; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc;
+        sparkle.className = 'sparkle-star';
+
+        const size = Math.random() * 16 + 8;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+
+        // Center the sparkle image on click point:
+        sparkle.style.left = `${x - size / 2}px`;
+        sparkle.style.top = `${y - size / 2}px`;
+
+        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+
+        sparkle.style.opacity = '1';
+        document.body.appendChild(sparkle);
+
+        // Force reflow
+        void sparkle.offsetWidth;
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 60;
+        const offsetX = Math.cos(angle) * distance;
+        const offsetY = Math.sin(angle) * distance;
+
+        // Animate movement by changing left/top
+        sparkle.style.left = `${x + offsetX}px`;
+        sparkle.style.top = `${y + offsetY}px`;
+
+        // Scale down and fade out
+        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+        sparkle.style.opacity = '0';
+
+        setTimeout(() => sparkle.remove(), 600);
+      }
+    }
+
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    });
+
     // Starfield setup
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
@@ -238,9 +333,8 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Starfield stars data
     const starImage = new Image();
-    starImage.src = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+    starImage.src = sparkleImgSrc;
 
     let stars = [];
     function createStar() {
@@ -265,8 +359,7 @@
     function animate(time = performance.now()) {
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
-
-      if (elapsed < warpDuration) {
+            if (elapsed < warpDuration) {
         const t = elapsed / warpDuration;
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
       } else {
