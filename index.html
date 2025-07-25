@@ -29,11 +29,12 @@
       will-change: top, transform;
     }
     #logo-wrapper.fade-in { opacity: 1; }
+    /* Adjusted move-top styles */
     #logo-wrapper.move-top {
       position: fixed;
-      top: 15px; /* Higher near the top */
+      top: 40px; /* Lowered down from 15px so logo not too high */
       left: 50%;
-      transform: translate(-50%, 0) scale(0.45); /* Shrink and center horizontally */
+      transform: translate(-50%, 0) scale(0.7); /* Slightly bigger scale */
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
     #logo {
@@ -43,13 +44,13 @@
       transition: width 1.5s ease, height 1.5s ease;
     }
     #logo-wrapper.move-top #logo {
-      width: 135px; /* 45% of 300px */
+      width: 210px; /* 70% of 300px */
       max-width: none;
     }
 
     .content {
       position: absolute;
-      top: 100px; /* Start below the logo + buffer */
+      top: 120px; /* Increased from 100px for buffer below bigger logo */
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -62,7 +63,7 @@
       z-index: 5;
       padding: 0 20px;
       overflow-y: auto;
-      height: calc(100% - 100px); /* Adjust height accordingly */
+      height: calc(100% - 120px);
       will-change: opacity;
     }
     .content.visible { opacity: 1; }
@@ -93,14 +94,13 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Loader and other styles unchanged, omitted here for brevity */
-    /* Keep the loader styles and starfield styling as before */
+    /* Keep your loader and starfield styles exactly as before */
 
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
-      #logo-wrapper.move-top #logo { width: 80px; }
+      #logo-wrapper.move-top #logo { width: 125px; }
       h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 90px; height: calc(100% - 90px); }
+      .content { font-size: 1rem; top: 100px; height: calc(100% - 100px); }
     }
   </style>
 </head>
@@ -124,6 +124,9 @@
   </div>
 
   <script>
+    // Your original loader + starfield + sparkle code untouched
+    // ...
+
     // Loader animation setup
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
@@ -147,7 +150,6 @@
       });
     }
 
-    // Sparkle/starburst effect on clicks/touches
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
@@ -171,8 +173,7 @@
         sparkle.style.opacity = '1';
         document.body.appendChild(sparkle);
 
-        // Force reflow
-        void sparkle.offsetWidth;
+        void sparkle.offsetWidth; // force reflow
 
         const angle = Math.random() * 2 * Math.PI;
         const distance = 40 + Math.random() * 60;
@@ -196,7 +197,7 @@
       }
     });
 
-    // Starfield canvas setup and animation
+    // Starfield setup & animation as your original (unchanged)
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
