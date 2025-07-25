@@ -57,10 +57,60 @@
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
       font-size: 2.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       color: white;
+      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
+      animation: titlePulse 3s ease-in-out infinite alternate;
+      letter-spacing: 2px;
     }
-    p { line-height: 1.5; }
+    
+    @keyframes titlePulse {
+      0% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff; }
+      100% { text-shadow: 0 0 30px #ffd700, 0 0 50px #ffd700, 0 0 70px #ffd700; }
+    }
+    
+    .content p {
+      font-size: 1.3rem;
+      line-height: 1.8;
+      font-weight: 400;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      animation: textFloat 4s ease-in-out infinite alternate;
+    }
+    
+    @keyframes textFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-5px); }
+    }
+    
+    .magical-text {
+      color: #ff5ec4;
+      font-weight: 600;
+      text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4;
+      animation: magicalGlow 2s ease-in-out infinite alternate;
+    }
+    
+    .glow-text {
+      color: #0ff;
+      font-weight: 600;
+      text-shadow: 0 0 15px #0ff, 0 0 25px #0ff;
+    }
+    
+    .power-text {
+      color: #ffd700;
+      font-weight: 700;
+      text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700;
+      animation: powerPulse 1.5s ease-in-out infinite alternate;
+    }
+    
+    @keyframes magicalGlow {
+      0% { text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4; }
+      100% { text-shadow: 0 0 25px #ff5ec4, 0 0 35px #ff5ec4, 0 0 45px #ff5ec4; }
+    }
+    
+    @keyframes powerPulse {
+      0% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700; }
+      100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
+    }
     .support {
       margin-top: 2.5rem;
     }
@@ -214,10 +264,10 @@
   </div>
 
   <div class="content" id="mainText">
-    <h1>Site Under Construction</h1>
-    <p>Thanks for visiting SterlWorld.<br />
-      This site is currently being built behind the scenes.<br />
-      Please check back soon for amazing content and updates.</p>
+    <h1>✨ Entering SterlWorld ✨</h1>
+    <p>A <span class="magical-text">cosmic experience</span> is being forged in the depths of creation.<br />
+      <span class="glow-text">Magic awaits</span> — The universe is expanding.<br />
+      Return soon to witness the <span class="power-text">extraordinary</span>.</p>
   </div>
   
 
