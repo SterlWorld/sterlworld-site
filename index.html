@@ -6,199 +6,500 @@
   <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow: hidden;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+  height: 100%;
+  width: 100%;
+  background: black;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  overflow: hidden;
+  cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+}
+    canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
+    #logo-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
-
-    #starCanvas {
+    #logo-wrapper.fade-in { opacity: 1; }
+    #logo-wrapper.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
     }
+    #logo { width: 300px; max-width: 80vw; }
+    #logo {
+  transform-origin: center center;
+  /* no animation by default */
+}
 
-    .content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding-top: 20vh;
-    }
-
-    canvas#twinkle-stars {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1; /* BELOW everything */
-  display: block;
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
 }
 
 
-    #logo {
+
+
+    .content {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: calc(100vh - 140px);
+    }
+    .content.visible { opacity: 1; }
+    h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: 3.8rem;
+      font-weight: 600;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
       color: white;
+      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
+      animation: titlePulse 3s ease-in-out infinite alternate;
       letter-spacing: 2px;
+    }
+    
+    @keyframes titlePulse {
+      0% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff; }
+      100% { text-shadow: 0 0 30px #ffd700, 0 0 50px #ffd700, 0 0 70px #ffd700; }
+    }
+    
+    .content p {
+      font-size: 1.3rem;
+      line-height: 1.8;
+      font-weight: 400;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      animation: textFloat 4s ease-in-out infinite alternate;
+    }
+    
+    @keyframes textFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-5px); }
+    }
+    
+    .magical-text {
+      color: #ff5ec4;
+      font-weight: 600;
+      text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4;
+      animation: magicalGlow 2s ease-in-out infinite alternate;
+    }
+    
+    .glow-text {
+      color: #0ff;
+      font-weight: 600;
+      text-shadow: 0 0 15px #0ff, 0 0 25px #0ff;
+    }
+    
+    .power-text {
+      color: #ffd700;
+      font-weight: 700;
+      text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700;
+      animation: powerPulse 1.5s ease-in-out infinite alternate;
+    }
+    
+    @keyframes magicalGlow {
+      0% { text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4; }
+      100% { text-shadow: 0 0 25px #ff5ec4, 0 0 35px #ff5ec4, 0 0 45px #ff5ec4; }
+    }
+    
+    @keyframes powerPulse {
+      0% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700; }
+      100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
+    }
+    .support {
+      margin-top: 2.5rem;
+    }
+    .support p { margin: 0.5rem 0; }
+    .support a {
+      color: #0ff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+    }
+    .support a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
+    }
+    .sparkle-star {
+  pointer-events: none;
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  /* Remove translate from here */
+  transform-origin: center center;
+  z-index: 9999;
+  transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+  opacity: 1;
+  filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+  animation: spin 0.6s linear;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 0 15px;
+    }
+
+    #loader h2 {
+      color: white;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      user-select: none;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 90vw;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      white-space: nowrap;
+    }
+
+    #loader h2 .loading-text {
+      color: #0ff;
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    #titleGlow {
+      display: inline-flex;
+      user-select: none;
+      gap: 0;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #titleGlow span {
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+      color: white;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      line-height: 1;
+      padding: 0 0.5px;
+    }
+
+    .glow-gold {
+      color: #ffd700;
       text-shadow:
-        0 0 5px #0ff,
-        0 0 10px #0ff,
-        0 0 20px #0ff,
-        0 0 40px #0ff;
-      cursor: pointer;
-      transform-origin: center center;
-      will-change: transform;
+        0 0 8px #ffd700,
+        0 0 15px #ffec8b,
+        0 0 20px #ffd700,
+        0 0 30px #ffec8b,
+        0 0 40px #ffd700;
     }
 
-    #logo.pulsing {
-      animation: logoPulse 1.2s ease-in-out;
+    .loading-bar {
+      width: 100%;
+      max-width: 90vw;
+      height: 10px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: none;
+      margin: 0 auto 10px;
     }
 
-    @keyframes logoPulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.02);
-      }
+    .loading-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, #0ff, #00f2ff);
+      width: 0%;
+      transition: width 0.2s ease;
     }
 
-    @media (max-width: 600px) {
-      #logo {
-        font-size: 2.4rem;
-        padding: 0 10px;
-        word-break: break-word;
-      }
+    .loading-bar-fill.full {
+      background: linear-gradient(to right, #ffd700, #fff68f);
+      box-shadow:
+        0 0 8px #ffd700,
+        0 0 15px #ffec8b,
+        0 0 20px #ffd700,
+        0 0 30px #ffec8b,
+        0 0 40px #ffd700;
+      animation: flicker 1.2s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
+      50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
+    }
+
+    @media screen and (max-width: 600px) {
+      #logo { width: 180px; }
+      h1 { font-size: 1.8rem; }
+      .content { font-size: 1rem; top: 120px; height: calc(100vh - 120px); }
     }
   </style>
 </head>
 <body>
-  <canvas id="twinkle-stars"></canvas>
-  <canvas id="starCanvas"></canvas>
-  <div class="content">
-    <div id="logo">Welcome to SterlWorld</div>
+  <div id="loader">
+    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
+    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
   </div>
 
+  <canvas id="space"></canvas>
+
+  <div id="logo-wrapper">
+    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+  </div>
+
+  <div class="content" id="mainText">
+  <h1>✨ Welcome to SterlWorld ✨</h1>
+  <p>
+    We’re crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
+    Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
+    Stay tuned — the <span class="power-text">extraordinary</span> awaits.
+  </p>
+</div>
+
+  
+
+
+
   <script>
-    // Star background logic
-    const canvas = document.getElementById('starCanvas');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const loader = document.getElementById('loader');
+    const barFill = document.getElementById('barFill');
+    const titleGlow = document.getElementById('titleGlow');
+    const loadingText = 'SterlWorld';
+    for (let char of loadingText) {
+      const span = document.createElement('span');
+      span.textContent = char;
+      titleGlow.appendChild(span);
     }
+    const titleLetters = titleGlow.querySelectorAll('span');
+    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-    function createStars(count) {
-      stars = [];
-      for (let i = 0; i < count; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 1.2,
-          alpha: Math.random(),
-          delta: 0.02 + Math.random() * 0.02
-        });
+function createSparkleBurst(x, y) {
+  const numStars = 12 + Math.floor(Math.random() * 6);
+
+  for (let i = 0; i < numStars; i++) {
+    const sparkle = document.createElement('img');
+    sparkle.src = sparkleImgSrc;
+    sparkle.className = 'sparkle-star';
+
+    const size = Math.random() * 16 + 8;
+sparkle.style.width = `${size}px`;
+sparkle.style.height = `${size}px`;
+
+// Center the sparkle image on click point:
+sparkle.style.left = `${x - size / 2}px`;
+sparkle.style.top = `${y - size / 2}px`;
+
+
+    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+    sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+
+    sparkle.style.opacity = '1';
+    document.body.appendChild(sparkle);
+
+    // Force reflow
+    void sparkle.offsetWidth;
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 40 + Math.random() * 60;
+    const offsetX = Math.cos(angle) * distance;
+    const offsetY = Math.sin(angle) * distance;
+
+    // Animate movement by changing left/top
+    sparkle.style.left = `${x + offsetX}px`;
+    sparkle.style.top = `${y + offsetY}px`;
+
+    // Scale down and fade out
+    sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+    sparkle.style.opacity = '0';
+
+    setTimeout(() => sparkle.remove(), 600);
+  }
+}
+
+
+
+
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
       }
+    });
+
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     }
+    window.addEventListener('resize', resize);
+    resize();
 
-    function drawStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'white';
-      for (let star of stars) {
-        ctx.globalAlpha = star.alpha;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
-        ctx.fill();
+    const starImage = new Image();
+    starImage.src = sparkleImgSrc;
 
-        star.alpha += star.delta;
-        if (star.alpha <= 0 || star.alpha >= 1) {
-          star.delta = -star.delta;
+    let stars = [];
+    function createStar() {
+      return {
+        x: (Math.random() - 0.5) * w * 1.5,
+        y: (Math.random() - 0.5) * h * 1.5,
+        z: Math.random() * w,
+        size: Math.random() * 0.8 + 0.3,
+        rotationAngle: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
+      };
+    }
+    for (let i = 0; i < 200; i++) stars.push(createStar());
+
+    let warpSpeed = 30;
+    const normalSpeed = 0.5;
+    const warpDuration = 3000;
+    let warpStartTime = null;
+    let warpComplete = false;
+    let lastTime = performance.now();
+
+    function animate(time = performance.now()) {
+      if (!warpStartTime) warpStartTime = time;
+      const elapsed = time - warpStartTime;
+
+      if (elapsed < warpDuration) {
+        const t = elapsed / warpDuration;
+        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+      } else {
+        warpSpeed = normalSpeed;
+        if (!warpComplete) {
+          warpComplete = true;
+          document.getElementById('logo-wrapper').classList.add('fade-in');
+          setTimeout(() => {
+            document.getElementById('logo-wrapper').classList.add('move-top');
+            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
+          }, 1500);
         }
       }
-      ctx.globalAlpha = 1;
+
+      const delta = (time - lastTime) / 16.67;
+      lastTime = time;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.fillRect(0, 0, w, h);
+
+      stars.forEach((s, i) => {
+        s.z -= warpSpeed * delta;
+        if (s.z <= 0) {
+          stars[i] = createStar();
+          return;
+        }
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) {
+          stars[i] = createStar();
+          return;
+        }
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(s.rotationAngle);
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#f7de99';
+        ctx.globalAlpha = 0.35;
+        let starSize = s.size * (1 - s.z / w) * 25;
+        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        ctx.restore();
+        s.rotationAngle += s.rotationSpeed;
+      });
+
+      requestAnimationFrame(animate);
     }
 
-    function animateStars() {
-      drawStars();
-      requestAnimationFrame(animateStars);
+    function updateLetterGlow() {
+      const barFillRect = barFill.getBoundingClientRect();
+      titleLetters.forEach((letter) => {
+        const letterRect = letter.getBoundingClientRect();
+        const letterMid = letterRect.left + letterRect.width / 2;
+        if (letterMid <= barFillRect.right) {
+          letter.classList.add('glow-gold');
+        }
+      });
     }
 
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      createStars(250);
-    });
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        barFill.classList.add('full');
+        setTimeout(() => {
+          loader.remove();
+          animate();
+        }, 600);
+      }
+      barFill.style.width = `${progress}%`;
+      updateLetterGlow();
+    }, 130);
 
-    resizeCanvas();
-    createStars(250);
-    animateStars();
+    starImage.onload = () => {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, w, h);
+    };
 
-    // Logo pulse logic
     const logo = document.getElementById('logo');
 
-    function triggerPulse() {
-      logo.classList.add('pulsing');
-      setTimeout(() => {
-        logo.classList.remove('pulsing');
-      }, 1200);
-    }
+function triggerPulse() {
+  logo.style.animation = 'logoPulse 1.2s ease-in-out';
+  setTimeout(() => {
+    logo.style.animation = '';
+  }, 1200);
+}
 
-    function randomPulseLoop() {
-      const delay = 8000 + Math.random() * 12000; // 8–20s
-      setTimeout(() => {
-        triggerPulse();
-        randomPulseLoop();
-      }, delay);
-    }
+function randomPulseLoop() {
+  const delay = 8000 + Math.random() * 12000;
+  setTimeout(() => {
+    triggerPulse();
+    randomPulseLoop();
+  }, delay);
+}
 
-    window.addEventListener('load', () => {
-      setTimeout(randomPulseLoop, 2000);
-    });
-  <script>
-  const twinkleCanvas = document.getElementById('twinkle-stars');
-  const twinkleCtx = twinkleCanvas.getContext('2d');
-  let twinkleW, twinkleH;
+window.addEventListener('load', () => {
+  setTimeout(randomPulseLoop, 2000);
+});
 
-  function resizeTwinkle() {
-    twinkleW = twinkleCanvas.width = window.innerWidth;
-    twinkleH = twinkleCanvas.height = window.innerHeight;
-  }
-
-  window.addEventListener('resize', resizeTwinkle);
-  resizeTwinkle();
-
-  const twinkleStars = Array.from({ length: 200 }, () => ({
-    x: Math.random() * twinkleW,
-    y: Math.random() * twinkleH,
-    radius: Math.random() * 1.2 + 0.4,
-    alpha: Math.random(),
-    delta: (Math.random() * 0.015) + 0.005
-  }));
-
-  function drawTwinkleStars() {
-    twinkleCtx.clearRect(0, 0, twinkleW, twinkleH);
-    twinkleStars.forEach(star => {
-      star.alpha += star.delta;
-      if (star.alpha <= 0 || star.alpha >= 1) star.delta *= -1;
-
-      twinkleCtx.beginPath();
-      twinkleCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-      twinkleCtx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-      twinkleCtx.shadowBlur = 6;
-      twinkleCtx.shadowColor = '#ffffff';
-      twinkleCtx.fill();
-    });
-
-    requestAnimationFrame(drawTwinkleStars);
-  }
-
-  drawTwinkleStars();
-</script>
+  </script>
 </body>
 </html>
