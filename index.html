@@ -8,14 +8,14 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      height: 100%;
-      width: 100%;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow: hidden;
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
-    }
+  height: 100%;
+  width: 100%;
+  background: black;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  overflow: hidden;
+  cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+}
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
     #logo-wrapper {
       position: absolute;
@@ -34,18 +34,21 @@
     }
     #logo { width: 300px; max-width: 80vw; }
     #logo {
-      transform-origin: center center;
-      /* no animation by default */
-    }
+  transform-origin: center center;
+  /* no animation by default */
+}
 
-    @keyframes logoPulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.02);
-      }
-    }
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+
+
 
     .content {
       position: absolute;
@@ -76,7 +79,6 @@
       text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
       animation: titlePulse 3s ease-in-out infinite alternate;
       letter-spacing: 2px;
-      white-space: nowrap; /* Prevent text from breaking into two lines */
     }
     
     @keyframes titlePulse {
@@ -141,22 +143,25 @@
       text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
     }
     .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform-origin: center center;
-      z-index: 9999;
-      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-      opacity: 1;
-      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-      animation: spin 0.6s linear;
-    }
+  pointer-events: none;
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  /* Remove translate from here */
+  transform-origin: center center;
+  z-index: 9999;
+  transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+  opacity: 1;
+  filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+  animation: spin 0.6s linear;
+}
 
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
 
     #loader {
       position: fixed;
@@ -226,7 +231,7 @@
       max-width: 90vw;
       height: 10px;
       background: #222;
-            border: 1px solid #444;
+      border: 1px solid #444;
       border-radius: 5px;
       overflow: hidden;
       box-shadow: none;
@@ -276,13 +281,17 @@
   </div>
 
   <div class="content" id="mainText">
-    <h1>✨ Welcome to SterlWorld ✨</h1>
-    <p>
-      We’re crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
-      Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
-      Stay tuned — the <span class="power-text">extraordinary</span> awaits.
-    </p>
-  </div>
+  <h1>✨ Welcome to SterlWorld ✨</h1>
+  <p>
+    We’re crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
+    Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
+    Stay tuned — the <span class="power-text">extraordinary</span> awaits.
+  </p>
+</div>
+
+  
+
+
 
   <script>
     const loader = document.getElementById('loader');
@@ -296,45 +305,53 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-    function createSparkleBurst(x, y) {
-      const numStars = 12 + Math.floor(Math.random() * 6);
+function createSparkleBurst(x, y) {
+  const numStars = 12 + Math.floor(Math.random() * 6);
 
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
+  for (let i = 0; i < numStars; i++) {
+    const sparkle = document.createElement('img');
+    sparkle.src = sparkleImgSrc;
+    sparkle.className = 'sparkle-star';
 
-        const size = Math.random() * 16 + 8;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
+    const size = Math.random() * 16 + 8;
+sparkle.style.width = `${size}px`;
+sparkle.style.height = `${size}px`;
 
-        sparkle.style.left = `${x - size / 2}px`;
-        sparkle.style.top = `${y - size / 2}px`;
+// Center the sparkle image on click point:
+sparkle.style.left = `${x - size / 2}px`;
+sparkle.style.top = `${y - size / 2}px`;
 
-        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
-        sparkle.style.opacity = '1';
-        document.body.appendChild(sparkle);
+    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+    sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
-        void sparkle.offsetWidth;
+    sparkle.style.opacity = '1';
+    document.body.appendChild(sparkle);
 
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 60;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
+    // Force reflow
+    void sparkle.offsetWidth;
 
-        sparkle.style.left = `${x + offsetX}px`;
-        sparkle.style.top = `${y + offsetY}px`;
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 40 + Math.random() * 60;
+    const offsetX = Math.cos(angle) * distance;
+    const offsetY = Math.sin(angle) * distance;
 
-        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-        sparkle.style.opacity = '0';
+    // Animate movement by changing left/top
+    sparkle.style.left = `${x + offsetX}px`;
+    sparkle.style.top = `${y + offsetY}px`;
 
-        setTimeout(() => sparkle.remove(), 600);
-      }
-    }
+    // Scale down and fade out
+    sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+    sparkle.style.opacity = '0';
+
+    setTimeout(() => sparkle.remove(), 600);
+  }
+}
+
+
+
 
     document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
     document.addEventListener('touchstart', (e) => {
@@ -447,7 +464,7 @@
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        barFill.classList.add('        barFill.classList.add('full');
+        barFill.classList.add('full');
         setTimeout(() => {
           loader.remove();
           animate();
@@ -464,24 +481,25 @@
 
     const logo = document.getElementById('logo');
 
-    function triggerPulse() {
-      logo.style.animation = 'logoPulse 1.2s ease-in-out';
-      setTimeout(() => {
-        logo.style.animation = '';
-      }, 1200);
-    }
+function triggerPulse() {
+  logo.style.animation = 'logoPulse 1.2s ease-in-out';
+  setTimeout(() => {
+    logo.style.animation = '';
+  }, 1200);
+}
 
-    function randomPulseLoop() {
-      const delay = 8000 + Math.random() * 12000;
-      setTimeout(() => {
-        triggerPulse();
-        randomPulseLoop();
-      }, delay);
-    }
+function randomPulseLoop() {
+  const delay = 8000 + Math.random() * 12000;
+  setTimeout(() => {
+    triggerPulse();
+    randomPulseLoop();
+  }, delay);
+}
 
-    window.addEventListener('load', () => {
-      setTimeout(randomPulseLoop, 2000);
-    });
+window.addEventListener('load', () => {
+  setTimeout(randomPulseLoop, 2000);
+});
+
   </script>
 </body>
 </html>
