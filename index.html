@@ -47,8 +47,10 @@
       color: #ccc;
       z-index: 5;
       padding: 0 20px;
-      overflow-y: auto;
-      height: calc(100% - 140px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: calc(100vh - 140px);
     }
     .content.visible { opacity: 1; }
     h1 {
@@ -195,7 +197,7 @@
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
       h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 120px; overflow-y: auto; height: calc(100% - 120px); }
+      .content { font-size: 1rem; top: 120px; height: calc(100vh - 120px); }
     }
   </style>
 </head>
