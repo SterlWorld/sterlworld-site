@@ -17,7 +17,6 @@
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
     canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
-
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -26,31 +25,20 @@
       z-index: 10;
       opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
-      will-change: top, transform;
     }
     #logo-wrapper.fade-in { opacity: 1; }
-    /* Adjusted move-top styles */
     #logo-wrapper.move-top {
+      top: 40px;
+      transform: translate(-50%, 0);
       position: fixed;
-      top: 40px; /* Lowered down from 15px so logo not too high */
-      left: 50%;
-      transform: translate(-50%, 0) scale(0.7); /* Slightly bigger scale */
-      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
     }
     #logo {
       width: 300px;
       max-width: 80vw;
-      height: auto;
-      transition: width 1.5s ease, height 1.5s ease;
     }
-    #logo-wrapper.move-top #logo {
-      width: 210px; /* 70% of 300px */
-      max-width: none;
-    }
-
     .content {
       position: absolute;
-      top: 120px; /* Increased from 100px for buffer below bigger logo */
+      top: 140px;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -63,11 +51,9 @@
       z-index: 5;
       padding: 0 20px;
       overflow-y: auto;
-      height: calc(100% - 120px);
-      will-change: opacity;
+      height: calc(100% - 140px);
     }
     .content.visible { opacity: 1; }
-
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
@@ -76,7 +62,6 @@
       color: white;
     }
     p { line-height: 1.5; }
-
     .sparkle-star {
       pointer-events: none;
       position: fixed;
@@ -93,14 +78,98 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-
-    /* Keep your loader and starfield styles exactly as before */
-
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 0 15px;
+    }
+    #loader h2 {
+      color: white;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      user-select: none;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 90vw;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      white-space: nowrap;
+    }
+    #loader h2 .loading-text {
+      color: #0ff;
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+    }
+    #titleGlow {
+      display: inline-flex;
+      user-select: none;
+      gap: 0;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+    #titleGlow span {
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+      color: white;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      line-height: 1;
+      padding: 0 0.5px;
+    }
+    .glow-gold {
+      color: #ffd700;
+      text-shadow:
+        0 0 8px #ffd700,
+        0 0 15px #ffec8b,
+        0 0 20px #ffd700,
+        0 0 30px #ffec8b,
+        0 0 40px #ffd700;
+    }
+    .loading-bar {
+      width: 100%;
+      max-width: 90vw;
+      height: 10px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: none;
+      margin: 0 auto 10px;
+    }
+    .loading-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, #0ff, #00f2ff);
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+    .loading-bar-fill.full {
+      background: linear-gradient(to right, #ffd700, #fff68f);
+      box-shadow:
+        0 0 8px #ffd700,
+        0 0 15px #ffec8b,
+        0 0 20px #ffd700,
+        0 0 30px #ffec8b,
+        0 0 40px #ffd700;
+      animation: flicker 1.2s infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
+      50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
+    }
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
-      #logo-wrapper.move-top #logo { width: 125px; }
       h1 { font-size: 1.8rem; }
-      .content { font-size: 1rem; top: 100px; height: calc(100% - 100px); }
+      .content { font-size: 1rem; top: 120px; overflow-y: auto; height: calc(100% - 120px); }
     }
   </style>
 </head>
@@ -113,6 +182,7 @@
   <canvas id="space"></canvas>
 
   <div id="logo-wrapper">
+    <!-- Replace this src with your new logo URL -->
     <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
@@ -124,10 +194,6 @@
   </div>
 
   <script>
-    // Your original loader + starfield + sparkle code untouched
-    // ...
-
-    // Loader animation setup
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
@@ -150,6 +216,7 @@
       });
     }
 
+    // Sparkle/starburst effect on clicks/touches
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
@@ -173,7 +240,7 @@
         sparkle.style.opacity = '1';
         document.body.appendChild(sparkle);
 
-        void sparkle.offsetWidth; // force reflow
+        void sparkle.offsetWidth; // Force reflow
 
         const angle = Math.random() * 2 * Math.PI;
         const distance = 40 + Math.random() * 60;
@@ -197,7 +264,6 @@
       }
     });
 
-    // Starfield setup & animation as your original (unchanged)
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let w, h;
