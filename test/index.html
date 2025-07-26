@@ -304,7 +304,7 @@
   transform: translateX(-50%);
   display: flex;
   gap: 20px;
-  z-index: 9999;
+  z-index: 999;
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease-in-out;
@@ -313,26 +313,26 @@
 .nav-bubbles.visible {
   opacity: 1;
   pointer-events: auto;
-  animation: floatIn 1s ease-out;
+  animation: floatIn 0.8s ease-out;
 }
 
 .bubble {
   width: 90px;
   height: 90px;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.15), rgba(0,255,255,0.08));
+  background: radial-gradient(circle at center, rgba(255,255,255,0.1), rgba(0,255,255,0.05));
   border: 2px solid #0ff;
   border-radius: 50%;
   text-align: center;
   line-height: 90px;
   color: #0ff;
   font-family: 'Orbitron', sans-serif;
-  font-weight: 600;
   font-size: 0.8rem;
+  font-weight: 600;
   text-decoration: none;
   box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+  backdrop-filter: blur(4px);
   animation: float 6s ease-in-out infinite;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(4px);
 }
 
 .bubble:hover {
@@ -350,7 +350,7 @@
 
 @keyframes floatIn {
   0% {
-    transform: translateY(60px) scale(0.8);
+    transform: translateY(40px) scale(0.8);
     opacity: 0;
   }
   100% {
@@ -359,10 +359,10 @@
   }
 }
 
-/* Hidden state class */
 .hidden {
   display: none;
 }
+
 
 
 
@@ -422,10 +422,11 @@
 
   <div class="nav-bubbles hidden">
   <a href="#" class="bubble">About</a>
-  <a href="#" class="bubble">Games</a>
   <a href="https://sterlworld.artstation.com" class="bubble" target="_blank">Art</a>
+  <a href="#" class="bubble">Games</a>
   <a href="#" class="bubble">Contact</a>
 </div>
+
 
 
   
@@ -730,11 +731,14 @@ function startLogoSparkleLoop() {
   window.addEventListener('load', () => {
     setTimeout(() => {
       const bubbles = document.querySelector('.nav-bubbles');
-      bubbles.classList.remove('hidden');
-      bubbles.classList.add('visible');
-    }, 3000); // Wait 3 seconds after page load — adjust if needed
+      if (bubbles) {
+        bubbles.classList.remove('hidden');
+        bubbles.classList.add('visible');
+      }
+    }, 2800); // Matches your 2.5s fade-in + slight buffer
   });
 </script>
+
 
 </body>
 </html>
