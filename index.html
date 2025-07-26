@@ -409,6 +409,7 @@ sparkle.style.top = `${y - size / 2}px`;
           setTimeout(() => {
             document.getElementById('logo-wrapper').classList.add('move-top');
             setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
+            startLogoSparkles();
           }, 1500);
         }
       }
@@ -499,6 +500,30 @@ function randomPulseLoop() {
 window.addEventListener('load', () => {
   setTimeout(randomPulseLoop, 2000);
 });
+
+    function sparkleAroundLogo() {
+  const logo = document.getElementById('logo');
+  if (!logo) return;
+
+  const rect = logo.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const angle = Math.random() * 2 * Math.PI;
+  const radius = rect.width * 0.6 + Math.random() * 30; // Distance from logo center
+  const x = centerX + Math.cos(angle) * radius;
+  const y = centerY + Math.sin(angle) * radius;
+
+  createSparkleBurst(x, y);
+}
+
+function startLogoSparkles() {
+  setInterval(() => {
+    const logoMoved = document.getElementById('logo-wrapper').classList.contains('move-top');
+    if (logoMoved) sparkleAroundLogo();
+  }, 1200); // Sparkle every 1.2 seconds
+}
+
 
   </script>
 </body>
