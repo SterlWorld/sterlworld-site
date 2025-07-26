@@ -305,6 +305,15 @@
   display: flex;
   gap: 20px;
   z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-in-out;
+}
+
+.nav-bubbles.visible {
+  opacity: 1;
+  pointer-events: auto;
+  animation: floatIn 1s ease-out;
 }
 
 .bubble {
@@ -338,6 +347,23 @@
   50%  { transform: translateY(-8px); }
   100% { transform: translateY(0); }
 }
+
+@keyframes floatIn {
+  0% {
+    transform: translateY(60px) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Hidden state class */
+.hidden {
+  display: none;
+}
+
 
 
 @keyframes gradientShift {
@@ -394,12 +420,13 @@
   </p>
 </div>
 
-  <div class="nav-bubbles">
+  <div class="nav-bubbles hidden">
   <a href="#" class="bubble">About</a>
   <a href="#" class="bubble">Games</a>
-  <a href="https://www.artstation.com/YOUR_NAME" class="bubble" target="_blank">Art</a>
+  <a href="https://sterlworld.artstation.com" class="bubble" target="_blank">Art</a>
   <a href="#" class="bubble">Contact</a>
 </div>
+
 
   
 
@@ -698,5 +725,16 @@ function startLogoSparkleLoop() {
 
 }
   </script>
+
+  <script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const bubbles = document.querySelector('.nav-bubbles');
+      bubbles.classList.remove('hidden');
+      bubbles.classList.add('visible');
+    }, 3000); // Wait 3 seconds after page load — adjust if needed
+  });
+</script>
+
 </body>
 </html>
