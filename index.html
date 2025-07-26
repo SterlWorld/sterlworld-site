@@ -407,9 +407,11 @@ sparkle.style.top = `${y - size / 2}px`;
           warpComplete = true;
           document.getElementById('logo-wrapper').classList.add('fade-in');
           setTimeout(() => {
-            document.getElementById('logo-wrapper').classList.add('move-top');
-            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
-          }, 1500);
+          document.getElementById('logo-wrapper').classList.add('move-top');
+          startLogoSparkleLoop(); // ← ADD THIS LINE
+          setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
+      }, 1500);
+
         }
       }
 
@@ -499,7 +501,52 @@ function randomPulseLoop() {
 window.addEventListener('load', () => {
   setTimeout(randomPulseLoop, 2000);
 });
+function createLogoSparkle() {
+  const logo = document.getElementById('logo');
+  const rect = logo.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
 
+  const sparkle = document.createElement('img');
+  sparkle.src = sparkleImgSrc;
+  sparkle.className = 'sparkle-star';
+
+  const size = Math.random() * 10 + 4;
+  sparkle.style.width = `${size}px`;
+  sparkle.style.height = `${size}px`;
+
+  // Random position around the logo center
+  const angle = Math.random() * 2 * Math.PI;
+  const radius = 50 + Math.random() * 30;
+  const offsetX = Math.cos(angle) * radius;
+  const offsetY = Math.sin(angle) * radius;
+
+  sparkle.style.left = `${centerX + offsetX - size / 2}px`;
+  sparkle.style.top = `${centerY + offsetY - size / 2}px`;
+
+  const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+  sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+
+  sparkle.style.opacity = '1';
+  document.body.appendChild(sparkle);
+
+  // Force reflow
+  void sparkle.offsetWidth;
+
+  // Fade and shrink
+  sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
+  sparkle.style.opacity = '0';
+
+  setTimeout(() => sparkle.remove(), 600);
+}
+
+function startLogoSparkleLoop() {
+  setInterval(() => {
+    for (let i = 0; i < 2; i++) {
+      createLogoSparkle();
+    }
+  }, 400);
+}
   </script>
 </body>
 </html>
