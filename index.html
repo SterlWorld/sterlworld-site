@@ -524,8 +524,8 @@ function createLogoSparkle() {
   sparkle.style.left = `${centerX + offsetX - size / 2}px`;
   sparkle.style.top = `${centerY + offsetY - size / 2}px`;
 
-  const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-  sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+  sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
+
 
   sparkle.style.opacity = '1';
   document.body.appendChild(sparkle);
@@ -542,10 +542,9 @@ function createLogoSparkle() {
 
 function startLogoSparkleLoop() {
   setInterval(() => {
-    for (let i = 0; i < 2; i++) {
-      createLogoSparkle();
-    }
-  }, 400);
+  createLogoSparkle();
+}, 1500);
+
 }
   </script>
 </body>
