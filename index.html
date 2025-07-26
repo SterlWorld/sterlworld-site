@@ -227,34 +227,96 @@
     }
 
     .loading-bar {
-      width: 100%;
-      max-width: 90vw;
-      height: 10px;
-      background: #222;
-      border: 1px solid #444;
-      border-radius: 5px;
-      overflow: hidden;
-      box-shadow: none;
-      margin: 0 auto 10px;
-    }
+  position: relative;
+  width: 100%;
+  max-width: 90vw;
+  height: 14px;
+  background: #111;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 8px #0ff,
+    0 0 12px #0ff;
+  overflow: hidden;
+  margin: 0 auto 15px;
+  filter: drop-shadow(0 0 8px #0ff);
+}
 
-    .loading-bar-fill {
-      height: 100%;
-      background: linear-gradient(to right, #0ff, #00f2ff);
-      width: 0%;
-      transition: width 0.2s ease;
-    }
+.loading-bar-fill {
+  position: relative;
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  background: linear-gradient(
+    270deg,
+    #0ff,
+    #ff5ec4,
+    #ffd700,
+    #0ff,
+    #ff5ec4,
+    #ffd700
+  );
+  background-size: 600% 100%;
+  animation: gradientShift 8s linear infinite;
+  box-shadow:
+    0 0 10px #0ff,
+    0 0 20px #ff5ec4,
+    0 0 30px #ffd700;
+  filter: drop-shadow(0 0 10px #ff5ec4);
+  overflow: visible;
+}
 
-    .loading-bar-fill.full {
-      background: linear-gradient(to right, #ffd700, #fff68f);
-      box-shadow:
-        0 0 8px #ffd700,
-        0 0 15px #ffec8b,
-        0 0 20px #ffd700,
-        0 0 30px #ffec8b,
-        0 0 40px #ffd700;
-      animation: flicker 1.2s infinite alternate;
-    }
+/* Shimmer flare */
+.loading-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: -25%;
+  left: -50%;
+  width: 50%;
+  height: 150%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: skewX(-20deg);
+  animation: shimmerMove 3s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px #fff);
+  border-radius: 50%;
+}
+
+/* Sparkles container */
+.loading-bar-sparkles {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 600% 50%;
+  }
+}
+
+@keyframes shimmerMove {
+  0%, 100% {
+    left: -50%;
+    opacity: 0.8;
+  }
+  50% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+
 
     @keyframes flicker {
       0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
@@ -460,21 +522,60 @@ sparkle.style.top = `${y - size / 2}px`;
       });
     }
 
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 10;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        barFill.classList.add('full');
-        setTimeout(() => {
-          loader.remove();
-          animate();
-        }, 600);
-      }
-      barFill.style.width = `${progress}%`;
-      updateLetterGlow();
-    }, 130);
+    const loadingBar = document.querySelector('.loading-bar');
+const loadingFill = document.querySelector('.loading-bar-fill');
+
+// Create sparkles container dynamically
+const sparklesContainer = document.createElement('div');
+sparklesContainer.className = 'loading-bar-sparkles';
+loadingBar.appendChild(sparklesContainer);
+
+function createLoadingSparkle(x) {
+  const sparkle = document.createElement('img');
+  sparkle.src = sparkleImgSrc;
+  sparkle.className = 'sparkle-star';
+  sparkle.style.width = sparkle.style.height = `${6 + Math.random() * 6}px`;
+  sparkle.style.position = 'absolute';
+  sparkle.style.top = `${Math.random() * 100}%`;
+  sparkle.style.left = `${x}px`;
+  sparkle.style.opacity = '1';
+  sparkle.style.filter = `drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)`;
+  sparkle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  
+  sparklesContainer.appendChild(sparkle);
+
+  setTimeout(() => {
+    sparkle.style.opacity = '0';
+    sparkle.style.transform = `translateY(-10px) scale(0.5) rotate(${Math.random() * 360}deg)`;
+  }, 50);
+
+  setTimeout(() => sparkle.remove(), 850);
+}
+
+let progress = 0;
+const interval = setInterval(() => {
+  progress += Math.random() * 8;
+  if (progress >= 100) {
+    progress = 100;
+    clearInterval(interval);
+    loadingFill.style.width = '100%';
+    loadingFill.classList.add('full');
+    setTimeout(() => {
+      loader.remove();
+      animate();
+    }, 700);
+  } else {
+    loadingFill.style.width = progress + '%';
+
+    if (Math.random() < 0.6) {
+      const barWidth = loadingBar.clientWidth;
+      const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
+      createLoadingSparkle(sparkleX);
+    }
+  }
+  updateLetterGlow();
+}, 120);
+
 
     starImage.onload = () => {
       ctx.fillStyle = 'black';
