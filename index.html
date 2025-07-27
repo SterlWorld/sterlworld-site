@@ -16,7 +16,16 @@
   overflow: hidden;
   cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
 }
-    canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
+    canvas#space { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      z-index: 0; 
+      display: block; 
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+    canvas#space.fade-in { opacity: 1; }
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -174,6 +183,12 @@
       justify-content: center;
       z-index: 99999;
       padding: 0 15px;
+      transition: opacity 0.8s ease-out;
+    }
+
+    #loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
     }
 
     #loader h2 {
@@ -189,6 +204,7 @@
       justify-content: center;
       gap: 2px;
       white-space: nowrap;
+      transition: opacity 0.3s ease;
     }
 
     #loader h2 .loading-text {
@@ -196,6 +212,7 @@
       font-weight: 600;
       user-select: none;
       white-space: nowrap;
+      transition: opacity 0.3s ease;
     }
 
     #titleGlow {
@@ -205,6 +222,7 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
+      transition: opacity 0.3s ease;
     }
 
     #titleGlow span {
@@ -217,13 +235,13 @@
     }
 
     .glow-gold {
-      color: #ffd700;
+      color: #ffd700 !important;
       text-shadow:
         0 0 8px #ffd700,
         0 0 15px #ffec8b,
         0 0 20px #ffd700,
         0 0 30px #ffec8b,
-        0 0 40px #ffd700;
+        0 0 40px #ffd700 !important;
     }
 
     .loading-bar {
@@ -239,6 +257,7 @@
   overflow: hidden;
   margin: 0 auto 15px;
   filter: drop-shadow(0 0 8px #0ff);
+  transition: all 0.3s ease;
 }
 
 .loading-bar-fill {
@@ -263,6 +282,7 @@
     0 0 30px #ffd700;
   filter: drop-shadow(0 0 10px #ff5ec4);
   overflow: visible;
+  transition: all 0.3s ease;
 }
 
 /* Shimmer flare */
@@ -345,7 +365,7 @@
   <div class="content" id="mainText">
   <h1>Welcome to SterlWorld</h1>
   <p>
-    We’re crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
+    We're crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
     Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
     Stay tuned — the <span class="power-text">extraordinary</span> awaits.
   </p>
@@ -378,18 +398,30 @@ function createSparkleBurst(x, y) {
     sparkle.className = 'sparkle-star';
 
     const size = Math.random() * 16 + 8;
-sparkle.style.width = `${size}px`;
-sparkle.style.height = `${size}px`;
+    sparkle.style.width = `${size}px`;
+    sparkle.style.height = `${size}px`;
 
-// Center the sparkle image on click point:
-sparkle.style.left = `${x - size / 2}px`;
-sparkle.style.top = `${y - size / 2}px`;
-
+    // Center the sparkle image on click point:
+    sparkle.style.left = `${x - size / 2}px`;
+    sparkle.style.top = `${y - size / 2}px`;
 
     const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
     sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
 
     sparkle.style.opacity = '1';
+    sparkle.style.position = 'fixed';
+    sparkle.style.zIndex = '9999';
+    sparkle.style.pointerEvents = 'none';
+    
+    // Handle image load error
+    sparkle.onerror = () => {
+      // Create CSS fallback
+      sparkle.style.background = glowColor;
+      sparkle.style.borderRadius = '50%';
+      sparkle.style.boxShadow = `0 0 6px ${glowColor}`;
+      sparkle.src = ''; // Clear broken src
+    };
+    
     document.body.appendChild(sparkle);
 
     // Force reflow
@@ -407,15 +439,17 @@ sparkle.style.top = `${y - size / 2}px`;
     // Scale down and fade out
     sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
     sparkle.style.opacity = '0';
+    sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
 
     setTimeout(() => sparkle.remove(), 600);
   }
 }
 
-
-
-
-    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    // Also fix the click sparkles to use the star image properly
+    document.addEventListener('click', (e) => {
+      // Try to create image-based sparkles first, fallback to simple sparkles
+      createSparkleBurst(e.clientX, e.clientY);
+    });
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length > 0) {
         createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
@@ -435,6 +469,33 @@ sparkle.style.top = `${y - size / 2}px`;
 
     const starImage = new Image();
     starImage.src = sparkleImgSrc;
+    
+    // Add error handling for the star image
+    starImage.onerror = () => {
+      console.log('Star image failed to load, using fallback');
+      // Create a simple star shape as fallback
+      const canvas = document.createElement('canvas');
+      canvas.width = 20;
+      canvas.height = 20;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffd700';
+      ctx.beginPath();
+      // Draw a simple star shape
+      for (let i = 0; i < 5; i++) {
+        const angle = (i * 4 * Math.PI) / 5;
+        const x = 10 + Math.cos(angle) * 8;
+        const y = 10 + Math.sin(angle) * 8;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      
+      // Convert canvas to image
+      const fallbackImage = new Image();
+      fallbackImage.src = canvas.toDataURL();
+      starImage.src = fallbackImage.src;
+    };
 
     let stars = [];
     function createStar() {
@@ -503,7 +564,18 @@ sparkle.style.top = `${y - size / 2}px`;
         ctx.shadowColor = '#f7de99';
         ctx.globalAlpha = 0.35;
         let starSize = s.size * (1 - s.z / w) * 25;
-        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        
+        // Only draw if image is loaded properly
+        if (starImage.complete && starImage.naturalWidth > 0) {
+          ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        } else {
+          // Fallback: draw a simple circle
+          ctx.fillStyle = '#ffd700';
+          ctx.beginPath();
+          ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
         ctx.restore();
         s.rotationAngle += s.rotationSpeed;
       });
@@ -552,6 +624,189 @@ function createLoadingSparkle(x) {
   setTimeout(() => sparkle.remove(), 850);
 }
 
+function createLoadingBarExplosion() {
+  console.log('🎆 MASSIVE LOADING BAR EXPLOSION STARTING! 🎆');
+  
+  // Get positions of all elements that will explode
+  const loadingBarRect = loadingBar.getBoundingClientRect();
+  const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
+  const titleGlowRect = titleGlow.getBoundingClientRect();
+  
+  // Create explosion from loading bar - INCREASED from 25 to 40 stars!
+  createStarExplosion(loadingBarRect, 40, 'bar');
+  
+  // Create explosion from "Loading" text - INCREASED from 15 to 25 stars!
+  createStarExplosion(loadingTextRect, 25, 'text');
+  
+  // Create explosion from "SterlWorld" text - INCREASED from 20 to 30 stars!
+  createStarExplosion(titleGlowRect, 30, 'title');
+  
+  // Add screen flash effect for more drama
+  createScreenFlash();
+  
+  // Gradually fade out the loading elements (instead of instant hide)
+  setTimeout(() => {
+    loadingBar.style.opacity = '0';
+    loadingBar.style.transform = 'scale(0.8)';
+  }, 100);
+  
+  setTimeout(() => {
+    document.querySelector('.loading-text').style.opacity = '0';
+    document.querySelector('.loading-text').style.transform = 'scale(0.8)';
+  }, 150);
+  
+  setTimeout(() => {
+    titleGlow.style.opacity = '0';
+    titleGlow.style.transform = 'scale(0.8)';
+  }, 200);
+}
+
+function createScreenFlash() {
+  const flash = document.createElement('div');
+  flash.style.position = 'fixed';
+  flash.style.top = '0';
+  flash.style.left = '0';
+  flash.style.width = '100vw';
+  flash.style.height = '100vh';
+  flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
+  flash.style.pointerEvents = 'none';
+  flash.style.zIndex = '999998';
+  flash.style.opacity = '1';
+  flash.style.transition = 'opacity 0.8s ease-out';
+  
+  document.body.appendChild(flash);
+  
+  setTimeout(() => {
+    flash.style.opacity = '0';
+  }, 100);
+  
+  setTimeout(() => {
+    flash.remove();
+  }, 900);
+}
+
+function createStarExplosion(elementRect, numStars, type) {
+  const centerX = elementRect.left + elementRect.width / 2;
+  const centerY = elementRect.top + elementRect.height / 2;
+  
+  console.log(`💥 Creating ${numStars} stars for ${type} explosion!`);
+  
+  for (let i = 0; i < numStars; i++) {
+    const star = document.createElement('img');
+    star.src = sparkleImgSrc;
+    star.className = 'explosion-star';
+    
+    // Bigger, more varied star sizes!
+    const size = Math.random() * 20 + 10; // Increased from 16+8 to 20+10
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.position = 'fixed';
+    star.style.zIndex = '999999';
+    star.style.pointerEvents = 'none';
+    
+    // More intense glow effects!
+    const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
+    const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+    star.style.filter = `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
+    
+    // Start position varies by element type
+    let startX, startY;
+    if (type === 'bar') {
+      // Spread along the loading bar
+      startX = elementRect.left + (Math.random() * elementRect.width);
+      startY = centerY + (Math.random() - 0.5) * elementRect.height;
+    } else {
+      // Spread across text area
+      startX = elementRect.left + (Math.random() * elementRect.width);
+      startY = elementRect.top + (Math.random() * elementRect.height);
+    }
+    
+    // Pre-calculate final position - INCREASED explosion radius!
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 150 + Math.random() * 250; // Increased from 120+180 to 150+250
+    const finalX = startX + Math.cos(angle) * distance;
+    const finalY = startY + Math.sin(angle) * distance;
+    
+    star.style.left = `${startX - size / 2}px`;
+    star.style.top = `${startY - size / 2}px`;
+    star.style.opacity = '1';
+    star.style.transform = 'scale(1.2) rotate(0deg)'; // Start slightly bigger
+    star.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // Smoother easing
+    
+    document.body.appendChild(star);
+    
+    // Handle image load error with fallback
+    star.onerror = () => {
+      star.style.background = glowColor;
+      star.style.borderRadius = '50%';
+      star.style.boxShadow = `0 0 12px ${glowColor}, 0 0 24px ${glowColor}`;
+      star.src = '';
+    };
+    
+    // IMMEDIATE animation - no delay!
+    requestAnimationFrame(() => {
+      star.style.left = `${finalX - size / 2}px`;
+      star.style.top = `${finalY - size / 2}px`;
+      star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`; // More rotation
+      star.style.opacity = '0';
+    });
+    
+    // Clean up after longer duration
+    setTimeout(() => {
+      if (star.parentNode) {
+        star.remove();
+      }
+    }, 1600);
+  }
+}
+
+function createLoadingBarCelebration() {
+  const loadingBarRect = loadingBar.getBoundingClientRect();
+  const centerX = loadingBarRect.left + loadingBarRect.width / 2;
+  const centerY = loadingBarRect.top + loadingBarRect.height / 2;
+  
+  // Create sparkles around the loading bar perimeter
+  const numSparkles = 30; // Increased from 20
+  
+  for (let i = 0; i < numSparkles; i++) {
+    const sparkle = document.createElement('img');
+    sparkle.src = sparkleImgSrc;
+    sparkle.className = 'sparkle-star';
+    
+    const size = Math.random() * 15 + 8; // Bigger sparkles
+    sparkle.style.width = `${size}px`;
+    sparkle.style.height = `${size}px`;
+    
+    // Position around the loading bar perimeter
+    const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
+    const radius = 60 + Math.random() * 40; // Increased radius
+    const startX = centerX + Math.cos(angle) * 25;
+    const startY = centerY + Math.sin(angle) * 15;
+    
+    sparkle.style.left = `${startX - size / 2}px`;
+    sparkle.style.top = `${startY - size / 2}px`;
+    sparkle.style.opacity = '1';
+    sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
+    sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
+    
+    document.body.appendChild(sparkle);
+    
+    // Force reflow
+    void sparkle.offsetWidth;
+    
+    // Animate outward and fade
+    const finalX = centerX + Math.cos(angle) * radius;
+    const finalY = centerY + Math.sin(angle) * radius;
+    
+    sparkle.style.left = `${finalX - size / 2}px`;
+    sparkle.style.top = `${finalY - size / 2}px`;
+    sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
+    sparkle.style.opacity = '0';
+    
+    setTimeout(() => sparkle.remove(), 1500);
+  }
+}
+
 let progress = 0;
 const interval = setInterval(() => {
   progress += Math.random() * 8;
@@ -559,11 +814,45 @@ const interval = setInterval(() => {
     progress = 100;
     clearInterval(interval);
     loadingFill.style.width = '100%';
+    
+    // Change to gold glow when complete
+    loadingFill.style.background = 'linear-gradient(90deg, #ffd700, #ffec8b, #ffd700)';
+    loadingFill.style.boxShadow = '0 0 20px #ffd700, 0 0 40px #ffd700, 0 0 60px #ffd700';
+    loadingFill.style.filter = 'drop-shadow(0 0 15px #ffd700)';
+    loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 20px #ffd700';
+    loadingBar.style.filter = 'drop-shadow(0 0 15px #ffd700)';
+    
     loadingFill.classList.add('full');
+    
+    console.log('🚀 Loading complete! Starting explosion sequence...');
+    
+    // Create celebration effect first
+    createLoadingBarCelebration();
+    
+    // Then the massive explosion after a brief moment
     setTimeout(() => {
-      loader.remove();
+      createLoadingBarExplosion();
+      
+      // Start starfield immediately but invisible
       animate();
-    }, 700);
+      
+      // Remove loader with fade out after explosion has time to be seen
+      setTimeout(() => {
+        console.log('🌟 Fading out loader and revealing starfield...');
+        loader.classList.add('fade-out');
+        
+        // Remove loader from DOM after fade completes
+        setTimeout(() => {
+          loader.remove();
+        }, 800);
+        
+        // Fade in starfield with slight delay for dramatic effect
+        setTimeout(() => {
+          const canvas = document.getElementById('space');
+          canvas.classList.add('fade-in');
+        }, 400);
+      }, 800); // Increased delay to let explosion be fully visible
+    }, 300); // Brief pause before explosion for anticipation
   } else {
     loadingFill.style.width = progress + '%';
 
@@ -602,6 +891,7 @@ function randomPulseLoop() {
 window.addEventListener('load', () => {
   setTimeout(randomPulseLoop, 2000);
 });
+
 function createLogoSparkle() {
   const logo = document.getElementById('logo');
   const rect = logo.getBoundingClientRect();
@@ -627,7 +917,6 @@ function createLogoSparkle() {
 
   sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
 
-
   sparkle.style.opacity = '1';
   document.body.appendChild(sparkle);
 
@@ -643,11 +932,9 @@ function createLogoSparkle() {
 
 function startLogoSparkleLoop() {
   setInterval(() => {
-  createLogoSparkle();
-}, 1500);
-
+    createLogoSparkle();
+  }, 1500);
 }
   </script>
 </body>
 </html>
-
