@@ -459,13 +459,13 @@ function createSparkleBurst(x, y) {
     window.addEventListener('resize', resize);
     resize();
 
+    // Preload star image and create fallback
     const starImage = new Image();
-    starImage.src = sparkleImgSrc;
+    let imageReady = false;
+    let fallbackDataUrl = null;
     
-    // Add error handling for the star image
-    starImage.onerror = () => {
-      console.log('Star image failed to load, using fallback');
-      // Create a simple star shape as fallback
+    // Create fallback immediately
+    function createFallbackStar() {
       const canvas = document.createElement('canvas');
       canvas.width = 20;
       canvas.height = 20;
@@ -482,12 +482,22 @@ function createSparkleBurst(x, y) {
       }
       ctx.closePath();
       ctx.fill();
-      
-      // Convert canvas to image
-      const fallbackImage = new Image();
-      fallbackImage.src = canvas.toDataURL();
-      starImage.src = fallbackImage.src;
+      return canvas.toDataURL();
+    }
+    
+    fallbackDataUrl = createFallbackStar();
+    
+    starImage.onload = () => {
+      imageReady = true;
+      console.log('Star image loaded successfully');
     };
+    
+    starImage.onerror = () => {
+      console.log('Star image failed to load, using fallback');
+      imageReady = false;
+    };
+    
+    starImage.src = sparkleImgSrc;
 
     let stars = [];
     function createStar() {
@@ -557,11 +567,11 @@ function createSparkleBurst(x, y) {
         ctx.globalAlpha = 0.35;
         let starSize = s.size * (1 - s.z / w) * 25;
         
-        // Only draw if image is loaded properly
-        if (starImage.complete && starImage.naturalWidth > 0) {
+        // Always use fallback for starfield rendering to guarantee it works
+        if (imageReady && starImage.complete && starImage.naturalWidth > 0) {
           ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
         } else {
-          // Fallback: draw a simple circle
+          // Guaranteed fallback: draw a simple circle
           ctx.fillStyle = '#ffd700';
           ctx.beginPath();
           ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2);
@@ -645,7 +655,6 @@ function createStarExplosion(elementRect, numStars, type) {
   
   for (let i = 0; i < numStars; i++) {
     const star = document.createElement('img');
-    star.src = sparkleImgSrc;
     star.className = 'explosion-star';
     
     const size = Math.random() * 16 + 8;
@@ -655,6 +664,22 @@ function createStarExplosion(elementRect, numStars, type) {
     star.style.zIndex = '999999';
     star.style.pointerEvents = 'none';
     star.style.filter = 'drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 16px #ffd700) brightness(2.5) saturate(1.5)';
+    
+    // ALWAYS use fallback first, then try to load image
+    star.style.background = '#ffd700';
+    star.style.borderRadius = '50%';
+    star.style.boxShadow = '0 0 8px #ffd700, 0 0 16px #ffd700';
+    
+    // Try to use the star image if available
+    if (imageReady && starImage.complete && starImage.naturalWidth > 0) {
+      star.src = sparkleImgSrc;
+      star.style.background = 'transparent';
+      star.style.boxShadow = 'none';
+    } else if (fallbackDataUrl) {
+      star.src = fallbackDataUrl;
+      star.style.background = 'transparent';
+      star.style.boxShadow = 'none';
+    }
     
     // Start position varies by element type
     let startX, startY;
@@ -681,14 +706,6 @@ function createStarExplosion(elementRect, numStars, type) {
     star.style.transition = 'all 1.2s ease-out';
     
     document.body.appendChild(star);
-    
-    // Handle image load error with fallback
-    star.onerror = () => {
-      star.style.background = '#ffd700';
-      star.style.borderRadius = '50%';
-      star.style.boxShadow = '0 0 8px #ffd700, 0 0 16px #ffd700';
-      star.src = '';
-    };
     
     // IMMEDIATE animation - no delay!
     requestAnimationFrame(() => {
