@@ -435,6 +435,33 @@ sparkle.style.top = `${y - size / 2}px`;
 
     const starImage = new Image();
     starImage.src = sparkleImgSrc;
+    
+    // Add error handling for the star image
+    starImage.onerror = () => {
+      console.log('Star image failed to load, using fallback');
+      // Create a simple star shape as fallback
+      const canvas = document.createElement('canvas');
+      canvas.width = 20;
+      canvas.height = 20;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffd700';
+      ctx.beginPath();
+      // Draw a simple star shape
+      for (let i = 0; i < 5; i++) {
+        const angle = (i * 4 * Math.PI) / 5;
+        const x = 10 + Math.cos(angle) * 8;
+        const y = 10 + Math.sin(angle) * 8;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      
+      // Convert canvas to image
+      const fallbackImage = new Image();
+      fallbackImage.src = canvas.toDataURL();
+      starImage.src = fallbackImage.src;
+    };
 
     let stars = [];
     function createStar() {
@@ -503,7 +530,18 @@ sparkle.style.top = `${y - size / 2}px`;
         ctx.shadowColor = '#f7de99';
         ctx.globalAlpha = 0.35;
         let starSize = s.size * (1 - s.z / w) * 25;
-        ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        
+        // Only draw if image is loaded properly
+        if (starImage.complete && starImage.naturalWidth > 0) {
+          ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        } else {
+          // Fallback: draw a simple circle
+          ctx.fillStyle = '#ffd700';
+          ctx.beginPath();
+          ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
         ctx.restore();
         s.rotationAngle += s.rotationSpeed;
       });
@@ -553,51 +591,65 @@ function createLoadingSparkle(x) {
 }
 
 function createLoadingBarCelebration() {
+  console.log('Creating loading bar celebration sparkles!'); // Debug log
+  
   const loadingBarRect = loadingBar.getBoundingClientRect();
   const centerX = loadingBarRect.left + loadingBarRect.width / 2;
   const centerY = loadingBarRect.top + loadingBarRect.height / 2;
   
+  console.log('Loading bar position:', centerX, centerY); // Debug log
+  
   // Create sparkles around the loading bar perimeter
-  const numSparkles = 20;
+  const numSparkles = 25;
   
   for (let i = 0; i < numSparkles; i++) {
-    const sparkle = document.createElement('img');
-    sparkle.src = sparkleImgSrc;
+    // Create a simple div-based sparkle instead of relying on the image
+    const sparkle = document.createElement('div');
     sparkle.className = 'sparkle-star';
     
     const size = Math.random() * 12 + 6;
     sparkle.style.width = `${size}px`;
     sparkle.style.height = `${size}px`;
+    sparkle.style.position = 'fixed';
+    sparkle.style.zIndex = '999999';
+    sparkle.style.pointerEvents = 'none';
+    sparkle.style.background = '#ffd700';
+    sparkle.style.borderRadius = '50%';
+    sparkle.style.boxShadow = '0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700';
     
     // Position around the loading bar perimeter
-    const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
-    const radius = 40 + Math.random() * 20;
-    const startX = centerX + Math.cos(angle) * 25;
-    const startY = centerY + Math.sin(angle) * 15;
+    const angle = (i / numSparkles) * 2 * Math.PI;
+    const startRadius = 30;
+    const endRadius = 80 + Math.random() * 40;
+    
+    const startX = centerX + Math.cos(angle) * startRadius;
+    const startY = centerY + Math.sin(angle) * (startRadius * 0.6);
     
     sparkle.style.left = `${startX - size / 2}px`;
     sparkle.style.top = `${startY - size / 2}px`;
     sparkle.style.opacity = '1';
-    sparkle.style.filter = `drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 12px #ffec8b) brightness(2.5) saturate(1.8)`;
-    sparkle.style.transition = 'left 1.2s ease-out, top 1.2s ease-out, opacity 1.2s ease-out, transform 1.2s ease-out';
-    sparkle.style.position = 'fixed';
-    sparkle.style.zIndex = '100000';
+    sparkle.style.transform = 'scale(1)';
+    sparkle.style.transition = 'all 1.5s ease-out';
     
     document.body.appendChild(sparkle);
+    console.log('Sparkle created at:', startX, startY); // Debug log
     
-    // Force reflow
-    void sparkle.offsetWidth;
+    // Small delay to ensure the element is rendered
+    setTimeout(() => {
+      const finalX = centerX + Math.cos(angle) * endRadius;
+      const finalY = centerY + Math.sin(angle) * (endRadius * 0.6);
+      
+      sparkle.style.left = `${finalX - size / 2}px`;
+      sparkle.style.top = `${finalY - size / 2}px`;
+      sparkle.style.transform = `scale(0.1) rotate(${Math.random() * 720}deg)`;
+      sparkle.style.opacity = '0';
+    }, 50);
     
-    // Animate outward and fade
-    const finalX = centerX + Math.cos(angle) * radius;
-    const finalY = centerY + Math.sin(angle) * radius;
-    
-    sparkle.style.left = `${finalX - size / 2}px`;
-    sparkle.style.top = `${finalY - size / 2}px`;
-    sparkle.style.transform = `scale(0.3) rotate(${Math.random() * 720}deg)`;
-    sparkle.style.opacity = '0';
-    
-    setTimeout(() => sparkle.remove(), 1200);
+    setTimeout(() => {
+      if (sparkle.parentNode) {
+        sparkle.remove();
+      }
+    }, 1600);
   }
 }
 
@@ -663,10 +715,12 @@ const interval = setInterval(() => {
     loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 20px #ffd700';
     loadingBar.style.filter = 'drop-shadow(0 0 15px #ffd700)';
     
-    // Create celebration sparkles around the loading bar
-    createLoadingBarCelebration();
-    
     loadingFill.classList.add('full');
+    
+    // Create celebration sparkles around the loading bar - delay slightly
+    setTimeout(() => {
+      createLoadingBarCelebration();
+    }, 100);
     setTimeout(() => {
       loader.remove();
       animate();
