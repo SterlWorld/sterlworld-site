@@ -23,7 +23,7 @@
       z-index: 0; 
       display: block; 
       opacity: 0;
-      transition: opacity 0.5s ease-in;
+      transition: opacity 1s ease-in;
     }
     canvas#space.fade-in { opacity: 1; }
     #logo-wrapper {
@@ -183,6 +183,12 @@
       justify-content: center;
       z-index: 99999;
       padding: 0 15px;
+      transition: opacity 0.8s ease-out;
+    }
+
+    #loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
     }
 
     #loader h2 {
@@ -198,6 +204,7 @@
       justify-content: center;
       gap: 2px;
       white-space: nowrap;
+      transition: opacity 0.3s ease;
     }
 
     #loader h2 .loading-text {
@@ -205,6 +212,7 @@
       font-weight: 600;
       user-select: none;
       white-space: nowrap;
+      transition: opacity 0.3s ease;
     }
 
     #titleGlow {
@@ -214,6 +222,7 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
+      transition: opacity 0.3s ease;
     }
 
     #titleGlow span {
@@ -226,13 +235,13 @@
     }
 
     .glow-gold {
-      color: #ffd700;
+      color: #ffd700 !important;
       text-shadow:
         0 0 8px #ffd700,
         0 0 15px #ffec8b,
         0 0 20px #ffd700,
         0 0 30px #ffec8b,
-        0 0 40px #ffd700;
+        0 0 40px #ffd700 !important;
     }
 
     .loading-bar {
@@ -248,6 +257,7 @@
   overflow: hidden;
   margin: 0 auto 15px;
   filter: drop-shadow(0 0 8px #0ff);
+  transition: all 0.3s ease;
 }
 
 .loading-bar-fill {
@@ -272,6 +282,7 @@
     0 0 30px #ffd700;
   filter: drop-shadow(0 0 10px #ff5ec4);
   overflow: visible;
+  transition: all 0.3s ease;
 }
 
 /* Shimmer flare */
@@ -433,9 +444,6 @@ function createSparkleBurst(x, y) {
     setTimeout(() => sparkle.remove(), 600);
   }
 }
-
-
-
 
     // Also fix the click sparkles to use the star image properly
     document.addEventListener('click', (e) => {
@@ -617,44 +625,89 @@ function createLoadingSparkle(x) {
 }
 
 function createLoadingBarExplosion() {
-  console.log('Creating complete loading screen explosion!');
+  console.log('🎆 MASSIVE LOADING BAR EXPLOSION STARTING! 🎆');
   
   // Get positions of all elements that will explode
   const loadingBarRect = loadingBar.getBoundingClientRect();
   const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
   const titleGlowRect = titleGlow.getBoundingClientRect();
   
-  // Hide all loading elements immediately
-  loadingBar.style.opacity = '0';
-  document.querySelector('.loading-text').style.opacity = '0';
-  titleGlow.style.opacity = '0';
+  // Create explosion from loading bar - INCREASED from 25 to 40 stars!
+  createStarExplosion(loadingBarRect, 40, 'bar');
   
-  // Create explosion from loading bar
-  createStarExplosion(loadingBarRect, 25, 'bar');
+  // Create explosion from "Loading" text - INCREASED from 15 to 25 stars!
+  createStarExplosion(loadingTextRect, 25, 'text');
   
-  // Create explosion from "Loading" text
-  createStarExplosion(loadingTextRect, 15, 'text');
+  // Create explosion from "SterlWorld" text - INCREASED from 20 to 30 stars!
+  createStarExplosion(titleGlowRect, 30, 'title');
   
-  // Create explosion from "SterlWorld" text
-  createStarExplosion(titleGlowRect, 20, 'title');
+  // Add screen flash effect for more drama
+  createScreenFlash();
+  
+  // Gradually fade out the loading elements (instead of instant hide)
+  setTimeout(() => {
+    loadingBar.style.opacity = '0';
+    loadingBar.style.transform = 'scale(0.8)';
+  }, 100);
+  
+  setTimeout(() => {
+    document.querySelector('.loading-text').style.opacity = '0';
+    document.querySelector('.loading-text').style.transform = 'scale(0.8)';
+  }, 150);
+  
+  setTimeout(() => {
+    titleGlow.style.opacity = '0';
+    titleGlow.style.transform = 'scale(0.8)';
+  }, 200);
+}
+
+function createScreenFlash() {
+  const flash = document.createElement('div');
+  flash.style.position = 'fixed';
+  flash.style.top = '0';
+  flash.style.left = '0';
+  flash.style.width = '100vw';
+  flash.style.height = '100vh';
+  flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
+  flash.style.pointerEvents = 'none';
+  flash.style.zIndex = '999998';
+  flash.style.opacity = '1';
+  flash.style.transition = 'opacity 0.8s ease-out';
+  
+  document.body.appendChild(flash);
+  
+  setTimeout(() => {
+    flash.style.opacity = '0';
+  }, 100);
+  
+  setTimeout(() => {
+    flash.remove();
+  }, 900);
 }
 
 function createStarExplosion(elementRect, numStars, type) {
   const centerX = elementRect.left + elementRect.width / 2;
   const centerY = elementRect.top + elementRect.height / 2;
   
+  console.log(`💥 Creating ${numStars} stars for ${type} explosion!`);
+  
   for (let i = 0; i < numStars; i++) {
     const star = document.createElement('img');
     star.src = sparkleImgSrc;
     star.className = 'explosion-star';
     
-    const size = Math.random() * 16 + 8;
+    // Bigger, more varied star sizes!
+    const size = Math.random() * 20 + 10; // Increased from 16+8 to 20+10
     star.style.width = `${size}px`;
     star.style.height = `${size}px`;
     star.style.position = 'fixed';
     star.style.zIndex = '999999';
     star.style.pointerEvents = 'none';
-    star.style.filter = 'drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 16px #ffd700) brightness(2.5) saturate(1.5)';
+    
+    // More intense glow effects!
+    const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
+    const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+    star.style.filter = `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
     
     // Start position varies by element type
     let startX, startY;
@@ -668,25 +721,25 @@ function createStarExplosion(elementRect, numStars, type) {
       startY = elementRect.top + (Math.random() * elementRect.height);
     }
     
-    // Pre-calculate final position
+    // Pre-calculate final position - INCREASED explosion radius!
     const angle = Math.random() * 2 * Math.PI;
-    const distance = 120 + Math.random() * 180;
+    const distance = 150 + Math.random() * 250; // Increased from 120+180 to 150+250
     const finalX = startX + Math.cos(angle) * distance;
     const finalY = startY + Math.sin(angle) * distance;
     
     star.style.left = `${startX - size / 2}px`;
     star.style.top = `${startY - size / 2}px`;
     star.style.opacity = '1';
-    star.style.transform = 'scale(1) rotate(0deg)';
-    star.style.transition = 'all 1.2s ease-out';
+    star.style.transform = 'scale(1.2) rotate(0deg)'; // Start slightly bigger
+    star.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // Smoother easing
     
     document.body.appendChild(star);
     
     // Handle image load error with fallback
     star.onerror = () => {
-      star.style.background = '#ffd700';
+      star.style.background = glowColor;
       star.style.borderRadius = '50%';
-      star.style.boxShadow = '0 0 8px #ffd700, 0 0 16px #ffd700';
+      star.style.boxShadow = `0 0 12px ${glowColor}, 0 0 24px ${glowColor}`;
       star.src = '';
     };
     
@@ -694,16 +747,16 @@ function createStarExplosion(elementRect, numStars, type) {
     requestAnimationFrame(() => {
       star.style.left = `${finalX - size / 2}px`;
       star.style.top = `${finalY - size / 2}px`;
-      star.style.transform = `scale(0.1) rotate(${Math.random() * 720}deg)`;
+      star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`; // More rotation
       star.style.opacity = '0';
     });
     
-    // Clean up faster
+    // Clean up after longer duration
     setTimeout(() => {
       if (star.parentNode) {
         star.remove();
       }
-    }, 1300);
+    }, 1600);
   }
 }
 
@@ -713,28 +766,28 @@ function createLoadingBarCelebration() {
   const centerY = loadingBarRect.top + loadingBarRect.height / 2;
   
   // Create sparkles around the loading bar perimeter
-  const numSparkles = 20;
+  const numSparkles = 30; // Increased from 20
   
   for (let i = 0; i < numSparkles; i++) {
     const sparkle = document.createElement('img');
     sparkle.src = sparkleImgSrc;
     sparkle.className = 'sparkle-star';
     
-    const size = Math.random() * 12 + 6;
+    const size = Math.random() * 15 + 8; // Bigger sparkles
     sparkle.style.width = `${size}px`;
     sparkle.style.height = `${size}px`;
     
     // Position around the loading bar perimeter
     const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
-    const radius = 40 + Math.random() * 20;
+    const radius = 60 + Math.random() * 40; // Increased radius
     const startX = centerX + Math.cos(angle) * 25;
     const startY = centerY + Math.sin(angle) * 15;
     
     sparkle.style.left = `${startX - size / 2}px`;
     sparkle.style.top = `${startY - size / 2}px`;
     sparkle.style.opacity = '1';
-    sparkle.style.filter = `drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 12px #ffec8b) brightness(2.5) saturate(1.8)`;
-    sparkle.style.transition = 'left 1.2s ease-out, top 1.2s ease-out, opacity 1.2s ease-out, transform 1.2s ease-out';
+    sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
+    sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
     
     document.body.appendChild(sparkle);
     
@@ -747,10 +800,10 @@ function createLoadingBarCelebration() {
     
     sparkle.style.left = `${finalX - size / 2}px`;
     sparkle.style.top = `${finalY - size / 2}px`;
-    sparkle.style.transform = `scale(0.3) rotate(${Math.random() * 720}deg)`;
+    sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
     sparkle.style.opacity = '0';
     
-    setTimeout(() => sparkle.remove(), 1200);
+    setTimeout(() => sparkle.remove(), 1500);
   }
 }
 
@@ -771,19 +824,35 @@ const interval = setInterval(() => {
     
     loadingFill.classList.add('full');
     
-    // Create explosion effect - loading bar bursts into stars
+    console.log('🚀 Loading complete! Starting explosion sequence...');
+    
+    // Create celebration effect first
+    createLoadingBarCelebration();
+    
+    // Then the massive explosion after a brief moment
     setTimeout(() => {
       createLoadingBarExplosion();
+      
       // Start starfield immediately but invisible
       animate();
-      // Remove loader and fade in starfield
+      
+      // Remove loader with fade out after explosion has time to be seen
       setTimeout(() => {
-        loader.remove();
-        // Fade in starfield immediately after loader removal
-        const canvas = document.getElementById('space');
-        canvas.classList.add('fade-in');
-      }, 200);
-    }, 200);
+        console.log('🌟 Fading out loader and revealing starfield...');
+        loader.classList.add('fade-out');
+        
+        // Remove loader from DOM after fade completes
+        setTimeout(() => {
+          loader.remove();
+        }, 800);
+        
+        // Fade in starfield with slight delay for dramatic effect
+        setTimeout(() => {
+          const canvas = document.getElementById('space');
+          canvas.classList.add('fade-in');
+        }, 400);
+      }, 800); // Increased delay to let explosion be fully visible
+    }, 300); // Brief pause before explosion for anticipation
   } else {
     loadingFill.style.width = progress + '%';
 
