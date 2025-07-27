@@ -659,11 +659,17 @@ function createStarExplosion(elementRect, numStars, type) {
       startY = elementRect.top + (Math.random() * elementRect.height);
     }
     
+    // Pre-calculate final position
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 120 + Math.random() * 180;
+    const finalX = startX + Math.cos(angle) * distance;
+    const finalY = startY + Math.sin(angle) * distance;
+    
     star.style.left = `${startX - size / 2}px`;
     star.style.top = `${startY - size / 2}px`;
     star.style.opacity = '1';
     star.style.transform = 'scale(1) rotate(0deg)';
-    star.style.transition = 'all 2s ease-out';
+    star.style.transition = 'all 1.2s ease-out';
     
     document.body.appendChild(star);
     
@@ -675,25 +681,20 @@ function createStarExplosion(elementRect, numStars, type) {
       star.src = '';
     };
     
-    // Animate explosion outward with slight delay for wave effect
-    setTimeout(() => {
-      const angle = Math.random() * 2 * Math.PI;
-      const distance = 120 + Math.random() * 180;
-      const finalX = startX + Math.cos(angle) * distance;
-      const finalY = startY + Math.sin(angle) * distance;
-      
+    // IMMEDIATE animation - no delay!
+    requestAnimationFrame(() => {
       star.style.left = `${finalX - size / 2}px`;
       star.style.top = `${finalY - size / 2}px`;
       star.style.transform = `scale(0.1) rotate(${Math.random() * 720}deg)`;
       star.style.opacity = '0';
-    }, i * 20 + Math.random() * 100); // Staggered timing for wave effect
+    });
     
-    // Clean up
+    // Clean up faster
     setTimeout(() => {
       if (star.parentNode) {
         star.remove();
       }
-    }, 2500);
+    }, 1300);
   }
 }
 
@@ -764,12 +765,12 @@ const interval = setInterval(() => {
     // Create explosion effect - loading bar bursts into stars
     setTimeout(() => {
       createLoadingBarExplosion();
-      // Remove loader after explosion starts
+      // Remove loader after explosion is completely done
       setTimeout(() => {
         loader.remove();
         animate();
-      }, 800);
-    }, 300);
+      }, 1400); // Stars will be gone by 1300ms, start starfield at 1400ms
+    }, 200); // Slightly faster start
   } else {
     loadingFill.style.width = progress + '%';
 
