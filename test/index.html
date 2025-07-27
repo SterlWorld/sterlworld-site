@@ -764,8 +764,8 @@
 
     function createLoadingBarExplosion() {
       if (!settings.enableExplosions) {
-        console.log('💡 Explosions disabled for performance - using simple completion');
-        loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 30px #ffd700';
+        console.log('📱 Creating mobile-friendly sparkle burst instead of explosion');
+        createMobileFriendlyBurst();
         return;
       }
       
@@ -797,6 +797,77 @@
         titleGlow.style.opacity = '0';
         titleGlow.style.transform = 'scale(0.8)';
       }, 200);
+    }
+
+    function createMobileFriendlyBurst() {
+      const loadingBarRect = loadingBar.getBoundingClientRect();
+      const centerX = loadingBarRect.left + loadingBarRect.width / 2;
+      const centerY = loadingBarRect.top + loadingBarRect.height / 2;
+      
+      // Create a gentle sparkle burst - smaller but still fun
+      const numSparkles = 8;
+      
+      for (let i = 0; i < numSparkles; i++) {
+        const sparkle = getPooledSparkle();
+        
+        const size = 6 + Math.random() * 4;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.display = 'block';
+        
+        // Start from center
+        sparkle.style.left = `${centerX - size / 2}px`;
+        sparkle.style.top = `${centerY - size / 2}px`;
+        sparkle.style.opacity = '1';
+        
+        const glowColors = ['#ffd700', '#ff5ec4', '#0ff'];
+        const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+        sparkle.style.filter = `drop-shadow(0 0 8px ${glowColor}) brightness(2.5) saturate(1.8)`;
+        sparkle.style.transition = 'left 0.8s ease-out, top 0.8s ease-out, opacity 0.8s ease-out, transform 0.8s ease-out';
+        
+        document.body.appendChild(sparkle);
+        
+        sparkle.onerror = () => {
+          sparkle.style.background = glowColor;
+          sparkle.style.borderRadius = '50%';
+          sparkle.style.boxShadow = `0 0 8px ${glowColor}`;
+          sparkle.src = '';
+        };
+        
+        void sparkle.offsetWidth;
+        
+        const angle = (i / numSparkles) * 2 * Math.PI;
+        const distance = 40 + Math.random() * 30;
+        const finalX = centerX + Math.cos(angle) * distance;
+        const finalY = centerY + Math.sin(angle) * distance;
+        
+        sparkle.style.left = `${finalX - size / 2}px`;
+        sparkle.style.top = `${finalY - size / 2}px`;
+        sparkle.style.transform = `scale(0.3) rotate(${Math.random() * 360}deg)`;
+        sparkle.style.opacity = '0';
+        
+        setTimeout(() => returnSparkleToPool(sparkle), 800);
+      }
+      
+      // Add a gentle glow effect to the loading bar
+      loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 25px #ffd700';
+      loadingBar.style.transform = 'scale(1.05)';
+      loadingBar.style.transition = 'all 0.3s ease';
+      
+      setTimeout(() => {
+        loadingBar.style.opacity = '0';
+        loadingBar.style.transform = 'scale(0.9)';
+      }, 200);
+      
+      setTimeout(() => {
+        document.querySelector('.loading-text').style.opacity = '0';
+        document.querySelector('.loading-text').style.transform = 'scale(0.9)';
+      }, 250);
+      
+      setTimeout(() => {
+        titleGlow.style.opacity = '0';
+        titleGlow.style.transform = 'scale(0.9)';
+      }, 300);
     }
 
     function createScreenFlash() {
