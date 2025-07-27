@@ -580,6 +580,55 @@ function createLoadingBarCelebration() {
     sparkle.style.opacity = '1';
     sparkle.style.filter = `drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 12px #ffec8b) brightness(2.5) saturate(1.8)`;
     sparkle.style.transition = 'left 1.2s ease-out, top 1.2s ease-out, opacity 1.2s ease-out, transform 1.2s ease-out';
+    sparkle.style.position = 'fixed';
+    sparkle.style.zIndex = '100000';
+    
+    document.body.appendChild(sparkle);
+    
+    // Force reflow
+    void sparkle.offsetWidth;
+    
+    // Animate outward and fade
+    const finalX = centerX + Math.cos(angle) * radius;
+    const finalY = centerY + Math.sin(angle) * radius;
+    
+    sparkle.style.left = `${finalX - size / 2}px`;
+    sparkle.style.top = `${finalY - size / 2}px`;
+    sparkle.style.transform = `scale(0.3) rotate(${Math.random() * 720}deg)`;
+    sparkle.style.opacity = '0';
+    
+    setTimeout(() => sparkle.remove(), 1200);
+  }
+}
+
+function createLoadingBarCelebration() {
+  const loadingBarRect = loadingBar.getBoundingClientRect();
+  const centerX = loadingBarRect.left + loadingBarRect.width / 2;
+  const centerY = loadingBarRect.top + loadingBarRect.height / 2;
+  
+  // Create sparkles around the loading bar perimeter
+  const numSparkles = 20;
+  
+  for (let i = 0; i < numSparkles; i++) {
+    const sparkle = document.createElement('img');
+    sparkle.src = sparkleImgSrc;
+    sparkle.className = 'sparkle-star';
+    
+    const size = Math.random() * 12 + 6;
+    sparkle.style.width = `${size}px`;
+    sparkle.style.height = `${size}px`;
+    
+    // Position around the loading bar perimeter
+    const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
+    const radius = 40 + Math.random() * 20;
+    const startX = centerX + Math.cos(angle) * 25;
+    const startY = centerY + Math.sin(angle) * 15;
+    
+    sparkle.style.left = `${startX - size / 2}px`;
+    sparkle.style.top = `${startY - size / 2}px`;
+    sparkle.style.opacity = '1';
+    sparkle.style.filter = `drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 12px #ffec8b) brightness(2.5) saturate(1.8)`;
+    sparkle.style.transition = 'left 1.2s ease-out, top 1.2s ease-out, opacity 1.2s ease-out, transform 1.2s ease-out';
     
     document.body.appendChild(sparkle);
     
