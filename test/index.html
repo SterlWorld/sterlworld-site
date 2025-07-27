@@ -358,11 +358,44 @@
 
   <canvas id="space"></canvas>
 
+  <!-- SVG Filters for Ink Blotch Effect -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <!-- Logo Ink Blotch Filter -->
+      <mask id="inkBlotchMask">
+        <rect width="100%" height="100%" fill="black"/>
+        <g id="logoBlotches" fill="white">
+          <!-- Multiple blotch circles will be added here via JavaScript -->
+        </g>
+      </mask>
+      
+      <filter id="inkBlotch">
+        <feMorphology operator="dilate" radius="1"/>
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+      </filter>
+
+      <!-- Text Ink Blotch Filter -->
+      <mask id="textInkBlotchMask">
+        <rect width="100%" height="100%" fill="black"/>
+        <g id="textBlotches" fill="white">
+          <!-- Multiple blotch circles will be added here via JavaScript -->
+        </g>
+      </mask>
+      
+      <filter id="textInkBlotch">
+        <feMorphology operator="dilate" radius="0.5"/>
+        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+        <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+      </filter>
+    </defs>
+  </svg>
+
   <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" style="mask: url(#inkBlotchMask);" />
   </div>
 
-  <div class="content" id="mainText">
+  <div class="content" id="mainText" style="mask: url(#textInkBlotchMask);">
   <h1>Welcome to SterlWorld</h1>
   <p>
     We're crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
@@ -585,15 +618,70 @@ function createSparkleBurst(x, y) {
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
       } else {
         warpSpeed = normalSpeed;
+    // Ink blotch reveal functions
+    function createInkBlotches(containerId, numBlotches = 6) {
+      const container = document.getElementById(containerId);
+      const blotches = [];
+      
+      for (let i = 0; i < numBlotches; i++) {
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        
+        // Random positions across the element
+        const cx = Math.random() * 100;
+        const cy = Math.random() * 100;
+        
+        circle.setAttribute("cx", `${cx}%`);
+        circle.setAttribute("cy", `${cy}%`);
+        circle.setAttribute("r", "0");
+        circle.setAttribute("class", "blotch-circle");
+        
+        container.appendChild(circle);
+        blotches.push(circle);
+      }
+      
+      return blotches;
+    }
+
+    function startInkReveal(blotches, staggerDelay = 200) {
+      blotches.forEach((blotch, index) => {
+        setTimeout(() => {
+          // Animate radius from 0 to a large value
+          blotch.style.transition = `r 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+          blotch.setAttribute("r", "150");
+          
+          // Add some organic randomness to the spread
+          setTimeout(() => {
+            blotch.setAttribute("r", `${140 + Math.random() * 20}`);
+          }, 900);
+        }, index * staggerDelay + Math.random() * 100);
+      });
+    }
+
+    function triggerLogoInkReveal() {
+      console.log('🎨 Starting logo ink blotch reveal...');
+      const logoBlotches = createInkBlotches('logoBlotches', 8);
+      
+      document.getElementById('logo-wrapper').classList.add('fade-in');
+      
+      // Start ink reveal with staggered timing
+      setTimeout(() => {
+        startInkReveal(logoBlotches, 150);
+      }, 200);
+    }
+
         if (!warpComplete) {
           warpComplete = true;
-          document.getElementById('logo-wrapper').classList.add('fade-in');
+          
+          // Start the ink blotch reveal for logo
+          triggerLogoInkReveal();
+          
           setTimeout(() => {
-          document.getElementById('logo-wrapper').classList.add('move-top');
-          startLogoSparkleLoop(); // ← ADD THIS LINE
-          setTimeout(() => document.getElementById('mainText').classList.add('visible'), 1000);
-      }, 1500);
-
+            document.getElementById('logo-wrapper').classList.add('move-top');
+            startLogoSparkleLoop();
+            
+            // Start the ink blotch reveal for text
+            triggerTextInkReveal();
+          }, 1500);
         }
       }
 
