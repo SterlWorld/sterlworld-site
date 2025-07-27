@@ -656,9 +656,6 @@
             if (settings.logoSparkleInterval < 8000) {
               startLogoSparkleLoop();
             }
-            
-            // Start the text reveal
-            triggerTextReveal();
           }, 1500);
         }
       }
@@ -1050,17 +1047,30 @@
         setTimeout(() => {
           createLoadingBarExplosion();
           
-          startBackgroundReveal();
+          // Start background reveal IMMEDIATELY to prevent freeze
+          requestAnimationFrame(() => {
+            startBackgroundReveal();
+          });
           
           setTimeout(() => {
             console.log('🌟 Fading out loader and revealing content...');
             loader.classList.add('fade-out');
             
+            // Text should appear AFTER loader fades out AND logo finishes moving
+            setTimeout(() => {
+              // Calculate when logo will finish moving (1.5s from when it started + buffer)
+              const logoMoveDelay = 3100; // 1.5s logo reveal + 1.5s move + 100ms buffer
+              setTimeout(() => {
+                console.log('📝 Now revealing text after logo reached top');
+                triggerTextReveal();
+              }, logoMoveDelay);
+            }, 200);
+            
             setTimeout(() => {
               loader.remove();
             }, 800);
-          }, settings.enableExplosions ? 800 : 400);
-        }, settings.enableExplosions ? 300 : 100);
+          }, settings.enableExplosions ? 600 : 300); // Shorter delay
+        }, settings.enableExplosions ? 200 : 100); // Shorter pause
       } else {
         barFill.style.width = progress + '%';
 
