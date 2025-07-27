@@ -16,7 +16,16 @@
   overflow: hidden;
   cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
 }
-    canvas#space { position: fixed; top: 0; left: 0; z-index: 0; display: block; }
+    canvas#space { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      z-index: 0; 
+      display: block; 
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+    canvas#space.fade-in { opacity: 1; }
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -765,12 +774,16 @@ const interval = setInterval(() => {
     // Create explosion effect - loading bar bursts into stars
     setTimeout(() => {
       createLoadingBarExplosion();
-      // Remove loader after explosion is completely done
+      // Start starfield immediately but invisible
+      animate();
+      // Remove loader and fade in starfield
       setTimeout(() => {
         loader.remove();
-        animate();
-      }, 1400); // Stars will be gone by 1300ms, start starfield at 1400ms
-    }, 200); // Slightly faster start
+        // Fade in starfield immediately after loader removal
+        const canvas = document.getElementById('space');
+        canvas.classList.add('fade-in');
+      }, 200);
+    }, 200);
   } else {
     loadingFill.style.width = progress + '%';
 
@@ -809,6 +822,7 @@ function randomPulseLoop() {
 window.addEventListener('load', () => {
   setTimeout(randomPulseLoop, 2000);
 });
+
 function createLogoSparkle() {
   const logo = document.getElementById('logo');
   const rect = logo.getBoundingClientRect();
@@ -834,7 +848,6 @@ function createLogoSparkle() {
 
   sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
 
-
   sparkle.style.opacity = '1';
   document.body.appendChild(sparkle);
 
@@ -850,9 +863,8 @@ function createLogoSparkle() {
 
 function startLogoSparkleLoop() {
   setInterval(() => {
-  createLogoSparkle();
-}, 1500);
-
+    createLogoSparkle();
+  }, 1500);
 }
   </script>
 </body>
