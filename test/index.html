@@ -188,7 +188,7 @@
     .starfield-star {
       position: fixed;
       pointer-events: none;
-      z-index: 1;
+      z-index: 1; /* BEHIND logo and content */
       transition: none;
       will-change: transform, left, top, width, height, filter;
     }
@@ -752,7 +752,7 @@
       // Hide canvas completely for desktop
       canvas.style.display = 'none';
       
-      // PHASE 1: INSTANT UI VANISH + COSMIC EXPLOSION (0-0.5s)
+      // PHASE 1: INSTANT UI VANISH + COSMIC EXPLOSION (0-0.3s) - FASTER!
       console.log('Phase 1: COSMIC EXPLOSION - UI elements vanish, stars burst!');
       
       // Instantly hide loading elements
@@ -765,53 +765,62 @@
           const centerX = window.innerWidth / 2;
           const centerY = window.innerHeight / 2;
           
-          // Explosive burst pattern
-          const angle = (i / cosmicStars.length) * 4 * Math.PI + Math.random() * 0.5;
-          const explosionDistance = 200 + Math.random() * 300;
+          // Explosive burst pattern - MORE DRAMATIC
+          const angle = (i / cosmicStars.length) * 6 * Math.PI + Math.random() * 0.8;
+          const explosionDistance = 300 + Math.random() * 400; // BIGGER explosion
           const explosionX = centerX + Math.cos(angle) * explosionDistance;
           const explosionY = centerY + Math.sin(angle) * explosionDistance;
           
-          star.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          star.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)'; // FASTER + bouncy
           star.style.left = `${explosionX - 10}px`;
           star.style.top = `${explosionY - 10}px`;
-          star.style.transform = `scale(2.5) rotate(${Math.random() * 720}deg)`;
-          star.style.filter = 'drop-shadow(0 0 20px #fff) brightness(3) saturate(2.5)';
+          star.style.transform = `scale(3) rotate(${Math.random() * 1080}deg)`; // BIGGER + more rotation
+          star.style.filter = 'drop-shadow(0 0 25px #fff) brightness(3.5) saturate(3)'; // BRIGHTER
         });
-      }, 100);
+      }, 50); // Start faster
       
-      // PHASE 2: COSMIC VORTEX GATHERING (0.5s-1.2s)
+      // PHASE 2: COSMIC VORTEX SWIRL TO CENTER (0.3s-0.6s) - MUCH FASTER!
       setTimeout(() => {
-        console.log('Phase 2: COSMIC VORTEX - Stars gather in spiral formation!');
+        console.log('Phase 2: COSMIC VORTEX SWIRL - Stars spiral into center FAST!');
         
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
         
         cosmicStars.forEach((star, i) => {
-          const spiralAngle = (i / cosmicStars.length) * 6 * Math.PI;
-          const spiralRadius = 40 + Math.sin(spiralAngle * 0.5) * 30;
+          // Tight spiral into center
+          const spiralAngle = (i / cosmicStars.length) * 8 * Math.PI; // More spiral turns
+          const spiralRadius = 15 + Math.sin(spiralAngle * 0.3) * 10; // TIGHT to center
           const vortexX = centerX + Math.cos(spiralAngle) * spiralRadius;
           const vortexY = centerY + Math.sin(spiralAngle) * spiralRadius;
           
-          star.style.transition = 'all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          star.style.left = `${vortexX - 8}px`;
-          star.style.top = `${vortexY - 8}px`;
-          star.style.transform = `scale(1.2) rotate(${spiralAngle * 180 / Math.PI}deg)`;
-          star.style.filter = 'drop-shadow(0 0 12px #f7de99) brightness(2.2) saturate(1.8)';
+          star.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // FASTER
+          star.style.left = `${vortexX - 6}px`;
+          star.style.top = `${vortexY - 6}px`;
+          star.style.transform = `scale(0.8) rotate(${spiralAngle * 400 / Math.PI}deg)`; // FAST spinning
+          star.style.filter = 'drop-shadow(0 0 15px #f7de99) brightness(2.8) saturate(2.2)';
         });
-      }, 500);
+      }, 300); // Start much sooner
       
-      // PHASE 3: COLOR TRANSFORMATION TO STARFIELD GOLD (1.2s-2s)
+      // PHASE 3: EXPLOSIVE BURST + COLOR TRANSFORMATION (0.6s-0.8s) - RAPID!
       setTimeout(() => {
-        console.log('Phase 3: COLOR TRANSFORMATION - Stars become starfield gold!');
+        console.log('Phase 3: EXPLOSIVE BURST FROM CENTER - Stars explode outward and transform!');
         
         cosmicStars.forEach((star, i) => {
-          star.style.transition = 'all 0.8s ease-out';
-          star.style.filter = 'drop-shadow(0 0 10px #f7de99) brightness(1.8) saturate(1.5)';
+          // Explosive burst FROM center
+          const burstAngle = Math.random() * 2 * Math.PI;
+          const burstDistance = 100 + Math.random() * 200;
+          const burstX = window.innerWidth/2 + Math.cos(burstAngle) * burstDistance;
+          const burstY = window.innerHeight/2 + Math.sin(burstAngle) * burstDistance;
+          
+          star.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)'; // VERY FAST
+          star.style.left = `${burstX - 8}px`;
+          star.style.top = `${burstY - 8}px`;
           star.style.transform = `scale(1) rotate(${Math.random() * 360}deg)`;
+          star.style.filter = 'drop-shadow(0 0 12px #f7de99) brightness(2) saturate(1.8)'; // STARFIELD COLOR
         });
-      }, 1200);
+      }, 600); // Quick succession
       
-      // PHASE 4: BECOME THE LIVING STARFIELD (2s+)
+      // PHASE 4: BECOME THE LIVING STARFIELD (0.8s+) - IMMEDIATE!
       setTimeout(() => {
         console.log('Phase 4: TRANSFORMATION COMPLETE - Stars become the living starfield!');
         
@@ -820,22 +829,23 @@
           star.classList.add('starfield-star');
           star.classList.remove('cosmic-star');
           star.style.transition = 'none';
+          star.style.zIndex = '1'; // ENSURE behind logo and content
         });
         
-        // Start the pure DOM starfield animation
+        // Start the pure DOM starfield animation IMMEDIATELY
         warpStartTime = performance.now();
         animatePureDOMStarfield();
         
-        // Show logo and content
+        // Show logo and content quickly
         setTimeout(() => {
           document.getElementById('logo-wrapper').classList.add('fade-in');
           setTimeout(() => {
             document.getElementById('logo-wrapper').classList.add('move-top');
             startLogoSparkleLoop();
-            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 500);
-          }, 800);
-        }, 300);
-      }, 2000);
+            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 300);
+          }, 400); // Faster logo movement
+        }, 200); // Show logo sooner
+      }, 800); // Start starfield sooner
     }
     
     // Pure DOM starfield animation - no canvas at all!
@@ -977,7 +987,7 @@
             setTimeout(() => {
               loader.classList.add('fade-out');
               setTimeout(() => loader.remove(), 800);
-            }, 2500); // Give time for full transformation
+            }, 1200); // Much faster - transformation completes in 0.8s
           }
         }, 300);
       } else {
