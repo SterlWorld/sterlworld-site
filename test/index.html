@@ -345,7 +345,7 @@
   <div class="content" id="mainText">
   <h1>Welcome to SterlWorld</h1>
   <p>
-    We’re crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
+    We're crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
     Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
     Stay tuned — the <span class="power-text">extraordinary</span> awaits.
   </p>
@@ -559,6 +559,13 @@ const interval = setInterval(() => {
     progress = 100;
     clearInterval(interval);
     loadingFill.style.width = '100%';
+    
+    // Change to gold glow when complete
+    loadingFill.style.background = 'linear-gradient(90deg, #ffd700, #ffec8b, #ffd700)';
+    loadingFill.style.boxShadow = '0 0 20px #ffd700, 0 0 40px #ffd700, 0 0 60px #ffd700';
+    loadingFill.style.filter = 'drop-shadow(0 0 15px #ffd700)';
+    loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 20px #ffd700';
+    
     loadingFill.classList.add('full');
     setTimeout(() => {
       loader.remove();
