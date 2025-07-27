@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+if (!warpComplete) {
+          warpComplete = true;
+          
+          // Start the ink drop reveal for logo
+          triggerLogoInkReveal();
+          
+          setTimeout(() => {
+            document.getElementById('logo-wrapper').classList.add('move-top');
+            if (settings.logoSparkleInterval < 8000) { // Only if not too slow
+              startLogoSparkleLoop();
+            }
+            
+            // Start the ink drop reveal for text
+            triggerTextInkReveal();
+          }, 1500);
+        }<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -343,6 +358,42 @@
       50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
 
+    /* Mobile-friendly static background */
+    .static-stars-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+        radial-gradient(2px 2px at 40% 70%, #ffd700, transparent),
+        radial-gradient(1px 1px at 90% 40%, #fff, transparent),
+        radial-gradient(1px 1px at 50% 50%, #ffd700, transparent),
+        radial-gradient(2px 2px at 80% 10%, #fff, transparent),
+        radial-gradient(1px 1px at 10% 80%, #ffd700, transparent),
+        radial-gradient(1px 1px at 30% 20%, #fff, transparent),
+        radial-gradient(2px 2px at 70% 90%, #ffd700, transparent),
+        black;
+      opacity: 0;
+      transition: opacity 2s ease;
+      z-index: 0;
+    }
+    
+    .static-stars-bg.show {
+      opacity: 1;
+    }
+
+    /* Simple magical transitions for low-end devices */
+    .simple-fade {
+      transition: opacity 2s ease, transform 2s ease;
+    }
+    
+    .simple-fade.reveal {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
     @media screen and (max-width: 600px) {
       #logo { width: 180px; }
       h1 { font-size: 1.8rem; }
@@ -357,45 +408,32 @@
   </div>
 
   <canvas id="space"></canvas>
+  
+  <!-- Static starfield background for low-end devices -->
+  <div id="staticStars" class="static-stars-bg"></div>
 
-  <!-- SVG Filters for Ink Blotch Effect -->
+  <!-- SVG Filters for Ink Drop Effect -->
   <svg width="0" height="0" style="position: absolute;">
     <defs>
-      <!-- Logo Ink Blotch Filter -->
-      <mask id="inkBlotchMask">
+      <!-- Logo Ink Drop Mask -->
+      <mask id="logoInkMask">
         <rect width="100%" height="100%" fill="black"/>
-        <g id="logoBlotches" fill="white">
-          <!-- Multiple blotch circles will be added here via JavaScript -->
-        </g>
+        <circle id="logoInkDrop" cx="50%" cy="50%" r="0" fill="white"/>
       </mask>
       
-      <filter id="inkBlotch">
-        <feMorphology operator="dilate" radius="1"/>
-        <feGaussianBlur stdDeviation="2" result="blur"/>
-        <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
-      </filter>
-
-      <!-- Text Ink Blotch Filter -->
-      <mask id="textInkBlotchMask">
+      <!-- Text Ink Drop Mask -->
+      <mask id="textInkMask">
         <rect width="100%" height="100%" fill="black"/>
-        <g id="textBlotches" fill="white">
-          <!-- Multiple blotch circles will be added here via JavaScript -->
-        </g>
+        <circle id="textInkDrop" cx="50%" cy="50%" r="0" fill="white"/>
       </mask>
-      
-      <filter id="textInkBlotch">
-        <feMorphology operator="dilate" radius="0.5"/>
-        <feGaussianBlur stdDeviation="1.5" result="blur"/>
-        <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
-      </filter>
     </defs>
   </svg>
 
   <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" style="mask: url(#inkBlotchMask);" />
+    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-  <div class="content" id="mainText" style="mask: url(#textInkBlotchMask);">
+  <div class="content" id="mainText">
   <h1>Welcome to SterlWorld</h1>
   <p>
     We're crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
@@ -409,7 +447,7 @@
 
 
   <script>
-    // Mobile detection with performance scoring
+    // Enhanced mobile detection with performance tiers
     const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
                      ('ontouchstart' in window) ||
                      (window.innerWidth <= 768) ||
@@ -418,34 +456,40 @@
     // Performance scoring for smarter optimization
     const getPerformanceScore = () => {
       let score = 100;
-      if (isMobile) score -= 30;
-      if (window.innerWidth < 768) score -= 10;
-      if (navigator.hardwareConcurrency < 4) score -= 20;
-      if (navigator.deviceMemory && navigator.deviceMemory < 4) score -= 20;
-      return Math.max(score, 20);
+      if (isMobile) score -= 40; // Bigger penalty for mobile
+      if (window.innerWidth < 768) score -= 15;
+      if (navigator.hardwareConcurrency < 4) score -= 25;
+      if (navigator.deviceMemory && navigator.deviceMemory < 4) score -= 25;
+      return Math.max(score, 15); // Lower minimum
     };
 
     const performanceScore = getPerformanceScore();
     console.log('Performance score:', performanceScore);
 
-    // Smart performance settings based on device capability
+    // Three distinct experience tiers
     const settings = {
-      starCount: performanceScore > 70 ? 200 : performanceScore > 50 ? 120 : 80,
-      clickSparkles: performanceScore > 70 ? 12 : performanceScore > 50 ? 8 : 5,
-      loadingSparkles: performanceScore > 70 ? 25 : performanceScore > 50 ? 15 : 10,
+      // Ultra-minimal mobile experience
+      starCount: performanceScore > 60 ? 200 : performanceScore > 35 ? 80 : 0, // No stars on low-end mobile
+      enableStarfield: performanceScore > 35, // Disable entirely on weak devices
+      enableExplosions: performanceScore > 45, // Disable burst effects on mobile
+      clickSparkles: performanceScore > 60 ? 12 : performanceScore > 35 ? 4 : 1, // Minimal sparkles
+      loadingSparkles: performanceScore > 60 ? 25 : performanceScore > 35 ? 8 : 3,
       explosionStars: {
-        bar: performanceScore > 70 ? 40 : performanceScore > 50 ? 25 : 15,
-        text: performanceScore > 70 ? 25 : performanceScore > 50 ? 15 : 10,
-        title: performanceScore > 70 ? 30 : performanceScore > 50 ? 20 : 12
+        bar: performanceScore > 60 ? 40 : performanceScore > 45 ? 15 : 0,
+        text: performanceScore > 60 ? 25 : performanceScore > 45 ? 8 : 0,
+        title: performanceScore > 60 ? 30 : performanceScore > 45 ? 10 : 0
       },
-      celebrationSparkles: performanceScore > 70 ? 30 : performanceScore > 50 ? 20 : 12,
-      sparkleChance: performanceScore > 70 ? 0.6 : performanceScore > 50 ? 0.4 : 0.25,
-      logoSparkleInterval: performanceScore > 70 ? 1500 : performanceScore > 50 ? 2500 : 3500,
-      useAdvancedEffects: performanceScore > 60,
-      animationQuality: performanceScore > 70 ? 'full' : performanceScore > 50 ? 'reduced' : 'minimal'
+      celebrationSparkles: performanceScore > 60 ? 30 : performanceScore > 45 ? 10 : 0,
+      sparkleChance: performanceScore > 60 ? 0.6 : performanceScore > 35 ? 0.2 : 0.05,
+      logoSparkleInterval: performanceScore > 60 ? 1500 : performanceScore > 35 ? 4000 : 8000,
+      useAdvancedEffects: performanceScore > 50,
+      animationQuality: performanceScore > 60 ? 'full' : performanceScore > 35 ? 'reduced' : 'minimal',
+      // Mobile-specific magical alternatives
+      useSimpleTransitions: performanceScore <= 45,
+      useStaticBackground: performanceScore <= 30
     };
 
-    console.log('Device optimizations:', settings);
+    console.log('Experience tier:', performanceScore > 60 ? 'FULL' : performanceScore > 35 ? 'REDUCED' : 'MINIMAL');
 
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
@@ -792,7 +836,14 @@ function createLoadingSparkle(x) {
 }
 
 function createLoadingBarExplosion() {
-  console.log('🎆 MOBILE-OPTIMIZED LOADING BAR EXPLOSION STARTING! 🎆');
+  if (!settings.enableExplosions) {
+    console.log('💡 Explosions disabled for performance - using simple completion');
+    // Just add a gentle glow effect instead
+    loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 30px #ffd700';
+    return;
+  }
+  
+  console.log('🎆 PERFORMANCE-OPTIMIZED LOADING BAR EXPLOSION! 🎆');
   
   // Get positions of all elements that will explode
   const loadingBarRect = loadingBar.getBoundingClientRect();
@@ -808,12 +859,12 @@ function createLoadingBarExplosion() {
   // Create explosion from "SterlWorld" text
   createStarExplosion(titleGlowRect, settings.explosionStars.title, 'title');
   
-  // Add screen flash effect for more drama (only on non-mobile or reduced on mobile)
-  if (!isMobile || settings.animationQuality === 'full') {
+  // Add screen flash effect (only on capable devices)
+  if (settings.useAdvancedEffects) {
     createScreenFlash();
   }
   
-  // Gradually fade out the loading elements (instead of instant hide)
+  // Gradually fade out the loading elements
   setTimeout(() => {
     loadingBar.style.opacity = '0';
     loadingBar.style.transform = 'scale(0.8)';
@@ -937,6 +988,10 @@ function createStarExplosion(elementRect, numStars, type) {
 }
 
 function createLoadingBarCelebration() {
+  if (!settings.enableExplosions) {
+    return; // Skip celebration on low-end devices
+  }
+  
   const loadingBarRect = loadingBar.getBoundingClientRect();
   const centerX = loadingBarRect.left + loadingBarRect.width / 2;
   const centerY = loadingBarRect.top + loadingBarRect.height / 2;
@@ -945,9 +1000,7 @@ function createLoadingBarCelebration() {
   const numSparkles = settings.celebrationSparkles;
   
   for (let i = 0; i < numSparkles; i++) {
-    const sparkle = document.createElement('img');
-    sparkle.src = sparkleImgSrc;
-    sparkle.className = 'sparkle-star';
+    const sparkle = getPooledSparkle();
     
     // Mobile-optimized sparkle sizes
     const baseSize = isMobile ? 12 : 15;
@@ -955,6 +1008,7 @@ function createLoadingBarCelebration() {
     const size = Math.random() * baseSize + minSize;
     sparkle.style.width = `${size}px`;
     sparkle.style.height = `${size}px`;
+    sparkle.style.display = 'block';
     
     // Position around the loading bar perimeter
     const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
@@ -995,7 +1049,7 @@ function createLoadingBarCelebration() {
     sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
     sparkle.style.opacity = '0';
     
-    setTimeout(() => sparkle.remove(), 1500);
+    setTimeout(() => returnSparkleToPool(sparkle), 1500);
   }
 }
 
@@ -1025,26 +1079,21 @@ const interval = setInterval(() => {
     setTimeout(() => {
       createLoadingBarExplosion();
       
-      // Start starfield immediately but invisible
-      animate();
+      
+      // Start background reveal immediately after loading completes
+      startBackgroundReveal();
       
       // Remove loader with fade out after explosion has time to be seen
       setTimeout(() => {
-        console.log('🌟 Fading out loader and revealing starfield...');
+        console.log('🌟 Fading out loader and revealing content...');
         loader.classList.add('fade-out');
         
         // Remove loader from DOM after fade completes
         setTimeout(() => {
           loader.remove();
         }, 800);
-        
-        // Fade in starfield with slight delay for dramatic effect
-        setTimeout(() => {
-          const canvas = document.getElementById('space');
-          canvas.classList.add('fade-in');
-        }, 400);
-      }, 800); // Increased delay to let explosion be fully visible
-    }, 300); // Brief pause before explosion for anticipation
+      }, settings.enableExplosions ? 800 : 400); // Shorter delay if no explosions
+    }, settings.enableExplosions ? 300 : 100); // Brief pause before explosion for anticipation
   } else {
     loadingFill.style.width = progress + '%';
 
@@ -1145,14 +1194,19 @@ function startLogoSparkleLoop() {
 }
 
     // Performance monitoring and logging
-    console.log(`✨ SterlWorld Performance-Optimized:`);
+    console.log(`✨ SterlWorld Performance-Optimized Experience:`);
     console.log(`   📊 Performance Score: ${performanceScore}/100`);
-    console.log(`   ⭐ Stars: ${settings.starCount}`);
+    console.log(`   🎮 Experience Tier: ${performanceScore > 60 ? 'FULL' : performanceScore > 35 ? 'REDUCED' : 'MINIMAL'}`);
+    console.log(`   ⭐ Starfield: ${settings.enableStarfield ? `${settings.starCount} stars` : 'Static background'}`);
+    console.log(`   💥 Explosions: ${settings.enableExplosions ? 'Enabled' : 'Disabled'}`);
     console.log(`   ✨ Click sparkles: ${settings.clickSparkles}`);
     console.log(`   🎨 Animation quality: ${settings.animationQuality}`);
-    console.log(`   📱 Advanced effects: ${settings.useAdvancedEffects ? 'ON' : 'OFF'}`);
+    console.log(`   📱 Simple transitions: ${settings.useSimpleTransitions ? 'ON' : 'OFF'}`);
     console.log(`   ⏱️ Logo sparkle interval: ${settings.logoSparkleInterval}ms`);
-    console.log(`   🎯 Target: Keep magic, optimize performance`);
+    
+    if (settings.useStaticBackground) {
+      console.log('🔧 Ultra-minimal mode: Static elements only');
+    }
   </script>
 </body>
 </html>
