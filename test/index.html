@@ -1,4 +1,20 @@
-<!DOCTYPE html>
+// Helper to create stars from specific UI elements
+    function createCosmicStarsFromElement(elementRect, count, starArray, type) {
+      for (let i = 0; i < count; i++) {
+        // Distribute along the element
+        const progress = i / count;
+        const x = elementRect.left + progress * elementRect.width;
+        const y = elementRect.top + elementRect.height / 2;
+        
+        const star = createOptimizedSparkle(x, y, 10 + Math.random() * 6);
+        star.classList.add('cosmic-star', `cosmic-${type}`);
+        star.style.zIndex = '999997';
+        star.style.willChange = 'transform, left, top, opacity, width, height';
+        
+        document.body.appendChild(star);
+        starArray.push(star);
+      }
+    }<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -655,169 +671,125 @@
       }
     }
 
-    // Desktop-exclusive: COSMIC SUPERNOVA TRANSFORMATION
+    // Desktop-exclusive: PURE COSMIC TRANSFORMATION - No Canvas Needed!
     function createDesktopStarfieldTransition() {
-      console.log('🌟 DESKTOP EXCLUSIVE: COSMIC SUPERNOVA INTO LIVING STARFIELD! 🌟');
+      console.log('🌟 DESKTOP EXCLUSIVE: PURE COSMIC SUPERNOVA → LIVING STARFIELD! 🌟');
       
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
       
-      // These will become the ACTUAL starfield stars
+      // These BECOME the starfield - no canvas needed!
       const cosmicStars = [];
-      const totalStars = 200; // Exact match to starfield count
+      const totalStars = 200;
       
       // Distribute star origins across all elements
-      const barStars = Math.floor(totalStars * 0.4); // 40% from loading bar
-      const loadingStars = Math.floor(totalStars * 0.3); // 30% from "Loading" text
-      const titleStars = totalStars - barStars - loadingStars; // 30% from "SterlWorld" text
+      const barStars = Math.floor(totalStars * 0.4);
+      const loadingStars = Math.floor(totalStars * 0.3);
+      const titleStars = totalStars - barStars - loadingStars;
       
-      // Create the cosmic transformation stars
+      // Create the cosmic stars
       createCosmicStarsFromElement(loadingBarRect, barStars, cosmicStars, 'bar');
       createCosmicStarsFromElement(loadingTextRect, loadingStars, cosmicStars, 'loading');
       createCosmicStarsFromElement(titleGlowRect, titleStars, cosmicStars, 'title');
       
-      // SUPERNOVA EXPLOSION: Hide elements as they explode
+      // Initialize starfield data for each cosmic star
+      cosmicStars.forEach((star, i) => {
+        const starData = {
+          x: (Math.random() - 0.5) * w * 1.5,
+          y: (Math.random() - 0.5) * h * 1.5,
+          z: Math.random() * w,
+          size: Math.random() * 0.8 + 0.3,
+          rotationAngle: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.01,
+          domElement: star
+        };
+        stars[i] = starData;
+      });
+      
+      // SUPERNOVA: Hide loading elements as they explode
       createScreenFlash();
       loadingBar.style.opacity = '0';
       document.querySelector('.loading-text').style.opacity = '0';
       titleGlow.style.opacity = '0';
       
-      // Phase 1: COSMIC EXPLOSION (0-0.5s)
+      // Phase 1: COSMIC EXPLOSION (0-0.3s) - FASTER!
       setTimeout(() => {
         cosmicStars.forEach((star, i) => {
           const angle = Math.random() * 2 * Math.PI;
-          const explosionDistance = 200 + Math.random() * 300;
+          const explosionDistance = 150 + Math.random() * 200;
           const explosionX = window.innerWidth / 2 + Math.cos(angle) * explosionDistance;
           const explosionY = window.innerHeight / 2 + Math.sin(angle) * explosionDistance;
           
+          star.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
           star.style.left = `${explosionX - 10}px`;
           star.style.top = `${explosionY - 10}px`;
-          star.style.transform = `scale(2) rotate(${Math.random() * 720}deg)`;
-          star.style.filter = 'drop-shadow(0 0 20px #fff) brightness(3) saturate(2)';
+          star.style.transform = `scale(1.8) rotate(${Math.random() * 360}deg)`;
+          star.style.filter = 'drop-shadow(0 0 15px #fff) brightness(2.5) saturate(2)';
         });
-      }, 100);
+      }, 50);
       
-      // Phase 2: COSMIC VORTEX - Stars swirl toward center (0.5s-1.5s)
+      // Phase 2: COSMIC VORTEX (0.3s-0.8s) - FASTER!
       setTimeout(() => {
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
         
         cosmicStars.forEach((star, i) => {
-          // Create spiral motion toward center
-          const spiralAngle = (i / cosmicStars.length) * 6 * Math.PI;
-          const spiralRadius = 50 + Math.random() * 100;
+          const spiralAngle = (i / cosmicStars.length) * 4 * Math.PI;
+          const spiralRadius = 30 + Math.random() * 60;
           const vortexX = centerX + Math.cos(spiralAngle) * spiralRadius;
           const vortexY = centerY + Math.sin(spiralAngle) * spiralRadius;
           
-          star.style.transition = 'all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          star.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
           star.style.left = `${vortexX - 8}px`;
           star.style.top = `${vortexY - 8}px`;
-          star.style.transform = `scale(1.2) rotate(${spiralAngle * 180 / Math.PI}deg)`;
-          star.style.filter = 'drop-shadow(0 0 12px #f7de99) brightness(2) saturate(1.8)';
-        });
-      }, 500);
-      
-      // Phase 3: STARFIELD BIRTH - Transform into animated starfield (1.5s-3s)
-      setTimeout(() => {
-        // Initialize the starfield data to match our cosmic stars
-        stars = []; // Clear existing stars
-        
-        cosmicStars.forEach((star, i) => {
-          // Create starfield data that matches this DOM star
-          const starData = {
-            x: (Math.random() - 0.5) * w * 1.5,
-            y: (Math.random() - 0.5) * h * 1.5,
-            z: Math.random() * w,
-            size: Math.random() * 0.8 + 0.3,
-            rotationAngle: Math.random() * Math.PI * 2,
-            rotationSpeed: (Math.random() - 0.5) * 0.01,
-            domStar: star, // Link to the DOM element
-            transitionComplete: false
-          };
-          stars.push(starData);
-          
-          // Position the DOM star in 3D space initially
-          let k = 128.0 / starData.z;
-          let px = starData.x * k + w / 2;
-          let py = starData.y * k + h / 2;
-          let starSize = starData.size * (1 - starData.z / w) * 25;
-          
-          star.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          star.style.left = `${px - starSize/2}px`;
-          star.style.top = `${py - starSize/2}px`;
-          star.style.width = `${starSize}px`;
-          star.style.height = `${starSize}px`;
-          star.style.transform = `scale(1) rotate(${starData.rotationAngle * 180/Math.PI}deg)`;
+          star.style.transform = `scale(1) rotate(${spiralAngle * 180 / Math.PI}deg)`;
           star.style.filter = 'drop-shadow(0 0 8px #f7de99) brightness(1.8) saturate(1.5)';
         });
-        
-        // Start the starfield animation with DOM stars
-        animateWithCosmicStars();
-        
-      }, 1500);
+      }, 300);
       
-      // Phase 4: Seamless handoff to canvas (3s)
+      // Phase 3: BECOME THE STARFIELD (0.8s+) - These stars ARE the starfield now!
       setTimeout(() => {
-        // Gradually transition from DOM stars to canvas
-        cosmicStars.forEach((star, i) => {
-          setTimeout(() => {
-            star.style.opacity = '0';
-            // Mark corresponding starfield data as ready for canvas
-            if (stars[i]) {
-              stars[i].transitionComplete = true;
-              stars[i].domStar = null; // Release DOM reference
-            }
-          }, i * 2); // Stagger for smooth transition
-        });
+        // Start the starfield animation - these DOM stars become the living starfield
+        warpStartTime = performance.now(); // Reset warp timing
+        animatePureDOM();
         
-        // Fade in canvas
+        // Show logo/content quickly after starfield starts
         setTimeout(() => {
-          canvas.classList.add('fade-in');
-          // Switch to pure canvas animation
+          document.getElementById('logo-wrapper').classList.add('fade-in');
           setTimeout(() => {
-            animate(); // Normal starfield animation
-            cosmicStars.forEach(star => star.remove()); // Clean up
+            document.getElementById('logo-wrapper').classList.add('move-top');
+            startLogoSparkleLoop();
+            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 300);
           }, 500);
         }, 200);
-        
-      }, 3000);
+      }, 800);
     }
     
-    // Helper to create stars from specific UI elements
-    function createCosmicStarsFromElement(elementRect, count, starArray, type) {
-      for (let i = 0; i < count; i++) {
-        // Distribute along the element
-        const progress = i / count;
-        const x = elementRect.left + progress * elementRect.width;
-        const y = elementRect.top + elementRect.height / 2;
-        
-        const star = createOptimizedSparkle(x, y, 12 + Math.random() * 8);
-        star.classList.add('cosmic-star', `cosmic-${type}`);
-        star.style.zIndex = '999997';
-        star.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        star.style.willChange = 'transform, left, top, opacity';
-        
-        document.body.appendChild(star);
-        starArray.push(star);
-      }
-    }
-    
-    // Special animation that uses DOM stars before transitioning to canvas
-    function animateWithCosmicStars() {
-      let animationId;
+    // Pure DOM starfield animation - no canvas at all!
+    function animatePureDOM() {
       let lastTime = performance.now();
       
-      function cosmicAnimate(time = performance.now()) {
+      function domStarfieldAnimate(time = performance.now()) {
+        if (!warpStartTime) warpStartTime = time;
+        const elapsed = time - warpStartTime;
+
+        // Warp speed calculation
+        if (elapsed < warpDuration) {
+          const t = elapsed / warpDuration;
+          warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+        } else {
+          warpSpeed = normalSpeed;
+        }
+
         const delta = (time - lastTime) / 16.67;
         lastTime = time;
-        
+
         stars.forEach((s, i) => {
-          if (!s.transitionComplete && s.domStar) {
-            // Animate the DOM star in 3D space
+          if (s.domElement) {
             s.z -= warpSpeed * delta;
             if (s.z <= 0) {
-              // Reset star position
+              // Reset star to back of field
               s.x = (Math.random() - 0.5) * w * 1.5;
               s.y = (Math.random() - 0.5) * h * 1.5;
               s.z = Math.random() * w;
@@ -827,25 +799,30 @@
             let px = s.x * k + w / 2;
             let py = s.y * k + h / 2;
             
-            if (px >= 0 && px < w && py >= 0 && py < h) {
-              let starSize = s.size * (1 - s.z / w) * 25;
-              s.domStar.style.left = `${px - starSize/2}px`;
-              s.domStar.style.top = `${py - starSize/2}px`;
-              s.domStar.style.width = `${starSize}px`;
-              s.domStar.style.height = `${starSize}px`;
-              s.domStar.style.transform = `rotate(${s.rotationAngle * 180/Math.PI}deg)`;
-              s.rotationAngle += s.rotationSpeed;
+            if (px < 0 || px >= w || py < 0 || py >= h) {
+              // Star is off screen, reset it
+              s.x = (Math.random() - 0.5) * w * 1.5;
+              s.y = (Math.random() - 0.5) * h * 1.5;
+              s.z = Math.random() * w;
+              return;
             }
+            
+            let starSize = s.size * (1 - s.z / w) * 25;
+            s.domElement.style.left = `${px - starSize/2}px`;
+            s.domElement.style.top = `${py - starSize/2}px`;
+            s.domElement.style.width = `${starSize}px`;
+            s.domElement.style.height = `${starSize}px`;
+            s.domElement.style.transform = `rotate(${s.rotationAngle * 180/Math.PI}deg)`;
+            s.domElement.style.filter = `drop-shadow(0 0 ${starSize * 0.6}px #f7de99) brightness(1.5) saturate(1.3)`;
+            
+            s.rotationAngle += s.rotationSpeed;
           }
         });
-        
-        // Continue until all stars transition to canvas
-        if (stars.some(s => !s.transitionComplete)) {
-          animationId = requestAnimationFrame(cosmicAnimate);
-        }
+
+        requestAnimationFrame(domStarfieldAnimate);
       }
       
-      cosmicAnimate();
+      domStarfieldAnimate();
     }
 
     // Mobile version - simple fade (existing behavior)
@@ -1021,4 +998,4 @@
   </script>
 
 </body>
-</html> 
+</html>
