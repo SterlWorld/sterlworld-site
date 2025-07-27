@@ -667,7 +667,7 @@
       }
     }
 
-    // 🌟 EPIC DESKTOP COSMIC TRANSFORMATION - UI → STARFIELD 🌟
+    // 🌟 LEGENDARY DESKTOP COSMIC TRANSFORMATION - UI → STARFIELD 🌟
     function createCosmicStarsFromElement(elementRect, count, starArray, type) {
       console.log(`Creating ${count} cosmic stars from ${type} element`);
       
@@ -686,7 +686,7 @@
           y = elementRect.top + elementRect.height / 2;
         }
         
-        const star = createOptimizedSparkle(x, y, 8 + Math.random() * 8);
+        const star = createOptimizedSparkle(x, y, 6 + Math.random() * 6);
         star.classList.add('cosmic-star', `cosmic-${type}`);
         star.style.zIndex = '999997';
         star.style.willChange = 'transform, left, top, opacity, width, height, filter';
@@ -706,54 +706,32 @@
     }
 
     function createDesktopStarfieldTransition() {
-      console.log('🌟 DESKTOP EXCLUSIVE: PURE COSMIC TRANSFORMATION! UI → LIVING STARFIELD! 🌟');
+      console.log('🌟 LEGENDARY DESKTOP TRANSFORMATION: UI ELEMENTS → COSMIC STARFIELD! 🌟');
       
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
       
-      // These BECOME the starfield - no canvas needed!
       const cosmicStars = [];
-      const totalStars = 250; // Epic desktop experience
+      const totalStars = 180; // Optimized for smooth performance
       
       // Distribute star origins across all elements
-      const barStars = Math.floor(totalStars * 0.4);    // 100 stars from loading bar
-      const loadingStars = Math.floor(totalStars * 0.3); // 75 stars from "Loading"
-      const titleStars = totalStars - barStars - loadingStars; // 75 stars from "SterlWorld"
+      const barStars = Math.floor(totalStars * 0.5);    // 90 stars from loading bar
+      const loadingStars = Math.floor(totalStars * 0.25); // 45 stars from "Loading"
+      const titleStars = totalStars - barStars - loadingStars; // 45 stars from "SterlWorld"
       
       // Create the cosmic stars from UI elements
       createCosmicStarsFromElement(loadingBarRect, barStars, cosmicStars, 'bar');
       createCosmicStarsFromElement(loadingTextRect, loadingStars, cosmicStars, 'loading');
       createCosmicStarsFromElement(titleGlowRect, titleStars, cosmicStars, 'title');
       
-      console.log(`Created ${cosmicStars.length} cosmic stars for transformation`);
+      console.log(`Created ${cosmicStars.length} cosmic stars for legendary transformation`);
       
-      // Initialize starfield data for each cosmic star
-      cosmicStars.forEach((star, i) => {
-        const starData = {
-          x: (Math.random() - 0.5) * w * 1.5,
-          y: (Math.random() - 0.5) * h * 1.5,
-          z: Math.random() * w + 100, // Start a bit closer
-          size: Math.random() * 0.8 + 0.3,
-          rotationAngle: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.01,
-          domElement: star,
-          originalSize: parseFloat(star.style.width) || 10
-        };
-        
-        // Replace canvas stars with DOM stars
-        if (i < stars.length) {
-          stars[i] = starData;
-        } else {
-          stars.push(starData);
-        }
-      });
-      
-      // Hide canvas completely for desktop
+      // Hide canvas completely for desktop - stars will BE the starfield
       canvas.style.display = 'none';
       
-      // PHASE 1: INSTANT UI VANISH + COSMIC EXPLOSION (0-0.6s) - Perfect timing!
-      console.log('Phase 1: COSMIC EXPLOSION - UI elements vanish, stars burst!');
+      // PHASE 1: DRAMATIC EXPLOSION (0-0.4s)
+      console.log('Phase 1: DRAMATIC EXPLOSION - UI elements burst into stars!');
       
       // Instantly hide loading elements
       loadingBar.style.opacity = '0';
@@ -761,73 +739,125 @@
       titleGlow.style.opacity = '0';
       
       setTimeout(() => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
         cosmicStars.forEach((star, i) => {
-          const centerX = window.innerWidth / 2;
-          const centerY = window.innerHeight / 2;
-          
-          // Explosive burst pattern - DRAMATIC
-          const angle = (i / cosmicStars.length) * 6 * Math.PI + Math.random() * 0.8;
-          const explosionDistance = 300 + Math.random() * 400; 
+          // Explosive burst pattern - stars shoot outward dramatically
+          const angle = (i / cosmicStars.length) * 4 * Math.PI + Math.random() * 0.5;
+          const explosionDistance = 250 + Math.random() * 350; 
           const explosionX = centerX + Math.cos(angle) * explosionDistance;
           const explosionY = centerY + Math.sin(angle) * explosionDistance;
           
-          star.style.transition = 'all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55)'; // Slightly slower
-          star.style.left = `${explosionX - 10}px`;
-          star.style.top = `${explosionY - 10}px`;
-          star.style.transform = `scale(3) rotate(${Math.random() * 1080}deg)`;
-          star.style.filter = 'drop-shadow(0 0 25px #fff) brightness(3.5) saturate(3)';
+          star.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+          star.style.left = `${explosionX - 8}px`;
+          star.style.top = `${explosionY - 8}px`;
+          star.style.transform = `scale(2.5) rotate(${Math.random() * 720}deg)`;
+          star.style.filter = 'drop-shadow(0 0 20px #fff) brightness(3) saturate(2.5)';
         });
-      }, 80);
+      }, 50);
       
-      // PHASE 2: COSMIC VORTEX SWIRL TO CENTER (0.6s-1.2s) - Perfect spiral timing!
+      // PHASE 2: SPIRAL TRAIL CONVERGENCE (0.4s-2.5s) - The legendary spiral!
       setTimeout(() => {
-        console.log('Phase 2: COSMIC VORTEX SWIRL - Stars spiral into center!');
+        console.log('Phase 2: SPIRAL TRAIL CONVERGENCE - Stars form trailing cluster spiraling inward!');
         
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
         
         cosmicStars.forEach((star, i) => {
-          // Tight spiral into center
-          const spiralAngle = (i / cosmicStars.length) * 8 * Math.PI;
-          const spiralRadius = 15 + Math.sin(spiralAngle * 0.3) * 10; // TIGHT to center
-          const vortexX = centerX + Math.cos(spiralAngle) * spiralRadius;
-          const vortexY = centerY + Math.sin(spiralAngle) * spiralRadius;
+          // Create smooth spiral motion with trailing effect
+          const spiralProgress = i / cosmicStars.length;
+          const spiralAngle = spiralProgress * 12 * Math.PI; // Multiple spiral turns
+          const spiralRadius = 400 * (1 - spiralProgress * 0.7); // Spiral inward from outer edge
           
-          star.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // Good timing
-          star.style.left = `${vortexX - 6}px`;
-          star.style.top = `${vortexY - 6}px`;
-          star.style.transform = `scale(0.8) rotate(${spiralAngle * 400 / Math.PI}deg)`;
-          star.style.filter = 'drop-shadow(0 0 15px #f7de99) brightness(2.8) saturate(2.2)';
+          // Add trailing offset for cluster effect
+          const trailOffset = (i % 8) * 0.1; // Stars trail behind each other
+          const adjustedProgress = Math.min(1, spiralProgress + trailOffset);
+          const adjustedRadius = 400 * (1 - adjustedProgress * 0.85);
+          
+          const spiralX = centerX + Math.cos(spiralAngle) * adjustedRadius;
+          const spiralY = centerY + Math.sin(spiralAngle) * adjustedRadius;
+          
+          // Smooth spiral motion with perfect timing
+          star.style.transition = 'all 2.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          star.style.left = `${spiralX - 6}px`;
+          star.style.top = `${spiralY - 6}px`;
+          star.style.transform = `scale(1.2) rotate(${spiralAngle * 180 / Math.PI}deg)`;
+          star.style.filter = 'drop-shadow(0 0 12px #f7de99) brightness(2.5) saturate(2)';
         });
-      }, 600);
+      }, 400);
       
-      // PHASE 3: INSTANT STARFIELD TRANSFORMATION (1.2s) - NO FADE, DIRECT TRANSFORMATION!
+      // PHASE 3: CENTER CONVERGENCE (2.5s-2.8s)
       setTimeout(() => {
-        console.log('Phase 3: INSTANT STARFIELD - Stars become the living starfield NOW!');
+        console.log('Phase 3: CENTER CONVERGENCE - All stars meet at center!');
         
-        // Remove all transitions for smooth animation - NO burst phase needed!
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
+        cosmicStars.forEach((star, i) => {
+          // All stars converge to exact center
+          star.style.transition = 'all 0.3s ease-in';
+          star.style.left = `${centerX - 4}px`;
+          star.style.top = `${centerY - 4}px`;
+          star.style.transform = `scale(0.8) rotate(${i * 45}deg)`;
+          star.style.filter = 'drop-shadow(0 0 15px #fff) brightness(3) saturate(3)';
+        });
+      }, 2500);
+      
+      // PHASE 4: FINAL EXPLOSION → STARFIELD TRANSFORMATION (2.8s-3.0s)
+      setTimeout(() => {
+        console.log('Phase 4: FINAL EXPLOSION → STARFIELD - Stars explode outward and become the living starfield!');
+        
+        // Initialize starfield data for each cosmic star
+        cosmicStars.forEach((star, i) => {
+          const starData = {
+            x: (Math.random() - 0.5) * w * 1.5,
+            y: (Math.random() - 0.5) * h * 1.5,
+            z: Math.random() * w + 50,
+            size: Math.random() * 0.8 + 0.4,
+            rotationAngle: Math.random() * Math.PI * 2,
+            rotationSpeed: (Math.random() - 0.5) * 0.008,
+            domElement: star
+          };
+          
+          // Replace canvas stars with DOM stars
+          if (i < stars.length) {
+            stars[i] = starData;
+          } else {
+            stars.push(starData);
+          }
+        });
+        
         cosmicStars.forEach(star => {
           star.classList.add('starfield-star');
           star.classList.remove('cosmic-star');
           star.style.transition = 'none';
-          star.style.zIndex = '1'; // ENSURE behind logo and content
-          star.style.filter = 'drop-shadow(0 0 12px #f7de99) brightness(1.8) saturate(1.5)'; // Starfield color
+          star.style.zIndex = '1'; // Behind logo and content
+          star.style.filter = 'drop-shadow(0 0 10px #f7de99) brightness(1.8) saturate(1.5)';
         });
         
-        // Start the pure DOM starfield animation IMMEDIATELY - stars are already positioned!
+        // Start the living starfield animation immediately
         warpStartTime = performance.now();
         animatePureDOMStarfield();
         
-        // Show logo and content
+        console.log('🎆 STARFIELD IS ALIVE! Beginning logo sequence...');
+        
+        // PHASE 5: Logo fade-in at center (3.2s)
         setTimeout(() => {
           document.getElementById('logo-wrapper').classList.add('fade-in');
+          
+          // PHASE 6: Logo slides to top (4.7s)
           setTimeout(() => {
             document.getElementById('logo-wrapper').classList.add('move-top');
             startLogoSparkleLoop();
-            setTimeout(() => document.getElementById('mainText').classList.add('visible'), 400);
-          }, 600);
-        }, 300);
-      }, 1200); // Perfect timing after spiral completes
+            
+            // PHASE 7: Content fades in ONLY after logo has settled at top (6.2s)
+            setTimeout(() => {
+              document.getElementById('mainText').classList.add('visible');
+            }, 1500); // Wait for logo to fully settle at top
+          }, 1500); // Logo fade-in complete
+        }, 400); // Small delay after starfield starts
+      }, 2800);
     }
     
     // Pure DOM starfield animation - no canvas at all!
@@ -962,7 +992,7 @@
               setTimeout(() => canvas.classList.add('fade-in'), 200);
             }, isMobile ? 400 : 800);
           } else {
-            // Desktop: EPIC COSMIC TRANSFORMATION!
+            // Desktop: LEGENDARY COSMIC TRANSFORMATION!
             createDesktopStarfieldTransition();
             
             // Remove loader after the transformation completes
