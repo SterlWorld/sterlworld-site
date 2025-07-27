@@ -174,10 +174,9 @@
       transition: all 0.6s ease-out;
     }
 
-    /* Enhanced sparkle effects for consistent star.png experience */
-    .sparkle-star {
-      image-rendering: crisp-edges;
-      image-rendering: -webkit-optimize-contrast;
+    /* Desktop transition stars */
+    .transition-star {
+      will-change: transform, left, top, opacity;
     }
 
     #loader {
@@ -654,7 +653,129 @@
       }
     }
 
-    // Optimized explosion for mobile
+    // Desktop-exclusive: EVERYTHING transforms INTO the starfield
+    function createDesktopStarfieldTransition() {
+      console.log('🌟 DESKTOP EXCLUSIVE: EVERYTHING transforming into starfield! 🌟');
+      
+      const loadingBarRect = loadingBar.getBoundingClientRect();
+      const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
+      const titleGlowRect = titleGlow.getBoundingClientRect();
+      
+      // Create transition stars that will become the actual starfield
+      const transitionStars = [];
+      const totalStars = 200; // Match the desktop starfield count
+      
+      // Distribute star origins across all elements
+      const barStars = Math.floor(totalStars * 0.4); // 40% from loading bar
+      const loadingStars = Math.floor(totalStars * 0.3); // 30% from "Loading" text
+      const titleStars = totalStars - barStars - loadingStars; // 30% from "SterlWorld" text
+      
+      // Create stars from loading bar
+      for (let i = 0; i < barStars; i++) {
+        const x = loadingBarRect.left + (i / barStars) * loadingBarRect.width;
+        const y = loadingBarRect.top + loadingBarRect.height / 2;
+        const star = createTransitionStar(x, y, i);
+        transitionStars.push(star);
+      }
+      
+      // Create stars from "Loading" text
+      for (let i = 0; i < loadingStars; i++) {
+        const x = loadingTextRect.left + (i / loadingStars) * loadingTextRect.width;
+        const y = loadingTextRect.top + loadingTextRect.height / 2;
+        const star = createTransitionStar(x, y, barStars + i);
+        transitionStars.push(star);
+      }
+      
+      // Create stars from "SterlWorld" text
+      for (let i = 0; i < titleStars; i++) {
+        const x = titleGlowRect.left + (i / titleStars) * titleGlowRect.width;
+        const y = titleGlowRect.top + titleGlowRect.height / 2;
+        const star = createTransitionStar(x, y, barStars + loadingStars + i);
+        transitionStars.push(star);
+      }
+      
+      // Hide all loading elements IMMEDIATELY as they burst
+      loadingBar.style.opacity = '0';
+      document.querySelector('.loading-text').style.opacity = '0';
+      titleGlow.style.opacity = '0';
+      
+      // Phase 1: Explosive burst outward (0.5s)
+      setTimeout(() => {
+        transitionStars.forEach((star, i) => {
+          const angle = (i / transitionStars.length) * 4 * Math.PI; // Multiple spirals
+          const burstDistance = 150 + Math.random() * 200;
+          const burstX = window.innerWidth / 2 + Math.cos(angle) * burstDistance;
+          const burstY = window.innerHeight / 2 + Math.sin(angle) * burstDistance;
+          
+          star.style.left = `${burstX - 10}px`;
+          star.style.top = `${burstY - 10}px`;
+          star.style.transform = `scale(1.5) rotate(${Math.random() * 360}deg)`;
+        });
+      }, 100);
+      
+      // Phase 2: Redistribute across entire screen (1.5s)
+      setTimeout(() => {
+        transitionStars.forEach(star => {
+          const finalX = parseFloat(star.dataset.finalX);
+          const finalY = parseFloat(star.dataset.finalY);
+          const finalSize = parseFloat(star.dataset.finalSize);
+          
+          star.style.left = `${finalX - finalSize/2}px`;
+          star.style.top = `${finalY - finalSize/2}px`;
+          star.style.width = `${finalSize}px`;
+          star.style.height = `${finalSize}px`;
+          star.style.transform = `scale(1) rotate(${Math.random() * 360}deg)`;
+          star.style.filter = 'drop-shadow(0 0 8px #f7de99) brightness(1.8) saturate(1.5)';
+        });
+      }, 800);
+      
+      // Phase 3: Seamlessly fade into canvas starfield (2.5s)
+      setTimeout(() => {
+        // Start the canvas starfield but keep it invisible initially
+        animate();
+        
+        // Gradually fade out transition stars while fading in canvas
+        transitionStars.forEach((star, i) => {
+          setTimeout(() => {
+            star.style.opacity = '0';
+            star.style.transform = `${star.style.transform} scale(0.8)`;
+          }, i * 3); // Stagger the fade for ripple effect
+        });
+        
+        // Fade in the canvas starfield
+        setTimeout(() => {
+          canvas.classList.add('fade-in');
+        }, 200);
+        
+        // Clean up transition stars
+        setTimeout(() => {
+          transitionStars.forEach(star => star.remove());
+        }, 1000);
+        
+      }, 2500);
+    }
+    
+    // Helper function to create individual transition stars
+    function createTransitionStar(x, y, index) {
+      const star = createOptimizedSparkle(x, y, 8 + Math.random() * 12);
+      star.classList.add('transition-star');
+      star.style.zIndex = '999997'; // Above everything except the flash
+      star.style.transition = 'all 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      
+      // Store original properties for the starfield transformation
+      const finalX = Math.random() * window.innerWidth;
+      const finalY = Math.random() * window.innerHeight;
+      const finalSize = 4 + Math.random() * 8;
+      
+      star.dataset.finalX = finalX;
+      star.dataset.finalY = finalY;
+      star.dataset.finalSize = finalSize;
+      
+      document.body.appendChild(star);
+      return star;
+    }
+
+    // Mobile version - simple fade (existing behavior)
     function createMobileOptimizedExplosion() {
       console.log('🎆 Mobile-optimized explosion starting! 🎆');
       
@@ -730,14 +851,26 @@
         console.log('🚀 Loading complete! Starting optimized explosion...');
         
         setTimeout(() => {
-          createMobileOptimizedExplosion();
-          animate(); // Start starfield
-          
-          setTimeout(() => {
-            loader.classList.add('fade-out');
-            setTimeout(() => loader.remove(), 800);
-            setTimeout(() => canvas.classList.add('fade-in'), 200);
-          }, isMobile ? 400 : 800);
+          if (isMobile) {
+            // Mobile: Simple explosion then fade to starfield
+            createMobileOptimizedExplosion();
+            animate(); // Start starfield
+            
+            setTimeout(() => {
+              loader.classList.add('fade-out');
+              setTimeout(() => loader.remove(), 800);
+              setTimeout(() => canvas.classList.add('fade-in'), 200);
+            }, isMobile ? 400 : 800);
+          } else {
+            // Desktop: Epic transformation - loading bar becomes the starfield!
+            createDesktopStarfieldTransition();
+            
+            // Remove loader after the transformation completes
+            setTimeout(() => {
+              loader.classList.add('fade-out');
+              setTimeout(() => loader.remove(), 800);
+            }, 1000);
+          }
         }, 200);
       } else {
         barFill.style.width = progress + '%';
