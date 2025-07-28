@@ -908,13 +908,24 @@
         const isMobile = window.innerWidth <= 768;
         
         if (isMobile) {
-          // Mobile: Simple fade transition without explosions
-          console.log('📱 Mobile detected - using simple fade transition');
+          // Mobile: Reduced explosion with fewer stars
+          console.log('📱 Mobile detected - using reduced explosion sequence');
+          
+          // Create smaller explosion from loading bar - 15 stars instead of 40
+          createStarExplosion(loadingBarRect, 15, 'bar');
+          
+          // Create smaller explosion from "Loading" text - 8 stars instead of 25
+          createStarExplosion(loadingTextRect, 8, 'text');
+          
+          // Create smaller explosion from "SterlWorld" text - 12 stars instead of 30
+          createStarExplosion(titleGlowRect, 12, 'title');
+          
+          // Skip celebration sparkles and screen flash for mobile
           
           // Start starfield immediately but invisible
           animate();
           
-          // Simple fade out after a brief moment
+          // Remove loader with fade out after explosion
           setTimeout(() => {
             console.log('🌟 Fading out loader and revealing starfield...');
             loader.classList.add('fade-out');
@@ -929,7 +940,7 @@
               const canvas = document.getElementById('space');
               canvas.classList.add('fade-in');
             }, 200);
-          }, 500);
+          }, 600); // Shorter delay for mobile
         } else {
           // Desktop: Full explosion sequence
           console.log('💻 Desktop detected - using full explosion sequence');
