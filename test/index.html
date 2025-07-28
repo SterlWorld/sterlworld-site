@@ -509,22 +509,25 @@
       const barCenterX = loadingBarRect.left + loadingBarRect.width / 2;
       const barCenterY = loadingBarRect.top + loadingBarRect.height / 2;
       
-      // Phase 1: Pre-explosion expansion (0.15s)
+      // Phase 1: Pre-explosion expansion (150ms)
       console.log('📈 Phase 1: Pre-explosion expansion');
       loadingBar.classList.add('pre-explosion');
       titleGlow.classList.add('pre-explosion');
       loadingText.classList.add('pre-explosion');
       
       setTimeout(() => {
-        // Phase 2: Instant disappearance + explosion (0ms transition)
-        console.log('💥 Phase 2: Instant disappearance + EXPLOSION!');
+        // Phase 2: INSTANT EXPLOSION - Elements become stars
+        console.log('💥💥💥 INSTANT EXPLOSION - ELEMENTS BECOME STARS! 💥💥💥');
         
-        // Instantly hide loading elements
+        // INSTANT DISAPPEARANCE (no transition)
+        loadingBar.style.transition = 'none';
         loadingBar.style.opacity = '0';
+        titleGlow.style.transition = 'none';
         titleGlow.style.opacity = '0';
+        loadingText.style.transition = 'none';
         loadingText.style.opacity = '0';
         
-        // Create explosion stars immediately
+        // Create explosion stars immediately (same millisecond)
         const explosionStars = [];
         const totalStars = 150;
         
@@ -659,13 +662,13 @@
         
         requestAnimationFrame(animateExplosion);
         
-      }, 50); // Nearly instant expansion (50ms)
+      }, 150); // Pre-explosion duration
     }
 
     function transformToStarfield(explosionStars) {
-      console.log('🌌 Transforming explosion stars into living starfield!');
+      console.log('🌌 SEAMLESS TRANSFORMATION TO LIVING STARFIELD!');
       
-      // Convert explosion stars to starfield data
+      // Convert explosion stars to starfield data - NO TRANSITIONS
       explosionStars.forEach((starData, i) => {
         const starfieldStar = {
           x: (Math.random() - 0.5) * w * 1.5,
@@ -684,11 +687,11 @@
           stars.push(starfieldStar);
         }
         
-        // Prepare for immediate starfield transformation
+        // INSTANT transformation to starfield - NO TRANSITIONS
         starData.element.classList.remove('explosion-star');
         starData.element.classList.add('starfield-star');
         starData.element.style.zIndex = '1';
-        starData.element.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        starData.element.style.transition = 'none'; // NO TRANSITIONS
         
         // Calculate starfield position
         let k = 128.0 / starfieldStar.z;
@@ -696,7 +699,7 @@
         let py = starfieldStar.y * k + h / 2;
         let starSize = starfieldStar.size * (1 - starfieldStar.z / w) * 35;
         
-        // Immediately transform to starfield position (no delay)
+        // INSTANTLY set starfield position
         starData.element.style.left = `${px - starSize/2}px`;
         starData.element.style.top = `${py - starSize/2}px`;
         starData.element.style.width = `${starSize}px`;
@@ -710,23 +713,13 @@
         starData.element.style.opacity = Math.min(1, (1 - starfieldStar.z / w) * 2.5);
       });
       
-      // Start living starfield immediately
-      setTimeout(() => {
-        console.log('🎆 LIVING STARFIELD IS NOW ACTIVE!');
-        
-        // Remove transitions for smooth animation
-        explosionStars.forEach(starData => {
-          starData.element.style.transition = 'none';
-        });
-        
-        // Begin continuous starfield animation
-        warpStartTime = performance.now();
-        animateLivingStarfield();
-        
-        // Show main content
-        showMainContent();
-        
-      }, 200); // Much faster transition
+      // IMMEDIATELY start living starfield (no timeout)
+      console.log('🎆 LIVING STARFIELD IS NOW ACTIVE!');
+      warpStartTime = performance.now();
+      animateLivingStarfield();
+      
+      // Show main content
+      showMainContent();
     }
 
     function animateLivingStarfield() {
@@ -992,14 +985,14 @@
         
         console.log('🚀💥 LOADING COMPLETE! LAUNCHING SEQUENCE! 💥🚀');
         
-        // Much shorter pause for immediate action
+        // Brief pause to admire the golden completion
         setTimeout(() => {
           if (isMobile) {
             createMobileSequence();
           } else {
             createDesktopCinematicSequence();
           }
-        }, 400);
+        }, 600); // Longer pause to appreciate the completion effects
         
       } else {
         barFill.style.width = progress + '%';
@@ -1081,7 +1074,7 @@
       }, interval);
     }
 
-    console.log('🌟✨ SterlWorld Cinematic Experience Ready! ✨🌟');
+    console.log('🌟✨ SterlWorld Perfect Explosion Experience Ready! ✨🌟');
   </script>
 
 </body>
