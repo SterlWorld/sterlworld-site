@@ -586,237 +586,111 @@
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
 
     function createDesktopExplosion() {
-      console.log('💥🌟 INSANE DESKTOP EXPLOSION BEGINS! 🌟💥');
+      console.log('💥🌟 SIMPLE BEAUTIFUL EXPLOSION! 🌟💥');
       
       const loadingBar = document.querySelector('.loading-bar');
-      const loadingBarFill = document.querySelector('.loading-bar-fill');
       const loadingTextElement = document.querySelector('.loading-text');
       const loadingBarRect = loadingBar.getBoundingClientRect();
       
+      // Get explosion center
+      const barCenterX = loadingBarRect.left + loadingBarRect.width / 2;
+      const barCenterY = loadingBarRect.top + loadingBarRect.height / 2;
+      
       const explosionStars = [];
+      const totalStars = 80;
       
-      // ★ ═══════════════════════════════════════════════════════════════════════ ★
-      // ★                    💥 LOADING BAR SHATTERING SYSTEM 💥                   ★
-      // ★ ═══════════════════════════════════════════════════════════════════════ ★
+      console.log('💥 BEAUTIFUL STAR BURST FROM LOADING BAR!');
       
-      console.log('💥 PHASE 1: LOADING BAR SHATTERING INTO FRAGMENTS!');
-      
-      // Create loading bar fragments that will explode
-      const fragmentCount = 12;
-      const barFragments = [];
-      
-      for (let i = 0; i < fragmentCount; i++) {
-        const fragment = document.createElement('div');
-        const fragmentWidth = loadingBarRect.width / fragmentCount;
-        const fragmentX = loadingBarRect.left + (i * fragmentWidth);
+      // Create stars bursting from the loading bar center
+      for (let i = 0; i < totalStars; i++) {
+        const star = createOptimizedSparkle(barCenterX, barCenterY, 
+          4 + Math.random() * 8, 
+          sparkleColors[i % sparkleColors.length]
+        );
+        star.classList.add('explosion-star');
+        star.style.zIndex = '9999';
+        document.body.appendChild(star);
         
-        fragment.style.position = 'fixed';
-        fragment.style.left = `${fragmentX}px`;
-        fragment.style.top = `${loadingBarRect.top}px`;
-        fragment.style.width = `${fragmentWidth + 2}px`; // Slight overlap
-        fragment.style.height = `${loadingBarRect.height}px`;
-        fragment.style.background = loadingBarFill.style.background || 'linear-gradient(90deg, #ffec8b, #ffe57f, #ffec8b)';
-        fragment.style.borderRadius = '10px';
-        fragment.style.boxShadow = '0 0 20px #ffec8b, 0 0 30px #ffe57f';
-        fragment.style.filter = 'brightness(1.8) saturate(2)';
-        fragment.style.zIndex = '9999';
-        fragment.style.transformOrigin = 'center center';
-        fragment.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        const angle = (i / totalStars) * 2 * Math.PI + (Math.random() - 0.5) * 0.8;
+        const distance = 120 + Math.random() * 180;
         
-        document.body.appendChild(fragment);
-        barFragments.push({
-          element: fragment,
-          centerX: fragmentX + fragmentWidth / 2,
-          centerY: loadingBarRect.top + loadingBarRect.height / 2,
-          angle: (Math.random() - 0.5) * Math.PI,
-          distance: 150 + Math.random() * 200,
-          rotationSpeed: (Math.random() - 0.5) * 720,
-          starsPerFragment: 8 + Math.floor(Math.random() * 6)
+        explosionStars.push({
+          element: star,
+          sourceX: barCenterX,
+          sourceY: barCenterY,
+          angle: angle,
+          distance: distance,
+          delay: Math.random() * 100
         });
       }
       
-      // ★ ═══════════════════════════════════════════════════════════════════════ ★
-      // ★                   🔤 LETTER EXPLOSION SYSTEM 🔤                          ★
-      // ★ ═══════════════════════════════════════════════════════════════════════ ★
-      
-      console.log('🔤 PHASE 2: LETTERS BURSTING APART!');
-      
-      const letterExplosions = [];
+      // Add some letter stars too
       titleLetters.forEach((letter, letterIndex) => {
         const letterRect = letter.getBoundingClientRect();
         const letterCenterX = letterRect.left + letterRect.width / 2;
         const letterCenterY = letterRect.top + letterRect.height / 2;
         
-        // Create letter explosion effect
-        const letterClone = letter.cloneNode(true);
-        letterClone.style.position = 'fixed';
-        letterClone.style.left = `${letterRect.left}px`;
-        letterClone.style.top = `${letterRect.top}px`;
-        letterClone.style.width = `${letterRect.width}px`;
-        letterClone.style.height = `${letterRect.height}px`;
-        letterClone.style.zIndex = '9998';
-        letterClone.style.transformOrigin = 'center center';
-        letterClone.style.transition = 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-        letterClone.style.pointerEvents = 'none';
-        
-        document.body.appendChild(letterClone);
-        
-        letterExplosions.push({
-          element: letterClone,
-          centerX: letterCenterX,
-          centerY: letterCenterY,
-          angle: (Math.random() - 0.5) * Math.PI * 0.5,
-          distance: 80 + Math.random() * 100,
-          rotationSpeed: (Math.random() - 0.5) * 540,
-          starsPerLetter: 6 + Math.floor(Math.random() * 4),
-          delay: letterIndex * 80
-        });
+        for (let i = 0; i < 6; i++) {
+          const star = createOptimizedSparkle(letterCenterX, letterCenterY, 
+            3 + Math.random() * 5, 
+            sparkleColors[(letterIndex + i) % sparkleColors.length]
+          );
+          star.classList.add('explosion-star');
+          star.style.zIndex = '9998';
+          document.body.appendChild(star);
+          
+          const angle = Math.random() * 2 * Math.PI;
+          const distance = 60 + Math.random() * 100;
+          
+          explosionStars.push({
+            element: star,
+            sourceX: letterCenterX,
+            sourceY: letterCenterY,
+            angle: angle,
+            distance: distance,
+            delay: letterIndex * 40 + Math.random() * 60
+          });
+        }
       });
       
-      // ★ ═══════════════════════════════════════════════════════════════════════ ★
-      // ★                        💥 EXPLOSION SEQUENCE 💥                          ★
-      // ★ ═══════════════════════════════════════════════════════════════════════ ★
-      
-      // Hide original elements ONLY after creating clones
+      // Keep the beautiful loading bar visible for a moment, then burst!
       setTimeout(() => {
-        loadingTextElement.style.opacity = '0';
-        titleGlow.style.opacity = '0';
-        loadingBar.style.opacity = '0';
-      }, 100);
-      
-      // PHASE 1: Bar fragments explode and spawn stars
-      setTimeout(() => {
-        console.log('💥 BAR FRAGMENTS EXPLODING!');
+        console.log('💥 STARS BURSTING OUT!');
         
-        barFragments.forEach((fragment, i) => {
+        // Explode all stars outward
+        explosionStars.forEach((starData) => {
           setTimeout(() => {
-            // Explode fragment
-            const explodeX = fragment.centerX + Math.cos(fragment.angle) * fragment.distance;
-            const explodeY = fragment.centerY + Math.sin(fragment.angle) * fragment.distance;
+            const { element, sourceX, sourceY, angle, distance } = starData;
             
-            fragment.element.style.transform = `translate(${explodeX - fragment.centerX}px, ${explodeY - fragment.centerY}px) rotate(${fragment.rotationSpeed}deg) scale(0.3)`;
-            fragment.element.style.opacity = '0';
-            fragment.element.style.filter = 'brightness(3) saturate(3) blur(2px)';
+            const explodeX = sourceX + Math.cos(angle) * distance;
+            const explodeY = sourceY + Math.sin(angle) * distance;
             
-            // Spawn stars from fragment
-            for (let j = 0; j < fragment.starsPerFragment; j++) {
-              setTimeout(() => {
-                const star = createOptimizedSparkle(fragment.centerX, fragment.centerY, 
-                  5 + Math.random() * 7, 
-                  sparkleColors[Math.floor(Math.random() * sparkleColors.length)]
-                );
-                star.classList.add('explosion-star');
-                star.style.zIndex = '9997';
-                document.body.appendChild(star);
-                
-                const starAngle = Math.random() * 2 * Math.PI;
-                const starDistance = 100 + Math.random() * 150;
-                
-                explosionStars.push({
-                  element: star,
-                  sourceX: fragment.centerX,
-                  sourceY: fragment.centerY,
-                  type: 'fragment',
-                  angle: starAngle,
-                  distance: starDistance,
-                  delay: j * 20
-                });
-                
-                // Immediate star explosion
-                setTimeout(() => {
-                  const starExplodeX = fragment.centerX + Math.cos(starAngle) * starDistance;
-                  const starExplodeY = fragment.centerY + Math.sin(starAngle) * starDistance;
-                  
-                  star.style.left = `${starExplodeX - parseInt(star.style.width) / 2}px`;
-                  star.style.top = `${starExplodeY - parseInt(star.style.height) / 2}px`;
-                  star.style.transform = `scale(${1.2 + Math.random() * 0.8}) rotate(${Math.random() * 360}deg)`;
-                  star.style.filter = `
-                    drop-shadow(0 0 ${15 + Math.random() * 10}px #fff) 
-                    brightness(${2.5 + Math.random() * 0.5}) 
-                    saturate(2.2)
-                    hue-rotate(${Math.random() * 180}deg)
-                  `;
-                }, starData.delay);
-                
-              }, j * 30);
-            }
-            
-            // Remove fragment after explosion
-            setTimeout(() => fragment.element.remove(), 800);
-            
-          }, i * 60);
+            element.style.left = `${explodeX - parseInt(element.style.width) / 2}px`;
+            element.style.top = `${explodeY - parseInt(element.style.height) / 2}px`;
+            element.style.transform = `scale(${1.3 + Math.random() * 0.7}) rotate(${Math.random() * 360}deg)`;
+            element.style.filter = `
+              drop-shadow(0 0 ${15 + Math.random() * 10}px #fff) 
+              brightness(${2.8 + Math.random() * 0.4}) 
+              saturate(2.5)
+              hue-rotate(${Math.random() * 120}deg)
+            `;
+          }, starData.delay);
         });
-      }, 200);
-      
-      // PHASE 2: Letter explosions
-      setTimeout(() => {
-        console.log('🔤 LETTERS EXPLODING!');
         
-        letterExplosions.forEach((letterData, i) => {
-          setTimeout(() => {
-            // Explode letter
-            const explodeX = letterData.centerX + Math.cos(letterData.angle) * letterData.distance;
-            const explodeY = letterData.centerY + Math.sin(letterData.angle) * letterData.distance;
-            
-            letterData.element.style.transform = `translate(${explodeX - letterData.centerX}px, ${explodeY - letterData.centerY}px) rotate(${letterData.rotationSpeed}deg) scale(2.5)`;
-            letterData.element.style.opacity = '0';
-            letterData.element.style.filter = 'brightness(4) saturate(3) blur(3px)';
-            
-            // Spawn stars from letter
-            for (let j = 0; j < letterData.starsPerLetter; j++) {
-              setTimeout(() => {
-                const star = createOptimizedSparkle(letterData.centerX, letterData.centerY, 
-                  4 + Math.random() * 5, 
-                  sparkleColors[(i + j) % sparkleColors.length]
-                );
-                star.classList.add('explosion-star');
-                star.style.zIndex = '9996';
-                document.body.appendChild(star);
-                
-                const starAngle = Math.random() * 2 * Math.PI;
-                const starDistance = 80 + Math.random() * 120;
-                
-                explosionStars.push({
-                  element: star,
-                  sourceX: letterData.centerX,
-                  sourceY: letterData.centerY,
-                  type: 'letter',
-                  angle: starAngle,
-                  distance: starDistance,
-                  delay: j * 15
-                });
-                
-                // Immediate star explosion
-                setTimeout(() => {
-                  const starExplodeX = letterData.centerX + Math.cos(starAngle) * starDistance;
-                  const starExplodeY = letterData.centerY + Math.sin(starAngle) * starDistance;
-                  
-                  star.style.left = `${starExplodeX - parseInt(star.style.width) / 2}px`;
-                  star.style.top = `${starExplodeY - parseInt(star.style.height) / 2}px`;
-                  star.style.transform = `scale(${1 + Math.random() * 0.6}) rotate(${Math.random() * 360}deg)`;
-                  star.style.filter = `
-                    drop-shadow(0 0 ${12 + Math.random() * 8}px #fff) 
-                    brightness(${2.2 + Math.random() * 0.3}) 
-                    saturate(2)
-                    hue-rotate(${Math.random() * 120}deg)
-                  `;
-                }, starData.delay);
-                
-              }, j * 25);
-            }
-            
-            // Remove letter after explosion
-            setTimeout(() => letterData.element.remove(), 600);
-            
-          }, letterData.delay);
-        });
-      }, 400);
+        // Now hide the loading elements after the burst starts
+        setTimeout(() => {
+          loadingTextElement.style.opacity = '0';
+          titleGlow.style.opacity = '0';
+          loadingBar.style.opacity = '0';
+        }, 200);
+        
+      }, 300); // Brief pause to enjoy the beautiful loading bar
       
-      // Phase 3: Transform all explosion stars into living starfield
+      // Transform burst into living starfield
       setTimeout(() => {
-        console.log('🌌 Phase 3: ALL EXPLOSION STARS SWIRLING INTO STARFIELD!');
+        console.log('🌌 BURST BECOMES STARFIELD!');
         createDesktopStarfield(explosionStars);
-      }, 1200);
+      }, 800);
     }
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
