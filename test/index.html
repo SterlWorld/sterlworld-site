@@ -174,23 +174,12 @@
       transition: all 0.6s ease-out;
     }
 
-    /* Cosmic transformation stars */
-    .cosmic-star {
-      will-change: transform, left, top, opacity, width, height;
-      image-rendering: crisp-edges;
-      image-rendering: -webkit-optimize-contrast;
+    /* Transition stars */
+    .transition-star {
       position: fixed;
       pointer-events: none;
-      z-index: 999997;
-    }
-
-    /* Starfield stars for desktop */
-    .starfield-star {
-      position: fixed;
-      pointer-events: none;
-      z-index: 1; /* BEHIND logo and content */
-      transition: none;
-      will-change: transform, left, top, width, height, filter;
+      z-index: 1;
+      will-change: transform, left, top, width, height, filter, opacity;
     }
 
     #loader {
@@ -667,254 +656,119 @@
       }
     }
 
-    // 🌟 LEGENDARY DESKTOP COSMIC DRAIN TRANSFORMATION - UI → STARFIELD 🌟
-    function createCosmicStarsFromElement(elementRect, count, starArray, type) {
-      console.log(`Creating ${count} cosmic stars from ${type} element`);
-      
-      for (let i = 0; i < count; i++) {
-        let x, y;
-        
-        if (type === 'bar') {
-          // Distribute along the loading bar
-          const progress = i / count;
-          x = elementRect.left + progress * elementRect.width;
-          y = elementRect.top + elementRect.height / 2;
-        } else if (type === 'loading' || type === 'title') {
-          // Distribute across text elements
-          const progress = i / count;
-          x = elementRect.left + progress * elementRect.width;
-          y = elementRect.top + elementRect.height / 2;
-        }
-        
-        const star = createOptimizedSparkle(x, y, 6 + Math.random() * 6);
-        star.classList.add('cosmic-star', `cosmic-${type}`);
-        star.style.zIndex = '999997';
-        star.style.willChange = 'transform, left, top, opacity, width, height, filter';
-        
-        // Initial color based on element type
-        if (type === 'bar') {
-          star.style.filter = 'drop-shadow(0 0 8px #0ff) brightness(2.5) saturate(2)';
-        } else if (type === 'loading') {
-          star.style.filter = 'drop-shadow(0 0 8px #0ff) brightness(2.2) saturate(1.8)';
-        } else if (type === 'title') {
-          star.style.filter = 'drop-shadow(0 0 8px #ffd700) brightness(2.3) saturate(2)';
-        }
-        
-        document.body.appendChild(star);
-        starArray.push(star);
-      }
-    }
-
-    function createDesktopStarfieldTransition() {
-      console.log('🌟 LEGENDARY TOILET FLUSH DRAIN TRANSFORMATION: UI → ORBITAL → CLUSTER → DRAIN → STARFIELD! 🌟');
+    // 🌟 SMOOTH DESKTOP STARFIELD TRANSITION - Simple and Fluid! 🌟
+    function createSmoothStarfieldTransition() {
+      console.log('🌟 Starting smooth desktop starfield transition!');
       
       const loadingBarRect = loadingBar.getBoundingClientRect();
-      const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
-      const titleGlowRect = titleGlow.getBoundingClientRect();
+      const centerX = loadingBarRect.left + loadingBarRect.width / 2;
+      const centerY = loadingBarRect.top + loadingBarRect.height / 2;
       
-      const cosmicStars = [];
-      const totalStars = 180; // Optimized for smooth performance
-      
-      // Distribute star origins across all elements
-      const barStars = Math.floor(totalStars * 0.5);    // 90 stars from loading bar
-      const loadingStars = Math.floor(totalStars * 0.25); // 45 stars from "Loading"
-      const titleStars = totalStars - barStars - loadingStars; // 45 stars from "SterlWorld"
-      
-      // Create the cosmic stars from UI elements
-      createCosmicStarsFromElement(loadingBarRect, barStars, cosmicStars, 'bar');
-      createCosmicStarsFromElement(loadingTextRect, loadingStars, cosmicStars, 'loading');
-      createCosmicStarsFromElement(titleGlowRect, titleStars, cosmicStars, 'title');
-      
-      console.log(`Created ${cosmicStars.length} cosmic stars for EPIC drain transformation`);
-      
-      // Hide canvas completely for desktop - stars will BE the starfield
+      // Hide canvas - we'll use DOM stars
       canvas.style.display = 'none';
       
-      // PHASE 1: INSTANT EXPLOSION (0-0.5s)
-      console.log('Phase 1: INSTANT EXPLOSION - UI elements burst into stars!');
+      // Create explosion stars that will become the starfield
+      const explosionStars = [];
+      const starCount = 150; // Perfect amount for smooth performance
       
-      // Instantly hide loading elements
+      // Phase 1: Hide loading elements and create explosion stars
       loadingBar.style.opacity = '0';
       document.querySelector('.loading-text').style.opacity = '0';
       titleGlow.style.opacity = '0';
       
-      setTimeout(() => {
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-        
-        cosmicStars.forEach((star, i) => {
-          // Explosive burst pattern - stars shoot outward dramatically
-          const angle = (i / cosmicStars.length) * 4 * Math.PI + Math.random() * 0.5;
-          const explosionDistance = 280 + Math.random() * 400; 
-          const explosionX = centerX + Math.cos(angle) * explosionDistance;
-          const explosionY = centerY + Math.sin(angle) * explosionDistance;
-          
-          star.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-          star.style.left = `${explosionX - 8}px`;
-          star.style.top = `${explosionY - 8}px`;
-          star.style.transform = `scale(2.8) rotate(${Math.random() * 720}deg)`;
-          star.style.filter = 'drop-shadow(0 0 25px #fff) brightness(3.5) saturate(3)';
-        });
-      }, 50);
+      // Create stars at loading bar center
+      for (let i = 0; i < starCount; i++) {
+        const star = createOptimizedSparkle(centerX, centerY, 8 + Math.random() * 4);
+        star.classList.add('transition-star');
+        star.style.zIndex = '1'; // Behind content from the start
+        star.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        document.body.appendChild(star);
+        explosionStars.push(star);
+      }
       
-      // PHASE 2: ORBITAL ROTATION (0.5s-1.5s) - Stars orbit around center!
+      // Phase 2: Immediate explosion outward (0.1s delay)
       setTimeout(() => {
-        console.log('Phase 2: ORBITAL ROTATION - Stars begin orbiting the center like planets!');
-        
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-        
-        cosmicStars.forEach((star, i) => {
-          // Calculate orbital position - each star gets its own orbit radius
-          const orbitRadius = 300 + (i % 3) * 100; // 3 orbital rings
-          const orbitAngle = (i / cosmicStars.length) * 4 * Math.PI; // Spread around orbit
-          const orbitX = centerX + Math.cos(orbitAngle) * orbitRadius;
-          const orbitY = centerY + Math.sin(orbitAngle) * orbitRadius;
+        explosionStars.forEach((star, i) => {
+          // Random explosion direction
+          const angle = Math.random() * 2 * Math.PI;
+          const distance = 150 + Math.random() * 300;
+          const explodeX = centerX + Math.cos(angle) * distance;
+          const explodeY = centerY + Math.sin(angle) * distance;
           
-          star.style.transition = 'all 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          star.style.left = `${orbitX - 6}px`;
-          star.style.top = `${orbitY - 6}px`;
-          star.style.transform = `scale(1.8) rotate(${orbitAngle * 180 / Math.PI}deg)`;
-          star.style.filter = 'drop-shadow(0 0 18px #0ff) brightness(2.8) saturate(2.5)';
+          star.style.left = `${explodeX - 6}px`;
+          star.style.top = `${explodeY - 6}px`;
+          star.style.transform = `scale(1.5) rotate(${Math.random() * 360}deg)`;
+          star.style.filter = 'drop-shadow(0 0 15px #fff) brightness(2.5) saturate(2)';
         });
-      }, 500);
+      }, 100);
       
-      // PHASE 3: CLUSTERING WHILE ORBITING (1.5s-2.5s) - Stars link together!
+      // Phase 3: Transform to starfield positions (1.3s delay)
       setTimeout(() => {
-        console.log('Phase 3: CLUSTERING - Orbiting stars start linking together with gravitational pull!');
-        
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-        
-        cosmicStars.forEach((star, i) => {
-          // Stars cluster into groups while maintaining orbital motion
-          const clusterGroup = Math.floor(i / 6); // 6 stars per cluster
-          const clusterAngle = (clusterGroup / (cosmicStars.length / 6)) * 2 * Math.PI;
-          const clusterRadius = 250 + Math.sin(clusterGroup) * 80; // Varying cluster distances
-          
-          // Individual star position within cluster
-          const starInCluster = i % 6;
-          const localAngle = (starInCluster / 6) * 2 * Math.PI;
-          const localRadius = 15 + Math.random() * 25; // Tight clustering
-          
-          const clusterCenterX = centerX + Math.cos(clusterAngle) * clusterRadius;
-          const clusterCenterY = centerY + Math.sin(clusterAngle) * clusterRadius;
-          
-          const finalX = clusterCenterX + Math.cos(localAngle) * localRadius;
-          const finalY = clusterCenterY + Math.sin(localAngle) * localRadius;
-          
-          star.style.transition = 'all 1.0s cubic-bezier(0.34, 1.56, 0.64, 1)';
-          star.style.left = `${finalX - 5}px`;
-          star.style.top = `${finalY - 5}px`;
-          star.style.transform = `scale(1.5) rotate(${(clusterAngle + localAngle) * 180 / Math.PI}deg)`;
-          star.style.filter = 'drop-shadow(0 0 15px #ff5ec4) brightness(2.5) saturate(2)';
-        });
-      }, 1500);
-      
-      // PHASE 4: DRAIN SPIRAL INITIATION (2.5s-4.0s) - The TOILET FLUSH begins!
-      setTimeout(() => {
-        console.log('Phase 4: DRAIN SPIRAL - Clustered stars get caught in the toilet flush vortex!');
-        
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-        
-        cosmicStars.forEach((star, i) => {
-          // Create the classic toilet flush spiral - decreasing radius with rotation
-          const spiralProgress = i / cosmicStars.length; // 0 to 1
-          const totalRotations = 12; // More rotations for dramatic effect
-          const spiralAngle = spiralProgress * totalRotations * 2 * Math.PI;
-          
-          // Radius decreases dramatically as they spiral in
-          const maxRadius = 400;
-          const minRadius = 35;
-          const currentRadius = maxRadius - (spiralProgress * (maxRadius - minRadius));
-          
-          // Add spiral variation for realistic water-like motion
-          const spiralVariation = Math.sin(spiralProgress * 8 * Math.PI) * 20;
-          const finalRadius = currentRadius + spiralVariation;
-          
-          const spiralX = centerX + Math.cos(spiralAngle) * finalRadius;
-          const spiralY = centerY + Math.sin(spiralAngle) * finalRadius;
-          
-          star.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          star.style.left = `${spiralX - 4}px`;
-          star.style.top = `${spiralY - 4}px`;
-          star.style.transform = `scale(1.2) rotate(${spiralAngle * 180 / Math.PI + 360}deg)`;
-          star.style.filter = 'drop-shadow(0 0 12px #ffd700) brightness(2.8) saturate(2.2)';
-        });
-      }, 2500);
-      
-      // PHASE 5: CENTER CONVERGENCE (4.0s-4.3s) - All meet at the drain!
-      setTimeout(() => {
-        console.log('Phase 5: CENTER CONVERGENCE - All stars meet at the drain center!');
-        
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-        
-        cosmicStars.forEach((star, i) => {
-          // All stars converge to exact center
-          star.style.transition = 'all 0.3s ease-in';
-          star.style.left = `${centerX - 3}px`;
-          star.style.top = `${centerY - 3}px`;
-          star.style.transform = `scale(0.6) rotate(${i * 120}deg)`;
-          star.style.filter = 'drop-shadow(0 0 20px #fff) brightness(4) saturate(4)';
-        });
-      }, 4000);
-      
-      // PHASE 6: FINAL EXPLOSION TO STARFIELD (4.3s-4.5s)
-      setTimeout(() => {
-        console.log('Phase 6: BOOM! FINAL EXPLOSION - Stars explode into the living starfield!');
-        
-        // Initialize starfield data for each cosmic star
-        cosmicStars.forEach((star, i) => {
+        // Initialize starfield data and move stars to their starfield positions
+        explosionStars.forEach((star, i) => {
+          // Create starfield data for this star
           const starData = {
             x: (Math.random() - 0.5) * w * 1.5,
             y: (Math.random() - 0.5) * h * 1.5,
-            z: Math.random() * w + 50,
+            z: Math.random() * w + 100, // Start a bit closer
             size: Math.random() * 0.8 + 0.4,
             rotationAngle: Math.random() * Math.PI * 2,
-            rotationSpeed: (Math.random() - 0.5) * 0.008,
+            rotationSpeed: (Math.random() - 0.5) * 0.01,
             domElement: star
           };
           
-          // Replace canvas stars with DOM stars
+          // Add to stars array
           if (i < stars.length) {
             stars[i] = starData;
           } else {
             stars.push(starData);
           }
-        });
-        
-        cosmicStars.forEach(star => {
-          star.classList.add('starfield-star');
-          star.classList.remove('cosmic-star');
-          star.style.transition = 'none';
-          star.style.zIndex = '1'; // Behind logo and content
+          
+          // Calculate initial starfield position
+          let k = 128.0 / starData.z;
+          let px = starData.x * k + w / 2;
+          let py = starData.y * k + h / 2;
+          let starSize = starData.size * (1 - starData.z / w) * 25;
+          
+          // Transition to starfield position
+          star.style.left = `${px - starSize/2}px`;
+          star.style.top = `${py - starSize/2}px`;
+          star.style.width = `${starSize}px`;
+          star.style.height = `${starSize}px`;
+          star.style.transform = `rotate(${starData.rotationAngle * 180/Math.PI}deg)`;
           star.style.filter = 'drop-shadow(0 0 10px #f7de99) brightness(1.8) saturate(1.5)';
+          star.style.opacity = Math.min(1, (1 - starData.z / w) * 2);
+        });
+      }, 1300);
+      
+      // Phase 4: Start the living starfield animation (2.5s delay)
+      setTimeout(() => {
+        // Remove transition classes and start animation
+        explosionStars.forEach(star => {
+          star.style.transition = 'none';
+          star.classList.remove('transition-star');
         });
         
-        // Start the living starfield animation immediately
+        // Start the starfield animation
         warpStartTime = performance.now();
         animatePureDOMStarfield();
         
-        console.log('🎆 STARFIELD IS ALIVE! Beginning logo sequence...');
+        console.log('🎆 Starfield is now alive and moving!');
         
-        // PHASE 7: Logo fade-in at center (4.7s)
+        // Show logo after starfield is animated
         setTimeout(() => {
           document.getElementById('logo-wrapper').classList.add('fade-in');
           
-          // PHASE 8: Logo slides to top (6.2s)
           setTimeout(() => {
             document.getElementById('logo-wrapper').classList.add('move-top');
             startLogoSparkleLoop();
             
-            // PHASE 9: Content fades in after logo settles (7.7s)
             setTimeout(() => {
               document.getElementById('mainText').classList.add('visible');
-            }, 1500);
+            }, 1000);
           }, 1500);
-        }, 400);
-      }, 4300);
+        }, 500);
+      }, 2500);
     }
     
     // Pure DOM starfield animation - no canvas at all!
@@ -1035,7 +889,7 @@
         barFill.style.filter = 'drop-shadow(0 0 15px #ffd700)';
         loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 20px #ffd700';
         
-        console.log('🚀 Loading complete! Starting epic toilet flush transformation...');
+        console.log('🚀 Loading complete! Starting smooth starfield transformation...');
         
         setTimeout(() => {
           if (isMobile) {
@@ -1049,14 +903,14 @@
               setTimeout(() => canvas.classList.add('fade-in'), 200);
             }, isMobile ? 400 : 800);
           } else {
-            // Desktop: LEGENDARY TOILET FLUSH TRANSFORMATION!
-            createDesktopStarfieldTransition();
+            // Desktop: SMOOTH STARFIELD TRANSFORMATION!
+            createSmoothStarfieldTransition();
             
             // Remove loader after the transformation completes
             setTimeout(() => {
               loader.classList.add('fade-out');
               setTimeout(() => loader.remove(), 800);
-            }, 3200);
+            }, 2000);
           }
         }, 300);
       } else {
