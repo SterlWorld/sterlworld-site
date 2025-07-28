@@ -653,13 +653,13 @@
         }
       });
       
-      console.log('💥 EXPLOSION READY - KEEPING LOADING ELEMENTS VISIBLE!');
+      console.log('💥 EXPLOSION READY - KEEPING LOADING ELEMENTS VISIBLE FOR FULL EFFECT!');
       
-      // Start the explosion immediately - DON'T hide loading elements yet
+      // Start the explosion burst immediately
       setTimeout(() => {
-        console.log('💥 STARS BURSTING OUT NOW!');
+        console.log('💥 STARS EXPLODING OUTWARD - FULL GLORY VISIBLE!');
         
-        // Explode all stars outward
+        // Explode all stars outward while loading elements are still visible
         explosionStars.forEach((starData) => {
           setTimeout(() => {
             const { element, sourceX, sourceY, angle, distance } = starData;
@@ -681,19 +681,19 @@
         
       }, 100); // Start explosion almost immediately
       
-      // NOW hide the loading elements AFTER we see the explosion start
+      // Only NOW hide the loading elements after we see the beautiful explosion
       setTimeout(() => {
-        console.log('💥 NOW HIDING LOADING ELEMENTS AFTER EXPLOSION VISIBLE!');
+        console.log('💥 NOW FADING LOADING ELEMENTS AFTER EXPLOSION IS FULLY VISIBLE!');
         loadingTextElement.style.opacity = '0';
         titleGlow.style.opacity = '0';
         loadingBar.style.opacity = '0';
-      }, 800); // Wait for explosion to be clearly visible
+      }, 1200); // Give plenty of time to see the explosion in full glory
       
       // Transform burst into living starfield
       setTimeout(() => {
         console.log('🌌 TRANSFORMING BURST INTO STARFIELD!');
         createDesktopStarfield(explosionStars);
-      }, 1200); // Give more time to see the explosion
+      }, 1800); // Wait even longer for the starfield transformation
     }
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
