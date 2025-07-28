@@ -75,15 +75,15 @@
 
     .content {
       position: absolute;
-      /* FIXED: Content should be positioned below the moved logo */
-      top: 200px; /* Logo at 60px + logo height (~60px) + tagline (~20px) + margin (~60px) */
+      /* DYNAMIC: Will be set by JavaScript based on actual logo position */
+      top: 200px; /* Fallback only */
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       max-width: 90%;
       text-align: center;
       opacity: 0;
-      transition: opacity 1.5s ease;
+      transition: opacity 1.5s ease, top 0.3s ease; /* Added top transition */
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
@@ -91,7 +91,8 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      height: calc(100vh - 200px); /* Adjusted to match new top position */
+      height: auto; /* Changed from calc() to auto */
+      min-height: 300px; /* Minimum height to prevent issues */
     }
     .content.visible { opacity: 1; }
     
@@ -524,9 +525,7 @@
       
       .content { 
         font-size: 0.95rem; 
-        /* FIXED: Mobile content positioned below moved logo */
-        top: 160px; /* Logo at 40px + logo height (~50px) + tagline (~15px) + margin (~55px) */
-        height: calc(100vh - 160px);
+        /* DYNAMIC: Will be set by JavaScript, remove hardcoded top */
         padding: 0 15px;
       }
       
@@ -582,8 +581,7 @@
       
       .content { 
         font-size: 0.9rem; 
-        /* FIXED: Extra small mobile content positioned below moved logo */
-        top: 140px; /* Logo at 40px + logo height (~40px) + tagline (~12px) + margin (~48px) */
+        /* DYNAMIC: Will be set by JavaScript, remove hardcoded top */
         padding: 0 10px;
       }
       
@@ -634,9 +632,7 @@
       }
       
       .content { 
-        /* FIXED: Landscape content positioned below moved logo */
-        top: 120px; /* Logo at 25px + logo height (~40px) + tagline (~12px) + margin (~43px) */
-        height: calc(100vh - 120px);
+        /* DYNAMIC: Will be set by JavaScript, remove hardcoded top */
       }
       
       h1 { 
@@ -848,9 +844,22 @@
               logoMoveComplete = true;
               startLogoSparkleLoop();
               
+              // DYNAMIC POSITIONING: Calculate actual logo bottom position
+              const logoWrapper = document.getElementById('logo-wrapper');
+              const logoRect = logoWrapper.getBoundingClientRect();
+              const logoBottom = logoRect.bottom;
+              const contentMargin = 40; // Space between logo and content
+              const newContentTop = logoBottom + contentMargin;
+              
+              // Update content position dynamically
+              const content = document.getElementById('mainText');
+              content.style.top = `${newContentTop}px`;
+              
+              console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
+              
               // Now show content with proper staging
               setTimeout(() => {
-                document.getElementById('mainText').classList.add('visible');
+                content.classList.add('visible');
                 
                 // Show construction notice after content
                 setTimeout(() => {
@@ -1035,9 +1044,9 @@
       const centerX = elementRect.left + elementRect.width / 2;
       const centerY = elementRect.top + elementRect.height / 2;
       
-      // Reduce star count on mobile for better performance
+      // Even more aggressive mobile optimization
       const isMobile = window.innerWidth <= 768;
-      const adjustedStars = isMobile ? Math.floor(numStars * 0.6) : numStars;
+      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars; // Was 0.6, now 0.4
       
       console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
       
@@ -1046,7 +1055,8 @@
         star.src = sparkleImgSrc;
         star.className = 'explosion-star';
         
-        const size = Math.random() * 20 + 10;
+        // Smaller stars on mobile
+        const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
         star.style.position = 'fixed';
@@ -1055,7 +1065,10 @@
         
         const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
         const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
-        star.style.filter = `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
+        
+        // Less intensive glow on mobile
+        const glowIntensity = isMobile ? 'drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)' : 'drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)';
+        star.style.filter = glowIntensity.replace(/\$\{glowColor\}/g, glowColor);
         
         let startX, startY;
         if (type === 'bar') {
@@ -1067,7 +1080,8 @@
         }
         
         const angle = Math.random() * 2 * Math.PI;
-        const distance = isMobile ? 100 + Math.random() * 150 : 150 + Math.random() * 250;
+        // Shorter distances and faster animation on mobile
+        const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
         const finalX = startX + Math.cos(angle) * distance;
         const finalY = startY + Math.sin(angle) * distance;
         
@@ -1075,14 +1089,17 @@
         star.style.top = `${startY - size / 2}px`;
         star.style.opacity = '1';
         star.style.transform = 'scale(1.2) rotate(0deg)';
-        star.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        
+        // Faster animation on mobile
+        const animationDuration = isMobile ? '1s' : '1.5s';
+        star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
         
         document.body.appendChild(star);
         
         star.onerror = () => {
           star.style.background = glowColor;
           star.style.borderRadius = '50%';
-          star.style.boxShadow = `0 0 12px ${glowColor}, 0 0 24px ${glowColor}`;
+          star.style.boxShadow = `0 0 8px ${glowColor}`;
           star.src = '';
         };
         
@@ -1093,11 +1110,13 @@
           star.style.opacity = '0';
         });
         
+        // Shorter cleanup time on mobile
+        const cleanupTime = isMobile ? 1100 : 1600;
         setTimeout(() => {
           if (star.parentNode) {
             star.remove();
           }
-        }, 1600);
+        }, cleanupTime);
       }
     }
 
