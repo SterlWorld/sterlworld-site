@@ -1016,6 +1016,21 @@
       }, 900);
     }
 
+    // Mobile-optimized explosion with much fewer stars
+    function createMobileExplosion() {
+      const loadingBarRect = loadingBar.getBoundingClientRect();
+      const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
+      const titleGlowRect = titleGlow.getBoundingClientRect();
+      
+      // Much fewer stars for mobile performance
+      createStarExplosion(loadingBarRect, 12, 'bar'); // Was 40, now 12
+      createStarExplosion(loadingTextRect, 8, 'text'); // Was 25, now 8
+      createStarExplosion(titleGlowRect, 10, 'title'); // Was 30, now 10
+      
+      // Quick flash
+      createScreenFlash();
+    }
+
     function createStarExplosion(elementRect, numStars, type) {
       const centerX = elementRect.left + elementRect.width / 2;
       const centerY = elementRect.top + elementRect.height / 2;
@@ -1163,35 +1178,34 @@
         const isMobile = window.innerWidth <= 768;
         
         if (isMobile) {
-          console.log('📱 Mobile detected - using optimized sequence');
+          console.log('📱 Mobile detected - using ultra-optimized sequence');
           
-          // Quick celebration then immediate cleanup
-          createLoadingBarCelebration();
+          // IMMEDIATE cleanup - no delays
+          loadingBar.style.opacity = '0';
+          loadingBar.style.visibility = 'hidden';
+          document.querySelector('.loading-text').style.opacity = '0';
+          document.querySelector('.loading-text').style.visibility = 'hidden';
+          titleGlow.style.opacity = '0';
+          titleGlow.style.visibility = 'hidden';
+          
+          // IMMEDIATE mobile-optimized explosion
+          createMobileExplosion();
+          
+          animate();
           
           setTimeout(() => {
-            loadingBar.style.opacity = '0';
-            loadingBar.style.visibility = 'hidden';
-            document.querySelector('.loading-text').style.opacity = '0';
-            document.querySelector('.loading-text').style.visibility = 'hidden';
-            titleGlow.style.opacity = '0';
-            titleGlow.style.visibility = 'hidden';
-            
-            animate();
+            console.log('🌟 Fading out loader background and revealing starfield...');
+            loader.classList.add('fade-out');
             
             setTimeout(() => {
-              console.log('🌟 Fading out loader background and revealing starfield...');
-              loader.classList.add('fade-out');
-              
-              setTimeout(() => {
-                loader.remove();
-              }, 800);
-              
-              setTimeout(() => {
-                const canvas = document.getElementById('space');
-                canvas.classList.add('fade-in');
-              }, 200);
-            }, 400);
-          }, 300);
+              loader.remove();
+            }, 800);
+            
+            setTimeout(() => {
+              const canvas = document.getElementById('space');
+              canvas.classList.add('fade-in');
+            }, 200);
+          }, 100);
         } else {
           console.log('💻 Desktop detected - using full sequence');
           
