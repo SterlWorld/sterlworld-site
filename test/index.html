@@ -35,6 +35,7 @@
       z-index: 10;
       opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
+      text-align: center;
     }
     #logo-wrapper.fade-in { opacity: 1; }
     #logo-wrapper.move-top {
@@ -46,6 +47,25 @@
       width: 300px; 
       max-width: 80vw;
       transform-origin: center center;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Logo tagline positioned right below the logo */
+    .logo-tagline {
+      font-size: 0.85rem;
+      color: white;
+      font-weight: 400;
+      margin-top: 8px;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      transition: opacity 1.5s ease 0.5s;
+      letter-spacing: 0.5px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #logo-wrapper.fade-in .logo-tagline {
+      opacity: 1;
     }
 
     @keyframes logoPulse {
@@ -81,11 +101,6 @@
       margin-bottom: 1rem;
       text-shadow: 0 0 10px #0ff;
       animation: taglineGlow 3s ease-in-out infinite alternate;
-    }
-    
-    @keyframes taglineGlow {
-      0% { text-shadow: 0 0 10px #0ff; }
-      100% { text-shadow: 0 0 20px #0ff, 0 0 30px #0ff; }
     }
     
     h1 {
@@ -267,7 +282,7 @@
       transform: translateX(-50%) translateY(-5px);
     }
 
-    /* Brief intro tooltip */
+    /* Brief intro tooltip - starts hidden */
     .intro-tooltip {
       position: absolute;
       bottom: 140px;
@@ -280,12 +295,16 @@
       font-size: 14px;
       font-weight: 600;
       white-space: nowrap;
-      opacity: 1;
+      opacity: 0;
       pointer-events: none;
-      transition: opacity 2s ease;
+      transition: opacity 0.5s ease;
       border: 2px solid rgba(244, 217, 167, 0.4);
       box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
       text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
+    }
+
+    .intro-tooltip.show {
+      opacity: 1;
       animation: tooltipPulse 2s ease-in-out infinite alternate;
     }
 
@@ -485,9 +504,9 @@
     /* Mobile optimizations */
     @media screen and (max-width: 768px) {
       #logo { width: 180px; }
+      .logo-tagline { font-size: 0.75rem; margin-top: 6px; }
       h1 { font-size: 1.8rem; }
       .content { font-size: 1rem; top: 120px; height: calc(100vh - 120px); }
-      .brand-tagline { font-size: 1rem; }
 
       #portfolio-bubble {
         width: 90px;
@@ -531,10 +550,10 @@
 
   <div id="logo-wrapper">
     <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+    <div class="logo-tagline">A Multimedia Experience crafted by Sterlin Griffin</div>
   </div>
 
   <div class="content" id="mainText">
-    <div class="brand-tagline">A Cinematic Universe by Sterlin Griffin</div>
     <h1>Welcome to SterlWorld</h1>
     <p>
       We're crafting a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
@@ -703,14 +722,19 @@
               setTimeout(() => {
                 document.getElementById('constructionNotice').classList.add('visible');
                 document.getElementById('portfolioLabel').classList.add('visible');
-                // Auto-hide portfolio tooltip after 4 seconds
+                
+                // Show tooltip after portfolio label appears, then hide quickly
                 setTimeout(() => {
                   const tooltip = document.getElementById('portfolioTooltip');
                   if (tooltip) {
-                    tooltip.style.opacity = '0';
-                    setTimeout(() => tooltip.remove(), 2000);
+                    tooltip.classList.add('show');
+                    // Hide after just 2 seconds instead of 4
+                    setTimeout(() => {
+                      tooltip.style.opacity = '0';
+                      setTimeout(() => tooltip.remove(), 500);
+                    }, 2000);
                   }
-                }, 4000);
+                }, 500); // Wait 500ms after portfolio label shows
               }, 1000);
             }, 1000);
           }, 1500);
