@@ -275,13 +275,13 @@
     }
 
     .glow-gold {
-      color: #ffd700 !important;
+      color: #ffec8b !important;
       text-shadow:
-        0 0 8px #ffd700,
-        0 0 15px #ffec8b,
-        0 0 20px #ffd700,
+        0 0 10px #ffec8b,
+        0 0 20px #ffe57f,
         0 0 30px #ffec8b,
-        0 0 40px #ffd700 !important;
+        0 0 40px #ffe57f,
+        0 0 50px #ffec8b !important;
     }
 
     .loading-bar {
@@ -582,35 +582,34 @@
     let lastTime = performance.now();
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
-    // ★                        🌟 EPIC EXPLOSION SYSTEM 🌟                         ★
+    // ★                        🌟 DESKTOP EXPLOSION SYSTEM 🌟                    ★
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
 
-    function createEpicLoadingExplosion() {
-      console.log('💥🌟 EPIC LOADING EXPLOSION BEGINS! 🌟💥');
+    function createDesktopExplosion() {
+      console.log('💥🌟 DESKTOP EXPLOSION BEGINS! 🌟💥');
       
       const loadingBar = document.querySelector('.loading-bar');
-      const loadingText = document.querySelector('.loading-text');
+      const loadingTextElement = document.querySelector('.loading-text');
       const loadingBarRect = loadingBar.getBoundingClientRect();
-      const loadingTextRect = loadingText.getBoundingClientRect();
+      const loadingTextRect = loadingTextElement.getBoundingClientRect();
       
       // Get explosion centers
       const barCenterX = loadingBarRect.left + loadingBarRect.width / 2;
       const barCenterY = loadingBarRect.top + loadingBarRect.height / 2;
       
       const explosionStars = [];
-      const totalStars = isMobile ? (isLowEnd ? 30 : 50) : 120;
+      const totalStars = 120;
       
       // Phase 1: Massive Loading Bar Explosion (70% of stars)
       console.log('💥 Phase 1: MASSIVE LOADING BAR EXPLOSION!');
       const barStars = Math.floor(totalStars * 0.7);
       for (let i = 0; i < barStars; i++) {
         const star = createOptimizedSparkle(barCenterX, barCenterY, 
-          (isMobile ? 4 : 6) + Math.random() * (isMobile ? 4 : 6), 
+          6 + Math.random() * 6, 
           sparkleColors[i % sparkleColors.length]
         );
         star.classList.add('explosion-star');
         star.style.zIndex = '9999';
-        star.style.animation = 'epicExplosion 0.8s ease-out forwards';
         document.body.appendChild(star);
         
         explosionStars.push({
@@ -619,8 +618,8 @@
           sourceY: barCenterY,
           type: 'bar',
           angle: (i / barStars) * 2 * Math.PI + (Math.random() - 0.5) * 0.5,
-          distance: (isMobile ? 80 : 150) + Math.random() * (isMobile ? 100 : 200),
-          delay: Math.random() * 300
+          distance: 150 + Math.random() * 200,
+          delay: Math.random() * 50
         });
       }
       
@@ -636,12 +635,11 @@
         
         for (let i = 0; i < starsPerLetter && explosionStars.length < totalStars; i++) {
           const star = createOptimizedSparkle(letterCenterX, letterCenterY, 
-            (isMobile ? 3 : 4) + Math.random() * (isMobile ? 3 : 4), 
+            4 + Math.random() * 4, 
             sparkleColors[(letterIndex + i) % sparkleColors.length]
           );
           star.classList.add('explosion-star');
           star.style.zIndex = '9998';
-          star.style.animation = 'epicExplosion 0.6s ease-out forwards';
           document.body.appendChild(star);
           
           explosionStars.push({
@@ -651,29 +649,18 @@
             type: 'letter',
             letterIndex: letterIndex,
             angle: Math.random() * 2 * Math.PI,
-            distance: (isMobile ? 60 : 100) + Math.random() * (isMobile ? 80 : 120),
-            delay: letterIndex * 50 + Math.random() * 150
+            distance: 100 + Math.random() * 120,
+            delay: letterIndex * 30 + Math.random() * 50
           });
         }
       });
       
-      // Hide loading elements with dramatic effect
-      setTimeout(() => {
-        loadingText.style.transform = 'scale(1.2)';
-        loadingText.style.filter = 'brightness(3) saturate(2)';
-        titleGlow.style.transform = 'scale(1.1)';
-        titleGlow.style.filter = 'brightness(2.5) saturate(2)';
-        loadingBar.style.transform = 'scale(1.05)';
-        loadingBar.style.filter = 'brightness(2) saturate(2)';
-      }, 100);
+      // IMMEDIATELY hide loading elements (no fading!)
+      loadingTextElement.style.visibility = 'hidden';
+      titleGlow.style.visibility = 'hidden';
+      loadingBar.style.visibility = 'hidden';
       
-      setTimeout(() => {
-        loadingText.style.opacity = '0';
-        titleGlow.style.opacity = '0';
-        loadingBar.style.opacity = '0';
-      }, 200);
-      
-      // Phase 3: MASSIVE EXPLOSION SEQUENCE!
+      // Phase 3: INSTANT MASSIVE EXPLOSION!
       explosionStars.forEach((starData, i) => {
         setTimeout(() => {
           const { element, sourceX, sourceY, angle, distance } = starData;
@@ -699,16 +686,64 @@
       // Phase 4: Transform into Living Starfield
       setTimeout(() => {
         console.log('🌌 Phase 4: TRANSFORMING INTO LIVING STARFIELD!');
-        createLivingStarfield(explosionStars);
-      }, isMobile ? 1000 : 1500);
+        createDesktopStarfield(explosionStars);
+      }, 200); // Much faster transition
     }
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
-    // ★                       🌟 LIVING STARFIELD SYSTEM 🌟                      ★
+    // ★                        🌟 MOBILE FADE SYSTEM 🌟                          ★
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
 
-    function createLivingStarfield(explosionStars) {
-      console.log('✨ Creating living starfield from explosion stars! ✨');
+    function createMobileFade() {
+      console.log('📱 MOBILE FADE SEQUENCE!');
+      
+      const loadingTextElement = document.querySelector('.loading-text');
+      const loadingBar = document.querySelector('.loading-bar');
+      
+      // Fade out loading elements
+      loadingTextElement.style.transition = 'opacity 0.5s ease-out';
+      titleGlow.style.transition = 'opacity 0.5s ease-out';
+      loadingBar.style.transition = 'opacity 0.5s ease-out';
+      
+      loadingTextElement.style.opacity = '0';
+      titleGlow.style.opacity = '0';
+      loadingBar.style.opacity = '0';
+      
+      // Initialize canvas starfield and fade in
+      setTimeout(() => {
+        console.log('🌌 FADING IN CANVAS STARFIELD!');
+        animateCanvasStarfield();
+        canvas.classList.add('fade-in');
+        
+        // Show main content
+        setTimeout(() => {
+          document.getElementById('logo-wrapper').classList.add('fade-in');
+          
+          setTimeout(() => {
+            document.getElementById('logo-wrapper').classList.add('move-top');
+            startLogoSparkleLoop();
+            
+            setTimeout(() => {
+              document.getElementById('mainText').classList.add('visible');
+            }, 1000);
+          }, 1500);
+        }, 800);
+        
+        // Remove loader
+        setTimeout(() => {
+          loader.classList.add('fade-out');
+          setTimeout(() => loader.remove(), 800);
+        }, 1000);
+        
+      }, 500);
+    }
+
+    // ★ ═══════════════════════════════════════════════════════════════════════ ★
+    // ★                      🌟 DESKTOP STARFIELD SYSTEM 🌟                      ★
+    // ★ ═══════════════════════════════════════════════════════════════════════ ★
+
+    function createDesktopStarfield(explosionStars) {
+      console.log('✨ Creating desktop starfield from explosion stars! ✨');
       
       // Transform explosion stars into starfield stars
       explosionStars.forEach((starData, i) => {
@@ -737,14 +772,14 @@
         let k = 128.0 / starfieldData.z;
         let px = starfieldData.x * k + w / 2;
         let py = starfieldData.y * k + h / 2;
-        let starSize = starfieldData.size * (1 - starfieldData.z / w) * (isMobile ? 25 : 35);
+        let starSize = starfieldData.size * (1 - starfieldData.z / w) * 35;
         
         // Prepare for starfield transformation
         element.classList.remove('explosion-star');
         element.classList.add('starfield-star');
         element.style.zIndex = '1';
         element.style.animation = 'starTwinkle 3s ease-in-out infinite alternate';
-        element.style.transition = 'all 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        element.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         
         // Smooth transition to starfield position
         setTimeout(() => {
@@ -759,28 +794,21 @@
             saturate(2)
           `;
           element.style.opacity = Math.min(1, (1 - starfieldData.z / w) * 2.5);
-        }, i * 20); // Stagger the transitions
+        }, i * 15); // Stagger the transitions
       });
       
       // Start the living starfield animation
       setTimeout(() => {
-        console.log('🎆 STARFIELD IS NOW FULLY ALIVE!');
+        console.log('🎆 DESKTOP STARFIELD IS NOW FULLY ALIVE!');
         
         // Remove transition effects and start continuous animation
         explosionStars.forEach(starData => {
           starData.element.style.transition = 'none';
         });
         
-        // Start appropriate starfield animation based on device
-        if (isMobile) {
-          // Mobile: Use canvas-based starfield with DOM stars
-          animateHybridStarfield();
-          setTimeout(() => canvas.classList.add('fade-in'), 300);
-        } else {
-          // Desktop: Pure DOM-based living starfield
-          warpStartTime = performance.now();
-          animateDOMStarfield();
-        }
+        // Start DOM-based living starfield
+        warpStartTime = performance.now();
+        animateDOMStarfield();
         
         // Show main content
         setTimeout(() => {
@@ -802,7 +830,7 @@
           setTimeout(() => loader.remove(), 800);
         }, 1000);
         
-      }, 2500);
+      }, 1500);
     }
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
@@ -888,11 +916,11 @@
       domStarfieldAnimate();
     }
 
-    // Mobile: Hybrid canvas + DOM starfield
-    function animateHybridStarfield() {
+    // Mobile: Canvas-based starfield
+    function animateCanvasStarfield() {
       let lastTime = performance.now();
       
-      function hybridAnimate(time = performance.now()) {
+      function canvasAnimate(time = performance.now()) {
         if (!warpStartTime) warpStartTime = time;
         const elapsed = time - warpStartTime;
 
@@ -910,41 +938,9 @@
         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         ctx.fillRect(0, 0, w, h);
 
-        // Update DOM explosion stars
+        // Update canvas stars
         stars.forEach((s, i) => {
-          if (s.domElement && s.isTransition) {
-            s.z -= warpSpeed * delta;
-            if (s.z <= 0) {
-              s.x = (Math.random() - 0.5) * w * 1.5;
-              s.y = (Math.random() - 0.5) * h * 1.5;
-              s.z = w + Math.random() * w * 0.5;
-              s.size = Math.random() * 0.8 + 0.4;
-            }
-            
-            let k = 128.0 / s.z;
-            let px = s.x * k + w / 2;
-            let py = s.y * k + h / 2;
-            
-            if (px < -50 || px >= w + 50 || py < -50 || py >= h + 50) {
-              s.x = (Math.random() - 0.5) * w * 1.5;
-              s.y = (Math.random() - 0.5) * h * 1.5;
-              s.z = w + Math.random() * w * 0.5;
-              return;
-            }
-            
-            let starSize = s.size * (1 - s.z / w) * 25;
-            let opacity = Math.min(1, (1 - s.z / w) * 2);
-            
-            s.domElement.style.left = `${px - starSize/2}px`;
-            s.domElement.style.top = `${py - starSize/2}px`;
-            s.domElement.style.width = `${starSize}px`;
-            s.domElement.style.height = `${starSize}px`;
-            s.domElement.style.opacity = opacity;
-            s.domElement.style.transform = `rotate(${s.rotationAngle * 180/Math.PI}deg)`;
-            
-            s.rotationAngle += s.rotationSpeed;
-          } else if (!s.domElement) {
-            // Canvas stars for background
+          if (!s.domElement) {
             s.z -= warpSpeed * delta;
             if (s.z <= 0) {
               stars[i] = createStar();
@@ -962,7 +958,7 @@
             ctx.rotate(s.rotationAngle);
             ctx.shadowBlur = 10;
             ctx.shadowColor = '#f7de99';
-            ctx.globalAlpha = 0.3;
+            ctx.globalAlpha = 0.6;
             let starSize = s.size * (1 - s.z / w) * 20;
             
             if (starImage.complete && starImage.naturalWidth > 0) {
@@ -979,10 +975,10 @@
           }
         });
 
-        requestAnimationFrame(hybridAnimate);
+        requestAnimationFrame(canvasAnimate);
       }
       
-      hybridAnimate();
+      canvasAnimate();
     }
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
@@ -1027,7 +1023,7 @@
     // ★                        🌟 MAIN LOADING SEQUENCE 🌟                       ★
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
 
-    // Enhanced loading progress with EPIC completion
+    // Enhanced loading progress with device-specific completion
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 8;
@@ -1036,31 +1032,35 @@
         clearInterval(interval);
         barFill.style.width = '100%';
         
-        // EPIC completion effects
-        barFill.style.background = 'linear-gradient(90deg, #ffd700, #ffec8b, #ffd700, #ff5ec4, #0ff)';
+        // Beautiful completion effects
+        barFill.style.background = 'linear-gradient(90deg, #ffec8b, #ffe57f, #ffec8b, #ffe57f, #ffec8b)';
         barFill.style.backgroundSize = '300% 100%';
         barFill.style.animation = 'gradientShift 0.5s linear infinite';
-        barFill.style.boxShadow = '0 0 30px #ffd700, 0 0 50px #ff5ec4, 0 0 70px #0ff';
-        barFill.style.filter = 'drop-shadow(0 0 20px #ffd700) brightness(1.5)';
+        barFill.style.boxShadow = '0 0 30px #ffec8b, 0 0 50px #ffe57f, 0 0 70px #ffec8b';
+        barFill.style.filter = 'drop-shadow(0 0 20px #ffec8b) brightness(1.8)';
         barFill.style.transform = 'scaleY(1.2)';
         
         document.querySelector('.loading-bar').style.boxShadow = `
-          inset 0 0 15px #ffd700, 
-          0 0 30px #ffd700, 
-          0 0 50px #ff5ec4, 
-          0 0 70px #0ff
+          inset 0 0 15px #ffec8b, 
+          0 0 30px #ffec8b, 
+          0 0 50px #ffe57f, 
+          0 0 70px #ffec8b
         `;
         document.querySelector('.loading-bar').style.transform = 'scale(1.05)';
         
-        // Make all letters glow
+        // Make all letters glow with beautiful lighter gold
         titleLetters.forEach(letter => letter.classList.add('glow-gold'));
         
-        console.log('🚀💥 LOADING COMPLETE! PREPARING EPIC EXPLOSION! 💥🚀');
+        console.log('🚀💥 LOADING COMPLETE! CHOOSING DEVICE-SPECIFIC SEQUENCE! 💥🚀');
         
-        // Pause for dramatic effect, then EXPLODE!
+        // Device-specific completion
         setTimeout(() => {
-          createEpicLoadingExplosion();
-        }, 400);
+          if (isMobile) {
+            createMobileFade();
+          } else {
+            createDesktopExplosion();
+          }
+        }, 600); // Brief pause to appreciate the beautiful gold glow
         
       } else {
         barFill.style.width = progress + '%';
@@ -1142,7 +1142,7 @@
       }, interval);
     }
 
-    console.log('🌟✨ SterlWorld Enhanced with EPIC Explosion System Ready! ✨🌟');
+    console.log('🌟✨ SterlWorld Enhanced with Perfect Device-Specific Sequences Ready! ✨🌟');
   </script>
 
 </body>
