@@ -586,7 +586,7 @@
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
 
     function createDesktopExplosion() {
-      console.log('💥🌟 SIMPLE BEAUTIFUL EXPLOSION! 🌟💥');
+      console.log('💥🌟 DESKTOP EXPLOSION STARTING! 🌟💥');
       
       const loadingBar = document.querySelector('.loading-bar');
       const loadingTextElement = document.querySelector('.loading-text');
@@ -599,7 +599,7 @@
       const explosionStars = [];
       const totalStars = 80;
       
-      console.log('💥 BEAUTIFUL STAR BURST FROM LOADING BAR!');
+      console.log('💥 CREATING EXPLOSION STARS!');
       
       // Create stars bursting from the loading bar center
       for (let i = 0; i < totalStars; i++) {
@@ -653,9 +653,11 @@
         }
       });
       
-      // Keep the beautiful loading bar visible for a moment, then burst!
+      console.log('💥 EXPLOSION READY - KEEPING LOADING ELEMENTS VISIBLE!');
+      
+      // Start the explosion immediately - DON'T hide loading elements yet
       setTimeout(() => {
-        console.log('💥 STARS BURSTING OUT!');
+        console.log('💥 STARS BURSTING OUT NOW!');
         
         // Explode all stars outward
         explosionStars.forEach((starData) => {
@@ -677,20 +679,21 @@
           }, starData.delay);
         });
         
-        // Now hide the loading elements after the burst starts
-        setTimeout(() => {
-          loadingTextElement.style.opacity = '0';
-          titleGlow.style.opacity = '0';
-          loadingBar.style.opacity = '0';
-        }, 200);
-        
-      }, 300); // Brief pause to enjoy the beautiful loading bar
+      }, 100); // Start explosion almost immediately
+      
+      // NOW hide the loading elements AFTER we see the explosion start
+      setTimeout(() => {
+        console.log('💥 NOW HIDING LOADING ELEMENTS AFTER EXPLOSION VISIBLE!');
+        loadingTextElement.style.opacity = '0';
+        titleGlow.style.opacity = '0';
+        loadingBar.style.opacity = '0';
+      }, 800); // Wait for explosion to be clearly visible
       
       // Transform burst into living starfield
       setTimeout(() => {
-        console.log('🌌 BURST BECOMES STARFIELD!');
+        console.log('🌌 TRANSFORMING BURST INTO STARFIELD!');
         createDesktopStarfield(explosionStars);
-      }, 800);
+      }, 1200); // Give more time to see the explosion
     }
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
