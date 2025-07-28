@@ -706,7 +706,7 @@
     }
 
     function createDesktopStarfieldTransition() {
-      console.log('🌟 LEGENDARY DESKTOP DRAIN TRANSFORMATION: UI ELEMENTS → COSMIC STARFIELD! 🌟');
+      console.log('🌟 LEGENDARY TOILET FLUSH DRAIN TRANSFORMATION: UI → ORBITAL → CLUSTER → DRAIN → STARFIELD! 🌟');
       
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
@@ -725,13 +725,13 @@
       createCosmicStarsFromElement(loadingTextRect, loadingStars, cosmicStars, 'loading');
       createCosmicStarsFromElement(titleGlowRect, titleStars, cosmicStars, 'title');
       
-      console.log(`Created ${cosmicStars.length} cosmic stars for legendary drain transformation`);
+      console.log(`Created ${cosmicStars.length} cosmic stars for EPIC drain transformation`);
       
       // Hide canvas completely for desktop - stars will BE the starfield
       canvas.style.display = 'none';
       
-      // PHASE 1: DRAMATIC EXPLOSION (0-0.4s)
-      console.log('Phase 1: DRAMATIC EXPLOSION - UI elements burst into stars!');
+      // PHASE 1: INSTANT EXPLOSION (0-0.5s)
+      console.log('Phase 1: INSTANT EXPLOSION - UI elements burst into stars!');
       
       // Instantly hide loading elements
       loadingBar.style.opacity = '0';
@@ -745,73 +745,125 @@
         cosmicStars.forEach((star, i) => {
           // Explosive burst pattern - stars shoot outward dramatically
           const angle = (i / cosmicStars.length) * 4 * Math.PI + Math.random() * 0.5;
-          const explosionDistance = 250 + Math.random() * 350; 
+          const explosionDistance = 280 + Math.random() * 400; 
           const explosionX = centerX + Math.cos(angle) * explosionDistance;
           const explosionY = centerY + Math.sin(angle) * explosionDistance;
           
-          star.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+          star.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
           star.style.left = `${explosionX - 8}px`;
           star.style.top = `${explosionY - 8}px`;
-          star.style.transform = `scale(2.5) rotate(${Math.random() * 720}deg)`;
-          star.style.filter = 'drop-shadow(0 0 20px #fff) brightness(3) saturate(2.5)';
+          star.style.transform = `scale(2.8) rotate(${Math.random() * 720}deg)`;
+          star.style.filter = 'drop-shadow(0 0 25px #fff) brightness(3.5) saturate(3)';
         });
       }, 50);
       
-      // PHASE 2: CIRCULAR DRAIN SPIRAL (0.4s-2.5s) - The DRAIN EFFECT!
+      // PHASE 2: ORBITAL ROTATION (0.5s-1.5s) - Stars orbit around center!
       setTimeout(() => {
-        console.log('Phase 2: CIRCULAR DRAIN SPIRAL - Stars swirl down the drain like water!');
+        console.log('Phase 2: ORBITAL ROTATION - Stars begin orbiting the center like planets!');
         
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
         
         cosmicStars.forEach((star, i) => {
-          // Create perfect drain/vortex effect - like water going down a drain
-          const drainProgress = i / cosmicStars.length; // 0 to 1
-          const totalRotations = 8; // How many times they circle while going down
-          const drainAngle = drainProgress * totalRotations * 2 * Math.PI; // Multiple complete circles
+          // Calculate orbital position - each star gets its own orbit radius
+          const orbitRadius = 300 + (i % 3) * 100; // 3 orbital rings
+          const orbitAngle = (i / cosmicStars.length) * 4 * Math.PI; // Spread around orbit
+          const orbitX = centerX + Math.cos(orbitAngle) * orbitRadius;
+          const orbitY = centerY + Math.sin(orbitAngle) * orbitRadius;
           
-          // Radius shrinks as they get closer to center (drain effect)
-          const maxRadius = 450; // Start from far out
-          const minRadius = 20;  // End very close to center
-          const currentRadius = maxRadius - (drainProgress * (maxRadius - minRadius));
-          
-          // Add some variation so stars don't overlap perfectly
-          const radiusVariation = (Math.sin(i * 0.5) * 30); // Small radius variation
-          const finalRadius = currentRadius + radiusVariation;
-          
-          // Calculate final position in the drain spiral
-          const drainX = centerX + Math.cos(drainAngle) * finalRadius;
-          const drainY = centerY + Math.sin(drainAngle) * finalRadius;
-          
-          // Smooth drain motion with perfect timing
-          star.style.transition = 'all 2.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          star.style.left = `${drainX - 6}px`;
-          star.style.top = `${drainY - 6}px`;
-          star.style.transform = `scale(1.2) rotate(${drainAngle * 180 / Math.PI}deg)`;
-          star.style.filter = 'drop-shadow(0 0 12px #f7de99) brightness(2.5) saturate(2)';
+          star.style.transition = 'all 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          star.style.left = `${orbitX - 6}px`;
+          star.style.top = `${orbitY - 6}px`;
+          star.style.transform = `scale(1.8) rotate(${orbitAngle * 180 / Math.PI}deg)`;
+          star.style.filter = 'drop-shadow(0 0 18px #0ff) brightness(2.8) saturate(2.5)';
         });
-      }, 400);
+      }, 500);
       
-      // PHASE 3: CENTER CONVERGENCE (2.5s-2.8s)
+      // PHASE 3: CLUSTERING WHILE ORBITING (1.5s-2.5s) - Stars link together!
       setTimeout(() => {
-        console.log('Phase 3: CENTER CONVERGENCE - All stars meet at the drain center!');
+        console.log('Phase 3: CLUSTERING - Orbiting stars start linking together with gravitational pull!');
         
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
         
         cosmicStars.forEach((star, i) => {
-          // All stars converge to exact center (bottom of the drain)
-          star.style.transition = 'all 0.3s ease-in';
-          star.style.left = `${centerX - 4}px`;
-          star.style.top = `${centerY - 4}px`;
-          star.style.transform = `scale(0.8) rotate(${i * 45}deg)`;
-          star.style.filter = 'drop-shadow(0 0 15px #fff) brightness(3) saturate(3)';
+          // Stars cluster into groups while maintaining orbital motion
+          const clusterGroup = Math.floor(i / 6); // 6 stars per cluster
+          const clusterAngle = (clusterGroup / (cosmicStars.length / 6)) * 2 * Math.PI;
+          const clusterRadius = 250 + Math.sin(clusterGroup) * 80; // Varying cluster distances
+          
+          // Individual star position within cluster
+          const starInCluster = i % 6;
+          const localAngle = (starInCluster / 6) * 2 * Math.PI;
+          const localRadius = 15 + Math.random() * 25; // Tight clustering
+          
+          const clusterCenterX = centerX + Math.cos(clusterAngle) * clusterRadius;
+          const clusterCenterY = centerY + Math.sin(clusterAngle) * clusterRadius;
+          
+          const finalX = clusterCenterX + Math.cos(localAngle) * localRadius;
+          const finalY = clusterCenterY + Math.sin(localAngle) * localRadius;
+          
+          star.style.transition = 'all 1.0s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          star.style.left = `${finalX - 5}px`;
+          star.style.top = `${finalY - 5}px`;
+          star.style.transform = `scale(1.5) rotate(${(clusterAngle + localAngle) * 180 / Math.PI}deg)`;
+          star.style.filter = 'drop-shadow(0 0 15px #ff5ec4) brightness(2.5) saturate(2)';
+        });
+      }, 1500);
+      
+      // PHASE 4: DRAIN SPIRAL INITIATION (2.5s-4.0s) - The TOILET FLUSH begins!
+      setTimeout(() => {
+        console.log('Phase 4: DRAIN SPIRAL - Clustered stars get caught in the toilet flush vortex!');
+        
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
+        cosmicStars.forEach((star, i) => {
+          // Create the classic toilet flush spiral - decreasing radius with rotation
+          const spiralProgress = i / cosmicStars.length; // 0 to 1
+          const totalRotations = 12; // More rotations for dramatic effect
+          const spiralAngle = spiralProgress * totalRotations * 2 * Math.PI;
+          
+          // Radius decreases dramatically as they spiral in
+          const maxRadius = 400;
+          const minRadius = 35;
+          const currentRadius = maxRadius - (spiralProgress * (maxRadius - minRadius));
+          
+          // Add spiral variation for realistic water-like motion
+          const spiralVariation = Math.sin(spiralProgress * 8 * Math.PI) * 20;
+          const finalRadius = currentRadius + spiralVariation;
+          
+          const spiralX = centerX + Math.cos(spiralAngle) * finalRadius;
+          const spiralY = centerY + Math.sin(spiralAngle) * finalRadius;
+          
+          star.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          star.style.left = `${spiralX - 4}px`;
+          star.style.top = `${spiralY - 4}px`;
+          star.style.transform = `scale(1.2) rotate(${spiralAngle * 180 / Math.PI + 360}deg)`;
+          star.style.filter = 'drop-shadow(0 0 12px #ffd700) brightness(2.8) saturate(2.2)';
         });
       }, 2500);
       
-      // PHASE 4: BOOM! STARFIELD EXPLOSION (2.8s-3.0s)
+      // PHASE 5: CENTER CONVERGENCE (4.0s-4.3s) - All meet at the drain!
       setTimeout(() => {
-        console.log('Phase 4: BOOM! STARFIELD EXPLOSION - Stars explode outward and become the living starfield!');
+        console.log('Phase 5: CENTER CONVERGENCE - All stars meet at the drain center!');
+        
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
+        cosmicStars.forEach((star, i) => {
+          // All stars converge to exact center
+          star.style.transition = 'all 0.3s ease-in';
+          star.style.left = `${centerX - 3}px`;
+          star.style.top = `${centerY - 3}px`;
+          star.style.transform = `scale(0.6) rotate(${i * 120}deg)`;
+          star.style.filter = 'drop-shadow(0 0 20px #fff) brightness(4) saturate(4)';
+        });
+      }, 4000);
+      
+      // PHASE 6: FINAL EXPLOSION TO STARFIELD (4.3s-4.5s)
+      setTimeout(() => {
+        console.log('Phase 6: BOOM! FINAL EXPLOSION - Stars explode into the living starfield!');
         
         // Initialize starfield data for each cosmic star
         cosmicStars.forEach((star, i) => {
@@ -847,22 +899,22 @@
         
         console.log('🎆 STARFIELD IS ALIVE! Beginning logo sequence...');
         
-        // PHASE 5: Logo fade-in at center (3.2s)
+        // PHASE 7: Logo fade-in at center (4.7s)
         setTimeout(() => {
           document.getElementById('logo-wrapper').classList.add('fade-in');
           
-          // PHASE 6: Logo slides to top (4.7s)
+          // PHASE 8: Logo slides to top (6.2s)
           setTimeout(() => {
             document.getElementById('logo-wrapper').classList.add('move-top');
             startLogoSparkleLoop();
             
-            // PHASE 7: Content fades in ONLY after logo has settled at top (6.2s)
+            // PHASE 9: Content fades in after logo settles (7.7s)
             setTimeout(() => {
               document.getElementById('mainText').classList.add('visible');
-            }, 1500); // Wait for logo to fully settle at top
-          }, 1500); // Logo fade-in complete
-        }, 400); // Small delay after starfield starts
-      }, 2800);
+            }, 1500);
+          }, 1500);
+        }, 400);
+      }, 4300);
     }
     
     // Pure DOM starfield animation - no canvas at all!
@@ -983,7 +1035,7 @@
         barFill.style.filter = 'drop-shadow(0 0 15px #ffd700)';
         loadingBar.style.boxShadow = 'inset 0 0 8px #ffd700, 0 0 20px #ffd700';
         
-        console.log('🚀 Loading complete! Starting epic drain transformation...');
+        console.log('🚀 Loading complete! Starting epic toilet flush transformation...');
         
         setTimeout(() => {
           if (isMobile) {
@@ -997,14 +1049,14 @@
               setTimeout(() => canvas.classList.add('fade-in'), 200);
             }, isMobile ? 400 : 800);
           } else {
-            // Desktop: LEGENDARY DRAIN TRANSFORMATION!
+            // Desktop: LEGENDARY TOILET FLUSH TRANSFORMATION!
             createDesktopStarfieldTransition();
             
             // Remove loader after the transformation completes
             setTimeout(() => {
               loader.classList.add('fade-out');
               setTimeout(() => loader.remove(), 800);
-            }, 1600);
+            }, 3200);
           }
         }, 300);
       } else {
