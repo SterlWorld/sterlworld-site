@@ -75,7 +75,8 @@
 
     .content {
       position: absolute;
-      top: 180px;
+      /* FIXED: Content should be positioned below the moved logo */
+      top: 200px; /* Logo at 60px + logo height (~60px) + tagline (~20px) + margin (~60px) */
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -90,7 +91,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      height: calc(100vh - 180px);
+      height: calc(100vh - 200px); /* Adjusted to match new top position */
     }
     .content.visible { opacity: 1; }
     
@@ -195,7 +196,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Portfolio section positioned below content - MOVED DOWN MUCH MORE */
+    /* Portfolio section positioned below content */
     .portfolio-section {
       margin-top: 5rem;
       display: flex;
@@ -501,7 +502,7 @@
       50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
 
-    /* Mobile optimizations - MUCH BETTER SPACING */
+    /* Mobile optimizations - FIXED POSITIONING */
     @media screen and (max-width: 768px) {
       #logo { width: 200px; }
       
@@ -523,8 +524,9 @@
       
       .content { 
         font-size: 0.95rem; 
-        top: 140px; 
-        height: calc(100vh - 140px);
+        /* FIXED: Mobile content positioned below moved logo */
+        top: 160px; /* Logo at 40px + logo height (~50px) + tagline (~15px) + margin (~55px) */
+        height: calc(100vh - 160px);
         padding: 0 15px;
       }
       
@@ -564,7 +566,7 @@
       }
     }
 
-    /* Extra small mobile devices */
+    /* Extra small mobile devices - FIXED POSITIONING */
     @media screen and (max-width: 480px) {
       #logo { width: 160px; }
       
@@ -580,7 +582,8 @@
       
       .content { 
         font-size: 0.9rem; 
-        top: 130px;
+        /* FIXED: Extra small mobile content positioned below moved logo */
+        top: 140px; /* Logo at 40px + logo height (~40px) + tagline (~12px) + margin (~48px) */
         padding: 0 10px;
       }
       
@@ -624,15 +627,16 @@
       .loading-bar { height: 14px; }
     }
 
-    /* Landscape mobile optimization */
+    /* Landscape mobile optimization - FIXED POSITIONING */
     @media screen and (max-height: 600px) and (orientation: landscape) {
       #logo-wrapper.move-top {
         top: 25px;
       }
       
       .content { 
-        top: 100px;
-        height: calc(100vh - 100px);
+        /* FIXED: Landscape content positioned below moved logo */
+        top: 120px; /* Logo at 25px + logo height (~40px) + tagline (~12px) + margin (~43px) */
+        height: calc(100vh - 120px);
       }
       
       h1 { 
