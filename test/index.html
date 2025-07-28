@@ -195,9 +195,9 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Portfolio section positioned below content */
+    /* Portfolio section positioned below content - MOVED DOWN MORE */
     .portfolio-section {
-      margin-top: 3rem;
+      margin-top: 4rem; /* Increased from 3rem to 4rem */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -255,11 +255,11 @@
       100% { text-shadow: 0 0 25px rgba(244, 217, 167, 0.8), 0 0 35px rgba(244, 217, 167, 0.4); }
     }
 
-    /* Hover tooltip above the bubble */
+    /* Hover tooltip above the bubble - MOVED UP MORE */
     #portfolio-bubble::after {
       content: 'Click to explore my work!';
       position: absolute;
-      bottom: 140px;
+      bottom: 160px; /* Increased from 140px to 160px */
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0, 0, 0, 0.95);
@@ -282,10 +282,10 @@
       transform: translateX(-50%) translateY(-5px);
     }
 
-    /* Brief intro tooltip - starts hidden */
+    /* Brief intro tooltip - starts hidden - MOVED UP MORE */
     .intro-tooltip {
       position: absolute;
-      bottom: 140px;
+      bottom: 160px; /* Increased from 140px to 160px */
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0, 0, 0, 0.95);
@@ -514,13 +514,13 @@
       }
 
       #portfolio-bubble::after {
-        bottom: 120px;
+        bottom: 140px; /* Increased from 120px to 140px for mobile */
         font-size: 13px;
         padding: 6px 10px;
       }
 
       .intro-tooltip {
-        bottom: 120px;
+        bottom: 140px; /* Increased from 120px to 140px for mobile */
         font-size: 13px;
         padding: 6px 10px;
       }
