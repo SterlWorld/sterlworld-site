@@ -378,27 +378,7 @@
       transition: all 0.3s ease;
     }
 
-    /* Smooth shimmer effect without waves */
-    .loading-bar-fill::after {
-      content: '';
-      position: absolute;
-      top: -30%;
-      left: -60%;
-      width: 60%;
-      height: 160%;
-      background: linear-gradient(
-        120deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.9) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      transform: skewX(-25deg);
-      animation: shimmerMove 2.5s ease-in-out infinite;
-      pointer-events: none;
-      filter: drop-shadow(0 0 8px #fff);
-      border-radius: 50%;
-      z-index: 2;
-    }
+    /* Removed shimmer effect */
 
     /* Sparkles container */
     .loading-bar-sparkles {
@@ -412,22 +392,7 @@
       z-index: 2;
     }
 
-    @keyframes shimmerMove {
-      0%, 100% {
-        left: -60%;
-        opacity: 0;
-      }
-      20% {
-        opacity: 1;
-      }
-      80% {
-        opacity: 1;
-      }
-      100% {
-        left: 160%;
-        opacity: 0;
-      }
-    }
+    /* Removed shimmer animation */
 
     @keyframes flicker {
       0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
@@ -439,11 +404,6 @@
       #logo { width: 180px; }
       h1 { font-size: 1.8rem; }
       .content { font-size: 1rem; top: 120px; height: calc(100vh - 120px); }
-      
-      /* Simpler shimmer on mobile */
-      .loading-bar-fill::after {
-        animation-duration: 3s;
-      }
 
       #portfolio-bubble {
         width: 60px;
@@ -923,28 +883,38 @@
         clearInterval(interval);
         loadingFill.style.width = '100%';
         
-        // Enhanced completion effect with ethereal rose-gold
+        // Enhanced completion effect with glow on all elements
         loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
         loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
         loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
         loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
         loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
         
+        // Make "Loading" text glow cyan
+        const loadingTextElement = document.querySelector('.loading-text');
+        loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
+        loadingTextElement.style.color = '#0ff';
+        
+        // All title letters should glow gold
+        titleLetters.forEach(letter => {
+          letter.classList.add('glow-gold');
+        });
+        
         loadingFill.classList.add('full');
         
-        console.log('🚀 Loading complete! Starting explosion sequence...');
+        console.log('🚀 Loading complete! Starting transition sequence...');
         
-        // Create celebration effect first
-        createLoadingBarCelebration();
+        // Check if we're on mobile
+        const isMobile = window.innerWidth <= 768;
         
-        // Then the massive explosion after a brief moment
-        setTimeout(() => {
-          createLoadingBarExplosion();
+        if (isMobile) {
+          // Mobile: Simple fade transition without explosions
+          console.log('📱 Mobile detected - using simple fade transition');
           
           // Start starfield immediately but invisible
           animate();
           
-          // Remove loader with fade out after explosion has time to be seen
+          // Simple fade out after a brief moment
           setTimeout(() => {
             console.log('🌟 Fading out loader and revealing starfield...');
             loader.classList.add('fade-out');
@@ -954,13 +924,44 @@
               loader.remove();
             }, 800);
             
-            // Fade in starfield with slight delay for dramatic effect
+            // Fade in starfield
             setTimeout(() => {
               const canvas = document.getElementById('space');
               canvas.classList.add('fade-in');
-            }, 400);
-          }, 800); // Increased delay to let explosion be fully visible
-        }, 300); // Brief pause before explosion for anticipation
+            }, 200);
+          }, 500);
+        } else {
+          // Desktop: Full explosion sequence
+          console.log('💻 Desktop detected - using full explosion sequence');
+          
+          // Create celebration effect first
+          createLoadingBarCelebration();
+          
+          // Then the massive explosion after a brief moment
+          setTimeout(() => {
+            createLoadingBarExplosion();
+            
+            // Start starfield immediately but invisible
+            animate();
+            
+            // Remove loader with fade out after explosion has time to be seen
+            setTimeout(() => {
+              console.log('🌟 Fading out loader and revealing starfield...');
+              loader.classList.add('fade-out');
+              
+              // Remove loader from DOM after fade completes
+              setTimeout(() => {
+                loader.remove();
+              }, 800);
+              
+              // Fade in starfield with slight delay for dramatic effect
+              setTimeout(() => {
+                const canvas = document.getElementById('space');
+                canvas.classList.add('fade-in');
+              }, 400);
+            }, 800); // Increased delay to let explosion be fully visible
+          }, 300); // Brief pause before explosion for anticipation
+        }
       } else {
         loadingFill.style.width = progress + '%';
 
