@@ -6,86 +6,122 @@
 <title>SterlWorld - Cinematic Starfield Experience</title>
 
 <style>
-  /* Basic reset and fonts */
+  /* Reset & Fonts */
   body, html {
-    margin: 0; padding: 0; overflow: hidden; background: black; color: white; font-family: 'Orbitron', sans-serif;
+    margin: 0; padding: 0; overflow: hidden; background: black; color: white;
+    font-family: 'Orbitron', sans-serif;
+    user-select: none;
   }
+  /* Loader Fullscreen */
   #loader {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: black; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 9999;
   }
+  /* Loading text */
   #loadingText {
     font-size: 2rem; margin-bottom: 1rem; letter-spacing: 0.15em; color: #fff;
     text-shadow: 0 0 10px #ffec8b, 0 0 20px #ffec8b;
   }
+  /* Loading bar container */
   #loadingBar {
-    width: 80vw; height: 20px; border-radius: 10px; background: #222; box-shadow: inset 0 0 10px #ffec8b;
-    position: relative; overflow: visible;
+    width: 80vw; max-width: 650px; height: 20px; border-radius: 10px; background: #222;
+    box-shadow: inset 0 0 10px #ffec8b; position: relative; overflow: visible;
   }
+  /* Loading bar fill */
   #barFill {
-    height: 100%; width: 0; background: linear-gradient(90deg, #ffec8b, #ffe57f, #ffec8b, #ffe57f, #ffec8b);
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, #ffec8b, #ffe57f, #ffec8b, #ffe57f, #ffec8b);
     background-size: 300% 100%;
     box-shadow: 0 0 30px #ffec8b, 0 0 50px #ffe57f, 0 0 70px #ffec8b;
     filter: drop-shadow(0 0 20px #ffec8b) brightness(1.8);
     transform-origin: left center;
     border-radius: 10px;
     transition: width 0.1s ease-out;
+    animation: gradientShift 5s linear infinite;
   }
-  .glow-gold {
-    color: #ffec8b;
-    text-shadow: 0 0 10px #ffec8b, 0 0 20px #ffec8b;
-  }
+  /* Title container for letters */
   #title {
-    display: flex;
-    font-size: 3rem;
-    margin: 1.5rem 0 2rem 0;
-    letter-spacing: 0.1em;
+    display: flex; font-size: 3rem; margin: 1.5rem 0 2rem 0; letter-spacing: 0.1em;
+    user-select: none;
   }
+  /* Each letter style */
   #title span {
     position: relative;
     display: inline-block;
     padding: 0 5px;
     user-select: none;
+    color: #ffec8b;
+    text-shadow: 0 0 10px #ffec8b;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
   }
+  #title span.glow-gold {
+    color: #fff9c4;
+    text-shadow:
+      0 0 10px #fff9c4,
+      0 0 20px #ffec8b,
+      0 0 40px #ffe57f,
+      0 0 60px #fff9c4;
+  }
+  /* Logo wrapper and animation */
   #logo-wrapper {
-    opacity: 0; transition: opacity 1s ease, transform 1.5s ease;
-    position: relative;
-    text-align: center;
-    margin-top: 2rem;
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; transition: opacity 1s ease, transform 2s ease;
+    pointer-events: none;
+    z-index: 10000;
   }
-  #logo-wrapper.fade-in {
+  #logo-wrapper.faded-in {
     opacity: 1;
   }
-  #logo-wrapper.move-top {
-    transform: translateY(-50px);
+  #logo-wrapper.floated-top {
+    top: 60px; left: 50%;
+    transform: translateX(-50%);
+    transition: top 2s ease, transform 2s ease;
   }
+  /* Logo image */
   #logo {
-    width: 280px;
-    height: auto;
-    filter: drop-shadow(0 0 30px #ffec8b);
-    display: block;
-    margin: 0 auto;
+    max-width: 250px;
+    filter:
+      drop-shadow(0 0 15px #ffec8b)
+      drop-shadow(0 0 25px #ffe57f)
+      drop-shadow(0 0 40px #fff);
+    cursor: default;
+    user-select: none;
   }
+  /* Main under construction text */
   #mainText {
-    opacity: 0;
-    transition: opacity 1.2s ease;
+    position: fixed;
+    top: calc(60px + 10px);
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 1.6rem;
-    text-align: center;
-    max-width: 700px;
-    margin: 3rem auto 0 auto;
-    line-height: 1.4;
     color: #ffe57f;
+    text-align: center;
+    max-width: 600px;
+    opacity: 0;
+    user-select: none;
+    text-shadow:
+      0 0 10px #ffe57f,
+      0 0 20px #ffec8b,
+      0 0 30px #fff9c4;
+    transition: opacity 1.8s ease 2s;
+    z-index: 10001;
   }
   #mainText.visible {
     opacity: 1;
   }
+  /* Sparkle style for clicks */
   .sparkle {
     position: fixed;
     pointer-events: none;
     will-change: transform, opacity;
-    filter: drop-shadow(0 0 6px #fff);
+    filter: drop-shadow(0 0 8px #fff);
     border-radius: 50%;
     background: radial-gradient(circle at center, #fff 0%, transparent 70%);
+    z-index: 99999;
   }
+  /* Explosion stars */
   .explosion-star {
     position: fixed;
     pointer-events: none;
@@ -93,19 +129,22 @@
     background-image: url('star.png');
     background-size: contain;
     background-repeat: no-repeat;
-    filter: drop-shadow(0 0 10px #fff);
+    filter: drop-shadow(0 0 12px #fff);
     will-change: transform, left, top, filter;
+    z-index: 10000;
   }
+  /* Living starfield stars */
   .starfield-star {
     position: fixed;
     pointer-events: none;
     background-image: url('star.png');
     background-size: contain;
     background-repeat: no-repeat;
-    filter: drop-shadow(0 0 8px #ffd700);
+    filter: drop-shadow(0 0 10px #ffd700);
     will-change: transform, left, top, filter;
     z-index: 1;
   }
+  /* Animations */
   @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     100% { background-position: 300% 50%; }
@@ -114,9 +153,15 @@
     0% { opacity: 1; transform: scale(1) rotate(0deg);}
     100% { opacity: 0; transform: scale(0.3) rotate(180deg);}
   }
-  @keyframes logoPulse {
-    0%, 100% { filter: drop-shadow(0 0 10px #ffec8b);}
-    50% { filter: drop-shadow(0 0 30px #fff); }
+  @keyframes sparklePop {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.1);
+    }
   }
 </style>
 
@@ -124,27 +169,26 @@
 <body>
 
 <!-- Loader UI -->
-<div id="loader" aria-label="Loading SterlWorld experience">
+<div id="loader" aria-label="Loading SterlWorld experience" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
   <div id="loadingText">LOADING...</div>
-  <div id="title"></div>
-  <div id="loadingBar"><div id="barFill"></div></div>
+  <div id="title" aria-hidden="true"></div>
+  <div id="loadingBar" aria-hidden="true"><div id="barFill"></div></div>
 </div>
 
-<!-- Main Content -->
+<!-- Logo -->
 <div id="logo-wrapper" aria-hidden="true">
-  <img id="logo" src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" alt="SterlWorld Logo" />
+  <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" alt="SterlWorld Logo" id="logo" />
 </div>
+
+<!-- Under Construction Text -->
 <div id="mainText" aria-hidden="true">
-  Welcome to the cosmic journey of SterlWorld — where stars ignite your imagination.
+  SterlWorld is a cosmic journey in progress…<br />
+  Stars are aligning, magic is brewing — prepare for liftoff!
 </div>
 
 <script>
 (() => {
-  // Global constants and variables
   const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
-  const sparkleColors = ['#fff9c4', '#ffec8b', '#ffe57f', '#fff'];
-  const w = window.innerWidth;
-  const h = window.innerHeight;
 
   // DOM references
   const loader = document.getElementById('loader');
@@ -155,17 +199,30 @@
   const logoWrapper = document.getElementById('logo-wrapper');
   const logo = document.getElementById('logo');
   const mainText = document.getElementById('mainText');
+  const w = window.innerWidth;
+  const h = window.innerHeight;
 
-  // Star image preloading
-  const starImage = new Image();
-  starImage.src = 'star.png';
+  // Sparkle colors
+  const sparkleColors = ['#fff9c4', '#ffec8b', '#ffe57f', '#fff'];
 
-  // Title letters setup
+  // Title letters
   const titleText = 'STERLWORLD';
   let titleLetters = [];
+
+  // Stars for starfield
+  let stars = [];
+  let starfieldAnimationFrameId = null;
+
+  // Explosion stars array
+  let explosionStars = [];
+
+  // Progress
+  let progress = 0;
+
+  // Create title letters
   function createTitleLetters() {
     title.textContent = '';
-    for (let char of titleText) {
+    for (const char of titleText) {
       const span = document.createElement('span');
       span.textContent = char;
       title.appendChild(span);
@@ -174,31 +231,37 @@
   }
   createTitleLetters();
 
-  // Stars container
-  let stars = [];
-  let warpStartTime = 0;
-  const warpDuration = 3000;
-  const normalSpeed = 0.7;
-  let warpSpeed = normalSpeed;
-
-  // Variable to hold starfield animation frame ID
-  let starfieldAnimationFrameId = null;
-
-  // Utility: Create sparkle DOM element
-  function createSparkle(x, y, size = 5, color = '#fff') {
-    const sparkle = document.createElement('div');
-    sparkle.classList.add('sparkle');
-    sparkle.style.width = size + 'px';
-    sparkle.style.height = size + 'px';
-    sparkle.style.background = `radial-gradient(circle at center, ${color} 0%, transparent 70%)`;
-    sparkle.style.left = `${x}px`;
-    sparkle.style.top = `${y}px`;
-    sparkle.style.opacity = '1';
-    sparkle.style.pointerEvents = 'none';
-    return sparkle;
+  // Create sparkle DOM element for loading bar sparkles
+  function createLoadingSparkle(x) {
+    if (Math.random() < (isMobile ? 0.4 : 0.7)) {
+      const sparkle = document.createElement('div');
+      sparkle.classList.add('sparkle');
+      sparkle.style.width = '6px';
+      sparkle.style.height = '6px';
+      sparkle.style.background = `radial-gradient(circle at center, ${sparkleColors[Math.floor(Math.random() * sparkleColors.length)]} 0%, transparent 70%)`;
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${h/2 + 10}px`;
+      sparkle.style.opacity = '1';
+      sparkle.style.pointerEvents = 'none';
+      sparkle.style.animation = 'starTwinkle 0.6s ease-out forwards';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 700);
+    }
   }
 
-  // Utility: Create star DOM element using star.png
+  // Update glow on letters based on progress bar fill width
+  function updateLetterGlow() {
+    const barFillRect = barFill.getBoundingClientRect();
+    titleLetters.forEach(letter => {
+      const letterRect = letter.getBoundingClientRect();
+      const letterMid = letterRect.left + letterRect.width / 2;
+      if (letterMid <= barFillRect.right) {
+        letter.classList.add('glow-gold');
+      }
+    });
+  }
+
+  // Create a star element for starfield
   function createStarElement(size = 6) {
     const star = document.createElement('div');
     star.classList.add('starfield-star');
@@ -212,7 +275,7 @@
     return star;
   }
 
-  // Create a starfield star data object
+  // Create a star data object for starfield
   function createStar() {
     const star = createStarElement(Math.random() * 4 + 2);
     document.body.appendChild(star);
@@ -236,88 +299,39 @@
   }
   initStarfield();
 
-  // Loading progress logic
-  let progress = 0;
-
-  // Create sparkles on loading bar
-  function createLoadingSparkle(x) {
-    if (Math.random() < (isMobile ? 0.4 : 0.7)) {
-      const sparkle = createSparkle(x, h/2 + 10, 3 + Math.random() * 4, sparkleColors[Math.floor(Math.random() * sparkleColors.length)]);
-      loadingBar.appendChild(sparkle);
-      sparkle.style.animation = 'starTwinkle 0.5s ease-out forwards';
-
-      setTimeout(() => {
-        sparkle.style.opacity = '0';
-        sparkle.style.transform = 'translateY(-70%) scale(0.3) rotate(180deg)';
-      }, 100);
-
-      setTimeout(() => sparkle.remove(), isMobile ? 500 : 800);
-    }
-  }
-
-  // Update letter glow based on loading progress bar fill
-  function updateLetterGlow() {
-    const barFillRect = barFill.getBoundingClientRect();
-    titleLetters.forEach((letter) => {
-      const letterRect = letter.getBoundingClientRect();
-      const letterMid = letterRect.left + letterRect.width / 2;
-      if (letterMid <= barFillRect.right) {
-        letter.classList.add('glow-gold');
-      }
-    });
-  }
-
-  // Animate living starfield after explosion transition
+  // Animate living starfield stars
   function animateLivingStarfield() {
     let lastTime = performance.now();
     function animate(time = performance.now()) {
-      if (!warpStartTime) warpStartTime = time;
-      const elapsed = time - warpStartTime;
-
-      // Warp speed easing
-      if (elapsed < warpDuration) {
-        const t = elapsed / warpDuration;
-        warpSpeed = 25 * (1 - t*t*t) + normalSpeed * (t*t*t);
-      } else {
-        warpSpeed = normalSpeed;
-      }
-
       const delta = (time - lastTime) / 16.67;
       lastTime = time;
 
       stars.forEach((s, i) => {
         if (s.domElement && s.isLiving) {
-          s.z -= warpSpeed * delta;
-
+          s.z -= 0.7 * delta;
           if (s.z <= 0) {
-            // recycle star
             s.x = (Math.random() - 0.5) * w * 1.5;
             s.y = (Math.random() - 0.5) * h * 1.5;
             s.z = w + Math.random() * w * 0.5;
             s.size = Math.random() * 0.8 + 0.4;
           }
-
           const k = 128.0 / s.z;
           const px = s.x * k + w/2;
           const py = s.y * k + h/2;
-
           if (px < -100 || px >= w + 100 || py < -100 || py >= h + 100) {
             s.x = (Math.random() - 0.5) * w * 1.5;
             s.y = (Math.random() - 0.5) * h * 1.5;
             s.z = w + Math.random() * w * 0.5;
             return;
           }
-
           const starSize = s.size * (1 - s.z / w) * 35;
           const opacity = Math.min(1, (1 - s.z / w) * 2.2);
-
           s.domElement.style.left = `${px - starSize/2}px`;
           s.domElement.style.top = `${py - starSize/2}px`;
           s.domElement.style.width = `${starSize}px`;
           s.domElement.style.height = `${starSize}px`;
           s.domElement.style.opacity = opacity;
           s.domElement.style.transform = `rotate(${s.rotationAngle * 180/Math.PI}deg)`;
-
           const glowIntensity = Math.max(8, starSize * 0.7);
           const brightness = 1.4 + (starSize * 0.02);
           const hueShift = Math.sin(time * 0.001 + i) * 30;
@@ -327,26 +341,17 @@
             saturate(2)
             hue-rotate(${hueShift}deg)
           `;
-
           s.rotationAngle += s.rotationSpeed;
         }
       });
-
       starfieldAnimationFrameId = requestAnimationFrame(animate);
     }
-
-    // Cancel previous animation if any before starting new one
-    if (starfieldAnimationFrameId) {
-      cancelAnimationFrame(starfieldAnimationFrameId);
-    }
-    warpStartTime = 0;
+    if (starfieldAnimationFrameId) cancelAnimationFrame(starfieldAnimationFrameId);
     starfieldAnimationFrameId = requestAnimationFrame(animate);
   }
 
-  // Explosion stars animation and transition to starfield
-  let explosionStars = [];
-
-  function createSparkleElement(x, y, size, color) {
+  // Create sparkle for explosion / click
+  function createSparkleElement(x, y, size = 5, color = '#fff') {
     const sparkle = document.createElement('div');
     sparkle.classList.add('explosion-star');
     sparkle.style.width = size + 'px';
@@ -358,19 +363,21 @@
     sparkle.style.left = `${x}px`;
     sparkle.style.top = `${y}px`;
     sparkle.style.filter = `drop-shadow(0 0 10px ${color})`;
+    sparkle.style.opacity = '1';
+    sparkle.style.pointerEvents = 'none';
     return sparkle;
   }
 
+  // Create the cinematic starburst explosion from loading bar and letters
   function createDesktopCinematicSequence() {
-    console.log('🚀 Starting desktop cinematic explosion sequence...');
-    
-    // Get loading bar center
+    // Center of loading bar
     const barRect = loadingBar.getBoundingClientRect();
     const barCenterX = barRect.left + barRect.width / 2;
     const barCenterY = barRect.top + barRect.height / 2;
 
-    // Create explosion stars from loading bar fill
     explosionStars = [];
+
+    // Create explosion stars from loading bar fill center
     const totalStars = 45;
     for(let i=0; i < totalStars; i++) {
       const angle = (i / totalStars) * 2 * Math.PI + (Math.random() - 0.5) * 0.5;
@@ -391,7 +398,7 @@
       });
     }
 
-    // Create explosion stars from each letter
+    // Explosion stars from each letter
     titleLetters.forEach((letter, letterIndex) => {
       const letterRect = letter.getBoundingClientRect();
       const letterCenterX = letterRect.left + letterRect.width / 2;
@@ -416,9 +423,7 @@
       }
     });
 
-    console.log(`💥 Created ${explosionStars.length} explosion stars!`);
-
-    // Animation phases
+    // Animate the explosion phases
     let animationStartTime = performance.now();
     let explosionPhase = 'expanding'; // expanding -> retracting -> transforming
 
@@ -426,117 +431,144 @@
       const elapsed = currentTime - animationStartTime;
 
       if (explosionPhase === 'expanding' && elapsed > 600) {
-        console.log('🌀 Phase 2: Retraction begins - magnetic pull to center!');
         explosionPhase = 'retracting';
-
-        // Move stars center to screen center for retraction
-        const screenCenterX = w / 2;
-        const screenCenterY = h / 2;
-
-        explosionStars.forEach(starData => {
-          starData.centerX = screenCenterX;
-          starData.centerY = screenCenterY;
-          starData.phase = 'retracting';
+        const screenCenterX = w/2;
+        const screenCenterY = h/2;
+        explosionStars.forEach(star => {
+          star.phase = 'retracting';
+          star.targetX = screenCenterX;
+          star.targetY = screenCenterY;
         });
-      }
-
-      if (explosionPhase === 'retracting' && elapsed > 1100) {
-        console.log('✨ Phase 3: Transform to living starfield!');
+        animationStartTime = currentTime;
+      } else if (explosionPhase === 'retracting' && elapsed > 800) {
         explosionPhase = 'transforming';
-        transformToStarfield();
+        explosionStars.forEach(star => {
+          star.phase = 'transforming';
+          star.domFinalX = Math.random() * w;
+          star.domFinalY = Math.random() * h;
+        });
+        animationStartTime = currentTime;
+      } else if (explosionPhase === 'transforming' && elapsed > 800) {
+        explosionPhase = 'done';
+        explosionStars.forEach(star => {
+          if(star.element) star.element.remove();
+        });
+        explosionStars = [];
+        showLogoAndStartStarfield();
         return;
       }
 
-      // Animate each star based on phase
-      explosionStars.forEach(starData => {
-        if (explosionPhase === 'expanding') {
-          if (starData.currentDistance < starData.distance) {
-            starData.currentDistance += 20;
-          } else {
-            starData.currentDistance = starData.distance;
-          }
-        } else if (explosionPhase === 'retracting') {
-          if (starData.currentDistance > 0) {
-            starData.currentDistance -= 35;
-          } else {
-            starData.currentDistance = 0;
-          }
+      // Update star positions based on phase
+      explosionStars.forEach(star => {
+        if (!star.element) return;
+        let x, y;
+        if(star.phase === 'expanding') {
+          star.currentDistance = Math.min(star.distance, star.currentDistance + (star.distance/20));
+          x = star.centerX + star.currentDistance * Math.cos(star.angle);
+          y = star.centerY + star.currentDistance * Math.sin(star.angle);
+        } else if(star.phase === 'retracting') {
+          const progress = Math.min(1, elapsed / 800);
+          x = star.centerX + star.currentDistance * Math.cos(star.angle);
+          y = star.centerY + star.currentDistance * Math.sin(star.angle);
+          x += (w/2 - x) * progress;
+          y += (h/2 - y) * progress;
+        } else if(star.phase === 'transforming') {
+          const progress = Math.min(1, elapsed / 800);
+          x = (w/2) + (star.domFinalX - w/2) * progress;
+          y = (h/2) + (star.domFinalY - h/2) * progress;
         }
-
-        const x = starData.centerX + starData.currentDistance * Math.cos(starData.angle);
-        const y = starData.centerY + starData.currentDistance * Math.sin(starData.angle);
-
-        starData.element.style.left = `${x}px`;
-        starData.element.style.top = `${y}px`;
-
-        // Fade out stars during retraction and transform
-        if (explosionPhase === 'retracting') {
-          const opacity = starData.currentDistance / starData.distance;
-          starData.element.style.opacity = opacity;
-        }
+        star.element.style.left = `${x}px`;
+        star.element.style.top = `${y}px`;
       });
 
-      requestAnimationFrame(animateExplosion);
+      if (explosionPhase !== 'done') {
+        requestAnimationFrame(animateExplosion);
+      }
     }
-
-    function transformToStarfield() {
-      // Remove all explosion stars
-      explosionStars.forEach(starData => {
-        starData.element.remove();
-      });
-      explosionStars = [];
-
-      // Hide loader UI
-      loader.style.display = 'none';
-
-      // Show logo and main text with fade-in and move-up animations
-      logoWrapper.classList.add('fade-in');
-      setTimeout(() => {
-        logoWrapper.classList.add('move-top');
-        mainText.classList.add('visible');
-      }, 800);
-
-      // Start living starfield animation
-      animateLivingStarfield();
-    }
-
-    animateExplosion(animationStartTime);
+    requestAnimationFrame(animateExplosion);
   }
 
-  // Animate loading bar fill progress and update title glow
-  function updateLoading() {
-    progress += 1.2 + Math.random() * 1.8;
-    if (progress > 100) progress = 100;
+  // Show logo and float it to top, then show under construction text
+  function showLogoAndStartStarfield() {
+    logoWrapper.classList.add('faded-in');
+    setTimeout(() => {
+      logoWrapper.classList.add('floated-top');
+      mainText.classList.add('visible');
+      animateLivingStarfield();
+    }, 1500);
+    // Hide loader
+    setTimeout(() => {
+      loader.style.display = 'none';
+    }, 3500);
+  }
 
+  // Progress loader animation (simulate loading)
+  function simulateLoading() {
+    if(progress >= 100) {
+      progress = 100;
+      barFill.style.width = '100%';
+      updateLetterGlow();
+      if (!isMobile) {
+        createDesktopCinematicSequence();
+      } else {
+        // On mobile just show logo & starfield instantly
+        loader.style.display = 'none';
+        logoWrapper.classList.add('faded-in', 'floated-top');
+        mainText.classList.add('visible');
+        animateLivingStarfield();
+      }
+      return;
+    }
+    progress += 1 + Math.random() * 1.5; // Random speed
+    if(progress > 100) progress = 100;
     barFill.style.width = progress + '%';
-
     updateLetterGlow();
 
-    // Add sparkles on the bar fill edge
+    // Sparkle on bar fill edge
     const barRect = loadingBar.getBoundingClientRect();
-    const sparkX = barRect.left + (barRect.width * (progress / 100));
-    createLoadingSparkle(sparkX);
+    const sparkleX = barRect.left + (barRect.width * (progress / 100));
+    createLoadingSparkle(sparkleX);
 
-    // When loading complete
-    if (progress >= 100) {
-      clearInterval(loadingInterval);
-      setTimeout(() => {
-        // On desktop, run cinematic explosion sequence
-        if (!isMobile) {
-          createDesktopCinematicSequence();
-        } else {
-          // On mobile, just fade loader away and show logo + main text
-          loader.style.display = 'none';
-          logoWrapper.classList.add('fade-in', 'move-top');
-          mainText.classList.add('visible');
-          animateLivingStarfield();
-        }
-      }, 1000);
-    }
+    setTimeout(simulateLoading, 30);
   }
 
-  // Start loading animation interval
-  const loadingInterval = setInterval(updateLoading, isMobile ? 50 : 30);
+  // Click sparkle effect on body
+  document.body.addEventListener('click', e => {
+    const sparkleCount = 12;
+    for(let i = 0; i < sparkleCount; i++) {
+      const sparkle = createSparkleElement(e.clientX, e.clientY, 4 + Math.random() * 6, sparkleColors[i % sparkleColors.length]);
+      document.body.appendChild(sparkle);
+
+      const angle = (i / sparkleCount) * 2 * Math.PI;
+      const distance = 60 + Math.random() * 40;
+      let currentDistance = 0;
+
+      const animDuration = 600;
+      const startTime = performance.now();
+
+      function animateSparkle(time) {
+        const elapsed = time - startTime;
+        if(elapsed > animDuration) {
+          sparkle.remove();
+          return;
+        }
+        currentDistance = distance * (elapsed / animDuration);
+        const x = e.clientX + currentDistance * Math.cos(angle);
+        const y = e.clientY + currentDistance * Math.sin(angle);
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+        sparkle.style.opacity = 1 - (elapsed / animDuration);
+        requestAnimationFrame(animateSparkle);
+      }
+      requestAnimationFrame(animateSparkle);
+    }
+  });
+
+  // Create the title letters initially with no glow
+  createTitleLetters();
+
+  // Start simulated loading after DOM ready
+  simulateLoading();
 
 })();
 </script>
