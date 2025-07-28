@@ -916,6 +916,14 @@
           // Mobile: Reduced explosion with fewer stars
           console.log('📱 Mobile detected - using reduced explosion sequence');
           
+          // INSTANTLY hide loading elements as stars explode (dramatic trade-off)
+          loadingBar.style.opacity = '0';
+          loadingBar.style.visibility = 'hidden';
+          document.querySelector('.loading-text').style.opacity = '0';
+          document.querySelector('.loading-text').style.visibility = 'hidden';
+          titleGlow.style.opacity = '0';
+          titleGlow.style.visibility = 'hidden';
+          
           // Create smaller explosion from loading bar - 15 stars instead of 40
           createStarExplosion(loadingBarRect, 15, 'bar');
           
@@ -930,9 +938,9 @@
           // Start starfield immediately but invisible
           animate();
           
-          // Remove loader with fade out after explosion
+          // Remove loader with fade out after explosion (but elements already hidden)
           setTimeout(() => {
-            console.log('🌟 Fading out loader and revealing starfield...');
+            console.log('🌟 Fading out loader background and revealing starfield...');
             loader.classList.add('fade-out');
             
             // Remove loader from DOM after fade completes
