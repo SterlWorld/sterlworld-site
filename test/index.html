@@ -244,7 +244,7 @@
       justify-content: center;
       gap: 2px;
       white-space: nowrap;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.8s ease-out;
     }
 
     #loader h2 .loading-text {
@@ -252,7 +252,7 @@
       font-weight: 600;
       user-select: none;
       white-space: nowrap;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.8s ease-out;
     }
 
     #titleGlow {
@@ -262,7 +262,7 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.8s ease-out;
     }
 
     #titleGlow span {
@@ -297,7 +297,7 @@
       overflow: hidden;
       margin: 0 auto 15px;
       filter: drop-shadow(0 0 8px #0ff);
-      transition: all 0.3s ease;
+      transition: all 0.8s ease-out;
     }
 
     .loading-bar-fill {
@@ -597,22 +597,23 @@
       const barCenterY = loadingBarRect.top + loadingBarRect.height / 2;
       
       const explosionStars = [];
-      const totalStars = 80;
+      const totalStars = 120; // More stars for bigger explosion
       
-      console.log('💥 CREATING EXPLOSION STARS!');
+      console.log('💥 CREATING EPIC EXPLOSION STARS!');
       
       // Create stars bursting from the loading bar center
       for (let i = 0; i < totalStars; i++) {
         const star = createOptimizedSparkle(barCenterX, barCenterY, 
-          4 + Math.random() * 8, 
+          4 + Math.random() * 10, 
           sparkleColors[i % sparkleColors.length]
         );
         star.classList.add('explosion-star');
-        star.style.zIndex = '9999';
+        star.style.zIndex = '99998';
         document.body.appendChild(star);
         
-        const angle = (i / totalStars) * 2 * Math.PI + (Math.random() - 0.5) * 0.8;
-        const distance = 120 + Math.random() * 180;
+        const angle = (i / totalStars) * 2 * Math.PI + (Math.random() - 0.5) * 0.6;
+        const distance = 80 + Math.random() * 200;
+        const delay = Math.random() * 50; // Faster burst
         
         explosionStars.push({
           element: star,
@@ -620,27 +621,28 @@
           sourceY: barCenterY,
           angle: angle,
           distance: distance,
-          delay: Math.random() * 100
+          delay: delay
         });
       }
       
-      // Add some letter stars too
+      // Add letter explosion stars
       titleLetters.forEach((letter, letterIndex) => {
         const letterRect = letter.getBoundingClientRect();
         const letterCenterX = letterRect.left + letterRect.width / 2;
         const letterCenterY = letterRect.top + letterRect.height / 2;
         
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
           const star = createOptimizedSparkle(letterCenterX, letterCenterY, 
-            3 + Math.random() * 5, 
+            3 + Math.random() * 6, 
             sparkleColors[(letterIndex + i) % sparkleColors.length]
           );
           star.classList.add('explosion-star');
-          star.style.zIndex = '9998';
+          star.style.zIndex = '99997';
           document.body.appendChild(star);
           
           const angle = Math.random() * 2 * Math.PI;
-          const distance = 60 + Math.random() * 100;
+          const distance = 50 + Math.random() * 120;
+          const delay = letterIndex * 20 + Math.random() * 40;
           
           explosionStars.push({
             element: star,
@@ -648,18 +650,17 @@
             sourceY: letterCenterY,
             angle: angle,
             distance: distance,
-            delay: letterIndex * 40 + Math.random() * 60
+            delay: delay
           });
         }
       });
       
-      console.log('💥 EXPLOSION READY - KEEPING LOADING ELEMENTS VISIBLE FOR FULL EFFECT!');
+      console.log('💥 EXPLOSION READY - TRIGGERING IMMEDIATE BURST!');
       
-      // Start the explosion burst immediately
+      // ⭐ KEY FIX: Start explosion immediately while everything is still visible
       setTimeout(() => {
-        console.log('💥 STARS EXPLODING OUTWARD - FULL GLORY VISIBLE!');
+        console.log('💥🎆 STARS EXPLODING OUTWARD - FULL SPECTACULAR DISPLAY! 🎆💥');
         
-        // Explode all stars outward while loading elements are still visible
         explosionStars.forEach((starData) => {
           setTimeout(() => {
             const { element, sourceX, sourceY, angle, distance } = starData;
@@ -669,31 +670,33 @@
             
             element.style.left = `${explodeX - parseInt(element.style.width) / 2}px`;
             element.style.top = `${explodeY - parseInt(element.style.height) / 2}px`;
-            element.style.transform = `scale(${1.3 + Math.random() * 0.7}) rotate(${Math.random() * 360}deg)`;
+            element.style.transform = `scale(${1.4 + Math.random() * 0.8}) rotate(${Math.random() * 360}deg)`;
             element.style.filter = `
-              drop-shadow(0 0 ${15 + Math.random() * 10}px #fff) 
-              brightness(${2.8 + Math.random() * 0.4}) 
-              saturate(2.5)
-              hue-rotate(${Math.random() * 120}deg)
+              drop-shadow(0 0 ${20 + Math.random() * 15}px #fff) 
+              brightness(${3.2 + Math.random() * 0.6}) 
+              saturate(3)
+              hue-rotate(${Math.random() * 180}deg)
             `;
           }, starData.delay);
         });
         
-      }, 100); // Start explosion almost immediately
+      }, 50); // Almost immediate start
       
-      // Only NOW hide the loading elements after we see the beautiful explosion
+      // ⭐ KEY FIX: Wait much longer before hiding loading elements
       setTimeout(() => {
-        console.log('💥 NOW FADING LOADING ELEMENTS AFTER EXPLOSION IS FULLY VISIBLE!');
+        console.log('💫 NOW GRACEFULLY FADING LOADING ELEMENTS AFTER SPECTACULAR SHOW!');
+        
         loadingTextElement.style.opacity = '0';
         titleGlow.style.opacity = '0';
         loadingBar.style.opacity = '0';
-      }, 1200); // Give plenty of time to see the explosion in full glory
+        
+      }, 2000); // Wait 2 full seconds to see the explosion in all its glory
       
-      // Transform burst into living starfield
+      // Transform burst into living starfield  
       setTimeout(() => {
-        console.log('🌌 TRANSFORMING BURST INTO STARFIELD!');
+        console.log('🌌✨ TRANSFORMING EXPLOSION INTO MAGICAL STARFIELD! ✨🌌');
         createDesktopStarfield(explosionStars);
-      }, 1800); // Wait even longer for the starfield transformation
+      }, 2800); // Even longer wait for starfield transformation
     }
 
     // ★ ═══════════════════════════════════════════════════════════════════════ ★
@@ -1059,14 +1062,14 @@
         
         console.log('🚀💥 LOADING COMPLETE! CHOOSING DEVICE-SPECIFIC SEQUENCE! 💥🚀');
         
-        // Device-specific completion
+        // ⭐ KEY FIX: Extended pause to appreciate the golden glow completion
         setTimeout(() => {
           if (isMobile) {
             createMobileFade();
           } else {
             createDesktopExplosion();
           }
-        }, 600); // Brief pause to appreciate the beautiful gold glow
+        }, 1200); // Longer pause to see the beautiful golden completion state
         
       } else {
         barFill.style.width = progress + '%';
@@ -1148,7 +1151,7 @@
       }, interval);
     }
 
-    console.log('🌟✨ SterlWorld Enhanced with Perfect Device-Specific Sequences Ready! ✨🌟');
+    console.log('🌟✨ SterlWorld Enhanced with Perfect Explosion Timing Ready! ✨🌟');
   </script>
 
 </body>
