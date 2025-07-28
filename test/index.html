@@ -904,6 +904,11 @@
         
         console.log('🚀 Loading complete! Starting transition sequence...');
         
+        // Get element positions BEFORE we start the explosion sequence
+        const loadingBarRect = loadingBar.getBoundingClientRect();
+        const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
+        const titleGlowRect = titleGlow.getBoundingClientRect();
+        
         // Check if we're on mobile
         const isMobile = window.innerWidth <= 768;
         
