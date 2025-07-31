@@ -932,12 +932,13 @@
       requestAnimationFrame(animate);
     }
 
+    // FIXED LETTER GLOW FUNCTION - NOW GLOWS EACH LETTER INDIVIDUALLY
     function updateLetterGlow() {
       const barFillRect = barFill.getBoundingClientRect();
       titleLetters.forEach((letter) => {
         const letterRect = letter.getBoundingClientRect();
-        const letterMid = letterRect.left + letterRect.width / 2;
-        if (letterMid <= barFillRect.right) {
+        // Changed from letterMid to letterRect.left to trigger on left edge
+        if (letterRect.left <= barFillRect.right) {
           letter.classList.add('glow-gold');
         }
       });
