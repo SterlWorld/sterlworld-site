@@ -931,7 +931,7 @@
         <button id="logout-btn">Log Out</button>
       </div>
     </div>
-    </div>
+  </div>
 
   <div class="construction-notice" id="constructionNotice">
     SterlWorld is still being built • First gateway now open
@@ -1706,9 +1706,8 @@
       }, 2000);
     }
 
-    // NEW CODE START
+    // NEW CODE START - JavaScript Authentication Logic
     // Step 1: Initialize the Supabase Client
-    // YOUR URL HAS BEEN INSERTED. YOU MUST REPLACE THE ANON KEY.
     const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
     const supabaseAnonKey = 'sb_publishable_Hb2OqQ7fOlgasAxW8WLnTQ_7MgewTxH'; // REPLACE THIS WITH YOUR NEW KEY
     const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
@@ -1803,10 +1802,10 @@
         loginMessage.style.color = '#ff5ec4';
         console.error(error);
       } else {
-        loginMessage.textContent = 'Logged in successfully! Redirecting...';
+        loginMessage.textContent = 'Logged in successfully!';
         loginMessage.style.color = '#0ff';
         loginForm.reset();
-        // The onAuthStateChange listener will handle the UI update
+        loginModal.style.display = 'none';
       }
     });
 
@@ -1815,27 +1814,20 @@
       if (error) {
         console.error(error);
         alert('Failed to log out.');
-      } else {
-        // The onAuthStateChange listener will handle the UI update
       }
+      // The onAuthStateChange listener will handle the UI update
     });
 
     // Step 6: Listen for changes in the authentication state
-    // This is the key piece that will handle both the email verification redirect
-    // and regular logins
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        // When a user signs in (or verifies their email)
         console.log('User signed in:', session.user);
         updateAuthUI(session.user);
         
-        // This is a special part of the logic that cleans the URL
-        // after a successful login or verification
         if (window.location.hash.includes('access_token')) {
           history.replaceState(null, '', window.location.pathname);
         }
       } else if (event === 'SIGNED_OUT') {
-        // When a user signs out
         console.log('User signed out.');
         updateAuthUI(null);
       }
@@ -1847,23 +1839,10 @@
       updateAuthUI(user);
     };
 
-    // Delay calling this until after the animations are complete
-    // so the auth buttons don't flash on screen.
-    window.addEventListener('load', () => {
-        // ... (your existing onload code)
-        // ...
-        setTimeout(() => {
-          // New code to run after initial animations
-          checkUserOnLoad();
-          // Make sure the auth buttons are visible
-          document.getElementById('auth-buttons').classList.add('visible');
-        }, 3000); // Wait for the loading animation to finish
-    });
+    // The existing onload listener is below this block
+    // to keep your existing animation logic working correctly.
 
-    // Your existing JavaScript...
-    // ...
-    // Note: I've moved the checkUserOnLoad call to the onload listener above
-    // to ensure it happens after your animations.
+    // NEW CODE END
   </script>
 </body>
 </html>
