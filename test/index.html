@@ -65,14 +65,14 @@
     /* --- END NEW: Enter Screen Styles --- */
 
 
-    /* Existing Styles */
+    /* Existing Styles - MODIFIED INITIAL VISIBILITY */
 
     canvas#space { 
       position: fixed; 
       top: 0; 
       left: 0; 
       z-index: 0; 
-      display: block; 
+      display: block; /* Keep display block, manage opacity */
       opacity: 0;
       transition: opacity 1s ease-in;
     }
@@ -87,8 +87,13 @@
       opacity: 0;
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
       text-align: center;
+      /* NEW: Hide initially with opacity and pointer-events */
+      pointer-events: none; 
     }
-    #logo-wrapper.fade-in { opacity: 1; }
+    #logo-wrapper.fade-in { 
+      opacity: 1; 
+      pointer-events: auto; /* Enable interaction when visible */
+    }
     #logo-wrapper.move-top {
       top: 60px;
       transform: translate(-50%, 0);
@@ -142,8 +147,13 @@
       justify-content: flex-start;
       height: auto;
       min-height: 300px;
+      /* NEW: Hide initially with opacity and pointer-events */
+      pointer-events: none; 
     }
-    .content.visible { opacity: 1; }
+    .content.visible { 
+      opacity: 1; 
+      pointer-events: auto; /* Enable interaction when visible */
+    }
     
     .brand-tagline {
       font-size: 1.1rem;
@@ -397,10 +407,13 @@
       transition: opacity 1.5s ease;
       z-index: 999;
       text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      /* NEW: Hide initially with opacity and pointer-events */
+      pointer-events: none; 
     }
 
     .construction-notice.visible {
       opacity: 1;
+      pointer-events: auto; /* Enable interaction when visible */
     }
 
     #loader {
@@ -414,8 +427,13 @@
       justify-content: center;
       z-index: 99999;
       padding: 0 15px;
+      opacity: 0; /* NEW: Hide initially with opacity */
+      pointer-events: none; /* NEW: Not clickable initially */
       transition: opacity 0.8s ease-out;
     }
+    /* Loader starts invisible, gets display:flex and opacity:1 when enter screen is dismissed */
+    /* loader.style.display = 'flex' will be set by JS */
+    /* opacity: 1 will be set by JS */
 
     #loader.fade-out {
       opacity: 0;
@@ -735,15 +753,20 @@
     <h1>Click to Enter</h1>
     <p>Tap anywhere to begin your journey</p>
   </div>
-  <div id="loader" style="display: none;"> <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
+  <div id="loader"> 
+    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
     <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
   </div>
 
-  <canvas id="space" style="display: none;"></canvas> <div id="logo-wrapper" style="display: none;"> <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+  <canvas id="space"></canvas>
+
+  <div id="logo-wrapper">
+    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
     <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
   </div>
 
-  <div class="content" id="mainText" style="display: none;"> <h1>Welcome to SterlWorld</h1>
+  <div class="content" id="mainText">
+    <h1>Welcome to SterlWorld</h1>
     <p>
       We're building a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
       Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
@@ -758,7 +781,8 @@
     </div>
   </div>
 
-  <div class="construction-notice" id="constructionNotice" style="display: none;"> SterlWorld is still being built • First gateway now open
+  <div class="construction-notice" id="constructionNotice">
+    SterlWorld is still being built • First gateway now open
   </div>
 
   <script>
@@ -791,16 +815,30 @@
       // 1. Fade out the enter screen
       enterScreen.classList.add('fade-out');
       
-      // 2. After fade out, remove it and show the rest of the content
+      // 2. After fade out, show the loader and start the sequence
       setTimeout(() => {
         enterScreen.remove(); // Remove from DOM after transition
         
-        // Show all the hidden elements with their correct display types
+        // Explicitly set display for loader before showing
         loader.style.display = 'flex';
+        loader.style.opacity = '1'; // Make it visible
+
+        // Ensure canvas is block but keep opacity at 0 for its own fade-in
         canvas.style.display = 'block';
+
+        // Set logoWrapper, mainText, constructionNotice to display: block/flex and opacity 0
+        // Their opacity will be controlled by their specific transitions in animate() function
         logoWrapper.style.display = 'block';
+        logoWrapper.style.opacity = '0'; // Start hidden for transition
+        logoWrapper.style.pointerEvents = 'none'; // Not clickable yet
+
         mainText.style.display = 'flex';
+        mainText.style.opacity = '0'; // Start hidden for transition
+        mainText.style.pointerEvents = 'none'; // Not clickable yet
+
         constructionNotice.style.display = 'block';
+        constructionNotice.style.opacity = '0'; // Start hidden for transition
+        constructionNotice.style.pointerEvents = 'none'; // Not clickable yet
 
         // Now, start the actual loading sequence and animations
         startLoadingSequence(); 
@@ -858,14 +896,17 @@
 
     document.addEventListener('click', (e) => {
       // Only create sparkles if the enter screen is gone (i.e., main content is visible)
-      if (enterScreen && !enterScreen.classList.contains('fade-out')) return; // Check if enterScreen still exists
-      createSparkleBurst(e.clientX, e.clientY);
+      // and loader is gone (meaning the main site elements are about to appear or are already visible)
+      if (loader.classList.contains('fade-out')) { // Only create sparkles AFTER loader fades out
+        createSparkleBurst(e.clientX, e.clientY);
+      }
     });
     document.addEventListener('touchstart', (e) => {
       // Only create sparkles if the enter screen is gone
-      if (enterScreen && !enterScreen.classList.contains('fade-out')) return; // Check if enterScreen still exists
-      if (e.touches.length > 0) {
-        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+      if (loader.classList.contains('fade-out')) { // Only create sparkles AFTER loader fades out
+        if (e.touches.length > 0) {
+          createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+        }
       }
     });
 
@@ -883,10 +924,10 @@
     
     starImage.onerror = () => {
       console.log('Star image failed to load, using fallback');
-      const tempCanvas = document.createElement('canvas'); // Use a temp variable to avoid conflict
+      const tempCanvas = document.createElement('canvas'); 
       tempCanvas.width = 20;
       tempCanvas.height = 20;
-      const tempCtx = tempCanvas.getContext('2d'); // Use a temp variable
+      const tempCtx = tempCanvas.getContext('2d'); 
       tempCtx.fillStyle = '#ffd700';
       tempCtx.beginPath();
       for (let i = 0; i < 5; i++) {
@@ -916,7 +957,6 @@
       };
     }
     // Stars array will be populated only when the startLoadingSequence begins
-    // for (let i = 0; i < 200; i++) stars.push(createStar()); // Moved to startLoadingSequence
 
     let warpSpeed = 30;
     const normalSpeed = 0.5;
@@ -927,9 +967,8 @@
     let logoMoveComplete = false;
 
     function animate(time = performance.now()) {
-      // Only run animation if canvas is visible (after enter screen has initiated)
-      // Check display style as it's set by JS now, not just presence of fade-out class
-      if (canvas.style.display === 'none') {
+      // Only run animation if canvas has been made visible and is not just an empty space
+      if (canvas.style.display === 'none' || canvas.style.opacity === '0') {
         requestAnimationFrame(animate);
         return;
       }
@@ -1306,29 +1345,31 @@
           if (isMobile) {
             console.log('📱 Mobile detected - using ultra-optimized sequence');
             
-            loadingBar.style.opacity = '0';
-            loadingBar.style.visibility = 'hidden';
+            // Mobile cleanup for loader elements
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none';
+            // These will be removed/hidden by fade-out class from loader, but ensure no lingering visibility.
             document.querySelector('.loading-text').style.opacity = '0';
-            document.querySelector('.loading-text').style.visibility = 'hidden';
+            document.querySelector('.loading-text').style.pointerEvents = 'none';
             titleGlow.style.opacity = '0';
-            titleGlow.style.visibility = 'hidden';
+            titleGlow.style.pointerEvents = 'none';
+
+            createMobileExplosion(); // This will handle the explosion visuals
             
-            createMobileExplosion();
-            
-            // Start the main animation loop immediately for mobile
-            animate(); 
+            animate(); // Start the main animation loop for starfield and content reveals
             
             setTimeout(() => {
               console.log('🌟 Fading out loader background and revealing starfield...');
-              loader.classList.add('fade-out');
+              // loader.classList.add('fade-out'); // Already fading out via opacity = 0
               
               setTimeout(() => {
-                loader.remove();
-              }, 800);
+                // loader.remove(); // Let the CSS transition handle the fade-out
+                loader.style.display = 'none'; // Finally hide it
+              }, 800); // After loader's opacity transition
               
               setTimeout(() => {
-                canvas.classList.add('fade-in');
-              }, 200);
+                canvas.classList.add('fade-in'); // Fade in canvas
+              }, 200); // Small delay before canvas fade-in
             }, 100);
           } else {
             console.log('💻 Desktop detected - using full sequence');
@@ -1336,23 +1377,30 @@
             createLoadingBarCelebration(); // This is the 'celebration' where sparkles shoot out
             
             setTimeout(() => {
-              createLoadingBarExplosion(); // This is the 'explosion' where the sound should play
+              createLoadingBarExplosion(); // This is the 'explosion' where the sound and flash should play
               
               // Start the main animation loop after the explosion visual effect begins
               animate(); 
               
               setTimeout(() => {
                 console.log('🌟 Fading out loader and revealing starfield...');
-                loader.classList.add('fade-out');
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+                // Ensure text elements also fade out along with the loader div
+                document.querySelector('.loading-text').style.opacity = '0';
+                document.querySelector('.loading-text').style.pointerEvents = 'none';
+                titleGlow.style.opacity = '0';
+                titleGlow.style.pointerEvents = 'none';
                 
                 setTimeout(() => {
-                  loader.remove();
-                }, 800);
+                  // loader.remove(); // Let the CSS transition handle the fade-out
+                  loader.style.display = 'none'; // Finally hide it after its transition
+                }, 800); // After loader's opacity transition
                 
                 setTimeout(() => {
-                  canvas.classList.add('fade-in');
-                }, 400);
-              }, 800);
+                  canvas.classList.add('fade-in'); // Fade in canvas
+                }, 400); // Small delay before canvas fade-in
+              }, 800); // Delay for loader fade out to complete
             }, 300); // Small delay before the explosion happens
           }
         } else {
@@ -1370,7 +1418,7 @@
     // --- End StartLoadingSequence function ---
 
     starImage.onload = () => {
-      // No longer need to fill the canvas here immediately, as it's hidden and handled by animate()
+      // Not strictly necessary here anymore as canvas drawing happens in animate loop
     };
 
     const logo = document.getElementById('logo');
@@ -1392,16 +1440,9 @@
       }, delay);
     }
 
-    // This listener will only be active *after* the enter screen has been dismissed
     window.addEventListener('load', () => {
-      // Ensure initial resize for canvas properties, even if not immediately visible
-      // This is now redundant since resize() is called in startLoadingSequence,
-      // but keeping it here doesn't hurt.
-      resize(); 
-      // The randomPulseLoop will be started after the main content is fully loaded and positioned
-      // as part of the logoMoveComplete sequence (in animate function), so no change needed here.
-      // This listener is for general load events, not directly tied to the enter screen.
-      // We already handle starting animations after enter screen click.
+      resize(); // Ensure initial canvas size is set
+      // The rest of the site's loading sequence is now initiated by the enterScreen click.
     });
 
     function createLogoSparkle() {
