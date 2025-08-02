@@ -812,6 +812,7 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+    // Re-added full glowColors for loader explosion
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff']; 
 
     const starGlitSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/StarGlit.wav');
@@ -1198,7 +1199,7 @@
       flash.style.width = '100vw';
       flash.style.height = '100vh';
       flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
-      flash.style.pointer-events = 'none';
+      flash.style.pointerEvents = 'none';
       flash.style.zIndex = '999998';
       flash.style.opacity = '1';
       flash.style.transition = 'opacity 0.8s ease-out';
@@ -1350,12 +1351,15 @@
 
     // --- StartLoadingSequence function ---
     function startLoadingSequence() {
-      resize(); 
-      if (stars.length === 0) { 
+      // Initialize starfield only when the sequence begins
+      resize(); // Ensure main canvas size is set before creating stars
+      // Only populate stars once the animation is ready to start
+      if (stars.length === 0) { // Prevent re-populating on resize if already running
           for (let i = 0; i < 200; i++) stars.push(createStar());
       }
       
       let progress = 0;
+      // Reset warp properties for consistent start after "Enter" screen
       warpStartTime = null; 
       warpComplete = false;
 
@@ -1390,8 +1394,14 @@
             console.log('📱 Mobile detected - using ultra-optimized sequence');
             
             // Mobile cleanup for loader elements
-            loader.classList.add('fade-out');
-            
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none'; // Disable interaction immediately
+            // Ensure text elements also fade out along with the loader div
+            document.querySelector('.loading-text').style.opacity = '0';
+            document.querySelector('.loading-text').style.pointerEvents = 'none';
+            titleGlow.style.opacity = '0';
+            titleGlow.style.pointerEvents = 'none';
+
             createMobileExplosion(); // This will handle the explosion visuals
             
             animate(); // Start the main animation loop for starfield and content reveals
@@ -1420,7 +1430,13 @@
               
               setTimeout(() => {
                 console.log('🌟 Fading out loader and revealing starfield...');
-                loader.classList.add('fade-out');
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+                // Ensure text elements also fade out along with the loader div
+                document.querySelector('.loading-text').style.opacity = '0';
+                document.querySelector('.loading-text').style.pointerEvents = 'none';
+                titleGlow.style.opacity = '0';
+                titleGlow.style.pointerEvents = 'none';
                 
                 setTimeout(() => {
                   loader.style.display = 'none'; // Finally set display to none after fade out to free up space
