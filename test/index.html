@@ -21,7 +21,7 @@
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto; /* Custom cursor */
     }
 
-    /* --- Enter Screen Styles --- */
+    /* --- NEW: Enter Screen Styles --- */
     #enter-screen {
       position: fixed;
       top: 0;
@@ -67,7 +67,7 @@
       position: relative; /* To ensure z-index applies */
     }
 
-    /* Initial Starfield Canvas */
+    /* NEW: Initial Starfield Canvas */
     canvas#initial-starfield {
       position: absolute;
       top: 0;
@@ -78,7 +78,7 @@
       opacity: 1;
       transition: opacity 1s ease-out; /* Fade out initial starfield with enter screen */
     }
-    /* --- END Enter Screen Styles --- */
+    /* --- END NEW: Enter Screen Styles --- */
 
 
     /* Existing Styles - MODIFIED INITIAL VISIBILITY */
@@ -90,7 +90,7 @@
       z-index: 0; 
       display: block; /* Always block for canvas */
       opacity: 0; /* Initially hidden, will fade in */
-      transition: opacity 1s ease-in; /* Fade in when main content appears */
+      transition: opacity 1s ease-in;
       pointer-events: none; /* Not clickable until visible */
     }
     canvas#space.fade-in { 
@@ -150,14 +150,14 @@
 
     .content {
       position: absolute;
-      /* top: 200px; --- REMOVED this property for static fade-in below logo */
+      /* DYNAMIC: top will be set by JavaScript based on actual logo position */
       left: 50%;
-      transform: translateX(-50%); /* Only translateX needed for center alignment */
+      transform: translateX(-50%);
       width: 100%;
       max-width: 90%;
       text-align: center;
-      opacity: 0; /* Initially hidden, will fade in */
-      transition: opacity 1.5s ease; /* Only fade transition, no top movement */
+      opacity: 0; /* Initially hidden */
+      transition: opacity 1.5s ease; /* REMOVED top 0.3s ease from here */
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
@@ -447,7 +447,7 @@
       padding: 0 15px;
       opacity: 0; /* Initially hidden, will be set to 1 instantly */
       pointer-events: none; /* Not clickable initially */
-      transition: opacity 0.8s ease-out; /* Only for fading OUT later */
+      transition: opacity 0.8s ease-out; /* For fading out later */
     }
 
     #loader.fade-out {
@@ -812,7 +812,7 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff']; // Original sparkle colors
+    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff']; 
 
     const starGlitSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/StarGlit.wav');
     starGlitSound.volume = 0.5;
@@ -848,8 +848,8 @@
     }
 
     function animateInitialStarfield() {
-      if (!initialStarfieldCanvas || initialStarfieldCanvas.parentNode === null || initialStarfieldCanvas.classList.contains('fade-out')) {
-        // Stop animation if canvas is removed or fading out
+      if (!initialStarfieldCanvas || initialStarfieldCanvas.parentNode === null) {
+        // Stop animation if canvas is removed from DOM
         return; 
       }
       initialCtx.clearRect(0, 0, initialW, initialH);
@@ -871,25 +871,33 @@
       // Initialize main canvas to black in case it appears before stars render
       ctx.fillStyle = 'black';
       ctx.fillRect(0,0, canvas.width, canvas.height);
-      // Now resize for the main canvas
+      // Now resize for the main canvas to set initial dimensions correctly
       resize(); 
     });
 
 
     enterScreen.addEventListener('click', () => {
-      // 1. Fade out the enter screen and its starfield
+      // 1. Fade out the enter screen
       enterScreen.classList.add('fade-out');
       initialStarfieldCanvas.classList.add('fade-out'); // Fade out initial starfield too
       
-      // 2. After fade out, immediately show the loader (pop in) and start the sequence
+      // 2. Immediately show the loader (pop in) and start the sequence after fade-out completes
       setTimeout(() => {
         enterScreen.remove(); // Remove from DOM after transition
         initialStarfieldCanvas.remove(); // Remove initial starfield canvas
 
-        // --- THE CRITICAL FIX: Make loader instantly visible (pop in) ---
+        // --- Loader Pop-in Fix ---
+        // Ensure loader's opacity is 1 instantly and pointer events are active.
         loader.style.opacity = '1'; 
         loader.style.pointerEvents = 'auto'; // Re-enable pointer events for the loader
-        
+        // Temporarily disable opacity transition for the pop-in, then re-enable for fade-out
+        loader.style.transition = 'none'; 
+        void loader.offsetWidth; // Force reflow to apply 'none' instantly
+        loader.style.transition = 'opacity 0.8s ease-out'; // Re-enable transition for fade-out later
+
+        // No change to canvas.style.display or opacity here, animate() handles its fade-in later.
+        // logoWrapper, mainText, constructionNotice's visibility are controlled by animate() sequence.
+
         // Now, start the actual loading sequence and animations
         startLoadingSequence(); 
 
@@ -946,13 +954,14 @@
 
     document.addEventListener('click', (e) => {
       // Only create sparkles if the main loader has finished fading out
-      if (loader.classList.contains('fade-out')) { 
+      // Check for loader.parentNode to ensure it hasn't been removed yet
+      if (loader.parentNode === null || loader.classList.contains('fade-out')) { 
         createSparkleBurst(e.clientX, e.clientY);
       }
     });
     document.addEventListener('touchstart', (e) => {
       // Only create sparkles if the main loader has finished fading out
-      if (loader.classList.contains('fade-out')) { 
+      if (loader.parentNode === null || loader.classList.contains('fade-out')) { 
         if (e.touches.length > 0) {
           createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
         }
@@ -1009,6 +1018,7 @@
 
     let warpSpeed = 30;
     const normalSpeed = 0.5;
+    const warpDuration = 3000;
     let warpStartTime = null;
     let warpComplete = false;
     let lastTime = performance.now();
@@ -1024,9 +1034,8 @@
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
 
-      const currentWarpDuration = 3000; // Define duration for this animation cycle
-      if (elapsed < currentWarpDuration) {
-        const t = elapsed / currentWarpDuration;
+      if (elapsed < warpDuration) {
+        const t = elapsed / warpDuration;
         warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
       } else {
         warpSpeed = normalSpeed;
@@ -1047,7 +1056,7 @@
               const contentMargin = 40;
               const newContentTop = logoBottom + contentMargin;
               
-              // Set mainText top position then fade in
+              // Set mainText top position then fade in (no slide down)
               mainText.style.top = `${newContentTop}px`;
               mainText.classList.add('visible'); // Adds opacity:1 and pointer-events:auto
               
@@ -1165,11 +1174,9 @@
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
       
-      // Ensure explosion stars use the original sparkleColors
-      const explosionSparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00e6e6', '#e054b8', '#fff']; // Your original vivid palette
-      createStarExplosion(loadingBarRect, 40, 'bar', explosionSparkleColors);
-      createStarExplosion(loadingTextRect, 25, 'text', explosionSparkleColors);
-      createStarExplosion(titleGlowRect, 30, 'title', explosionSparkleColors);
+      createStarExplosion(loadingBarRect, 40, 'bar');
+      createStarExplosion(loadingTextRect, 25, 'text');
+      createStarExplosion(titleGlowRect, 30, 'title');
       
       createScreenFlash();
 
@@ -1180,6 +1187,7 @@
       }
       
       // These elements will fade out as part of the overall loader fade out
+      // They don't need immediate opacity/transform changes here.
     }
 
     function createScreenFlash() {
@@ -1190,7 +1198,7 @@
       flash.style.width = '100vw';
       flash.style.height = '100vh';
       flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
-      flash.style.pointerEvents = 'none';
+      flash.style.pointer-events = 'none';
       flash.style.zIndex = '999998';
       flash.style.opacity = '1';
       flash.style.transition = 'opacity 0.8s ease-out';
@@ -1213,17 +1221,15 @@
       const titleGlowRect = titleGlow.getBoundingClientRect();
       
       const isMobile = window.innerWidth <= 768; 
-      // Ensure explosion stars use the original sparkleColors for mobile too
-      const explosionSparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00e6e6', '#e054b8', '#fff'];
-      createStarExplosion(loadingBarRect, 12, 'bar', explosionSparkleColors);
-      createStarExplosion(loadingTextRect, 8, 'text', explosionSparkleColors);
-      createStarExplosion(titleGlowRect, 10, 'title', explosionSparkleColors);
+      createStarExplosion(loadingBarRect, 12, 'bar');
+      createStarExplosion(loadingTextRect, 8, 'text');
+      createStarExplosion(titleGlowRect, 10, 'title');
       
       createScreenFlash();
       // No sound play here for mobile
     }
 
-    function createStarExplosion(elementRect, numStars, type, colorsArray = sparkleColors) {
+    function createStarExplosion(elementRect, numStars, type) {
       const centerX = elementRect.left + elementRect.width / 2;
       const centerY = elementRect.top + elementRect.height / 2;
       
@@ -1244,8 +1250,9 @@
         star.style.zIndex = '999999';
         star.style.pointerEvents = 'none';
         
-        // Use the provided colorsArray for explosion stars
-        const glowColor = colorsArray[Math.floor(Math.random() * colorsArray.length)];
+        // Use the broader sparkleColors array for explosion
+        const glowColorsExplosion = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff']; 
+        const glowColor = glowColorsExplosion[Math.floor(Math.random() * glowColorsExplosion.length)];
         
         const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
         star.style.filter = glowIntensity.replace(/\$\{glowColor\}/g, glowColor);
@@ -1343,18 +1350,14 @@
 
     // --- StartLoadingSequence function ---
     function startLoadingSequence() {
-      // Initialize starfield only when the sequence begins
-      resize(); // Ensure main canvas size is set before creating stars
-      // Only populate stars once the animation is ready to start
-      if (stars.length === 0) { // Prevent re-populating on resize if already running
+      resize(); 
+      if (stars.length === 0) { 
           for (let i = 0; i < 200; i++) stars.push(createStar());
       }
       
       let progress = 0;
-      // Define warpDuration here to control animation time for this specific sequence.
-      // This is the variable used within the `animate` loop for warp speed.
-      // It's not directly controlling a setTimeout, but rather the speed of star movement.
-      const currentWarpDurationForLoader = 3000; 
+      warpStartTime = null; 
+      warpComplete = false;
 
       const interval = setInterval(() => {
         progress += Math.random() * 8;
@@ -1383,25 +1386,52 @@
           
           const isMobile = window.innerWidth <= 768;
           
-          // Trigger explosion and flash for both mobile and desktop
-          createLoadingBarExplosion(); 
-          
-          // After explosion, fade out loader and fade in canvas simultaneously
-          loader.classList.add('fade-out'); // Will trigger opacity transition
-          
-          // Start the main animation loop for starfield
-          animate(); 
-
-          setTimeout(() => {
-            // Remove loader from DOM after its fade-out transition completes
-            loader.style.display = 'none'; 
-          }, 800); // Matches loader's fade-out transition duration
-
-          // Fade in the main canvas slightly before loader finishes fading out
-          setTimeout(() => {
-            canvas.classList.add('fade-in'); 
-          }, 400); // Adjust this delay for smoother overlap
-          
+          if (isMobile) {
+            console.log('📱 Mobile detected - using ultra-optimized sequence');
+            
+            // Mobile cleanup for loader elements
+            loader.classList.add('fade-out');
+            
+            createMobileExplosion(); // This will handle the explosion visuals
+            
+            animate(); // Start the main animation loop for starfield and content reveals
+            
+            setTimeout(() => {
+              console.log('🌟 Fading out loader background and revealing starfield...');
+              
+              setTimeout(() => {
+                loader.style.display = 'none'; // Finally set display to none after fade out to free up space
+              }, 800); // After loader's opacity transition
+              
+              setTimeout(() => {
+                canvas.classList.add('fade-in'); // Fade in canvas
+              }, 200); // Small delay before canvas fade-in
+            }, 100);
+          } else {
+            console.log('💻 Desktop detected - using full sequence');
+            
+            createLoadingBarCelebration(); // This is the 'celebration' where sparkles shoot out
+            
+            setTimeout(() => {
+              createLoadingBarExplosion(); // This is the 'explosion' where the sound and flash should play
+              
+              // Start the main animation loop after the explosion visual effect begins
+              animate(); 
+              
+              setTimeout(() => {
+                console.log('🌟 Fading out loader and revealing starfield...');
+                loader.classList.add('fade-out');
+                
+                setTimeout(() => {
+                  loader.style.display = 'none'; // Finally set display to none after fade out to free up space
+                }, 800); // After loader's opacity transition
+                
+                setTimeout(() => {
+                  canvas.classList.add('fade-in'); // Fade in canvas
+                }, 400); // Small delay before canvas fade-in
+              }, 800); // Delay for loader fade out to complete
+            }, 300); // Small delay before the explosion happens
+          }
         } else {
           loadingFill.style.width = progress + '%';
 
