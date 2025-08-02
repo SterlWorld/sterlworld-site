@@ -795,12 +795,12 @@
       setTimeout(() => {
         enterScreen.remove(); // Remove from DOM after transition
         
-        // Show all the hidden elements
-        loader.style.display = 'flex'; // Loader needs flex to center its content
-        canvas.style.display = 'block'; // Canvas needs block
-        logoWrapper.style.display = 'block'; // Logo wrapper needs block
-        mainText.style.display = 'flex'; // Main text needs flex
-        constructionNotice.style.display = 'block'; // Construction notice needs block
+        // Show all the hidden elements with their correct display types
+        loader.style.display = 'flex';
+        canvas.style.display = 'block';
+        logoWrapper.style.display = 'block';
+        mainText.style.display = 'flex';
+        constructionNotice.style.display = 'block';
 
         // Now, start the actual loading sequence and animations
         startLoadingSequence(); 
@@ -1270,7 +1270,10 @@
     function startLoadingSequence() {
       // Initialize starfield only when the sequence begins
       resize(); // Ensure canvas size is set before creating stars
-      for (let i = 0; i < 200; i++) stars.push(createStar());
+      // Only populate stars once the animation is ready to start
+      if (stars.length === 0) { // Prevent re-populating on resize if already running
+          for (let i = 0; i < 200; i++) stars.push(createStar());
+      }
       
       let progress = 0;
       const interval = setInterval(() => {
@@ -1389,11 +1392,16 @@
       }, delay);
     }
 
+    // This listener will only be active *after* the enter screen has been dismissed
     window.addEventListener('load', () => {
       // Ensure initial resize for canvas properties, even if not immediately visible
-      resize();
+      // This is now redundant since resize() is called in startLoadingSequence,
+      // but keeping it here doesn't hurt.
+      resize(); 
       // The randomPulseLoop will be started after the main content is fully loaded and positioned
-      // as part of the logoMoveComplete sequence, so no change needed here.
+      // as part of the logoMoveComplete sequence (in animate function), so no change needed here.
+      // This listener is for general load events, not directly tied to the enter screen.
+      // We already handle starting animations after enter screen click.
     });
 
     function createLogoSparkle() {
