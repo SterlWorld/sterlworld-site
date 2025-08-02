@@ -762,10 +762,17 @@
       }
     }
 
-    /* NEW CODE START */
-    /* New Auth Modal Styles */
+    /* NEW CODE START - Authentication Modal and Button Styles */
     .auth-buttons {
       text-align: center;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    .auth-buttons.visible {
+      opacity: 1;
     }
     .auth-buttons button {
       background: none;
@@ -867,10 +874,17 @@
     .modal-content .close-btn:hover {
       color: #ff5ec4;
     }
-    #signup-message {
+    #signup-message, #login-message, #auth-status {
       text-align: center;
       margin-top: 15px;
       color: #0ff;
+    }
+    #auth-status {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      margin-top: 0;
+      text-shadow: 0 0 10px #ff5ec4, 0 0 20px #ff5ec4;
     }
     /* NEW CODE END */
   </style>
@@ -907,8 +921,15 @@
       <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
     </div>
 
-    <div class="auth-buttons" style="margin-top: 2rem;">
-      <button id="show-signup-btn">Sign Up for SterlWorld</button>
+    <div id="auth-buttons" class="auth-buttons" style="margin-top: 2rem;">
+      <button id="show-signup-btn">Sign Up</button>
+      <button id="show-login-btn">Login</button>
+    </div>
+    <div id="auth-state" style="margin-top: 2rem; opacity: 0; transition: opacity 1.5s ease;">
+      <p id="auth-status"></p>
+      <div class="auth-buttons" style="margin-top: 1rem; justify-content: center;">
+        <button id="logout-btn">Log Out</button>
+      </div>
     </div>
     </div>
 
@@ -918,20 +939,39 @@
 
   <div id="signup-modal" class="auth-modal">
     <div class="modal-content">
-      <span class="close-btn">&times;</span>
+      <span class="close-btn" id="signup-close-btn">&times;</span>
       <h2>Join SterlWorld</h2>
       <form id="signup-form">
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" required />
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" required />
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" required />
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" required />
         </div>
         <button type="submit">Sign Up</button>
       </form>
       <p id="signup-message"></p>
+    </div>
+  </div>
+
+  <div id="login-modal" class="auth-modal">
+    <div class="modal-content">
+      <span class="close-btn" id="login-close-btn">&times;</span>
+      <h2>Welcome Back</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      <p id="login-message"></p>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1408,7 +1448,7 @@
         const finalY = startY + Math.sin(angle) * distance;
         
         star.style.left = `${startX - size / 2}px`;
-        star.style.top = `${startY - size / 2}px`;
+        star.style.top = `${finalY - size / 2}px`;
         star.style.opacity = '1';
         star.style.transform = 'scale(1.2) rotate(0deg)';
         
@@ -1667,61 +1707,163 @@
     }
 
     // NEW CODE START
-    // Add this code inside your existing script tag
-    
     // Step 1: Initialize the Supabase Client
-    // REPLACE THESE VALUES WITH YOUR ACTUAL API URL AND ANON KEY
+    // YOUR URL HAS BEEN INSERTED. YOU MUST REPLACE THE ANON KEY.
     const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU ';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU'; // REPLACE THIS WITH YOUR NEW KEY
     const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // Step 2: Get references to the HTML elements
-    const signupModal = document.getElementById('signup-modal');
+    // Step 2: Get references to all HTML elements
+    const authButtons = document.getElementById('auth-buttons');
+    const authStateDiv = document.getElementById('auth-state');
+    const authStatus = document.getElementById('auth-status');
     const showSignupBtn = document.getElementById('show-signup-btn');
-    const closeBtn = signupModal.querySelector('.close-btn');
+    const showLoginBtn = document.getElementById('show-login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const signupModal = document.getElementById('signup-modal');
+    const loginModal = document.getElementById('login-modal');
+    const signupCloseBtn = document.getElementById('signup-close-btn');
+    const loginCloseBtn = document.getElementById('login-close-btn');
     const signupForm = document.getElementById('signup-form');
+    const loginForm = document.getElementById('login-form');
+    const signupEmail = document.getElementById('signup-email');
+    const signupPassword = document.getElementById('signup-password');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
     const signupMessage = document.getElementById('signup-message');
+    const loginMessage = document.getElementById('login-message');
 
-    // Step 3: Add event listeners for showing and hiding the modal
+    // Step 3: Functions to manage the UI state
+    function updateAuthUI(user) {
+      if (user) {
+        // User is logged in
+        authButtons.style.display = 'none';
+        authStateDiv.style.opacity = '1';
+        authStatus.textContent = `Welcome, ${user.email}!`;
+      } else {
+        // User is not logged in
+        authButtons.style.display = 'flex';
+        authStateDiv.style.opacity = '0';
+      }
+    }
+
+    // Step 4: Add event listeners for modal buttons
     showSignupBtn.addEventListener('click', () => {
       signupModal.style.display = 'flex';
     });
-
-    closeBtn.addEventListener('click', () => {
+    signupCloseBtn.addEventListener('click', () => {
       signupModal.style.display = 'none';
     });
 
-    // Close the modal if the user clicks outside of it
+    showLoginBtn.addEventListener('click', () => {
+      loginModal.style.display = 'flex';
+    });
+    loginCloseBtn.addEventListener('click', () => {
+      loginModal.style.display = 'none';
+    });
+
+    // Close modals if the user clicks outside of them
     window.addEventListener('click', (event) => {
       if (event.target == signupModal) {
         signupModal.style.display = 'none';
       }
+      if (event.target == loginModal) {
+        loginModal.style.display = 'none';
+      }
     });
 
-    // Step 4: Handle the form submission
+    // Step 5: Handle form submissions
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
       signupMessage.textContent = 'Signing up...';
-
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password
+      const { error } = await supabase.auth.signUp({
+        email: signupEmail.value,
+        password: signupPassword.value
       });
-
       if (error) {
         signupMessage.textContent = `Error: ${error.message}`;
-        signupMessage.style.color = '#ff5ec4'; // Pink for errors
+        signupMessage.style.color = '#ff5ec4';
         console.error(error);
       } else {
         signupMessage.textContent = 'Success! Please check your email to confirm your account.';
-        signupMessage.style.color = '#0ff'; // Cyan for success
+        signupMessage.style.color = '#0ff';
         signupForm.reset();
       }
     });
-    // NEW CODE END
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginMessage.textContent = 'Logging in...';
+      const { error } = await supabase.auth.signInWithPassword({
+        email: loginEmail.value,
+        password: loginPassword.value
+      });
+      if (error) {
+        loginMessage.textContent = `Error: ${error.message}`;
+        loginMessage.style.color = '#ff5ec4';
+        console.error(error);
+      } else {
+        loginMessage.textContent = 'Logged in successfully! Redirecting...';
+        loginMessage.style.color = '#0ff';
+        loginForm.reset();
+        // The onAuthStateChange listener will handle the UI update
+      }
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error(error);
+        alert('Failed to log out.');
+      } else {
+        // The onAuthStateChange listener will handle the UI update
+      }
+    });
+
+    // Step 6: Listen for changes in the authentication state
+    // This is the key piece that will handle both the email verification redirect
+    // and regular logins
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        // When a user signs in (or verifies their email)
+        console.log('User signed in:', session.user);
+        updateAuthUI(session.user);
+        
+        // This is a special part of the logic that cleans the URL
+        // after a successful login or verification
+        if (window.location.hash.includes('access_token')) {
+          history.replaceState(null, '', window.location.pathname);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        // When a user signs out
+        console.log('User signed out.');
+        updateAuthUI(null);
+      }
+    });
+
+    // We also need to run this check on page load to set the initial state
+    const checkUserOnLoad = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      updateAuthUI(user);
+    };
+
+    // Delay calling this until after the animations are complete
+    // so the auth buttons don't flash on screen.
+    window.addEventListener('load', () => {
+        // ... (your existing onload code)
+        // ...
+        setTimeout(() => {
+          // New code to run after initial animations
+          checkUserOnLoad();
+          // Make sure the auth buttons are visible
+          document.getElementById('auth-buttons').classList.add('visible');
+        }, 3000); // Wait for the loading animation to finish
+    });
+
+    // Your existing JavaScript...
+    // ...
+    // Note: I've moved the checkUserOnLoad call to the onload listener above
+    // to ensure it happens after your animations.
   </script>
 </body>
 </html>
