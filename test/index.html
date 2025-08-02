@@ -761,6 +761,118 @@
         font-size: clamp(0.9rem, 2vw, 1.2rem);
       }
     }
+
+    /* NEW CODE START */
+    /* New Auth Modal Styles */
+    .auth-buttons {
+      text-align: center;
+    }
+    .auth-buttons button {
+      background: none;
+      border: 2px solid #0ff;
+      color: #0ff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px #0ff;
+      box-shadow: 0 0 15px #0ff;
+    }
+    .auth-buttons button:hover {
+      background: #0ff;
+      color: black;
+      text-shadow: none;
+      box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+    }
+    .auth-modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 20000; /* Ensure it's on top of everything */
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 25px #0ff, 0 0 50px #0ff;
+      position: relative;
+      border: 2px solid #0ff;
+      animation: modalFadeIn 0.3s ease-out forwards;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-content h2 {
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 10px #0ff;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #0ff;
+      font-weight: 600;
+      text-shadow: 0 0 8px #0ff;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #0ff;
+      background-color: #000;
+      color: #fff;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: inset 0 0 5px #0ff;
+    }
+    .modal-content button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0ff;
+      color: #000;
+      border: none;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
+    }
+    .modal-content button:hover {
+      background-color: #fff;
+    }
+    .modal-content .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #fff;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+    }
+    .modal-content .close-btn:hover {
+      color: #ff5ec4;
+    }
+    #signup-message {
+      text-align: center;
+      margin-top: 15px;
+      color: #0ff;
+    }
+    /* NEW CODE END */
   </style>
 </head>
 <body>
@@ -794,12 +906,35 @@
       </a>
       <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
     </div>
-  </div>
+
+    <div class="auth-buttons" style="margin-top: 2rem;">
+      <button id="show-signup-btn">Sign Up for SterlWorld</button>
+    </div>
+    </div>
 
   <div class="construction-notice" id="constructionNotice">
     SterlWorld is still being built • First gateway now open
   </div>
 
+  <div id="signup-modal" class="auth-modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Join SterlWorld</h2>
+      <form id="signup-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required />
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p id="signup-message"></p>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
@@ -890,7 +1025,7 @@
         // --- Loader Pop-in Fix ---
         // Ensure loader's opacity is 1 instantly and pointer events are active.
         loader.style.opacity = '1'; 
-        loader.style.pointerEvents = 'auto'; // Re-enable pointer events for the loader
+        loader.style.pointer-events = 'auto'; // Re-enable pointer events for the loader
         // Temporarily disable opacity transition for the pop-in, then re-enable for fade-out
         loader.style.transition = 'none'; 
         void loader.offsetWidth; // Force reflow to apply 'none' instantly
@@ -926,7 +1061,7 @@
         sparkle.style.opacity = '1';
         sparkle.style.position = 'fixed';
         sparkle.style.zIndex = '9999';
-        sparkle.style.pointerEvents = 'none';
+        sparkle.style.pointer-events = 'none';
         
         sparkle.onerror = () => {
           sparkle.style.background = glowColor;
@@ -1249,7 +1384,7 @@
         star.style.height = `${size}px`;
         star.style.position = 'fixed';
         star.style.zIndex = '999999';
-        star.style.pointerEvents = 'none';
+        star.style.pointer-events = 'none';
         
         // Use the broader sparkleColors array for explosion
         const glowColorsExplosion = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff']; 
@@ -1530,6 +1665,63 @@
         createLogoSparkle();
       }, 2000);
     }
+
+    // NEW CODE START
+    // Add this code inside your existing script tag
+    
+    // Step 1: Initialize the Supabase Client
+    // REPLACE THESE VALUES WITH YOUR ACTUAL API URL AND ANON KEY
+    const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU ';
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    // Step 2: Get references to the HTML elements
+    const signupModal = document.getElementById('signup-modal');
+    const showSignupBtn = document.getElementById('show-signup-btn');
+    const closeBtn = signupModal.querySelector('.close-btn');
+    const signupForm = document.getElementById('signup-form');
+    const signupMessage = document.getElementById('signup-message');
+
+    // Step 3: Add event listeners for showing and hiding the modal
+    showSignupBtn.addEventListener('click', () => {
+      signupModal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      signupModal.style.display = 'none';
+    });
+
+    // Close the modal if the user clicks outside of it
+    window.addEventListener('click', (event) => {
+      if (event.target == signupModal) {
+        signupModal.style.display = 'none';
+      }
+    });
+
+    // Step 4: Handle the form submission
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      signupMessage.textContent = 'Signing up...';
+
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        signupMessage.textContent = `Error: ${error.message}`;
+        signupMessage.style.color = '#ff5ec4'; // Pink for errors
+        console.error(error);
+      } else {
+        signupMessage.textContent = 'Success! Please check your email to confirm your account.';
+        signupMessage.style.color = '#0ff'; // Cyan for success
+        signupForm.reset();
+      }
+    });
+    // NEW CODE END
   </script>
 </body>
 </html>
