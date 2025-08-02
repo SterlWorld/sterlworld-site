@@ -689,7 +689,6 @@
     </div>
   </div>
 
-  <!-- Construction Notice -->
   <div class="construction-notice" id="constructionNotice">
     SterlWorld is still being built • First gateway now open
   </div>
@@ -707,6 +706,11 @@
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+
+    // --- NEW: Audio Element ---
+    const starGlitSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/StarGlit.wav');
+    starGlitSound.volume = 0.5; // Adjust volume as needed (0.0 to 1.0)
+    // --- END NEW ---
 
     function createSparkleBurst(x, y) {
       const numStars = 12 + Math.floor(Math.random() * 6);
@@ -1068,7 +1072,7 @@
         const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
         
         // Less intensive glow on mobile
-        const glowIntensity = isMobile ? 'drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)' : 'drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)';
+        const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
         star.style.filter = glowIntensity.replace(/\$\{glowColor\}/g, glowColor);
         
         let startX, startY;
@@ -1229,6 +1233,10 @@
         } else {
           console.log('💻 Desktop detected - using full sequence');
           
+          // --- NEW: Play sound effect on desktop only ---
+          starGlitSound.play().catch(e => console.error("Error playing sound:", e));
+          // --- END NEW ---
+
           createLoadingBarCelebration();
           
           setTimeout(() => {
