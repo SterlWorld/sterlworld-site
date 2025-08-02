@@ -21,7 +21,7 @@
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto; /* Custom cursor */
     }
 
-    /* --- NEW: Enter Screen Styles --- */
+    /* --- Enter Screen Styles --- */
     #enter-screen {
       position: fixed;
       top: 0;
@@ -67,7 +67,7 @@
       position: relative; /* To ensure z-index applies */
     }
 
-    /* NEW: Initial Starfield Canvas */
+    /* Initial Starfield Canvas */
     canvas#initial-starfield {
       position: absolute;
       top: 0;
@@ -78,11 +78,8 @@
       opacity: 1;
       transition: opacity 1s ease-out; /* Fade out initial starfield with enter screen */
     }
-    /* --- END NEW: Enter Screen Styles --- */
-
 
     /* Existing Styles - MODIFIED INITIAL VISIBILITY */
-
     canvas#space { 
       position: fixed; 
       top: 0; 
@@ -150,28 +147,27 @@
 
     .content {
       position: absolute;
-      /* DYNAMIC: top will be set by JavaScript based on actual logo position */
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       max-width: 90%;
       text-align: center;
       opacity: 0; /* Initially hidden */
-      transition: opacity 1.5s ease; /* REMOVED top 0.3s ease from here */
+      transition: opacity 1.5s ease;
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
       padding: 0 20px;
-      display: flex; /* Always flex for content container */
+      display: flex;
       flex-direction: column;
       justify-content: flex-start;
       height: auto;
       min-height: 300px;
-      pointer-events: none; /* Not clickable initially */
+      pointer-events: none;
     }
     .content.visible { 
       opacity: 1; 
-      pointer-events: auto; /* Enable interaction when visible */
+      pointer-events: auto;
     }
     
     .brand-tagline {
@@ -976,6 +972,7 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // --- START: ORIGINAL WEBSITE JS LOGIC ---\n
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
     const titleGlow = document.getElementById('titleGlow');
@@ -987,20 +984,17 @@
     }
     const titleLetters = titleGlow.querySelectorAll('span');
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-    // Re-added full glowColors for loader explosion
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff']; 
 
     const starGlitSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/StarGlit.wav');
     starGlitSound.volume = 0.5;
 
-    // Get references to all main site elements for visibility control
-    const canvas = document.getElementById('space'); // Main starfield canvas
-    const ctx = canvas.getContext('2d'); // Context for main starfield
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
     const logoWrapper = document.getElementById('logo-wrapper');
     const mainText = document.getElementById('mainText');
     const constructionNotice = document.getElementById('constructionNotice');
     
-    // --- NEW: Enter Screen elements and logic ---
     const enterScreen = document.getElementById('enter-screen');
     const initialStarfieldCanvas = document.getElementById('initial-starfield');
     const initialCtx = initialStarfieldCanvas.getContext('2d');
@@ -1011,142 +1005,33 @@
       initialW = initialStarfieldCanvas.width = window.innerWidth;
       initialH = initialStarfieldCanvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resizeInitialCanvas); // Keep listener active
+    window.addEventListener('resize', resizeInitialCanvas);
 
     function createInitialStar() {
       return {
         x: Math.random() * initialW,
         y: Math.random() * initialH,
-        size: Math.random() * 1.5 + 0.5, // Small, pixel-like stars
-        opacity: Math.random() * 0.5 + 0.5, // Varying opacity
-        blinkSpeed: Math.random() * 0.05 + 0.01 // Subtle blink
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.5 + 0.5,
+        blinkSpeed: Math.random() * 0.05 + 0.01
       };
     }
 
     function animateInitialStarfield() {
       if (!initialStarfieldCanvas || initialStarfieldCanvas.parentNode === null) {
-        // Stop animation if canvas is removed from DOM
         return; 
       }
       initialCtx.clearRect(0, 0, initialW, initialH);
-      initialCtx.fillStyle = 'white'; // White for pixel stars
+      initialCtx.fillStyle = 'white';
 
       initialStars.forEach(star => {
-        initialCtx.globalAlpha = star.opacity + (Math.sin(performance.now() * star.blinkSpeed) * 0.2); // Subtle blinking
-        initialCtx.fillRect(star.x, star.y, star.size, star.size); // Draw as squares (pixels)
+        initialCtx.globalAlpha = star.opacity + (Math.sin(performance.now() * star.blinkSpeed) * 0.2);
+        initialCtx.fillRect(star.x, star.y, star.size, star.size);
       });
       requestAnimationFrame(animateInitialStarfield);
     }
 
-    // Initialize the initial starfield on load
-    window.addEventListener('load', () => {
-      resizeInitialCanvas();
-      for (let i = 0; i < 150; i++) initialStars.push(createInitialStar()); // Fewer stars for minimalist feel
-      animateInitialStarfield();
-      
-      // Initialize main canvas to black in case it appears before stars render
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0,0, canvas.width, canvas.height);
-      // Now resize for the main canvas to set initial dimensions correctly
-      resize(); 
-    });
-
-
-    enterScreen.addEventListener('click', () => {
-      // 1. Fade out the enter screen
-      enterScreen.classList.add('fade-out');
-      initialStarfieldCanvas.classList.add('fade-out'); // Fade out initial starfield too
-      
-      // 2. Immediately show the loader (pop in) and start the sequence after fade-out completes
-      setTimeout(() => {
-        enterScreen.remove(); // Remove from DOM after transition
-        initialStarfieldCanvas.remove(); // Remove initial starfield canvas
-
-        // --- Loader Pop-in Fix ---
-        // Ensure loader's opacity is 1 instantly and pointer events are active.
-        loader.style.opacity = '1'; 
-        loader.style.pointer-events = 'auto'; // Re-enable pointer events for the loader
-        // Temporarily disable opacity transition for the pop-in, then re-enable for fade-out
-        loader.style.transition = 'none'; 
-        void loader.offsetWidth; // Force reflow to apply 'none' instantly
-        loader.style.transition = 'opacity 0.8s ease-out'; // Re-enable transition for fade-out later
-
-        // No change to canvas.style.display or opacity here, animate() handles its fade-in later.
-        // logoWrapper, mainText, constructionNotice's visibility are controlled by animate() sequence.
-
-        // Now, start the actual loading sequence and animations
-        startLoadingSequence(); 
-
-      }, 1000); // Match this timeout to the CSS transition duration (1s) for the fade-out
-    }, { once: true }); // Ensure this listener only triggers once
-    // --- END NEW ---
-
-    function createSparkleBurst(x, y) {
-      const numStars = 12 + Math.floor(Math.random() * 6);
-
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
-
-        const size = Math.random() * 16 + 8;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
-        sparkle.style.left = `${x - size / 2}px`;
-        sparkle.style.top = `${y - size / 2}px`;
-
-        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
-
-        sparkle.style.opacity = '1';
-        sparkle.style.position = 'fixed';
-        sparkle.style.zIndex = '9999';
-        sparkle.style.pointer-events = 'none';
-        
-        sparkle.onerror = () => {
-          sparkle.style.background = glowColor;
-          sparkle.style.borderRadius = '50%';
-          sparkle.style.boxShadow = `0 0 6px ${glowColor}`;
-          sparkle.src = '';
-        };
-        
-        document.body.appendChild(sparkle);
-        void sparkle.offsetWidth;
-
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 60;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
-
-        sparkle.style.left = `${x + offsetX}px`;
-        sparkle.style.top = `${y + offsetY}px`;
-        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-        sparkle.style.opacity = '0';
-        sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
-
-        setTimeout(() => sparkle.remove(), 600);
-      }
-    }
-
-    document.addEventListener('click', (e) => {
-      // Only create sparkles if the main loader has finished fading out
-      // Check for loader.parentNode to ensure it hasn't been removed yet
-      if (loader.parentNode === null || loader.classList.contains('fade-out')) { 
-        createSparkleBurst(e.clientX, e.clientY);
-      }
-    });
-    document.addEventListener('touchstart', (e) => {
-      // Only create sparkles if the main loader has finished fading out
-      if (loader.parentNode === null || loader.classList.contains('fade-out')) { 
-        if (e.touches.length > 0) {
-          createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
-        }
-      }
-    });
-
-    // These variables should be declared outside any function if they are used globally
     let w, h; 
-
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
@@ -1190,7 +1075,6 @@
         rotationSpeed: (Math.random() - 0.5) * 0.01,
       };
     }
-    // Stars array will be populated only when the startLoadingSequence begins
 
     let warpSpeed = 30;
     const normalSpeed = 0.5;
@@ -1201,7 +1085,6 @@
     let logoMoveComplete = false;
 
     function animate(time = performance.now()) {
-      // Ensure main canvas is ready and visible before animating
       if (canvas.style.opacity === '0') {
         requestAnimationFrame(animate);
         return;
@@ -1217,7 +1100,6 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          // Trigger fade-in and pointer-events for logoWrapper
           logoWrapper.classList.add('fade-in');
           
           setTimeout(() => {
@@ -1232,14 +1114,11 @@
               const contentMargin = 40;
               const newContentTop = logoBottom + contentMargin;
               
-              // Set mainText top position then fade in (no slide down)
               mainText.style.top = `${newContentTop}px`;
-              mainText.classList.add('visible'); // Adds opacity:1 and pointer-events:auto
-              
-              console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
+              mainText.classList.add('visible');
               
               setTimeout(() => {
-                constructionNotice.classList.add('visible'); // Adds opacity:1 and pointer-events:auto
+                constructionNotice.classList.add('visible');
                 
                 setTimeout(() => {
                   document.getElementById('portfolioLabel').classList.add('visible');
@@ -1358,12 +1237,8 @@
 
       const isMobile = window.innerWidth <= 768;
       if (!isMobile) {
-        // --- Play sound effect here for explosion timing ---
         starGlitSound.play().catch(e => console.error("Error playing sound:", e));
       }
-      
-      // These elements will fade out as part of the overall loader fade out
-      // They don't need immediate opacity/transform changes here.
     }
 
     function createScreenFlash() {
@@ -1390,7 +1265,6 @@
       }, 900);
     }
 
-    // Mobile-optimized explosion with much fewer stars
     function createMobileExplosion() {
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
@@ -1402,7 +1276,6 @@
       createStarExplosion(titleGlowRect, 10, 'title');
       
       createScreenFlash();
-      // No sound play here for mobile
     }
 
     function createStarExplosion(elementRect, numStars, type) {
@@ -1411,8 +1284,6 @@
       
       const isMobile = window.innerWidth <= 768;
       const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
-      
-      console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
       
       for (let i = 0; i < adjustedStars; i++) {
         const star = document.createElement('img');
@@ -1426,7 +1297,6 @@
         star.style.zIndex = '999999';
         star.style.pointer-events = 'none';
         
-        // Use the broader sparkleColors array for explosion
         const glowColorsExplosion = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff']; 
         const glowColor = glowColorsExplosion[Math.floor(Math.random() * glowColorsExplosion.length)];
         
@@ -1524,125 +1394,7 @@
       }
     }
 
-    // --- StartLoadingSequence function ---
-    function startLoadingSequence() {
-      // Initialize starfield only when the sequence begins
-      resize(); // Ensure main canvas size is set before creating stars
-      // Only populate stars once the animation is ready to start
-      if (stars.length === 0) { // Prevent re-populating on resize if already running
-          for (let i = 0; i < 200; i++) stars.push(createStar());
-      }
-      
-      let progress = 0;
-      // Reset warp properties for consistent start after "Enter" screen
-      warpStartTime = null; 
-      warpComplete = false;
-
-      const interval = setInterval(() => {
-        progress += Math.random() * 8;
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(interval);
-          loadingFill.style.width = '100%';
-          
-          loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-          loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-          loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-          loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-          loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-          
-          const loadingTextElement = document.querySelector('.loading-text');
-          loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
-          loadingTextElement.style.color = '#0ff';
-          
-          titleLetters.forEach(letter => {
-            letter.classList.add('glow-gold');
-          });
-          
-          loadingFill.classList.add('full');
-          
-          console.log('🚀 Loading complete! Starting transition sequence...');
-          
-          const isMobile = window.innerWidth <= 768;
-          
-          if (isMobile) {
-            console.log('📱 Mobile detected - using ultra-optimized sequence');
-            
-            // Mobile cleanup for loader elements
-            loader.style.opacity = '0';
-            loader.style.pointerEvents = 'none'; // Disable interaction immediately
-            // Ensure text elements also fade out along with the loader div
-            document.querySelector('.loading-text').style.opacity = '0';
-            document.querySelector('.loading-text').style.pointerEvents = 'none';
-            titleGlow.style.opacity = '0';
-            titleGlow.style.pointerEvents = 'none';
-
-            createMobileExplosion(); // This will handle the explosion visuals
-            
-            animate(); // Start the main animation loop for starfield and content reveals
-            
-            setTimeout(() => {
-              console.log('🌟 Fading out loader background and revealing starfield...');
-              
-              setTimeout(() => {
-                loader.style.display = 'none'; // Finally set display to none after fade out to free up space
-              }, 800); // After loader's opacity transition
-              
-              setTimeout(() => {
-                canvas.classList.add('fade-in'); // Fade in canvas
-              }, 200); // Small delay before canvas fade-in
-            }, 100);
-          } else {
-            console.log('💻 Desktop detected - using full sequence');
-            
-            createLoadingBarCelebration(); // This is the 'celebration' where sparkles shoot out
-            
-            setTimeout(() => {
-              createLoadingBarExplosion(); // This is the 'explosion' where the sound and flash should play
-              
-              // Start the main animation loop after the explosion visual effect begins
-              animate(); 
-              
-              setTimeout(() => {
-                console.log('🌟 Fading out loader and revealing starfield...');
-                loader.style.opacity = '0';
-                loader.style.pointerEvents = 'none';
-                // Ensure text elements also fade out along with the loader div
-                document.querySelector('.loading-text').style.opacity = '0';
-                document.querySelector('.loading-text').style.pointerEvents = 'none';
-                titleGlow.style.opacity = '0';
-                titleGlow.style.pointerEvents = 'none';
-                
-                setTimeout(() => {
-                  loader.style.display = 'none'; // Finally set display to none after fade out to free up space
-                }, 800); // After loader's opacity transition
-                
-                setTimeout(() => {
-                  canvas.classList.add('fade-in'); // Fade in canvas
-                }, 400); // Small delay before canvas fade-in
-              }, 800); // Delay for loader fade out to complete
-            }, 300); // Small delay before the explosion happens
-          }
-        } else {
-          loadingFill.style.width = progress + '%';
-
-          if (Math.random() < 0.6) {
-            const barWidth = loadingBar.clientWidth;
-            const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
-            createLoadingSparkle(sparkleX);
-          }
-        }
-        updateLetterGlow();
-      }, 120);
-    }
-    // --- End StartLoadingSequence function ---
-
-    starImage.onload = () => {
-      // Not strictly necessary here anymore as canvas drawing happens in animate loop
-    };
-
     const logo = document.getElementById('logo');
-
     function triggerPulse() {
       if (logoMoveComplete) {
         logo.style.animation = 'logoPulse 1.2s ease-in-out';
@@ -1651,7 +1403,6 @@
         }, 1200);
       }
     }
-
     function randomPulseLoop() {
       const delay = 8000 + Math.random() * 12000;
       setTimeout(() => {
@@ -1659,47 +1410,32 @@
         randomPulseLoop();
       }, delay);
     }
-
-    // window.addEventListener('load') now mostly handles the initial starfield.
-    // The main site animations start via enterScreen click.
-
     function createLogoSparkle() {
       if (!logoMoveComplete) return;
-      
       const logo = document.getElementById('logo');
       const rect = logo.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-
       const sparkle = document.createElement('img');
       sparkle.src = sparkleImgSrc;
       sparkle.className = 'sparkle-star';
-
       const size = Math.random() * 10 + 4;
       sparkle.style.width = `${size}px`;
       sparkle.style.height = `${size}px`;
-
       const angle = Math.random() * 2 * Math.PI;
       const radius = 10 + Math.random() * 30;
       const offsetX = Math.cos(angle) * radius;
       const offsetY = Math.sin(angle) * radius;
-
       sparkle.style.left = `${centerX + offsetX - size / 2}px`;
       sparkle.style.top = `${centerY + offsetY - size / 2}px`;
-
       sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
-
       sparkle.style.opacity = '1';
       document.body.appendChild(sparkle);
-
       void sparkle.offsetWidth;
-
       sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
       sparkle.style.opacity = '0';
-
       setTimeout(() => sparkle.remove(), 600);
     }
-
     function startLogoSparkleLoop() {
       setInterval(() => {
         createLogoSparkle();
@@ -1707,12 +1443,10 @@
     }
 
     // NEW CODE START - JavaScript Authentication Logic
-    // Step 1: Initialize the Supabase Client
     const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
-    const supabaseAnonKey = 'sb_publishable_Hb2OqQ7fOlgasAxW8WLnTQ_7MgewTxH'; // REPLACE THIS WITH YOUR NEW KEY
+    const supabaseAnonKey = 'sb_publishable_Hb2OqQ7fOlgasAxW8WLnTQ_7MgewTxH';
     const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // Step 2: Get references to all HTML elements
     const authButtons = document.getElementById('auth-buttons');
     const authStateDiv = document.getElementById('auth-state');
     const authStatus = document.getElementById('auth-status');
@@ -1732,21 +1466,19 @@
     const signupMessage = document.getElementById('signup-message');
     const loginMessage = document.getElementById('login-message');
 
-    // Step 3: Functions to manage the UI state
     function updateAuthUI(user) {
       if (user) {
-        // User is logged in
         authButtons.style.display = 'none';
         authStateDiv.style.opacity = '1';
         authStatus.textContent = `Welcome, ${user.email}!`;
+        signupModal.style.display = 'none';
+        loginModal.style.display = 'none';
       } else {
-        // User is not logged in
         authButtons.style.display = 'flex';
         authStateDiv.style.opacity = '0';
       }
     }
 
-    // Step 4: Add event listeners for modal buttons
     showSignupBtn.addEventListener('click', () => {
       signupModal.style.display = 'flex';
     });
@@ -1761,7 +1493,6 @@
       loginModal.style.display = 'none';
     });
 
-    // Close modals if the user clicks outside of them
     window.addEventListener('click', (event) => {
       if (event.target == signupModal) {
         signupModal.style.display = 'none';
@@ -1771,13 +1502,12 @@
       }
     });
 
-    // Step 5: Handle form submissions
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       signupMessage.textContent = 'Signing up...';
       const { error } = await supabase.auth.signUp({
         email: signupEmail.value,
-        password: signupPassword.value
+        password: signupPassword.value,
       });
       if (error) {
         signupMessage.textContent = `Error: ${error.message}`;
@@ -1795,7 +1525,7 @@
       loginMessage.textContent = 'Logging in...';
       const { error } = await supabase.auth.signInWithPassword({
         email: loginEmail.value,
-        password: loginPassword.value
+        password: loginPassword.value,
       });
       if (error) {
         loginMessage.textContent = `Error: ${error.message}`;
@@ -1815,10 +1545,8 @@
         console.error(error);
         alert('Failed to log out.');
       }
-      // The onAuthStateChange listener will handle the UI update
     });
 
-    // Step 6: Listen for changes in the authentication state
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
         console.log('User signed in:', session.user);
@@ -1833,16 +1561,134 @@
       }
     });
 
-    // We also need to run this check on page load to set the initial state
     const checkUserOnLoad = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       updateAuthUI(user);
     };
 
-    // The existing onload listener is below this block
-    // to keep your existing animation logic working correctly.
+    const startLoadingSequence = () => {
+        if (stars.length === 0) {
+          for (let i = 0; i < 200; i++) stars.push(createStar());
+        }
+        
+        let progress = 0;
+        warpStartTime = null; 
+        warpComplete = false;
 
-    // NEW CODE END
+        const interval = setInterval(() => {
+          progress += Math.random() * 8;
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            loadingFill.style.width = '100%';
+            
+            loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
+            loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
+            loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
+            loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
+            loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
+            
+            const loadingTextElement = document.querySelector('.loading-text');
+            loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
+            loadingTextElement.style.color = '#0ff';
+            
+            titleLetters.forEach(letter => {
+              letter.classList.add('glow-gold');
+            });
+            
+            loadingFill.classList.add('full');
+            
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+              loader.style.opacity = '0';
+              loader.style.pointerEvents = 'none';
+              document.querySelector('.loading-text').style.opacity = '0';
+              document.querySelector('.loading-text').style.pointerEvents = 'none';
+              titleGlow.style.opacity = '0';
+              titleGlow.style.pointerEvents = 'none';
+
+              createMobileExplosion();
+              animate();
+              
+              setTimeout(() => {
+                loader.style.display = 'none';
+              }, 800);
+              
+              setTimeout(() => {
+                canvas.classList.add('fade-in');
+              }, 200);
+            } else {
+              createLoadingBarCelebration();
+              
+              setTimeout(() => {
+                createLoadingBarExplosion();
+                
+                animate();
+                
+                setTimeout(() => {
+                  loader.style.opacity = '0';
+                  loader.style.pointerEvents = 'none';
+                  document.querySelector('.loading-text').style.opacity = '0';
+                  document.querySelector('.loading-text').style.pointerEvents = 'none';
+                  titleGlow.style.opacity = '0';
+                  titleGlow.style.pointerEvents = 'none';
+                  
+                  setTimeout(() => {
+                    loader.style.display = 'none';
+                  }, 800);
+                  
+                  setTimeout(() => {
+                    canvas.classList.add('fade-in');
+                  }, 400);
+                }, 800);
+              }, 300);
+            }
+          } else {
+            loadingFill.style.width = progress + '%';
+            if (Math.random() < 0.6) {
+              const barWidth = loadingBar.clientWidth;
+              const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
+              createLoadingSparkle(sparkleX);
+            }
+          }
+          updateLetterGlow();
+        }, 120);
+        
+        setTimeout(() => {
+          checkUserOnLoad();
+          document.getElementById('auth-buttons').classList.add('visible');
+        }, 4000);
+      };
+
+    window.addEventListener('load', () => {
+      resizeInitialCanvas();
+      for (let i = 0; i < 150; i++) initialStars.push(createInitialStar());
+      animateInitialStarfield();
+      
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+      resize();
+      
+      enterScreen.addEventListener('click', () => {
+        enterScreen.classList.add('fade-out');
+        initialStarfieldCanvas.classList.add('fade-out');
+        
+        setTimeout(() => {
+          enterScreen.remove();
+          initialStarfieldCanvas.remove();
+
+          loader.style.opacity = '1';
+          loader.style.pointer-events = 'auto';
+          loader.style.transition = 'none';
+          void loader.offsetWidth;
+          loader.style.transition = 'opacity 0.8s ease-out';
+
+          startLoadingSequence();
+        }, 1000);
+      }, { once: true });
+    });
+    // --- END: ORIGINAL WEBSITE JS LOGIC ---\n
   </script>
 </body>
 </html>
