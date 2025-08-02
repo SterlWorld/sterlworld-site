@@ -21,7 +21,7 @@
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto; /* Custom cursor */
     }
 
-    /* --- NEW: Enter Screen Styles (Minimalist/Ominous) --- */
+    /* --- NEW: Enter Screen Styles --- */
     #enter-screen {
       position: fixed;
       top: 0;
@@ -52,7 +52,9 @@
       margin-bottom: 15px;
       letter-spacing: 2px;
       user-select: none; /* Prevent text selection */
-      animation: none; /* Remove any pulsing from here, keep it stark */
+      animation: none; /* No pulsing on enter screen title */
+      z-index: 10001; /* Above initial starfield */
+      position: relative; /* To ensure z-index applies */
     }
 
     #enter-screen p {
@@ -61,6 +63,20 @@
       text-shadow: none; /* No immediate glow */
       user-select: none;
       animation: none; /* No immediate pulse */
+      z-index: 10001; /* Above initial starfield */
+      position: relative; /* To ensure z-index applies */
+    }
+
+    /* NEW: Initial Starfield Canvas */
+    canvas#initial-starfield {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000; /* Behind text, above background */
+      opacity: 1;
+      transition: opacity 1s ease-out;
     }
     /* --- END NEW: Enter Screen Styles --- */
 
@@ -73,10 +89,14 @@
       left: 0; 
       z-index: 0; 
       display: block; /* Keep display block, manage opacity */
-      opacity: 0;
+      opacity: 0; /* Initially hidden */
       transition: opacity 1s ease-in;
+      pointer-events: none; /* Not clickable until visible */
     }
-    canvas#space.fade-in { opacity: 1; }
+    canvas#space.fade-in { 
+      opacity: 1; 
+      pointer-events: auto; /* Enable interaction when visible */
+    }
     
     #logo-wrapper {
       position: absolute;
@@ -84,11 +104,10 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 10;
-      opacity: 0;
+      opacity: 0; /* Initially hidden */
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
       text-align: center;
-      /* NEW: Hide initially with opacity and pointer-events */
-      pointer-events: none; 
+      pointer-events: none; /* Not clickable initially */
     }
     #logo-wrapper.fade-in { 
       opacity: 1; 
@@ -136,7 +155,7 @@
       width: 100%;
       max-width: 90%;
       text-align: center;
-      opacity: 0;
+      opacity: 0; /* Initially hidden */
       transition: opacity 1.5s ease, top 0.3s ease;
       font-size: 1.2rem;
       color: #ccc;
@@ -147,8 +166,7 @@
       justify-content: flex-start;
       height: auto;
       min-height: 300px;
-      /* NEW: Hide initially with opacity and pointer-events */
-      pointer-events: none; 
+      pointer-events: none; /* Not clickable initially */
     }
     .content.visible { 
       opacity: 1; 
@@ -403,12 +421,11 @@
       font-weight: 500;
       border: 1px solid rgba(0, 255, 255, 0.3);
       box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-      opacity: 0;
+      opacity: 0; /* Initially hidden */
       transition: opacity 1.5s ease;
       z-index: 999;
       text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-      /* NEW: Hide initially with opacity and pointer-events */
-      pointer-events: none; 
+      pointer-events: none; /* Not clickable initially */
     }
 
     .construction-notice.visible {
@@ -421,19 +438,16 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: black;
-      display: flex;
+      display: flex; /* Keep display flex from CSS */
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 99999;
       padding: 0 15px;
-      opacity: 0; /* NEW: Hide initially with opacity */
-      pointer-events: none; /* NEW: Not clickable initially */
+      opacity: 0; /* Initially hidden */
+      pointer-events: none; /* Not clickable initially */
       transition: opacity 0.8s ease-out;
     }
-    /* Loader starts invisible, gets display:flex and opacity:1 when enter screen is dismissed */
-    /* loader.style.display = 'flex' will be set by JS */
-    /* opacity: 1 will be set by JS */
 
     #loader.fade-out {
       opacity: 0;
@@ -752,7 +766,7 @@
   <div id="enter-screen">
     <h1>Click to Enter</h1>
     <p>Tap anywhere to begin your journey</p>
-  </div>
+    <canvas id="initial-starfield"></canvas> </div>
   <div id="loader"> 
     <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
     <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
@@ -810,37 +824,66 @@
     
     // --- NEW: Enter Screen elements and logic ---
     const enterScreen = document.getElementById('enter-screen');
+    const initialStarfieldCanvas = document.getElementById('initial-starfield');
+    const initialCtx = initialStarfieldCanvas.getContext('2d');
+    let initialW, initialH;
+    let initialStars = [];
+
+    function resizeInitialCanvas() {
+      initialW = initialStarfieldCanvas.width = window.innerWidth;
+      initialH = initialStarfieldCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeInitialCanvas);
+
+    function createInitialStar() {
+      return {
+        x: Math.random() * initialW,
+        y: Math.random() * initialH,
+        size: Math.random() * 1.5 + 0.5, // Small, pixel-like stars
+        opacity: Math.random() * 0.5 + 0.5, // Varying opacity
+        blinkSpeed: Math.random() * 0.05 + 0.01 // Subtle blink
+      };
+    }
+
+    function animateInitialStarfield() {
+      initialCtx.clearRect(0, 0, initialW, initialH);
+      initialCtx.fillStyle = 'white'; // White for pixel stars
+
+      initialStars.forEach(star => {
+        initialCtx.globalAlpha = star.opacity + (Math.sin(performance.now() * star.blinkSpeed) * 0.2); // Subtle blinking
+        initialCtx.fillRect(star.x, star.y, star.size, star.size); // Draw as squares (pixels)
+      });
+      requestAnimationFrame(animateInitialStarfield);
+    }
+
+    // Initialize the initial starfield on load
+    window.addEventListener('load', () => {
+      resizeInitialCanvas();
+      for (let i = 0; i < 150; i++) initialStars.push(createInitialStar()); // Fewer stars for minimalist feel
+      animateInitialStarfield();
+      // Ensure the main canvas is drawn with black initially when it becomes visible
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+      // Now resize for the main canvas
+      resize(); 
+    });
+
 
     enterScreen.addEventListener('click', () => {
       // 1. Fade out the enter screen
       enterScreen.classList.add('fade-out');
+      initialStarfieldCanvas.classList.add('fade-out'); // Fade out initial starfield too
       
       // 2. After fade out, show the loader and start the sequence
       setTimeout(() => {
         enterScreen.remove(); // Remove from DOM after transition
-        
-        // Explicitly set display for loader before showing
-        loader.style.display = 'flex';
-        loader.style.opacity = '1'; // Make it visible
+        initialStarfieldCanvas.remove(); // Remove initial starfield canvas
 
-        // Ensure canvas is block but keep opacity at 0 for its own fade-in
-        canvas.style.display = 'block';
+        // Make loader and main content elements visible for their animations to begin
+        loader.style.opacity = '1';
+        loader.style.pointerEvents = 'auto'; // Re-enable pointer events
 
-        // Set logoWrapper, mainText, constructionNotice to display: block/flex and opacity 0
-        // Their opacity will be controlled by their specific transitions in animate() function
-        logoWrapper.style.display = 'block';
-        logoWrapper.style.opacity = '0'; // Start hidden for transition
-        logoWrapper.style.pointerEvents = 'none'; // Not clickable yet
-
-        mainText.style.display = 'flex';
-        mainText.style.opacity = '0'; // Start hidden for transition
-        mainText.style.pointerEvents = 'none'; // Not clickable yet
-
-        constructionNotice.style.display = 'block';
-        constructionNotice.style.opacity = '0'; // Start hidden for transition
-        constructionNotice.style.pointerEvents = 'none'; // Not clickable yet
-
-        // Now, start the actual loading sequence and animations
+        // Main animation chain starts here
         startLoadingSequence(); 
 
       }, 1000); // Match this timeout to the CSS transition duration (1s)
@@ -895,15 +938,14 @@
     }
 
     document.addEventListener('click', (e) => {
-      // Only create sparkles if the enter screen is gone (i.e., main content is visible)
-      // and loader is gone (meaning the main site elements are about to appear or are already visible)
-      if (loader.classList.contains('fade-out')) { // Only create sparkles AFTER loader fades out
+      // Only create sparkles if the main loader has finished fading out
+      if (loader.classList.contains('fade-out')) { 
         createSparkleBurst(e.clientX, e.clientY);
       }
     });
     document.addEventListener('touchstart', (e) => {
-      // Only create sparkles if the enter screen is gone
-      if (loader.classList.contains('fade-out')) { // Only create sparkles AFTER loader fades out
+      // Only create sparkles if the main loader has finished fading out
+      if (loader.classList.contains('fade-out')) { 
         if (e.touches.length > 0) {
           createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
         }
@@ -967,8 +1009,8 @@
     let logoMoveComplete = false;
 
     function animate(time = performance.now()) {
-      // Only run animation if canvas has been made visible and is not just an empty space
-      if (canvas.style.display === 'none' || canvas.style.opacity === '0') {
+      // Ensure main canvas is ready and visible before animating
+      if (canvas.style.opacity === '0') {
         requestAnimationFrame(animate);
         return;
       }
@@ -983,31 +1025,32 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          document.getElementById('logo-wrapper').classList.add('fade-in');
+          // When warp completes, make logo-wrapper visible and start its fade-in
+          logoWrapper.style.opacity = '1';
+          logoWrapper.style.pointerEvents = 'auto'; // Enable pointer events for logo
+          logoWrapper.classList.add('fade-in');
           
           setTimeout(() => {
-            document.getElementById('logo-wrapper').classList.add('move-top');
+            logoWrapper.classList.add('move-top');
             
             setTimeout(() => {
               logoMoveComplete = true;
               startLogoSparkleLoop();
               
-              const logoWrapper = document.getElementById('logo-wrapper');
               const logoRect = logoWrapper.getBoundingClientRect();
               const logoBottom = logoRect.bottom;
               const contentMargin = 40;
               const newContentTop = logoBottom + contentMargin;
               
-              const content = document.getElementById('mainText');
-              content.style.top = `${newContentTop}px`;
+              mainText.style.top = `${newContentTop}px`;
               
               console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
               
               setTimeout(() => {
-                content.classList.add('visible');
+                mainText.classList.add('visible');
                 
                 setTimeout(() => {
-                  document.getElementById('constructionNotice').classList.add('visible');
+                  constructionNotice.classList.add('visible');
                   
                   setTimeout(() => {
                     document.getElementById('portfolioLabel').classList.add('visible');
@@ -1177,20 +1220,19 @@
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
       
-      const isMobile = window.innerWidth <= 768; // This check is already done once at the top level
+      const isMobile = window.innerWidth <= 768; 
       createStarExplosion(loadingBarRect, 12, 'bar');
       createStarExplosion(loadingTextRect, 8, 'text');
       createStarExplosion(titleGlowRect, 10, 'title');
       
       createScreenFlash();
-      // No sound play here for mobile, as per previous instruction
+      // No sound play here for mobile
     }
 
     function createStarExplosion(elementRect, numStars, type) {
       const centerX = elementRect.left + elementRect.width / 2;
       const centerY = elementRect.top + elementRect.height / 2;
       
-      // Even more aggressive mobile optimization
       const isMobile = window.innerWidth <= 768;
       const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
       
@@ -1308,7 +1350,7 @@
     // --- StartLoadingSequence function ---
     function startLoadingSequence() {
       // Initialize starfield only when the sequence begins
-      resize(); // Ensure canvas size is set before creating stars
+      resize(); // Ensure main canvas size is set before creating stars
       // Only populate stars once the animation is ready to start
       if (stars.length === 0) { // Prevent re-populating on resize if already running
           for (let i = 0; i < 200; i++) stars.push(createStar());
@@ -1347,8 +1389,8 @@
             
             // Mobile cleanup for loader elements
             loader.style.opacity = '0';
-            loader.style.pointerEvents = 'none';
-            // These will be removed/hidden by fade-out class from loader, but ensure no lingering visibility.
+            loader.style.pointerEvents = 'none'; // Disable interaction immediately
+            // Ensure text elements also fade out along with the loader div
             document.querySelector('.loading-text').style.opacity = '0';
             document.querySelector('.loading-text').style.pointerEvents = 'none';
             titleGlow.style.opacity = '0';
@@ -1364,7 +1406,8 @@
               
               setTimeout(() => {
                 // loader.remove(); // Let the CSS transition handle the fade-out
-                loader.style.display = 'none'; // Finally hide it
+                // Finally set display to none after fade out to free up space
+                loader.style.display = 'none'; 
               }, 800); // After loader's opacity transition
               
               setTimeout(() => {
@@ -1394,7 +1437,8 @@
                 
                 setTimeout(() => {
                   // loader.remove(); // Let the CSS transition handle the fade-out
-                  loader.style.display = 'none'; // Finally hide it after its transition
+                  // Finally set display to none after fade out to free up space
+                  loader.style.display = 'none'; 
                 }, 800); // After loader's opacity transition
                 
                 setTimeout(() => {
@@ -1440,10 +1484,8 @@
       }, delay);
     }
 
-    window.addEventListener('load', () => {
-      resize(); // Ensure initial canvas size is set
-      // The rest of the site's loading sequence is now initiated by the enterScreen click.
-    });
+    // window.addEventListener('load') now mostly handles the initial starfield.
+    // The main site animations start via enterScreen click.
 
     function createLogoSparkle() {
       if (!logoMoveComplete) return;
