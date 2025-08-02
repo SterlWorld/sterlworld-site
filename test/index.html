@@ -35,7 +35,7 @@
       justify-content: center;
       z-index: 10000; /* Ensure it's on top */
       opacity: 1;
-      transition: opacity 1s ease-out; /* Fade out effect */
+      transition: opacity 1s ease-out; /* Fade out effect for enter screen */
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto; /* Custom cursor */
     }
 
@@ -76,7 +76,7 @@
       height: 100%;
       z-index: 10000; /* Behind text, above background */
       opacity: 1;
-      transition: opacity 1s ease-out;
+      transition: opacity 1s ease-out; /* Fade out initial starfield with enter screen */
     }
     /* --- END NEW: Enter Screen Styles --- */
 
@@ -88,8 +88,8 @@
       top: 0; 
       left: 0; 
       z-index: 0; 
-      display: block; /* Keep display block, manage opacity */
-      opacity: 0; /* Initially hidden */
+      display: block; /* Always block for canvas */
+      opacity: 0; /* Initially hidden, will fade in */
       transition: opacity 1s ease-in;
       pointer-events: none; /* Not clickable until visible */
     }
@@ -108,6 +108,7 @@
       transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
       text-align: center;
       pointer-events: none; /* Not clickable initially */
+      display: block; /* Ensure it starts as block for flow */
     }
     #logo-wrapper.fade-in { 
       opacity: 1; 
@@ -161,7 +162,7 @@
       color: #ccc;
       z-index: 5;
       padding: 0 20px;
-      display: flex;
+      display: flex; /* Always flex for content container */
       flex-direction: column;
       justify-content: flex-start;
       height: auto;
@@ -444,9 +445,9 @@
       justify-content: center;
       z-index: 99999;
       padding: 0 15px;
-      opacity: 0; /* Initially hidden */
+      opacity: 0; /* Initially hidden, will be set to 1 instantly */
       pointer-events: none; /* Not clickable initially */
-      transition: opacity 0.8s ease-out;
+      transition: opacity 0.8s ease-out; /* For fading out later */
     }
 
     #loader.fade-out {
@@ -817,7 +818,8 @@
     starGlitSound.volume = 0.5;
 
     // Get references to all main site elements for visibility control
-    const canvas = document.getElementById('space');
+    const canvas = document.getElementById('space'); // Main starfield canvas
+    const ctx = canvas.getContext('2d'); // Context for main starfield
     const logoWrapper = document.getElementById('logo-wrapper');
     const mainText = document.getElementById('mainText');
     const constructionNotice = document.getElementById('constructionNotice');
@@ -833,7 +835,7 @@
       initialW = initialStarfieldCanvas.width = window.innerWidth;
       initialH = initialStarfieldCanvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resizeInitialCanvas);
+    window.addEventListener('resize', resizeInitialCanvas); // Keep listener active
 
     function createInitialStar() {
       return {
@@ -846,6 +848,10 @@
     }
 
     function animateInitialStarfield() {
+      if (!initialStarfieldCanvas || initialStarfieldCanvas.parentNode === null) {
+        // Stop animation if canvas is removed from DOM
+        return; 
+      }
       initialCtx.clearRect(0, 0, initialW, initialH);
       initialCtx.fillStyle = 'white'; // White for pixel stars
 
@@ -861,10 +867,11 @@
       resizeInitialCanvas();
       for (let i = 0; i < 150; i++) initialStars.push(createInitialStar()); // Fewer stars for minimalist feel
       animateInitialStarfield();
-      // Ensure the main canvas is drawn with black initially when it becomes visible
+      
+      // Initialize main canvas to black in case it appears before stars render
       ctx.fillStyle = 'black';
       ctx.fillRect(0,0, canvas.width, canvas.height);
-      // Now resize for the main canvas
+      // Now resize for the main canvas to set initial dimensions correctly
       resize(); 
     });
 
@@ -874,19 +881,23 @@
       enterScreen.classList.add('fade-out');
       initialStarfieldCanvas.classList.add('fade-out'); // Fade out initial starfield too
       
-      // 2. After fade out, show the loader and start the sequence
+      // 2. After fade out, immediately show the loader (pop in) and start the sequence
       setTimeout(() => {
         enterScreen.remove(); // Remove from DOM after transition
         initialStarfieldCanvas.remove(); // Remove initial starfield canvas
 
-        // Make loader and main content elements visible for their animations to begin
-        loader.style.opacity = '1';
-        loader.style.pointerEvents = 'auto'; // Re-enable pointer events
+        // --- THE CRITICAL FIX: Make loader instantly visible ---
+        loader.style.opacity = '1'; 
+        loader.style.pointerEvents = 'auto'; // Re-enable pointer events for the loader
+        
+        // No change to canvas.style.display or opacity here, animate() handles its fade-in later.
+        // No change to logoWrapper, mainText, constructionNotice display/opacity here,
+        // animate() function's internal sequence handles their reveal.
 
-        // Main animation chain starts here
+        // Now, start the actual loading sequence and animations
         startLoadingSequence(); 
 
-      }, 1000); // Match this timeout to the CSS transition duration (1s)
+      }, 1000); // Match this timeout to the CSS transition duration (1s) for the fade-out
     }, { once: true }); // Ensure this listener only triggers once
     // --- END NEW ---
 
@@ -1025,9 +1036,7 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          // When warp completes, make logo-wrapper visible and start its fade-in
-          logoWrapper.style.opacity = '1';
-          logoWrapper.style.pointerEvents = 'auto'; // Enable pointer events for logo
+          // Trigger fade-in and pointer-events for logoWrapper
           logoWrapper.classList.add('fade-in');
           
           setTimeout(() => {
@@ -1042,32 +1051,30 @@
               const contentMargin = 40;
               const newContentTop = logoBottom + contentMargin;
               
+              // Set mainText top position then fade in
               mainText.style.top = `${newContentTop}px`;
+              mainText.classList.add('visible'); // Adds opacity:1 and pointer-events:auto
               
               console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
               
               setTimeout(() => {
-                mainText.classList.add('visible');
+                constructionNotice.classList.add('visible'); // Adds opacity:1 and pointer-events:auto
                 
                 setTimeout(() => {
-                  constructionNotice.classList.add('visible');
+                  document.getElementById('portfolioLabel').classList.add('visible');
                   
                   setTimeout(() => {
-                    document.getElementById('portfolioLabel').classList.add('visible');
-                    
-                    setTimeout(() => {
-                      const tooltip = document.getElementById('portfolioTooltip');
-                      if (tooltip) {
-                        tooltip.classList.add('show');
-                        setTimeout(() => {
-                          tooltip.style.opacity = '0';
-                          setTimeout(() => tooltip.remove(), 500);
-                        }, 2000);
-                      }
-                    }, 800);
-                  }, 600);
-                }, 800);
-              }, 400);
+                    const tooltip = document.getElementById('portfolioTooltip');
+                    if (tooltip) {
+                      tooltip.classList.add('show');
+                      setTimeout(() => {
+                        tooltip.style.opacity = '0';
+                        setTimeout(() => tooltip.remove(), 500);
+                      }, 2000);
+                    }
+                  }, 800);
+                }, 600);
+              }, 800);
             }, 1600);
           }, 1500);
         }
@@ -1170,24 +1177,12 @@
 
       const isMobile = window.innerWidth <= 768;
       if (!isMobile) {
-        // --- MOVED: Play sound effect here for explosion timing ---
+        // --- Play sound effect here for explosion timing ---
         starGlitSound.play().catch(e => console.error("Error playing sound:", e));
       }
       
-      setTimeout(() => {
-        loadingBar.style.opacity = '0';
-        loadingBar.style.transform = 'scale(0.8)';
-      }, 100);
-      
-      setTimeout(() => {
-        document.querySelector('.loading-text').style.opacity = '0';
-        document.querySelector('.loading-text').style.transform = 'scale(0.8)';
-      }, 150);
-      
-      setTimeout(() => {
-        titleGlow.style.opacity = '0';
-        titleGlow.style.transform = 'scale(0.8)';
-      }, 200);
+      // These elements will fade out as part of the overall loader fade out
+      // They don't need immediate opacity/transform changes here.
     }
 
     function createScreenFlash() {
