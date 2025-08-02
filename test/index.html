@@ -7,16 +7,80 @@
   <meta name="description" content="Enter SterlWorld — an animated universe of games, music, and characters by artist Sterlin Griffin. View portfolio and flagship project Pizza Dales." />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
+    /* Universal Box-Sizing */
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* Base HTML/Body Styles */
     html, body {
       height: 100%;
       width: 100%;
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow: hidden;
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+      overflow: hidden; /* Hide scrollbars, especially for canvas */
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto; /* Custom cursor */
     }
+
+    /* --- NEW: Enter Screen Styles --- */
+    #enter-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #0a0a0a, #1a0a2a); /* Subtle dark gradient */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000; /* Ensure it's on top */
+      opacity: 1;
+      transition: opacity 1s ease-out; /* Fade out effect */
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto; /* Custom cursor */
+    }
+
+    #enter-screen.fade-out {
+      opacity: 0;
+      pointer-events: none; /* Make it unclickable after fading */
+    }
+
+    #enter-screen h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 5rem); /* Responsive font size */
+      color: #0ff; /* Neon blue glow */
+      text-shadow:
+        0 0 15px rgba(0, 255, 255, 0.7),
+        0 0 30px rgba(0, 255, 255, 0.5),
+        0 0 45px rgba(0, 255, 255, 0.3),
+        0 0 60px rgba(0, 255, 255, 0.1);
+      animation: enterTitleGlow 2s ease-in-out infinite alternate; /* Pulsing glow */
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      user-select: none; /* Prevent text selection */
+    }
+
+    #enter-screen p {
+      font-size: clamp(1rem, 3vw, 1.8rem);
+      color: #ffd700; /* Gold color */
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+      animation: enterTextPulse 1.5s ease-in-out infinite alternate; /* Subtle pulse */
+      user-select: none;
+    }
+
+    @keyframes enterTitleGlow {
+      0% { text-shadow: 0 0 15px rgba(0, 255, 255, 0.7), 0 0 30px rgba(0, 255, 255, 0.5); }
+      100% { text-shadow: 0 0 25px rgba(0, 255, 255, 0.9), 0 0 45px rgba(0, 255, 255, 0.7), 0 0 70px rgba(0, 255, 255, 0.4); }
+    }
+
+    @keyframes enterTextPulse {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.02); opacity: 0.9; }
+    }
+    /* --- END NEW: Enter Screen Styles --- */
+
+
+    /* Existing Styles (restyled below for clarity and consistency) */
+
     canvas#space { 
       position: fixed; 
       top: 0; 
@@ -27,6 +91,7 @@
       transition: opacity 1s ease-in;
     }
     canvas#space.fade-in { opacity: 1; }
+    
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -51,7 +116,6 @@
       margin: 0 auto;
     }
 
-    /* Logo tagline positioned right below the logo */
     .logo-tagline {
       font-size: 0.85rem;
       color: white;
@@ -75,15 +139,14 @@
 
     .content {
       position: absolute;
-      /* DYNAMIC: Will be set by JavaScript based on actual logo position */
-      top: 200px; /* Fallback only */
+      top: 200px; /* Fallback only, adjusted by JS */
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       max-width: 90%;
       text-align: center;
       opacity: 0;
-      transition: opacity 1.5s ease, top 0.3s ease; /* Added top transition */
+      transition: opacity 1.5s ease, top 0.3s ease;
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
@@ -91,8 +154,8 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      height: auto; /* Changed from calc() to auto */
-      min-height: 300px; /* Minimum height to prevent issues */
+      height: auto;
+      min-height: 300px;
     }
     .content.visible { opacity: 1; }
     
@@ -197,7 +260,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Portfolio section positioned below content */
     .portfolio-section {
       margin-top: 5rem;
       display: flex;
@@ -206,7 +268,6 @@
       gap: 1rem;
     }
 
-    /* Enhanced Portfolio Bubble */
     #portfolio-bubble {
       width: 120px;
       height: 120px;
@@ -237,7 +298,6 @@
       border: 3px solid rgba(244, 217, 167, 0.8);
     }
 
-    /* Portfolio label below the bubble */
     .portfolio-label {
       color: #f4d9a7;
       font-size: 1.1rem;
@@ -257,7 +317,6 @@
       100% { text-shadow: 0 0 25px rgba(244, 217, 167, 0.8), 0 0 35px rgba(244, 217, 167, 0.4); }
     }
 
-    /* Hover tooltip above the bubble */
     #portfolio-bubble::after {
       content: 'Click to explore my work!';
       position: absolute;
@@ -284,7 +343,6 @@
       transform: translateX(-50%) translateY(-5px);
     }
 
-    /* Brief intro tooltip - starts hidden */
     .intro-tooltip {
       position: absolute;
       bottom: 140px;
@@ -330,7 +388,6 @@
       }
     }
 
-    /* Construction notice */
     .construction-notice {
       position: fixed;
       bottom: 20px;
@@ -525,7 +582,6 @@
       
       .content { 
         font-size: 0.95rem; 
-        /* DYNAMIC: Will be set by JavaScript, remove hardcoded top */
         padding: 0 15px;
       }
       
@@ -563,6 +619,14 @@
         font-size: 11px;
         padding: 5px 10px;
       }
+
+      /* Adjust enter screen for smaller devices */
+      #enter-screen h1 {
+        font-size: clamp(2rem, 7vw, 4rem);
+      }
+      #enter-screen p {
+        font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+      }
     }
 
     /* Extra small mobile devices - FIXED POSITIONING */
@@ -581,7 +645,6 @@
       
       .content { 
         font-size: 0.9rem; 
-        /* DYNAMIC: Will be set by JavaScript, remove hardcoded top */
         padding: 0 10px;
       }
       
@@ -619,6 +682,14 @@
         font-size: 10px;
         padding: 4px 8px;
       }
+
+      /* Further adjust enter screen for very small devices */
+      #enter-screen h1 {
+        font-size: clamp(1.8rem, 6vw, 3.5rem);
+      }
+      #enter-screen p {
+        font-size: clamp(0.8rem, 2vw, 1.2rem);
+      }
     }
 
     @media screen and (max-width: 600px) {
@@ -632,7 +703,6 @@
       }
       
       .content { 
-        /* DYNAMIC: Will be set by JavaScript, remove hardcoded top */
       }
       
       h1 { 
@@ -657,24 +727,31 @@
       .portfolio-label {
         font-size: 0.75rem;
       }
+
+      /* Landscape specific adjustments for enter screen */
+      #enter-screen h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+      }
+      #enter-screen p {
+        font-size: clamp(0.9rem, 2vw, 1.2rem);
+      }
     }
   </style>
 </head>
 <body>
-  <div id="loader">
-    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
+  <div id="enter-screen">
+    <h1>Enter SterlWorld</h1>
+    <p>Click or Tap to Begin</p>
+  </div>
+  <div id="loader" style="display: none;"> <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
     <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
   </div>
 
-  <canvas id="space"></canvas>
-
-  <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+  <canvas id="space" style="display: none;"></canvas> <div id="logo-wrapper" style="display: none;"> <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
     <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
   </div>
 
-  <div class="content" id="mainText">
-    <h1>Welcome to SterlWorld</h1>
+  <div class="content" id="mainText" style="display: none;"> <h1>Welcome to SterlWorld</h1>
     <p>
       We're building a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
       Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
@@ -689,8 +766,7 @@
     </div>
   </div>
 
-  <div class="construction-notice" id="constructionNotice">
-    SterlWorld is still being built • First gateway now open
+  <div class="construction-notice" id="constructionNotice" style="display: none;"> SterlWorld is still being built • First gateway now open
   </div>
 
   <script>
@@ -707,9 +783,38 @@
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-    // --- NEW: Audio Element ---
-    const starGlitSound = new Audio('https://github.com/SterlWorld/sterlworld-site/blob/main/StarGlit.wav');
-    starGlitSound.volume = 0.5; // Adjust volume as needed (0.0 to 1.0)
+    const starGlitSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/StarGlit.wav');
+    starGlitSound.volume = 0.5;
+
+    // Get references to all initially hidden elements
+    const canvas = document.getElementById('space');
+    const logoWrapper = document.getElementById('logo-wrapper');
+    const mainText = document.getElementById('mainText');
+    const constructionNotice = document.getElementById('constructionNotice');
+    
+    // --- NEW: Enter Screen elements and logic ---
+    const enterScreen = document.getElementById('enter-screen');
+
+    enterScreen.addEventListener('click', () => {
+      // 1. Fade out the enter screen
+      enterScreen.classList.add('fade-out');
+      
+      // 2. After fade out, remove it and show the rest of the content
+      setTimeout(() => {
+        enterScreen.remove(); // Remove from DOM after transition
+        
+        // Show all the hidden elements
+        loader.style.display = '';
+        canvas.style.display = '';
+        logoWrapper.style.display = '';
+        mainText.style.display = '';
+        constructionNotice.style.display = '';
+
+        // Now, start the actual loading sequence and animations
+        startLoadingSequence(); 
+
+      }, 1000); // Match this timeout to the CSS transition duration (1s)
+    }, { once: true }); // Ensure this listener only triggers once
     // --- END NEW ---
 
     function createSparkleBurst(x, y) {
@@ -760,48 +865,50 @@
     }
 
     document.addEventListener('click', (e) => {
+      // Only create sparkles if the enter screen is gone (i.e., main content is visible)
+      if (!enterScreen.classList.contains('fade-out')) return; 
       createSparkleBurst(e.clientX, e.clientY);
     });
     document.addEventListener('touchstart', (e) => {
+      // Only create sparkles if the enter screen is gone
+      if (!enterScreen.classList.contains('fade-out')) return;
       if (e.touches.length > 0) {
         createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
       }
     });
 
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
-    let w, h;
+    // These variables should be declared outside any function if they are used globally
+    let w, h; 
 
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resize);
-    resize();
-
+    
     const starImage = new Image();
     starImage.src = sparkleImgSrc;
     
     starImage.onerror = () => {
       console.log('Star image failed to load, using fallback');
-      const canvas = document.createElement('canvas');
-      canvas.width = 20;
-      canvas.height = 20;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ffd700';
-      ctx.beginPath();
+      const tempCanvas = document.createElement('canvas'); // Use a temp variable to avoid conflict
+      tempCanvas.width = 20;
+      tempCanvas.height = 20;
+      const tempCtx = tempCanvas.getContext('2d'); // Use a temp variable
+      tempCtx.fillStyle = '#ffd700';
+      tempCtx.beginPath();
       for (let i = 0; i < 5; i++) {
         const angle = (i * 4 * Math.PI) / 5;
         const x = 10 + Math.cos(angle) * 8;
         const y = 10 + Math.sin(angle) * 8;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        if (i === 0) tempCtx.moveTo(x, y);
+        else tempCtx.lineTo(x, y);
       }
-      ctx.closePath();
-      ctx.fill();
+      tempCtx.closePath();
+      tempCtx.fill();
       
       const fallbackImage = new Image();
-      fallbackImage.src = canvas.toDataURL();
+      fallbackImage.src = tempCanvas.toDataURL();
       starImage.src = fallbackImage.src;
     };
 
@@ -816,7 +923,8 @@
         rotationSpeed: (Math.random() - 0.5) * 0.01,
       };
     }
-    for (let i = 0; i < 200; i++) stars.push(createStar());
+    // Stars array will be populated only after the user enters
+    // for (let i = 0; i < 200; i++) stars.push(createStar()); // Moved to startLoadingSequence
 
     let warpSpeed = 30;
     const normalSpeed = 0.5;
@@ -827,6 +935,12 @@
     let logoMoveComplete = false;
 
     function animate(time = performance.now()) {
+      // Only run animation if canvas is visible (after enter screen)
+      if (canvas.style.display === 'none') {
+        requestAnimationFrame(animate);
+        return;
+      }
+
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
 
@@ -839,46 +953,37 @@
           warpComplete = true;
           document.getElementById('logo-wrapper').classList.add('fade-in');
           
-          // Wait for logo to finish moving to top before showing anything else
           setTimeout(() => {
             document.getElementById('logo-wrapper').classList.add('move-top');
             
-            // Wait for the move-top transition to complete (1.5s) before showing content
             setTimeout(() => {
               logoMoveComplete = true;
               startLogoSparkleLoop();
               
-              // DYNAMIC POSITIONING: Calculate actual logo bottom position
               const logoWrapper = document.getElementById('logo-wrapper');
               const logoRect = logoWrapper.getBoundingClientRect();
               const logoBottom = logoRect.bottom;
-              const contentMargin = 40; // Space between logo and content
+              const contentMargin = 40;
               const newContentTop = logoBottom + contentMargin;
               
-              // Update content position dynamically
               const content = document.getElementById('mainText');
               content.style.top = `${newContentTop}px`;
               
               console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
               
-              // Now show content with proper staging
               setTimeout(() => {
                 content.classList.add('visible');
                 
-                // Show construction notice after content
                 setTimeout(() => {
                   document.getElementById('constructionNotice').classList.add('visible');
                   
-                  // Show portfolio label after construction notice
                   setTimeout(() => {
                     document.getElementById('portfolioLabel').classList.add('visible');
                     
-                    // Show tooltip briefly after portfolio label appears
                     setTimeout(() => {
                       const tooltip = document.getElementById('portfolioTooltip');
                       if (tooltip) {
                         tooltip.classList.add('show');
-                        // Hide after 2 seconds
                         setTimeout(() => {
                           tooltip.style.opacity = '0';
                           setTimeout(() => tooltip.remove(), 500);
@@ -888,7 +993,7 @@
                   }, 600);
                 }, 800);
               }, 400);
-            }, 1600); // Wait for logo move transition to complete
+            }, 1600);
           }, 1500);
         }
       }
@@ -936,12 +1041,10 @@
       requestAnimationFrame(animate);
     }
 
-    // FIXED LETTER GLOW FUNCTION - NOW GLOWS EACH LETTER INDIVIDUALLY
     function updateLetterGlow() {
       const barFillRect = barFill.getBoundingClientRect();
       titleLetters.forEach((letter) => {
         const letterRect = letter.getBoundingClientRect();
-        // Changed from letterMid to letterRect.left to trigger on left edge
         if (letterRect.left <= barFillRect.right) {
           letter.classList.add('glow-gold');
         }
@@ -1030,18 +1133,16 @@
       }, 900);
     }
 
-    // Mobile-optimized explosion with much fewer stars
     function createMobileExplosion() {
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
       
-      // Much fewer stars for mobile performance
-      createStarExplosion(loadingBarRect, 12, 'bar'); // Was 40, now 12
-      createStarExplosion(loadingTextRect, 8, 'text'); // Was 25, now 8
-      createStarExplosion(titleGlowRect, 10, 'title'); // Was 30, now 10
+      const isMobile = window.innerWidth <= 768;
+      createStarExplosion(loadingBarRect, 12, 'bar');
+      createStarExplosion(loadingTextRect, 8, 'text');
+      createStarExplosion(titleGlowRect, 10, 'title');
       
-      // Quick flash
       createScreenFlash();
     }
 
@@ -1049,9 +1150,8 @@
       const centerX = elementRect.left + elementRect.width / 2;
       const centerY = elementRect.top + elementRect.height / 2;
       
-      // Even more aggressive mobile optimization
       const isMobile = window.innerWidth <= 768;
-      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars; // Was 0.6, now 0.4
+      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
       
       console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
       
@@ -1060,7 +1160,6 @@
         star.src = sparkleImgSrc;
         star.className = 'explosion-star';
         
-        // Smaller stars on mobile
         const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
@@ -1071,7 +1170,6 @@
         const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
         const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
         
-        // Less intensive glow on mobile
         const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
         star.style.filter = glowIntensity.replace(/\$\{glowColor\}/g, glowColor);
         
@@ -1085,7 +1183,6 @@
         }
         
         const angle = Math.random() * 2 * Math.PI;
-        // Shorter distances and faster animation on mobile
         const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
         const finalX = startX + Math.cos(angle) * distance;
         const finalY = startY + Math.sin(angle) * distance;
@@ -1095,7 +1192,6 @@
         star.style.opacity = '1';
         star.style.transform = 'scale(1.2) rotate(0deg)';
         
-        // Faster animation on mobile
         const animationDuration = isMobile ? '1s' : '1.5s';
         star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
         
@@ -1115,7 +1211,6 @@
           star.style.opacity = '0';
         });
         
-        // Shorter cleanup time on mobile
         const cleanupTime = isMobile ? 1100 : 1600;
         setTimeout(() => {
           if (star.parentNode) {
@@ -1169,83 +1264,56 @@
       }
     }
 
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 8;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        loadingFill.style.width = '100%';
-        
-        loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-        loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-        loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-        loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-        loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-        
-        const loadingTextElement = document.querySelector('.loading-text');
-        loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
-        loadingTextElement.style.color = '#0ff';
-        
-        titleLetters.forEach(letter => {
-          letter.classList.add('glow-gold');
-        });
-        
-        loadingFill.classList.add('full');
-        
-        console.log('🚀 Loading complete! Starting transition sequence...');
-        
-        const loadingBarRect = loadingBar.getBoundingClientRect();
-        const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
-        const titleGlowRect = titleGlow.getBoundingClientRect();
-        
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-          console.log('📱 Mobile detected - using ultra-optimized sequence');
+    // --- NEW: Wrap your loading logic in a function ---
+    function startLoadingSequence() {
+      // Initialize starfield only when the sequence begins
+      resize(); // Ensure canvas size is set before creating stars
+      for (let i = 0; i < 200; i++) stars.push(createStar());
+      
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 8;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          loadingFill.style.width = '100%';
           
-          // IMMEDIATE cleanup - no delays
-          loadingBar.style.opacity = '0';
-          loadingBar.style.visibility = 'hidden';
-          document.querySelector('.loading-text').style.opacity = '0';
-          document.querySelector('.loading-text').style.visibility = 'hidden';
-          titleGlow.style.opacity = '0';
-          titleGlow.style.visibility = 'hidden';
+          loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
+          loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
+          loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
+          loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
+          loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
           
-          // IMMEDIATE mobile-optimized explosion
-          createMobileExplosion();
+          const loadingTextElement = document.querySelector('.loading-text');
+          loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
+          loadingTextElement.style.color = '#0ff';
           
-          animate();
+          titleLetters.forEach(letter => {
+            letter.classList.add('glow-gold');
+          });
           
-          setTimeout(() => {
-            console.log('🌟 Fading out loader background and revealing starfield...');
-            loader.classList.add('fade-out');
+          loadingFill.classList.add('full');
+          
+          console.log('🚀 Loading complete! Starting transition sequence...');
+          
+          const isMobile = window.innerWidth <= 768;
+          
+          if (isMobile) {
+            console.log('📱 Mobile detected - using ultra-optimized sequence');
             
-            setTimeout(() => {
-              loader.remove();
-            }, 800);
+            loadingBar.style.opacity = '0';
+            loadingBar.style.visibility = 'hidden';
+            document.querySelector('.loading-text').style.opacity = '0';
+            document.querySelector('.loading-text').style.visibility = 'hidden';
+            titleGlow.style.opacity = '0';
+            titleGlow.style.visibility = 'hidden';
             
-            setTimeout(() => {
-              const canvas = document.getElementById('space');
-              canvas.classList.add('fade-in');
-            }, 200);
-          }, 100);
-        } else {
-          console.log('💻 Desktop detected - using full sequence');
-          
-          // --- NEW: Play sound effect on desktop only ---
-          starGlitSound.play().catch(e => console.error("Error playing sound:", e));
-          // --- END NEW ---
-
-          createLoadingBarCelebration();
-          
-          setTimeout(() => {
-            createLoadingBarExplosion();
+            createMobileExplosion();
             
             animate();
             
             setTimeout(() => {
-              console.log('🌟 Fading out loader and revealing starfield...');
+              console.log('🌟 Fading out loader background and revealing starfield...');
               loader.classList.add('fade-out');
               
               setTimeout(() => {
@@ -1253,27 +1321,52 @@
               }, 800);
               
               setTimeout(() => {
-                const canvas = document.getElementById('space');
                 canvas.classList.add('fade-in');
-              }, 400);
-            }, 800);
-          }, 300);
-        }
-      } else {
-        loadingFill.style.width = progress + '%';
+              }, 200);
+            }, 100);
+          } else {
+            console.log('💻 Desktop detected - using full sequence');
+            
+            starGlitSound.play().catch(e => console.error("Error playing sound:", e));
 
-        if (Math.random() < 0.6) {
-          const barWidth = loadingBar.clientWidth;
-          const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
-          createLoadingSparkle(sparkleX);
+            createLoadingBarCelebration();
+            
+            setTimeout(() => {
+              createLoadingBarExplosion();
+              
+              animate();
+              
+              setTimeout(() => {
+                console.log('🌟 Fading out loader and revealing starfield...');
+                loader.classList.add('fade-out');
+                
+                setTimeout(() => {
+                  loader.remove();
+                }, 800);
+                
+                setTimeout(() => {
+                  canvas.classList.add('fade-in');
+                }, 400);
+              }, 800);
+            }, 300);
+          }
+        } else {
+          loadingFill.style.width = progress + '%';
+
+          if (Math.random() < 0.6) {
+            const barWidth = loadingBar.clientWidth;
+            const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
+            createLoadingSparkle(sparkleX);
+          }
         }
-      }
-      updateLetterGlow();
-    }, 120);
+        updateLetterGlow();
+      }, 120);
+    }
+    // --- END NEW: Wrap your loading logic in a function ---
 
     starImage.onload = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, w, h);
+      // No longer need to fill the canvas here immediately, as it's hidden.
+      // The animation loop will handle it once started.
     };
 
     const logo = document.getElementById('logo');
@@ -1296,7 +1389,8 @@
     }
 
     window.addEventListener('load', () => {
-      setTimeout(randomPulseLoop, 5000);
+      // randomPulseLoop will start after logoMoveComplete which happens after loading
+      // So no changes needed here.
     });
 
     function createLogoSparkle() {
