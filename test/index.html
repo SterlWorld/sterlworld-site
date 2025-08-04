@@ -895,7 +895,7 @@
                             sparkle.style.opacity = '1';
                             sparkle.style.position = 'fixed';
                             sparkle.style.zIndex = '9999';
-                            sparkle.style.pointer-events = 'none';
+                            sparkle.style.pointerEvents = 'none';
                             sparkle.onerror = () => { sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%'; sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = ''; };
                             document.body.appendChild(sparkle);
                             void sparkle.offsetWidth;
