@@ -715,538 +715,542 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-        // --- Supabase Client Setup ---
-        // !!! IMPORTANT: REPLACE THESE WITH YOUR ACTUAL KEYS !!!
-        const SUPABASE_URL = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
-
-        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM Elements ---
-            const authContainer = document.getElementById('auth-container');
-            const loginFormContainer = document.getElementById('login-form-container');
-            const userInfoContainer = document.getElementById('user-info-container');
-            const authForm = document.getElementById('auth-form');
-            const usernameInput = document.getElementById('username-input');
-            const emailInput = document.getElementById('email-input');
-            const passwordInput = document.getElementById('password-input');
-            const authButton = document.getElementById('auth-button');
-            const toggleAuthLink = document.getElementById('toggle-auth');
-            const authMessage = document.getElementById('auth-message');
-            const userNameDisplay = document.getElementById('user-name-display');
-            const userEmailDisplay = document.getElementById('user-email-display');
-            const logoutButton = document.getElementById('logout-button');
-            let isLoginMode = false;
+            try {
+                // --- Supabase Client Setup ---
+                // !!! IMPORTANT: REPLACE THESE WITH YOUR ACTUAL KEYS !!!
+                const SUPABASE_URL = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
+                const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            // --- Supabase Auth Functions ---
-            async function handleAuth(event) {
-                event.preventDefault();
-                const email = emailInput.value;
-                const password = passwordInput.value;
-                authMessage.textContent = '';
-                const username = usernameInput.value;
+                // --- DOM Elements ---
+                const authContainer = document.getElementById('auth-container');
+                const loginFormContainer = document.getElementById('login-form-container');
+                const userInfoContainer = document.getElementById('user-info-container');
+                const authForm = document.getElementById('auth-form');
+                const usernameInput = document.getElementById('username-input');
+                const emailInput = document.getElementById('email-input');
+                const passwordInput = document.getElementById('password-input');
+                const authButton = document.getElementById('auth-button');
+                const toggleAuthLink = document.getElementById('toggle-auth');
+                const authMessage = document.getElementById('auth-message');
+                const userNameDisplay = document.getElementById('user-name-display');
+                const userEmailDisplay = document.getElementById('user-email-display');
+                const logoutButton = document.getElementById('logout-button');
+                let isLoginMode = false;
 
-                try {
-                    if (isLoginMode) {
-                        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                        if (error) throw error;
-                        authMessage.textContent = 'Logged in successfully!';
-                        console.log('Logged in user:', data.user);
-                    } else {
-                        // Check if username is already taken
-                        const { data: existingUser, error: existingUserError } = await supabase
+                // --- Supabase Auth Functions ---
+                async function handleAuth(event) {
+                    event.preventDefault();
+                    const email = emailInput.value;
+                    const password = passwordInput.value;
+                    authMessage.textContent = '';
+                    const username = usernameInput.value;
+
+                    try {
+                        if (isLoginMode) {
+                            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                            if (error) throw error;
+                            authMessage.textContent = 'Logged in successfully!';
+                            console.log('Logged in user:', data.user);
+                        } else {
+                            // Check if username is already taken
+                            const { data: existingUser, error: existingUserError } = await supabase
+                                .from('profiles')
+                                .select('username')
+                                .eq('username', username)
+                                .maybeSingle(); // Use maybeSingle to get null if no user is found
+                            
+                            if (existingUser) {
+                                authMessage.textContent = `Username "${username}" is already taken. Please choose another.`;
+                                return;
+                            }
+
+                            const { data, error } = await supabase.auth.signUp({
+                                email,
+                                password
+                            });
+
+                            if (error) {
+                                throw error;
+                            }
+
+                            // Supabase auto-creates the user. We now need to add the username to our profiles table.
+                            if (data.user) {
+                                 const { error: profileError } = await supabase
+                                     .from('profiles')
+                                     .insert([
+                                         { id: data.user.id, username: username }
+                                     ]);
+                                 if (profileError) {
+                                     throw profileError;
+                                 }
+                            }
+                            
+                            authMessage.textContent = 'Registration successful! Check your email for the confirmation link.';
+                            console.log('Signed up user:', data.user);
+                        }
+                    } catch (error) {
+                        authMessage.textContent = error.message;
+                        console.error('Auth Error:', error);
+                    }
+                }
+
+                async function handleLogout() {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) console.error('Error logging out:', error);
+                    else console.log('User logged out.');
+                }
+
+                // --- UI Update Function ---
+                async function updateUIForAuth(session) {
+                    if (session) {
+                        // Fetch the username from the profiles table
+                        const { data: profile, error } = await supabase
                             .from('profiles')
                             .select('username')
-                            .eq('username', username)
+                            .eq('id', session.user.id)
                             .single();
-                        
-                        if (existingUser) {
-                            authMessage.textContent = `Username "${username}" is already taken. Please choose another.`;
-                            return;
-                        }
-
-                        const { data, error } = await supabase.auth.signUp({
-                            email,
-                            password,
-                            options: {
-                                data: { username: username }
-                            }
-                        });
 
                         if (error) {
-                            throw error;
+                            console.error('Error fetching profile:', error);
+                            userNameDisplay.textContent = 'Adventurer';
+                        } else {
+                            userNameDisplay.textContent = profile.username;
                         }
 
-                        // Supabase auto-creates the user. We now need to add the username to our profiles table.
-                        if (data.user) {
-                             const { error: profileError } = await supabase
-                                .from('profiles')
-                                .insert([
-                                    { id: data.user.id, username: username }
-                                ]);
-                             if (profileError) {
-                                throw profileError;
-                             }
-                        }
-                        
-                        authMessage.textContent = 'Registration successful! Check your email for the confirmation link.';
-                        console.log('Signed up user:', data.user);
-                    }
-                } catch (error) {
-                    authMessage.textContent = error.message;
-                    console.error('Auth Error:', error);
-                }
-            }
-
-            async function handleLogout() {
-                const { error } = await supabase.auth.signOut();
-                if (error) console.error('Error logging out:', error);
-                else console.log('User logged out.');
-            }
-
-            // --- UI Update Function ---
-            async function updateUIForAuth(session) {
-                if (session) {
-                    // Fetch the username from the profiles table
-                    const { data: profile, error } = await supabase
-                        .from('profiles')
-                        .select('username')
-                        .eq('id', session.user.id)
-                        .single();
-
-                    if (error) {
-                        console.error('Error fetching profile:', error);
-                        userNameDisplay.textContent = 'Adventurer';
+                        loginFormContainer.style.display = 'none';
+                        userInfoContainer.style.display = 'flex';
+                        userEmailDisplay.textContent = session.user.email;
                     } else {
-                        userNameDisplay.textContent = profile.username;
+                        loginFormContainer.style.display = 'block';
+                        userInfoContainer.style.display = 'none';
+                        emailInput.value = '';
+                        passwordInput.value = '';
+                        usernameInput.value = '';
+                        authMessage.textContent = '';
+                        authButton.textContent = 'Register';
+                        toggleAuthLink.innerHTML = 'Already a member? <a href="#">Log In here</a>';
+                        usernameInput.style.display = 'block';
+                        isLoginMode = false;
                     }
+                }
 
-                    loginFormContainer.style.display = 'none';
-                    userInfoContainer.style.display = 'flex';
-                    userEmailDisplay.textContent = session.user.email;
-                } else {
-                    loginFormContainer.style.display = 'block';
-                    userInfoContainer.style.display = 'none';
+                // --- Event Listeners and Initial State Checks ---
+                authForm.addEventListener('submit', handleAuth);
+                logoutButton.addEventListener('click', handleLogout);
+                toggleAuthLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isLoginMode = !isLoginMode;
+                    if (isLoginMode) {
+                        authButton.textContent = 'Log In';
+                        toggleAuthLink.innerHTML = 'New to SterlWorld? <a href="#">Register here</a>';
+                        usernameInput.style.display = 'none';
+                    } else {
+                        authButton.textContent = 'Register';
+                        toggleAuthLink.innerHTML = 'Already a member? <a href="#">Log In here</a>';
+                        usernameInput.style.display = 'block';
+                    }
+                    authMessage.textContent = '';
                     emailInput.value = '';
                     passwordInput.value = '';
-                    usernameInput.value = '';
-                    authMessage.textContent = '';
-                    authButton.textContent = 'Register';
-                    toggleAuthLink.innerHTML = 'Already a member? <a href="#">Log In here</a>';
-                    usernameInput.style.display = 'block';
-                    isLoginMode = false;
+                });
+
+                // Supabase event listener to react to auth state changes
+                supabase.auth.onAuthStateChange((event, session) => {
+                    console.log('Supabase auth state changed:', event);
+                    updateUIForAuth(session);
+                });
+
+                // Check initial session on page load
+                async function getSession() {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    updateUIForAuth(session);
                 }
-            }
 
-            // --- Event Listeners and Initial State Checks ---
-            authForm.addEventListener('submit', handleAuth);
-            logoutButton.addEventListener('click', handleLogout);
-            toggleAuthLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                isLoginMode = !isLoginMode;
-                if (isLoginMode) {
-                    authButton.textContent = 'Log In';
-                    toggleAuthLink.innerHTML = 'New to SterlWorld? <a href="#">Register here</a>';
-                    usernameInput.style.display = 'none';
-                } else {
-                    authButton.textContent = 'Register';
-                    toggleAuthLink.innerHTML = 'Already a member? <a href="#">Log In here</a>';
-                    usernameInput.style.display = 'block';
+                // --- Your existing sparkle, canvas, and loader JS code ---
+                let audioContext;
+                let starGlitBuffer;
+                async function loadSound(url) {
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    const response = await fetch(url);
+                    const arrayBuffer = await response.arrayBuffer();
+                    return await audioContext.decodeAudioData(arrayBuffer);
                 }
-                authMessage.textContent = '';
-                emailInput.value = '';
-                passwordInput.value = '';
-            });
-
-            // Supabase event listener to react to auth state changes
-            supabase.auth.onAuthStateChange((event, session) => {
-                console.log('Supabase auth state changed:', event);
-                updateUIForAuth(session);
-            });
-
-            // Check initial session on page load
-            async function getSession() {
-                const { data: { session } } = await supabase.auth.getSession();
-                updateUIForAuth(session);
-            }
-
-            // --- Your existing sparkle, canvas, and loader JS code ---
-            let audioContext;
-            let starGlitBuffer;
-            async function loadSound(url) {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                function playSound(buffer) {
+                    if (!audioContext || !buffer) return;
+                    const source = audioContext.createBufferSource();
+                    source.buffer = buffer;
+                    source.connect(audioContext.destination);
+                    source.start(0);
                 }
-                const response = await fetch(url);
-                const arrayBuffer = await response.arrayBuffer();
-                return await audioContext.decodeAudioData(arrayBuffer);
-            }
-            function playSound(buffer) {
-                if (!audioContext || !buffer) return;
-                const source = audioContext.createBufferSource();
-                source.buffer = buffer;
-                source.connect(audioContext.destination);
-                source.start(0);
-            }
-            loadSound('https://github.com/SterlWorld/sterlworld-site/raw/refs/heads/main/StarGlit.wav')
-                .then(buffer => { starGlitBuffer = buffer; console.log('StarGlit.wav loaded successfully!'); })
-                .catch(e => console.error('Error loading StarGlit.wav:', e));
-            const loader = document.getElementById('loader');
-            const barFill = document.getElementById('barFill');
-            const titleGlow = document.getElementById('titleGlow');
-            const loadingText = 'SterlWorld';
-            for (let char of loadingText) { const span = document.createElement('span'); span.textContent = char; titleGlow.appendChild(span); }
-            const titleLetters = titleGlow.querySelectorAll('span');
-            const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-            const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
-            function createSparkleBurst(x, y) {
-                if (!document.getElementById('enter-screen').classList.contains('fade-out')) return;
-                if (audioContext && starGlitBuffer) { playSound(starGlitBuffer); }
-                const numStars = 12 + Math.floor(Math.random() * 6);
-                for (let i = 0; i < numStars; i++) {
+                loadSound('https://github.com/SterlWorld/sterlworld-site/raw/refs/heads/main/StarGlit.wav')
+                    .then(buffer => { starGlitBuffer = buffer; console.log('StarGlit.wav loaded successfully!'); })
+                    .catch(e => console.error('Error loading StarGlit.wav:', e));
+                const loader = document.getElementById('loader');
+                const barFill = document.getElementById('barFill');
+                const titleGlow = document.getElementById('titleGlow');
+                const loadingText = 'SterlWorld';
+                for (let char of loadingText) { const span = document.createElement('span'); span.textContent = char; titleGlow.appendChild(span); }
+                const titleLetters = titleGlow.querySelectorAll('span');
+                const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+                const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+                function createSparkleBurst(x, y) {
+                    if (!document.getElementById('enter-screen').classList.contains('fade-out')) return;
+                    if (audioContext && starGlitBuffer) { playSound(starGlitBuffer); }
+                    const numStars = 12 + Math.floor(Math.random() * 6);
+                    for (let i = 0; i < numStars; i++) {
+                        const sparkle = document.createElement('img');
+                        sparkle.src = sparkleImgSrc;
+                        sparkle.className = 'sparkle-star';
+                        const size = Math.random() * 16 + 8;
+                        sparkle.style.width = `${size}px`;
+                        sparkle.style.height = `${size}px`;
+                        sparkle.style.left = `${x - size / 2}px`;
+                        sparkle.style.top = `${y - size / 2}px`;
+                        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+                        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+                        sparkle.style.opacity = '1';
+                        sparkle.style.position = 'fixed';
+                        sparkle.style.zIndex = '9999';
+                        sparkle.style.pointerEvents = 'none';
+                        sparkle.onerror = () => { sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%'; sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = ''; };
+                        document.body.appendChild(sparkle);
+                        void sparkle.offsetWidth;
+                        const angle = Math.random() * 2 * Math.PI;
+                        const distance = 40 + Math.random() * 60;
+                        const offsetX = Math.cos(angle) * distance;
+                        const offsetY = Math.sin(angle) * distance;
+                        sparkle.style.left = `${x + offsetX}px`;
+                        sparkle.style.top = `${y + offsetY}px`;
+                        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+                        sparkle.style.opacity = '0';
+                        sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
+                        setTimeout(() => sparkle.remove(), 600);
+                    }
+                }
+                document.addEventListener('click', (e) => { if (document.getElementById('enter-screen').classList.contains('fade-out')) { createSparkleBurst(e.clientX, e.clientY); } });
+                document.addEventListener('touchstart', (e) => { if (e.touches.length > 0 && document.getElementById('enter-screen').classList.contains('fade-out')) { createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY); } });
+                const canvas = document.getElementById('space');
+                const ctx = canvas.getContext('2d');
+                let w, h;
+                function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+                window.addEventListener('resize', resize);
+                resize();
+                const starImage = new Image();
+                starImage.src = sparkleImgSrc;
+                starImage.onerror = () => { console.log('Star image failed to load, using fallback'); const canvas = document.createElement('canvas'); canvas.width = 20; canvas.height = 20; const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffd700'; ctx.beginPath(); for (let i = 0; i < 5; i++) { const angle = (i * 4 * Math.PI) / 5; const x = 10 + Math.cos(angle) * 8; const y = 10 + Math.sin(angle) * 8; if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); } ctx.closePath(); ctx.fill(); const fallbackImage = new Image(); fallbackImage.src = canvas.toDataURL(); starImage.src = fallbackImage.src; };
+                let stars = [];
+                function createStar() { return { x: (Math.random() - 0.5) * w * 1.5, y: (Math.random() - 0.5) * h * 1.5, z: Math.random() * w, size: Math.random() * 0.8 + 0.3, rotationAngle: Math.random() * Math.PI * 2, rotationSpeed: (Math.random() - 0.5) * 0.01, }; }
+                for (let i = 0; i < 200; i++) stars.push(createStar());
+                let warpSpeed = 30;
+                const normalSpeed = 0.5;
+                const warpDuration = 3000;
+                let warpStartTime = null;
+                let warpComplete = false;
+                let lastTime = performance.now();
+                let logoMoveComplete = false;
+                function animate(time = performance.now()) {
+                    if (!warpStartTime) warpStartTime = time;
+                    const elapsed = time - warpStartTime;
+                    if (elapsed < warpDuration) {
+                        const t = elapsed / warpDuration;
+                        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+                    } else {
+                        warpSpeed = normalSpeed;
+                        if (!warpComplete) {
+                            warpComplete = true;
+                            document.getElementById('logo-wrapper').classList.add('fade-in');
+                            setTimeout(() => {
+                                document.getElementById('logo-wrapper').classList.add('move-top');
+                                authContainer.classList.add('visible');
+                                setTimeout(() => {
+                                    logoMoveComplete = true;
+                                    startLogoSparkleLoop();
+                                    const logoWrapper = document.getElementById('logo-wrapper');
+                                    const logoRect = logoWrapper.getBoundingClientRect();
+                                    const logoBottom = logoRect.bottom;
+                                    const contentMargin = 40;
+                                    const newContentTop = logoBottom + contentMargin;
+                                    const content = document.getElementById('mainText');
+                                    content.style.top = `${newContentTop}px`;
+                                    console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
+                                    setTimeout(() => {
+                                        content.classList.add('visible');
+                                        setTimeout(() => {
+                                            document.getElementById('constructionNotice').classList.add('visible');
+                                            setTimeout(() => {
+                                                document.getElementById('portfolioLabel').classList.add('visible');
+                                                setTimeout(() => {
+                                                    const tooltip = document.getElementById('portfolioTooltip');
+                                                    if (tooltip) { tooltip.classList.add('show'); setTimeout(() => { tooltip.style.opacity = '0'; setTimeout(() => tooltip.remove(), 500); }, 2000); }
+                                                }, 800);
+                                            }, 600);
+                                        }, 800);
+                                    }, 1600);
+                                }, 1500);
+                            }, 1500);
+                        }
+                    }
+                    const delta = (time - lastTime) / 16.67;
+                    lastTime = time;
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+                    ctx.fillRect(0, 0, w, h);
+                    stars.forEach((s, i) => {
+                        s.z -= warpSpeed * delta;
+                        if (s.z <= 0) { stars[i] = createStar(); return; }
+                        let k = 128.0 / s.z;
+                        let px = s.x * k + w / 2;
+                        let py = s.y * k + h / 2;
+                        if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
+                        ctx.save();
+                        ctx.translate(px, py);
+                        ctx.rotate(s.rotationAngle);
+                        ctx.shadowBlur = 14;
+                        ctx.shadowColor = '#f7de99';
+                        ctx.globalAlpha = 0.35;
+                        let starSize = s.size * (1 - s.z / w) * 25;
+                        if (starImage.complete && starImage.naturalWidth > 0) { ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize); } else { ctx.fillStyle = '#ffd700'; ctx.beginPath(); ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2); ctx.fill(); }
+                        ctx.restore();
+                        s.rotationAngle += s.rotationSpeed;
+                    });
+                    requestAnimationFrame(animate);
+                }
+                function updateLetterGlow() {
+                    const barFillRect = barFill.getBoundingClientRect();
+                    titleLetters.forEach((letter) => {
+                        const letterRect = letter.getBoundingClientRect();
+                        if (letterRect.left <= barFillRect.right) { letter.classList.add('glow-gold'); }
+                    });
+                }
+                const loadingBar = document.querySelector('.loading-bar');
+                const loadingFill = document.querySelector('.loading-bar-fill');
+                const sparklesContainer = document.createElement('div');
+                sparklesContainer.className = 'loading-bar-sparkles';
+                loadingBar.appendChild(sparklesContainer);
+                function createLoadingSparkle(x) {
                     const sparkle = document.createElement('img');
                     sparkle.src = sparkleImgSrc;
                     sparkle.className = 'sparkle-star';
-                    const size = Math.random() * 16 + 8;
+                    const size = Math.random() * 6 + 6;
                     sparkle.style.width = `${size}px`;
                     sparkle.style.height = `${size}px`;
-                    sparkle.style.left = `${x - size / 2}px`;
-                    sparkle.style.top = `${y - size / 2}px`;
-                    const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-                    sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+                    sparkle.style.position = 'absolute';
+                    sparkle.style.top = `${Math.random() * 100}%`;
+                    sparkle.style.left = `${x}px`;
                     sparkle.style.opacity = '1';
-                    sparkle.style.position = 'fixed';
-                    sparkle.style.zIndex = '9999';
-                    sparkle.style.pointerEvents = 'none';
-                    sparkle.onerror = () => { sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%'; sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = ''; };
-                    document.body.appendChild(sparkle);
-                    void sparkle.offsetWidth;
-                    const angle = Math.random() * 2 * Math.PI;
-                    const distance = 40 + Math.random() * 60;
-                    const offsetX = Math.cos(angle) * distance;
-                    const offsetY = Math.sin(angle) * distance;
-                    sparkle.style.left = `${x + offsetX}px`;
-                    sparkle.style.top = `${y + offsetY}px`;
-                    sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-                    sparkle.style.opacity = '0';
-                    sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
-                    setTimeout(() => sparkle.remove(), 600);
+                    sparkle.style.filter = `drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)`;
+                    sparkle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    sparklesContainer.appendChild(sparkle);
+                    setTimeout(() => { sparkle.style.opacity = '0'; sparkle.style.transform = `translateY(-10px) scale(0.5) rotate(${Math.random() * 360}deg)`; }, 50);
+                    setTimeout(() => sparkle.remove(), 850);
                 }
-            }
-            document.addEventListener('click', (e) => { if (document.getElementById('enter-screen').classList.contains('fade-out')) { createSparkleBurst(e.clientX, e.clientY); } });
-            document.addEventListener('touchstart', (e) => { if (e.touches.length > 0 && document.getElementById('enter-screen').classList.contains('fade-out')) { createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY); } });
-            const canvas = document.getElementById('space');
-            const ctx = canvas.getContext('2d');
-            let w, h;
-            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-            window.addEventListener('resize', resize);
-            resize();
-            const starImage = new Image();
-            starImage.src = sparkleImgSrc;
-            starImage.onerror = () => { console.log('Star image failed to load, using fallback'); const canvas = document.createElement('canvas'); canvas.width = 20; canvas.height = 20; const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffd700'; ctx.beginPath(); for (let i = 0; i < 5; i++) { const angle = (i * 4 * Math.PI) / 5; const x = 10 + Math.cos(angle) * 8; const y = 10 + Math.sin(angle) * 8; if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); } ctx.closePath(); ctx.fill(); const fallbackImage = new Image(); fallbackImage.src = canvas.toDataURL(); starImage.src = fallbackImage.src; };
-            let stars = [];
-            function createStar() { return { x: (Math.random() - 0.5) * w * 1.5, y: (Math.random() - 0.5) * h * 1.5, z: Math.random() * w, size: Math.random() * 0.8 + 0.3, rotationAngle: Math.random() * Math.PI * 2, rotationSpeed: (Math.random() - 0.5) * 0.01, }; }
-            for (let i = 0; i < 200; i++) stars.push(createStar());
-            let warpSpeed = 30;
-            const normalSpeed = 0.5;
-            const warpDuration = 3000;
-            let warpStartTime = null;
-            let warpComplete = false;
-            let lastTime = performance.now();
-            let logoMoveComplete = false;
-            function animate(time = performance.now()) {
-                if (!warpStartTime) warpStartTime = time;
-                const elapsed = time - warpStartTime;
-                if (elapsed < warpDuration) {
-                    const t = elapsed / warpDuration;
-                    warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
-                } else {
-                    warpSpeed = normalSpeed;
-                    if (!warpComplete) {
-                        warpComplete = true;
-                        document.getElementById('logo-wrapper').classList.add('fade-in');
-                        setTimeout(() => {
-                            document.getElementById('logo-wrapper').classList.add('move-top');
-                            authContainer.classList.add('visible');
-                            setTimeout(() => {
-                                logoMoveComplete = true;
-                                startLogoSparkleLoop();
-                                const logoWrapper = document.getElementById('logo-wrapper');
-                                const logoRect = logoWrapper.getBoundingClientRect();
-                                const logoBottom = logoRect.bottom;
-                                const contentMargin = 40;
-                                const newContentTop = logoBottom + contentMargin;
-                                const content = document.getElementById('mainText');
-                                content.style.top = `${newContentTop}px`;
-                                console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
-                                setTimeout(() => {
-                                    content.classList.add('visible');
-                                    setTimeout(() => {
-                                        document.getElementById('constructionNotice').classList.add('visible');
-                                        setTimeout(() => {
-                                            document.getElementById('portfolioLabel').classList.add('visible');
-                                            setTimeout(() => {
-                                                const tooltip = document.getElementById('portfolioTooltip');
-                                                if (tooltip) { tooltip.classList.add('show'); setTimeout(() => { tooltip.style.opacity = '0'; setTimeout(() => tooltip.remove(), 500); }, 2000); }
-                                            }, 800);
-                                        }, 600);
-                                    }, 800);
-                                }, 1600);
-                            }, 1500);
-                        }, 1500);
+                function createLoadingBarExplosion() {
+                    console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
+                    playSound(starGlitBuffer);
+                    const loadingBarRect = loadingBar.getBoundingClientRect();
+                    const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
+                    const titleGlowRect = titleGlow.getBoundingClientRect();
+                    createStarExplosion(loadingBarRect, 40, 'bar');
+                    createStarExplosion(loadingTextRect, 25, 'text');
+                    createStarExplosion(titleGlowRect, 30, 'title');
+                    createScreenFlash();
+                    setTimeout(() => { loadingBar.style.opacity = '0'; loadingBar.style.transform = 'scale(0.8)'; }, 100);
+                    setTimeout(() => { document.querySelector('.loading-text').style.opacity = '0'; document.querySelector('.loading-text').style.transform = 'scale(0.8)'; }, 150);
+                    setTimeout(() => { titleGlow.style.opacity = '0'; titleGlow.style.transform = 'scale(0.8)'; }, 200);
+                }
+                function createScreenFlash() {
+                    const flash = document.createElement('div');
+                    flash.style.position = 'fixed';
+                    flash.style.top = '0'; flash.style.left = '0';
+                    flash.style.width = '100vw'; flash.style.height = '100vh';
+                    flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
+                    flash.style.pointerEvents = 'none';
+                    flash.style.zIndex = '999998';
+                    flash.style.opacity = '1';
+                    flash.style.transition = 'opacity 0.8s ease-out';
+                    document.body.appendChild(flash);
+                    setTimeout(() => { flash.style.opacity = '0'; }, 100);
+                    setTimeout(() => { flash.remove(); }, 900);
+                }
+                function createMobileExplosion() {
+                    playSound(starGlitBuffer);
+                    const loadingBarRect = loadingBar.getBoundingClientRect();
+                    const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
+                    const titleGlowRect = titleGlow.getBoundingClientRect();
+                    createStarExplosion(loadingBarRect, 12, 'bar');
+                    createStarExplosion(loadingTextRect, 8, 'text');
+                    createStarExplosion(titleGlowRect, 10, 'title');
+                    createScreenFlash();
+                }
+                function createStarExplosion(elementRect, numStars, type) {
+                    const centerX = elementRect.left + elementRect.width / 2;
+                    const centerY = elementRect.top + elementRect.height / 2;
+                    const isMobile = window.innerWidth <= 768;
+                    const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
+                    console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
+                    for (let i = 0; i < adjustedStars; i++) {
+                        const star = document.createElement('img');
+                        star.src = sparkleImgSrc;
+                        star.className = 'explosion-star';
+                        const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
+                        star.style.width = `${size}px`;
+                        star.style.height = `${size}px`;
+                        star.style.position = 'fixed';
+                        star.style.zIndex = '999999';
+                        star.style.pointerEvents = 'none';
+                        const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
+                        const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+                        const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
+                        star.style.filter = glowIntensity;
+                        let startX, startY;
+                        if (type === 'bar') { startX = elementRect.left + (Math.random() * elementRect.width); startY = centerY + (Math.random() - 0.5) * elementRect.height; } else { startX = elementRect.left + (Math.random() * elementRect.width); startY = elementRect.top + (Math.random() * elementRect.height); }
+                        const angle = Math.random() * 2 * Math.PI;
+                        const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
+                        const finalX = startX + Math.cos(angle) * distance;
+                        const finalY = startY + Math.sin(angle) * distance;
+                        star.style.left = `${startX - size / 2}px`; star.style.top = `${startY - size / 2}px`;
+                        star.style.opacity = '1';
+                        star.style.transform = 'scale(1.2) rotate(0deg)';
+                        const animationDuration = isMobile ? '1s' : '1.5s';
+                        star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+                        document.body.appendChild(star);
+                        star.onerror = () => { star.style.background = glowColor; star.style.borderRadius = '50%'; star.style.boxShadow = `0 0 8px ${glowColor}`; star.src = ''; };
+                        requestAnimationFrame(() => { star.style.left = `${finalX - size / 2}px`; star.style.top = `${finalY - size / 2}px`; star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`; star.style.opacity = '0'; });
+                        const cleanupTime = isMobile ? 1100 : 1600;
+                        setTimeout(() => { if (star.parentNode) { star.remove(); } }, cleanupTime);
                     }
                 }
-                const delta = (time - lastTime) / 16.67;
-                lastTime = time;
-                ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-                ctx.fillRect(0, 0, w, h);
-                stars.forEach((s, i) => {
-                    s.z -= warpSpeed * delta;
-                    if (s.z <= 0) { stars[i] = createStar(); return; }
-                    let k = 128.0 / s.z;
-                    let px = s.x * k + w / 2;
-                    let py = s.y * k + h / 2;
-                    if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
-                    ctx.save();
-                    ctx.translate(px, py);
-                    ctx.rotate(s.rotationAngle);
-                    ctx.shadowBlur = 14;
-                    ctx.shadowColor = '#f7de99';
-                    ctx.globalAlpha = 0.35;
-                    let starSize = s.size * (1 - s.z / w) * 25;
-                    if (starImage.complete && starImage.naturalWidth > 0) { ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize); } else { ctx.fillStyle = '#ffd700'; ctx.beginPath(); ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2); ctx.fill(); }
-                    ctx.restore();
-                    s.rotationAngle += s.rotationSpeed;
-                });
-                requestAnimationFrame(animate);
-            }
-            function updateLetterGlow() {
-                const barFillRect = barFill.getBoundingClientRect();
-                titleLetters.forEach((letter) => {
-                    const letterRect = letter.getBoundingClientRect();
-                    if (letterRect.left <= barFillRect.right) { letter.classList.add('glow-gold'); }
-                });
-            }
-            const loadingBar = document.querySelector('.loading-bar');
-            const loadingFill = document.querySelector('.loading-bar-fill');
-            const sparklesContainer = document.createElement('div');
-            sparklesContainer.className = 'loading-bar-sparkles';
-            loadingBar.appendChild(sparklesContainer);
-            function createLoadingSparkle(x) {
-                const sparkle = document.createElement('img');
-                sparkle.src = sparkleImgSrc;
-                sparkle.className = 'sparkle-star';
-                sparkle.style.width = sparkle.style.height = `${6 + Math.random() * 6}px`;
-                sparkle.style.position = 'absolute';
-                sparkle.style.top = `${Math.random() * 100}%`;
-                sparkle.style.left = `${x}px`;
-                sparkle.style.opacity = '1';
-                sparkle.style.filter = `drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)`;
-                sparkle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-                sparklesContainer.appendChild(sparkle);
-                setTimeout(() => { sparkle.style.opacity = '0'; sparkle.style.transform = `translateY(-10px) scale(0.5) rotate(${Math.random() * 360}deg)`; }, 50);
-                setTimeout(() => sparkle.remove(), 850);
-            }
-            function createLoadingBarExplosion() {
-                console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
-                playSound(starGlitBuffer);
-                const loadingBarRect = loadingBar.getBoundingClientRect();
-                const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
-                const titleGlowRect = titleGlow.getBoundingClientRect();
-                createStarExplosion(loadingBarRect, 40, 'bar');
-                createStarExplosion(loadingTextRect, 25, 'text');
-                createStarExplosion(titleGlowRect, 30, 'title');
-                createScreenFlash();
-                setTimeout(() => { loadingBar.style.opacity = '0'; loadingBar.style.transform = 'scale(0.8)'; }, 100);
-                setTimeout(() => { document.querySelector('.loading-text').style.opacity = '0'; document.querySelector('.loading-text').style.transform = 'scale(0.8)'; }, 150);
-                setTimeout(() => { titleGlow.style.opacity = '0'; titleGlow.style.transform = 'scale(0.8)'; }, 200);
-            }
-            function createScreenFlash() {
-                const flash = document.createElement('div');
-                flash.style.position = 'fixed';
-                flash.style.top = '0'; flash.style.left = '0';
-                flash.style.width = '100vw'; flash.style.height = '100vh';
-                flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
-                flash.style.pointerEvents = 'none';
-                flash.style.zIndex = '999998';
-                flash.style.opacity = '1';
-                flash.style.transition = 'opacity 0.8s ease-out';
-                document.body.appendChild(flash);
-                setTimeout(() => { flash.style.opacity = '0'; }, 100);
-                setTimeout(() => { flash.remove(); }, 900);
-            }
-            function createMobileExplosion() {
-                playSound(starGlitBuffer);
-                const loadingBarRect = loadingBar.getBoundingClientRect();
-                const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
-                const titleGlowRect = titleGlow.getBoundingClientRect();
-                createStarExplosion(loadingBarRect, 12, 'bar');
-                createStarExplosion(loadingTextRect, 8, 'text');
-                createStarExplosion(titleGlowRect, 10, 'title');
-                createScreenFlash();
-            }
-            function createStarExplosion(elementRect, numStars, type) {
-                const centerX = elementRect.left + elementRect.width / 2;
-                const centerY = elementRect.top + elementRect.height / 2;
-                const isMobile = window.innerWidth <= 768;
-                const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
-                console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
-                for (let i = 0; i < adjustedStars; i++) {
-                    const star = document.createElement('img');
-                    star.src = sparkleImgSrc;
-                    star.className = 'explosion-star';
-                    const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
-                    star.style.width = `${size}px`;
-                    star.style.height = `${size}px`;
-                    star.style.position = 'fixed';
-                    star.style.zIndex = '999999';
-                    star.style.pointerEvents = 'none';
-                    const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
-                    const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
-                    const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
-                    star.style.filter = glowIntensity;
-                    let startX, startY;
-                    if (type === 'bar') { startX = elementRect.left + (Math.random() * elementRect.width); startY = centerY + (Math.random() - 0.5) * elementRect.height; } else { startX = elementRect.left + (Math.random() * elementRect.width); startY = elementRect.top + (Math.random() * elementRect.height); }
-                    const angle = Math.random() * 2 * Math.PI;
-                    const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
-                    const finalX = startX + Math.cos(angle) * distance;
-                    const finalY = startY + Math.sin(angle) * distance;
-                    star.style.left = `${startX - size / 2}px`; star.style.top = `${startY - size / 2}px`;
-                    star.style.opacity = '1';
-                    star.style.transform = 'scale(1.2) rotate(0deg)';
-                    const animationDuration = isMobile ? '1s' : '1.5s';
-                    star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
-                    document.body.appendChild(star);
-                    star.onerror = () => { star.style.background = glowColor; star.style.borderRadius = '50%'; star.style.boxShadow = `0 0 8px ${glowColor}`; star.src = ''; };
-                    requestAnimationFrame(() => { star.style.left = `${finalX - size / 2}px`; star.style.top = `${finalY - size / 2}px`; star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`; star.style.opacity = '0'; });
-                    const cleanupTime = isMobile ? 1100 : 1600;
-                    setTimeout(() => { if (star.parentNode) { star.remove(); } }, cleanupTime);
+                function createLoadingBarCelebration() {
+                    const loadingBarRect = loadingBar.getBoundingClientRect();
+                    const centerX = loadingBarRect.left + loadingBarRect.width / 2;
+                    const centerY = loadingBarRect.top + loadingBarRect.height / 2;
+                    const isMobile = window.innerWidth <= 768;
+                    const numSparkles = isMobile ? 15 : 30;
+                    for (let i = 0; i < numSparkles; i++) {
+                        const sparkle = document.createElement('img');
+                        sparkle.src = sparkleImgSrc;
+                        sparkle.className = 'sparkle-star';
+                        const size = Math.random() * 15 + 8;
+                        sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
+                        const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
+                        const radius = isMobile ? 40 + Math.random() * 30 : 60 + Math.random() * 40;
+                        const startX = centerX + Math.cos(angle) * 25;
+                        const startY = centerY + Math.sin(angle) * 15;
+                        sparkle.style.left = `${startX - size / 2}px`; sparkle.style.top = `${startY - size / 2}px`;
+                        sparkle.style.opacity = '1';
+                        sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
+                        sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
+                        document.body.appendChild(sparkle);
+                        void sparkle.offsetWidth;
+                        const finalX = centerX + Math.cos(angle) * radius;
+                        const finalY = centerY + Math.sin(angle) * radius;
+                        sparkle.style.left = `${finalX - size / 2}px`; sparkle.style.top = `${finalY - size / 2}px`;
+                        sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
+                        sparkle.style.opacity = '0';
+                        setTimeout(() => sparkle.remove(), 1500);
+                    }
                 }
-            }
-            function createLoadingBarCelebration() {
-                const loadingBarRect = loadingBar.getBoundingClientRect();
-                const centerX = loadingBarRect.left + loadingBarRect.width / 2;
-                const centerY = loadingBarRect.top + loadingBarRect.height / 2;
-                const isMobile = window.innerWidth <= 768;
-                const numSparkles = isMobile ? 15 : 30;
-                for (let i = 0; i < numSparkles; i++) {
+                let loadingInterval;
+                function startLoaderSequence() {
+                    loader.classList.add('visible');
+                    let progress = 0;
+                    loadingInterval = setInterval(() => {
+                        progress += Math.random() * 8;
+                        if (progress >= 100) {
+                            progress = 100;
+                            clearInterval(loadingInterval);
+                            barFill.style.width = '100%';
+                            loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
+                            loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
+                            loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
+                            loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
+                            loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
+                            const loadingTextElement = document.querySelector('.loading-text');
+                            loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
+                            loadingTextElement.style.color = '#0ff';
+                            titleLetters.forEach(letter => { letter.classList.add('glow-gold'); });
+                            loadingFill.classList.add('full');
+                            console.log('🚀 Loading complete! Starting transition sequence...');
+                            const isMobile = window.innerWidth <= 768;
+                            if (isMobile) {
+                                console.log('📱 Mobile detected - using ultra-optimized sequence');
+                                loadingBar.style.opacity = '0'; loadingBar.style.visibility = 'hidden';
+                                document.querySelector('.loading-text').style.opacity = '0'; document.querySelector('.loading-text').style.visibility = 'hidden';
+                                titleGlow.style.opacity = '0'; titleGlow.style.visibility = 'hidden';
+                                createMobileExplosion(); animate();
+                                setTimeout(() => { console.log('🌟 Fading out loader background and revealing starfield...'); loader.classList.add('fade-out'); setTimeout(() => { loader.remove(); }, 800); setTimeout(() => { canvas.classList.add('fade-in'); }, 200); }, 100);
+                            } else {
+                                console.log('💻 Desktop detected - using full sequence');
+                                createLoadingBarCelebration();
+                                setTimeout(() => {
+                                    createLoadingBarExplosion(); animate();
+                                    setTimeout(() => { console.log('🌟 Fading out loader and revealing starfield...'); loader.classList.add('fade-out'); setTimeout(() => { loader.remove(); }, 800); setTimeout(() => { canvas.classList.add('fade-in'); }, 400); }, 800);
+                                }, 300);
+                            }
+                            getSession();
+                        } else {
+                            barFill.style.width = progress + '%';
+                            if (Math.random() < 0.6) {
+                                const barWidth = loadingBar.clientWidth;
+                                const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
+                                createLoadingSparkle(sparkleX);
+                            }
+                        }
+                        updateLetterGlow();
+                    }, 120);
+                }
+                starImage.onload = () => { ctx.fillStyle = 'black'; ctx.fillRect(0, 0, w, h); };
+                const logo = document.getElementById('logo');
+                function triggerPulse() {
+                    if (logoMoveComplete) { logo.style.animation = 'logoPulse 1.2s ease-in-out'; setTimeout(() => { logo.style.animation = ''; }, 1200); }
+                }
+                function randomPulseLoop() {
+                    const delay = 8000 + Math.random() * 12000;
+                    setTimeout(() => { triggerPulse(); randomPulseLoop(); }, delay);
+                }
+                const enterScreen = document.getElementById('enter-screen');
+                const enterButton = document.getElementById('enter-button');
+                enterButton.addEventListener('click', () => {
+                    enterScreen.style.display = 'none';
+                    startLoaderSequence();
+                });
+                document.body.style.backgroundColor = 'black';
+                window.addEventListener('load', () => { setTimeout(randomPulseLoop, 5000); });
+                function createLogoSparkle() {
+                    if (!logoMoveComplete) return;
+                    const logo = document.getElementById('logo');
+                    const rect = logo.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
                     const sparkle = document.createElement('img');
                     sparkle.src = sparkleImgSrc;
                     sparkle.className = 'sparkle-star';
-                    const size = Math.random() * 15 + 8;
+                    const size = Math.random() * 10 + 4;
                     sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
-                    const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
-                    const radius = isMobile ? 40 + Math.random() * 30 : 60 + Math.random() * 40;
-                    const startX = centerX + Math.cos(angle) * 25;
-                    const startY = centerY + Math.sin(angle) * 15;
-                    sparkle.style.left = `${startX - size / 2}px`; sparkle.style.top = `${startY - size / 2}px`;
+                    const angle = Math.random() * 2 * Math.PI;
+                    const radius = 10 + Math.random() * 30;
+                    const offsetX = Math.cos(angle) * radius;
+                    const offsetY = Math.sin(angle) * radius;
+                    sparkle.style.left = `${centerX + offsetX - size / 2}px`; sparkle.style.top = `${centerY + offsetY - size / 2}px`;
+                    sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
                     sparkle.style.opacity = '1';
-                    sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
-                    sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
                     document.body.appendChild(sparkle);
                     void sparkle.offsetWidth;
-                    const finalX = centerX + Math.cos(angle) * radius;
-                    const finalY = centerY + Math.sin(angle) * radius;
-                    sparkle.style.left = `${finalX - size / 2}px`; sparkle.style.top = `${finalY - size / 2}px`;
-                    sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
+                    sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
                     sparkle.style.opacity = '0';
-                    setTimeout(() => sparkle.remove(), 1500);
+                    setTimeout(() => sparkle.remove(), 600);
                 }
+                function startLogoSparkleLoop() { setInterval(() => { createLogoSparkle(); }, 2000); }
+            } catch (error) {
+                console.error("An error occurred during page setup:", error);
+                const enterButton = document.getElementById('enter-button');
+                enterButton.textContent = "Error - Check Console";
+                enterButton.style.backgroundColor = 'red';
             }
-            let loadingInterval;
-            function startLoaderSequence() {
-                loader.classList.add('visible');
-                let progress = 0;
-                loadingInterval = setInterval(() => {
-                    progress += Math.random() * 8;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(loadingInterval);
-                        barFill.style.width = '100%';
-                        loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-                        loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-                        loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-                        loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-                        loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-                        const loadingTextElement = document.querySelector('.loading-text');
-                        loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
-                        loadingTextElement.style.color = '#0ff';
-                        titleLetters.forEach(letter => { letter.classList.add('glow-gold'); });
-                        loadingFill.classList.add('full');
-                        console.log('🚀 Loading complete! Starting transition sequence...');
-                        const isMobile = window.innerWidth <= 768;
-                        if (isMobile) {
-                            console.log('📱 Mobile detected - using ultra-optimized sequence');
-                            loadingBar.style.opacity = '0'; loadingBar.style.visibility = 'hidden';
-                            document.querySelector('.loading-text').style.opacity = '0'; document.querySelector('.loading-text').style.visibility = 'hidden';
-                            titleGlow.style.opacity = '0'; titleGlow.style.visibility = 'hidden';
-                            createMobileExplosion(); animate();
-                            setTimeout(() => { console.log('🌟 Fading out loader background and revealing starfield...'); loader.classList.add('fade-out'); setTimeout(() => { loader.remove(); }, 800); setTimeout(() => { canvas.classList.add('fade-in'); }, 200); }, 100);
-                        } else {
-                            console.log('💻 Desktop detected - using full sequence');
-                            createLoadingBarCelebration();
-                            setTimeout(() => {
-                                createLoadingBarExplosion(); animate();
-                                setTimeout(() => { console.log('🌟 Fading out loader and revealing starfield...'); loader.classList.add('fade-out'); setTimeout(() => { loader.remove(); }, 800); setTimeout(() => { canvas.classList.add('fade-in'); }, 400); }, 800);
-                            }, 300);
-                        }
-                        getSession();
-                    } else {
-                        barFill.style.width = progress + '%';
-                        if (Math.random() < 0.6) {
-                            const barWidth = loadingBar.clientWidth;
-                            const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
-                            createLoadingSparkle(sparkleX);
-                        }
-                    }
-                    updateLetterGlow();
-                }, 120);
-            }
-            starImage.onload = () => { ctx.fillStyle = 'black'; ctx.fillRect(0, 0, w, h); };
-            const logo = document.getElementById('logo');
-            function triggerPulse() {
-                if (logoMoveComplete) { logo.style.animation = 'logoPulse 1.2s ease-in-out'; setTimeout(() => { logo.style.animation = ''; }, 1200); }
-            }
-            function randomPulseLoop() {
-                const delay = 8000 + Math.random() * 12000;
-                setTimeout(() => { triggerPulse(); randomPulseLoop(); }, delay);
-            }
-            const enterScreen = document.getElementById('enter-screen');
-            const enterButton = document.getElementById('enter-button');
-            enterButton.addEventListener('click', () => {
-                enterScreen.classList.add('fade-out');
-                setTimeout(() => { enterScreen.remove(); startLoaderSequence(); }, 1000);
-            });
-            document.body.style.backgroundColor = 'black';
-            window.addEventListener('load', () => { setTimeout(randomPulseLoop, 5000); });
-            function createLogoSparkle() {
-                if (!logoMoveComplete) return;
-                const logo = document.getElementById('logo');
-                const rect = logo.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                const sparkle = document.createElement('img');
-                sparkle.src = sparkleImgSrc;
-                sparkle.className = 'sparkle-star';
-                const size = Math.random() * 10 + 4;
-                sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
-                const angle = Math.random() * 2 * Math.PI;
-                const radius = 10 + Math.random() * 30;
-                const offsetX = Math.cos(angle) * radius;
-                const offsetY = Math.sin(angle) * radius;
-                sparkle.style.left = `${centerX + offsetX - size / 2}px`; sparkle.style.top = `${centerY + offsetY - size / 2}px`;
-                sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
-                sparkle.style.opacity = '1';
-                document.body.appendChild(sparkle);
-                void sparkle.offsetWidth;
-                sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
-                sparkle.style.opacity = '0';
-                setTimeout(() => sparkle.remove(), 600);
-            }
-            function startLogoSparkleLoop() { setInterval(() => { createLogoSparkle(); }, 2000); }
         });
     </script>
 </body>
