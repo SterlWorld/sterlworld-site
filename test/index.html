@@ -715,18 +715,14 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // We wait until the DOM is ready AND the Supabase script is loaded.
             window.onload = function() {
                 try {
-                    // --- Supabase Client Setup ---
                     const SUPABASE_URL = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
                     const SUPABASE_ANON_KEY = 'sb_publishable_Hb2OqQ7fOlgasAxW8WLnTQ_7MgewTxH';
                     const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-                    // --- DOM Elements ---
+                    
                     const authContainer = document.getElementById('auth-container');
                     const loginFormContainer = document.getElementById('login-form-container');
                     const userInfoContainer = document.getElementById('user-info-container');
@@ -742,7 +738,6 @@
                     const logoutButton = document.getElementById('logout-button');
                     let isLoginMode = false;
 
-                    // --- Supabase Auth Functions ---
                     async function handleAuth(event) {
                         event.preventDefault();
                         const email = emailInput.value;
@@ -769,8 +764,8 @@
                                 }
 
                                 const { data, error } = await supabase.auth.signUp({ email, password });
-
                                 if (error) throw error;
+                                
                                 if (data.user) {
                                     const { error: profileError } = await supabase
                                         .from('profiles')
@@ -854,7 +849,6 @@
                         updateUIForAuth(session);
                     }
 
-                    // --- Your existing sparkle, canvas, and loader JS code ---
                     let audioContext;
                     let starGlitBuffer;
                     async function loadSound(url) {
