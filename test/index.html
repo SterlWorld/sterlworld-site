@@ -79,6 +79,109 @@
             filter: brightness(0.9);
         }
 
+        /* --- New Auth UI Styles --- */
+        #auth-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1.5s ease 2s; /* Fades in 2 seconds after the rest of the content */
+        }
+        #auth-container.visible {
+            opacity: 1;
+        }
+        .auth-form-container {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            text-align: center;
+            width: 300px;
+            transition: opacity 0.5s ease;
+        }
+        .auth-form-container h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #0ff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #0ff;
+        }
+        .auth-form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+        .auth-form-container input:focus {
+            outline: none;
+            box-shadow: 0 0 10px #ff5ec4;
+        }
+        .auth-form-container button {
+            width: 100%;
+            padding: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            background: linear-gradient(45deg, #0ff, #ff5ec4);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .auth-form-container button:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 15px rgba(255, 94, 196, 0.7);
+        }
+        .auth-form-container p {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .auth-form-container p a {
+            color: #0ff;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        #user-info-container {
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        #user-info-container span {
+            font-size: 1.1rem;
+            color: #ff5ec4;
+            font-weight: 600;
+            text-shadow: 0 0 10px #ff5ec4;
+        }
+        #logout-button {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        #logout-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ff5ec4;
+        }
+        .auth-message {
+            color: #ffd700;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-shadow: 0 0 8px #ffd700;
+        }
+
         /* --- Existing Styles (copied from your original code) --- */
         canvas#space {
             position: fixed;
@@ -572,6 +675,13 @@
             .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
             .portfolio-label { font-size: 0.9rem; }
             .construction-notice { font-size: 11px; padding: 5px 10px; }
+            #auth-container {
+                top: 10px;
+                left: 10px;
+            }
+            .auth-form-container {
+                width: 250px;
+            }
         }
 
         /* Extra small mobile devices - FIXED POSITIONING */
@@ -617,6 +727,25 @@
 
     <canvas id="space"></canvas>
 
+    <div id="auth-container">
+        <div id="login-form-container" class="auth-form-container">
+            <h2>Welcome, Adventurer</h2>
+            <form id="auth-form">
+                <input type="email" id="email-input" placeholder="Your SterlWorld Email" required />
+                <input type="password" id="password-input" placeholder="Password" required />
+                <button type="submit" id="auth-button">Log In</button>
+            </form>
+            <p id="toggle-auth">New to SterlWorld? <a href="#">Register here</a></p>
+            <p id="auth-message" class="auth-message"></p>
+        </div>
+
+        <div id="user-info-container" class="auth-form-container">
+            <h2>Welcome back!</h2>
+            <span id="user-email-display"></span>
+            <button id="logout-button">Log Out</button>
+        </div>
+    </div>
+
     <div id="logo-wrapper">
         <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
         <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
@@ -642,11 +771,112 @@
         SterlWorld is still being built • First gateway now open
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        // --- New: Audio Context and Sound Load ---
+        // --- Supabase Client Setup ---
+        // REPLACE WITH YOUR ACTUAL KEYS!
+        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL_HERE';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
+
+        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // --- DOM Elements ---
+        const authContainer = document.getElementById('auth-container');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const userInfoContainer = document.getElementById('user-info-container');
+        const authForm = document.getElementById('auth-form');
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const authButton = document.getElementById('auth-button');
+        const toggleAuthLink = document.getElementById('toggle-auth');
+        const authMessage = document.getElementById('auth-message');
+        const userEmailDisplay = document.getElementById('user-email-display');
+        const logoutButton = document.getElementById('logout-button');
+        let isLoginMode = true;
+
+        // --- Supabase Auth Functions ---
+        async function handleAuth(event) {
+            event.preventDefault();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            authMessage.textContent = '';
+
+            try {
+                if (isLoginMode) {
+                    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    authMessage.textContent = `Welcome back, ${data.user.email}!`;
+                } else {
+                    const { data, error } = await supabase.auth.signUp({ email, password });
+                    if (error) throw error;
+                    authMessage.textContent = 'Check your email for the confirmation link!';
+                }
+            } catch (error) {
+                authMessage.textContent = error.message;
+            }
+        }
+
+        async function handleLogout() {
+            const { error } = await supabase.auth.signOut();
+            if (error) console.error('Error logging out:', error);
+            else console.log('User logged out.');
+        }
+
+        // --- UI Update Function ---
+        function updateUIForAuth(session) {
+            if (session) {
+                // User is logged in
+                loginFormContainer.style.display = 'none';
+                userInfoContainer.style.display = 'flex';
+                userEmailDisplay.textContent = session.user.email;
+            } else {
+                // User is logged out
+                loginFormContainer.style.display = 'block';
+                userInfoContainer.style.display = 'none';
+                emailInput.value = '';
+                passwordInput.value = '';
+                authMessage.textContent = '';
+                authButton.textContent = 'Log In';
+                toggleAuthLink.innerHTML = 'New to SterlWorld? <a href="#">Register here</a>';
+                isLoginMode = true;
+            }
+        }
+
+        // --- Event Listeners and Initial State Checks ---
+        authForm.addEventListener('submit', handleAuth);
+        logoutButton.addEventListener('click', handleLogout);
+        toggleAuthLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                authButton.textContent = 'Log In';
+                toggleAuthLink.innerHTML = 'New to SterlWorld? <a href="#">Register here</a>';
+            } else {
+                authButton.textContent = 'Register';
+                toggleAuthLink.innerHTML = 'Already a member? <a href="#">Log In</a>';
+            }
+            authMessage.textContent = '';
+        });
+
+        // Supabase event listener to react to auth state changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Supabase auth state changed:', event);
+            updateUIForAuth(session);
+        });
+
+        // Check initial session on page load
+        async function getSession() {
+            const { data: { session } } = await supabase.auth.getSession();
+            updateUIForAuth(session);
+        }
+
+        // --- Your existing sparkle functions ---
+        // ... (all of your existing sparkle, canvas, and loader JS code)
+        // I've moved your existing script content below this new section to keep it organized.
+
         let audioContext;
         let starGlitBuffer;
-
         async function loadSound(url) {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -664,8 +894,6 @@
             source.start(0);
         }
 
-        // Pre-load the sound file when the script loads, but don't play it yet
-        // Make sure this path is correct:
         loadSound('https://github.com/SterlWorld/sterlworld-site/raw/refs/heads/main/StarGlit.wav')
             .then(buffer => {
                 starGlitBuffer = buffer;
@@ -673,7 +901,6 @@
             })
             .catch(e => console.error('Error loading StarGlit.wav:', e));
 
-        // --- Existing Script Variables and Setup ---
         const loader = document.getElementById('loader');
         const barFill = document.getElementById('barFill');
         const titleGlow = document.getElementById('titleGlow');
@@ -687,8 +914,10 @@
         const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
         const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
 
-        // --- Your existing sparkle functions ---
         function createSparkleBurst(x, y) {
+            if (!document.getElementById('enter-screen').classList.contains('fade-out')) return;
+            if (audioContext && starGlitBuffer) { playSound(starGlitBuffer); }
+
             const numStars = 12 + Math.floor(Math.random() * 6);
             for (let i = 0; i < numStars; i++) {
                 const sparkle = document.createElement('img');
@@ -729,9 +958,7 @@
                 setTimeout(() => sparkle.remove(), 600);
             }
         }
-
         document.addEventListener('click', (e) => {
-            // Only create sparkles if the enter screen is gone
             if (document.getElementById('enter-screen').classList.contains('fade-out')) {
                 createSparkleBurst(e.clientX, e.clientY);
             }
@@ -745,7 +972,6 @@
         const canvas = document.getElementById('space');
         const ctx = canvas.getContext('2d');
         let w, h;
-
         function resize() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
@@ -815,6 +1041,7 @@
 
                     setTimeout(() => {
                         document.getElementById('logo-wrapper').classList.add('move-top');
+                        authContainer.classList.add('visible'); // Fade in auth container
 
                         setTimeout(() => {
                             logoMoveComplete = true;
@@ -852,7 +1079,7 @@
                                         }, 800);
                                     }, 600);
                                 }, 800);
-                            }, 400);
+                            }, 800);
                         }, 1600);
                     }, 1500);
                 }
@@ -913,7 +1140,6 @@
 
         const loadingBar = document.querySelector('.loading-bar');
         const loadingFill = document.querySelector('.loading-bar-fill');
-
         const sparklesContainer = document.createElement('div');
         sparklesContainer.className = 'loading-bar-sparkles';
         loadingBar.appendChild(sparklesContainer);
@@ -929,42 +1155,32 @@
             sparkle.style.opacity = '1';
             sparkle.style.filter = `drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)`;
             sparkle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-
             sparklesContainer.appendChild(sparkle);
-
             setTimeout(() => {
                 sparkle.style.opacity = '0';
                 sparkle.style.transform = `translateY(-10px) scale(0.5) rotate(${Math.random() * 360}deg)`;
             }, 50);
-
             setTimeout(() => sparkle.remove(), 850);
         }
 
         function createLoadingBarExplosion() {
             console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
-            // Play the sound here!
             playSound(starGlitBuffer);
-
             const loadingBarRect = loadingBar.getBoundingClientRect();
             const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
             const titleGlowRect = titleGlow.getBoundingClientRect();
-
             createStarExplosion(loadingBarRect, 40, 'bar');
             createStarExplosion(loadingTextRect, 25, 'text');
             createStarExplosion(titleGlowRect, 30, 'title');
-
             createScreenFlash();
-
             setTimeout(() => {
                 loadingBar.style.opacity = '0';
                 loadingBar.style.transform = 'scale(0.8)';
             }, 100);
-
             setTimeout(() => {
                 document.querySelector('.loading-text').style.opacity = '0';
                 document.querySelector('.loading-text').style.transform = 'scale(0.8)';
             }, 150);
-
             setTimeout(() => {
                 titleGlow.style.opacity = '0';
                 titleGlow.style.transform = 'scale(0.8)';
@@ -983,60 +1199,46 @@
             flash.style.zIndex = '999998';
             flash.style.opacity = '1';
             flash.style.transition = 'opacity 0.8s ease-out';
-
             document.body.appendChild(flash);
-
             setTimeout(() => {
                 flash.style.opacity = '0';
             }, 100);
-
             setTimeout(() => {
                 flash.remove();
             }, 900);
         }
 
         function createMobileExplosion() {
-            // Play the sound here!
             playSound(starGlitBuffer);
-
             const loadingBarRect = loadingBar.getBoundingClientRect();
             const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
             const titleGlowRect = titleGlow.getBoundingClientRect();
-
             createStarExplosion(loadingBarRect, 12, 'bar');
             createStarExplosion(loadingTextRect, 8, 'text');
             createStarExplosion(titleGlowRect, 10, 'title');
-
             createScreenFlash();
         }
 
         function createStarExplosion(elementRect, numStars, type) {
             const centerX = elementRect.left + elementRect.width / 2;
             const centerY = elementRect.top + elementRect.height / 2;
-
             const isMobile = window.innerWidth <= 768;
             const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
-
             console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
-
             for (let i = 0; i < adjustedStars; i++) {
                 const star = document.createElement('img');
                 star.src = sparkleImgSrc;
                 star.className = 'explosion-star';
-
                 const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
                 star.style.position = 'fixed';
                 star.style.zIndex = '999999';
                 star.style.pointerEvents = 'none';
-
                 const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
                 const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
-
                 const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
                 star.style.filter = glowIntensity;
-
                 let startX, startY;
                 if (type === 'bar') {
                     startX = elementRect.left + (Math.random() * elementRect.width);
@@ -1045,36 +1247,29 @@
                     startX = elementRect.left + (Math.random() * elementRect.width);
                     startY = elementRect.top + (Math.random() * elementRect.height);
                 }
-
                 const angle = Math.random() * 2 * Math.PI;
                 const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
                 const finalX = startX + Math.cos(angle) * distance;
                 const finalY = startY + Math.sin(angle) * distance;
-
                 star.style.left = `${startX - size / 2}px`;
                 star.style.top = `${startY - size / 2}px`;
                 star.style.opacity = '1';
                 star.style.transform = 'scale(1.2) rotate(0deg)';
-
                 const animationDuration = isMobile ? '1s' : '1.5s';
                 star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
-
                 document.body.appendChild(star);
-
                 star.onerror = () => {
                     star.style.background = glowColor;
                     star.style.borderRadius = '50%';
                     star.style.boxShadow = `0 0 8px ${glowColor}`;
                     star.src = '';
                 };
-
                 requestAnimationFrame(() => {
                     star.style.left = `${finalX - size / 2}px`;
                     star.style.top = `${finalY - size / 2}px`;
                     star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`;
                     star.style.opacity = '0';
                 });
-
                 const cleanupTime = isMobile ? 1100 : 1600;
                 setTimeout(() => {
                     if (star.parentNode) {
@@ -1088,51 +1283,39 @@
             const loadingBarRect = loadingBar.getBoundingClientRect();
             const centerX = loadingBarRect.left + loadingBarRect.width / 2;
             const centerY = loadingBarRect.top + loadingBarRect.height / 2;
-
             const isMobile = window.innerWidth <= 768;
             const numSparkles = isMobile ? 15 : 30;
-
             for (let i = 0; i < numSparkles; i++) {
                 const sparkle = document.createElement('img');
                 sparkle.src = sparkleImgSrc;
                 sparkle.className = 'sparkle-star';
-
                 const size = Math.random() * 15 + 8;
                 sparkle.style.width = `${size}px`;
                 sparkle.style.height = `${size}px`;
-
                 const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
                 const radius = isMobile ? 40 + Math.random() * 30 : 60 + Math.random() * 40;
                 const startX = centerX + Math.cos(angle) * 25;
                 const startY = centerY + Math.sin(angle) * 15;
-
                 sparkle.style.left = `${startX - size / 2}px`;
                 sparkle.style.top = `${startY - size / 2}px`;
                 sparkle.style.opacity = '1';
                 sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
                 sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
-
                 document.body.appendChild(sparkle);
-
                 void sparkle.offsetWidth;
-
                 const finalX = centerX + Math.cos(angle) * radius;
                 const finalY = centerY + Math.sin(angle) * radius;
-
                 sparkle.style.left = `${finalX - size / 2}px`;
                 sparkle.style.top = `${finalY - size / 2}px`;
                 sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
                 sparkle.style.opacity = '0';
-
                 setTimeout(() => sparkle.remove(), 1500);
             }
         }
 
-        // --- Core Loader Logic (wrapped in a function to be called by enter-button) ---
-        let loadingInterval; // Declare globally to clear/restart
+        let loadingInterval;
         function startLoaderSequence() {
-            loader.classList.add('visible'); // Instantly make loader visible
-
+            loader.classList.add('visible');
             let progress = 0;
             loadingInterval = setInterval(() => {
                 progress += Math.random() * 8;
@@ -1140,28 +1323,20 @@
                     progress = 100;
                     clearInterval(loadingInterval);
                     barFill.style.width = '100%';
-
-                    // Final loading bar styling
                     loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
                     loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
                     loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
                     loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
                     loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-
                     const loadingTextElement = document.querySelector('.loading-text');
                     loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
                     loadingTextElement.style.color = '#0ff';
-
                     titleLetters.forEach(letter => {
                         letter.classList.add('glow-gold');
                     });
-
                     loadingFill.classList.add('full');
-
                     console.log('🚀 Loading complete! Starting transition sequence...');
-
                     const isMobile = window.innerWidth <= 768;
-
                     if (isMobile) {
                         console.log('📱 Mobile detected - using ultra-optimized sequence');
                         loadingBar.style.opacity = '0';
@@ -1170,10 +1345,8 @@
                         document.querySelector('.loading-text').style.visibility = 'hidden';
                         titleGlow.style.opacity = '0';
                         titleGlow.style.visibility = 'hidden';
-
-                        createMobileExplosion(); // This now plays the sound
+                        createMobileExplosion();
                         animate();
-
                         setTimeout(() => {
                             console.log('🌟 Fading out loader background and revealing starfield...');
                             loader.classList.add('fade-out');
@@ -1184,7 +1357,7 @@
                         console.log('💻 Desktop detected - using full sequence');
                         createLoadingBarCelebration();
                         setTimeout(() => {
-                            createLoadingBarExplosion(); // This now plays the sound
+                            createLoadingBarExplosion();
                             animate();
                             setTimeout(() => {
                                 console.log('🌟 Fading out loader and revealing starfield...');
@@ -1194,6 +1367,7 @@
                             }, 800);
                         }, 300);
                     }
+                    getSession(); // Call the auth check after the main content has loaded
                 } else {
                     barFill.style.width = progress + '%';
                     if (Math.random() < 0.6) {
@@ -1210,9 +1384,7 @@
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, w, h);
         };
-
         const logo = document.getElementById('logo');
-
         function triggerPulse() {
             if (logoMoveComplete) {
                 logo.style.animation = 'logoPulse 1.2s ease-in-out';
@@ -1230,60 +1402,46 @@
             }, delay);
         }
 
-        // --- New: Handle "Press to Enter" button click ---
         const enterScreen = document.getElementById('enter-screen');
         const enterButton = document.getElementById('enter-button');
-
         enterButton.addEventListener('click', () => {
             enterScreen.classList.add('fade-out');
             setTimeout(() => {
-                enterScreen.remove(); // Remove the enter screen after it fades out
-                startLoaderSequence(); // Start your original loader
-            }, 1000); // Match fade-out transition duration
+                enterScreen.remove();
+                startLoaderSequence();
+            }, 1000);
         });
 
-        // Ensure background is black initially to prevent flash of content
         document.body.style.backgroundColor = 'black';
 
         window.addEventListener('load', () => {
-             // Delay starting randomPulseLoop until after loader sequence
-             setTimeout(randomPulseLoop, 5000); // Existing delay, adjust if needed
+             setTimeout(randomPulseLoop, 5000);
         });
 
         function createLogoSparkle() {
             if (!logoMoveComplete) return;
-
             const logo = document.getElementById('logo');
             const rect = logo.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-
             const sparkle = document.createElement('img');
             sparkle.src = sparkleImgSrc;
             sparkle.className = 'sparkle-star';
-
             const size = Math.random() * 10 + 4;
             sparkle.style.width = `${size}px`;
             sparkle.style.height = `${size}px`;
-
             const angle = Math.random() * 2 * Math.PI;
             const radius = 10 + Math.random() * 30;
             const offsetX = Math.cos(angle) * radius;
             const offsetY = Math.sin(angle) * radius;
-
             sparkle.style.left = `${centerX + offsetX - size / 2}px`;
             sparkle.style.top = `${centerY + offsetY - size / 2}px`;
-
             sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
-
             sparkle.style.opacity = '1';
             document.body.appendChild(sparkle);
-
             void sparkle.offsetWidth;
-
             sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
             sparkle.style.opacity = '0';
-
             setTimeout(() => sparkle.remove(), 600);
         }
 
