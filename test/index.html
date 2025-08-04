@@ -714,25 +714,19 @@
         SterlWorld is still being built • First gateway now open
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Supabase Client Setup ---
-            const SUPABASE_URL = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
-            const SUPABASE_ANON_KEY = 'sb_publishable_Hb2OqQ7fOlgasAxW8WLnTQ_7MgewTxH';
-
-            // Wait until the Supabase library is available
-            function initializeSupabase() {
-                if (typeof Supabase !== 'undefined') {
-                    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    setupApp(supabase);
-                } else {
-                    setTimeout(initializeSupabase, 50);
-                }
-            }
-            initializeSupabase();
-
-            function setupApp(supabase) {
+            // We wait until the DOM is ready AND the Supabase script is loaded.
+            window.onload = function() {
                 try {
+                    // --- Supabase Client Setup ---
+                    const SUPABASE_URL = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
+                    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
+                    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+                    // --- DOM Elements ---
                     const authContainer = document.getElementById('auth-container');
                     const loginFormContainer = document.getElementById('login-form-container');
                     const userInfoContainer = document.getElementById('user-info-container');
@@ -748,6 +742,7 @@
                     const logoutButton = document.getElementById('logout-button');
                     let isLoginMode = false;
 
+                    // --- Supabase Auth Functions ---
                     async function handleAuth(event) {
                         event.preventDefault();
                         const email = emailInput.value;
@@ -906,7 +901,7 @@
                             sparkle.style.opacity = '1';
                             sparkle.style.position = 'fixed';
                             sparkle.style.zIndex = '9999';
-                            sparkle.style.pointerEvents = 'none';
+                            sparkle.style.pointer-events = 'none';
                             sparkle.onerror = () => { sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%'; sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = ''; };
                             document.body.appendChild(sparkle);
                             void sparkle.offsetWidth;
@@ -1243,7 +1238,7 @@
                         enterButton.style.backgroundColor = 'red';
                     }
                 }
-            }
+            };
         });
     </script>
 </body>
