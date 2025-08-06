@@ -17,16 +17,23 @@
       overflow: hidden;
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
-    canvas#space { 
+    /* Updated CSS for layering two canvases */
+    canvas#galaxy, canvas#space { 
       position: fixed; 
       top: 0; 
       left: 0; 
-      z-index: 0; 
       display: block; 
       opacity: 0;
       transition: opacity 1s ease-in;
     }
-    canvas#space.fade-in { opacity: 1; }
+    canvas#galaxy {
+      z-index: -1; /* This canvas is the bottom layer */
+    }
+    canvas#space {
+      z-index: 0; /* This canvas is the middle layer */
+    }
+    canvas#galaxy.fade-in, canvas#space.fade-in { opacity: 1; }
+    
     #logo-wrapper {
       position: absolute;
       top: 50%;
@@ -666,6 +673,7 @@
     <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
   </div>
 
+  <canvas id="galaxy"></canvas>
   <canvas id="space"></canvas>
 
   <div id="logo-wrapper">
@@ -763,26 +771,26 @@
       }
     });
 
-    // --- NEW GALAXY CODE STARTS HERE ---
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
+    // --- New Galaxy Canvas Code ---
+    const galaxyCanvas = document.getElementById('galaxy');
+    const galaxyCtx = galaxyCanvas.getContext('2d');
     let w, h;
-    let particles = [];
-    const particleCount = 500;
-    const particleSize = 1;
-
+    let galaxyParticles = [];
+    const galaxyParticleCount = 500;
+    
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      createParticles(); // Re-create particles on resize to avoid weird artifacts
+      w = galaxyCanvas.width = window.innerWidth;
+      h = galaxyCanvas.height = window.innerHeight;
+      spaceCanvas.width = window.innerWidth;
+      spaceCanvas.height = window.innerHeight;
+      createGalaxyParticles();
     }
     window.addEventListener('resize', resize);
-    resize();
 
-    function createParticles() {
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push({
+    function createGalaxyParticles() {
+      galaxyParticles = [];
+      for (let i = 0; i < galaxyParticleCount; i++) {
+        galaxyParticles.push({
           x: Math.random() * w,
           y: Math.random() * h,
           size: Math.random() * 2 + 0.5,
@@ -793,58 +801,169 @@
     }
 
     function drawGalaxy() {
-      ctx.clearRect(0, 0, w, h);
-
-      // Create a radial gradient for the background
-      const gradient = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.max(w, h));
+      galaxyCtx.clearRect(0, 0, w, h);
+      const gradient = galaxyCtx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.max(w, h));
       gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
-      gradient.addColorStop(0.1, 'rgba(255, 215, 0, 0.1)'); // Yellow
-      gradient.addColorStop(0.3, 'rgba(0, 255, 255, 0.1)'); // Cyan
-      gradient.addColorStop(0.5, 'rgba(255, 94, 196, 0.1)'); // Pink
+      gradient.addColorStop(0.1, 'rgba(255, 215, 0, 0.1)');
+      gradient.addColorStop(0.3, 'rgba(0, 255, 255, 0.1)');
+      gradient.addColorStop(0.5, 'rgba(255, 94, 196, 0.1)');
       gradient.addColorStop(0.7, 'rgba(0, 0, 20, 0.9)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, w, h);
-
-      // Draw the particles
-      ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < particleCount; i++) {
-        const p = particles[i];
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-
-        // Move particles
+      galaxyCtx.fillStyle = gradient;
+      galaxyCtx.fillRect(0, 0, w, h);
+      galaxyCtx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < galaxyParticleCount; i++) {
+        const p = galaxyParticles[i];
+        galaxyCtx.beginPath();
+        galaxyCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2, false);
+        galaxyCtx.fillStyle = p.color;
+        galaxyCtx.fill();
         p.x += Math.cos(i) * p.speed;
         p.y += Math.sin(i) * p.speed;
-
-        // Reset particles if they go off screen
         if (p.x > w || p.x < 0 || p.y > h || p.y < 0) {
           p.x = Math.random() * w;
           p.y = Math.random() * h;
         }
       }
-
       requestAnimationFrame(drawGalaxy);
     }
-    // --- NEW GALAXY CODE ENDS HERE ---
+    // --- End New Galaxy Canvas Code ---
 
-
+    // --- Original Starfield Code (Modified to run on its own canvas) ---
+    const spaceCanvas = document.getElementById('space');
+    const spaceCtx = spaceCanvas.getContext('2d');
+    
     const starImage = new Image();
     starImage.src = sparkleImgSrc;
-    
     starImage.onerror = () => {
       const fallbackImage = new Image();
-      fallbackImage.src = canvas.toDataURL();
+      fallbackImage.src = spaceCanvas.toDataURL();
       starImage.src = fallbackImage.src;
     };
 
+    let stars = [];
+    function createStar() {
+      return {
+        x: (Math.random() - 0.5) * w * 1.5,
+        y: (Math.random() - 0.5) * h * 1.5,
+        z: Math.random() * w,
+        size: Math.random() * 0.8 + 0.3,
+        rotationAngle: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
+      };
+    }
+    for (let i = 0; i < 200; i++) stars.push(createStar());
+
+    let warpSpeed = 30;
+    const normalSpeed = 0.5;
+    const warpDuration = 3000;
+    let warpStartTime = null;
+    let warpComplete = false;
+    let lastTime = performance.now();
     let logoMoveComplete = false;
 
-    // Fixed letter glow function
+    function animateStarfield(time = performance.now()) {
+      if (!warpStartTime) warpStartTime = time;
+      const elapsed = time - warpStartTime;
+
+      if (elapsed < warpDuration) {
+        const t = elapsed / warpDuration;
+        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+      } else {
+        warpSpeed = normalSpeed;
+        if (!warpComplete) {
+          warpComplete = true;
+          document.getElementById('logo-wrapper').classList.add('fade-in');
+          
+          setTimeout(() => {
+            document.getElementById('logo-wrapper').classList.add('move-top');
+            
+            setTimeout(() => {
+              logoMoveComplete = true;
+              startLogoSparkleLoop();
+              
+              const logoWrapper = document.getElementById('logo-wrapper');
+              const logoRect = logoWrapper.getBoundingClientRect();
+              const logoBottom = logoRect.bottom;
+              const contentMargin = 40;
+              const newContentTop = logoBottom + contentMargin;
+              
+              const content = document.getElementById('mainText');
+              content.style.top = `${newContentTop}px`;
+              
+              setTimeout(() => {
+                content.classList.add('visible');
+                
+                setTimeout(() => {
+                  document.getElementById('constructionNotice').classList.add('visible');
+                  
+                  setTimeout(() => {
+                    document.getElementById('portfolioLabel').classList.add('visible');
+                    
+                    setTimeout(() => {
+                      const tooltip = document.getElementById('portfolioTooltip');
+                      if (tooltip) {
+                        tooltip.classList.add('show');
+                        setTimeout(() => {
+                          tooltip.style.opacity = '0';
+                          setTimeout(() => tooltip.remove(), 500);
+                        }, 2000);
+                      }
+                    }, 800);
+                  }, 600);
+                }, 800);
+              }, 400);
+            }, 1600);
+          }, 1500);
+        }
+      }
+
+      const delta = (time - lastTime) / 16.67;
+      lastTime = time;
+
+      spaceCtx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      spaceCtx.fillRect(0, 0, w, h);
+
+      stars.forEach((s, i) => {
+        s.z -= warpSpeed * delta;
+        if (s.z <= 0) {
+          stars[i] = createStar();
+          return;
+        }
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) {
+          stars[i] = createStar();
+          return;
+        }
+        spaceCtx.save();
+        spaceCtx.translate(px, py);
+        spaceCtx.rotate(s.rotationAngle);
+        spaceCtx.shadowBlur = 14;
+        spaceCtx.shadowColor = '#f7de99';
+        spaceCtx.globalAlpha = 0.35;
+        let starSize = s.size * (1 - s.z / w) * 25;
+        
+        if (starImage.complete && starImage.naturalWidth > 0) {
+          spaceCtx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        } else {
+          spaceCtx.fillStyle = '#ffd700';
+          spaceCtx.beginPath();
+          spaceCtx.arc(0, 0, starSize / 2, 0, Math.PI * 2);
+          spaceCtx.fill();
+        }
+        
+        spaceCtx.restore();
+        s.rotationAngle += s.rotationSpeed;
+      });
+
+      requestAnimationFrame(animateStarfield);
+    }
+
+    // --- End Original Starfield Code ---
+
+    // FIXED LETTER GLOW FUNCTION - NOW GLOWS EACH LETTER INDIVIDUALLY
     function updateLetterGlow() {
       const barFillRect = barFill.getBoundingClientRect();
       titleLetters.forEach((letter) => {
@@ -941,29 +1060,14 @@
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
       
-      // Much fewer stars for mobile performance
-      createStarExplosion(loadingBarRect, 12, 'bar'); // Was 40, now 12
-      createStarExplosion(loadingTextRect, 8, 'text'); // Was 25, now 8
-      createStarExplosion(titleGlowRect, 10, 'title'); // Was 30, now 10
-      
-      // Quick flash
-      createScreenFlash();
-    }
-
-    function createStarExplosion(elementRect, numStars, type) {
-      const centerX = elementRect.left + elementRect.width / 2;
-      const centerY = elementRect.top + elementRect.height / 2;
-      
-      // Even more aggressive mobile optimization
       const isMobile = window.innerWidth <= 768;
-      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars; // Was 0.6, now 0.4
+      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
       
       for (let i = 0; i < adjustedStars; i++) {
         const star = document.createElement('img');
         star.src = sparkleImgSrc;
         star.className = 'explosion-star';
         
-        // Smaller stars on mobile
         const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
@@ -974,7 +1078,6 @@
         const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
         const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
         
-        // Less intensive glow on mobile
         const glowIntensity = isMobile ? 'drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)' : 'drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)';
         star.style.filter = glowIntensity.replace(/\$\{glowColor\}/g, glowColor);
         
@@ -988,7 +1091,6 @@
         }
         
         const angle = Math.random() * 2 * Math.PI;
-        // Shorter distances and faster animation on mobile
         const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
         const finalX = startX + Math.cos(angle) * distance;
         const finalY = startY + Math.sin(angle) * distance;
@@ -998,7 +1100,6 @@
         star.style.opacity = '1';
         star.style.transform = 'scale(1.2) rotate(0deg)';
         
-        // Faster animation on mobile
         const animationDuration = isMobile ? '1s' : '1.5s';
         star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
         
@@ -1018,7 +1119,6 @@
           star.style.opacity = '0';
         });
         
-        // Shorter cleanup time on mobile
         const cleanupTime = isMobile ? 1100 : 1600;
         setTimeout(() => {
           if (star.parentNode) {
@@ -1109,6 +1209,7 @@
           createMobileExplosion();
           
           drawGalaxy();
+          animateStarfield();
           
           setTimeout(() => {
             loader.classList.add('fade-out');
@@ -1118,8 +1219,10 @@
             }, 800);
             
             setTimeout(() => {
-              const canvas = document.getElementById('space');
-              canvas.classList.add('fade-in');
+              const galaxyCanvas = document.getElementById('galaxy');
+              const spaceCanvas = document.getElementById('space');
+              galaxyCanvas.classList.add('fade-in');
+              spaceCanvas.classList.add('fade-in');
             }, 200);
           }, 100);
         } else {
@@ -1129,6 +1232,7 @@
             createLoadingBarExplosion();
             
             drawGalaxy();
+            animateStarfield();
             
             setTimeout(() => {
               loader.classList.add('fade-out');
@@ -1138,8 +1242,10 @@
               }, 800);
               
               setTimeout(() => {
-                const canvas = document.getElementById('space');
-                canvas.classList.add('fade-in');
+                const galaxyCanvas = document.getElementById('galaxy');
+                const spaceCanvas = document.getElementById('space');
+                galaxyCanvas.classList.add('fade-in');
+                spaceCanvas.classList.add('fade-in');
               }, 400);
             }, 800);
           }, 300);
@@ -1157,8 +1263,8 @@
     }, 120);
 
     starImage.onload = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, w, h);
+      spaceCtx.fillStyle = 'black';
+      spaceCtx.fillRect(0, 0, w, h);
     };
 
     const logo = document.getElementById('logo');
@@ -1226,6 +1332,10 @@
         createLogoSparkle();
       }, 2000);
     }
+
+    // Initial canvas setup
+    createGalaxyParticles();
+    resize();
   </script>
 </body>
 </html>
