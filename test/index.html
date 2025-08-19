@@ -1,1092 +1,1094 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SterlWorld | Multimedia Universe by Sterlin Griffin</title>
-  <meta name="description" content="Enter SterlWorld — an animated universe of games, music, and characters by artist Sterlin Griffin. View portfolio and flagship project Pizza Dales." />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      height: 100%;
-      width: 100%;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow: hidden;
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SterlWorld | Multimedia Universe by Sterlin Griffin</title>
+  <meta name="description" content="Enter SterlWorld — an animated universe of games, music, and characters by artist Sterlin Griffin. View portfolio and flagship project Pizza Dales." />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow: hidden;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+    }
 
-    /* --- NEW & FIXED: ENTER SCREEN STYLES --- */
-    #enter-screen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100000;
-      cursor: pointer;
-      opacity: 1;
-      transition: opacity 0.5s ease-out;
-    }
-    #enter-screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #enter-screen h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(2rem, 8vw, 4rem);
-      color: #fff;
-      text-shadow: 
-        0 0 10px #fff,
-        0 0 20px #fff,
-        0 0 40px #0ff,
-        0 0 70px #0ff;
-      animation: enterGlow 3s ease-in-out infinite alternate;
-      user-select: none;
-      opacity: 1;
-      transition: opacity 0.5s ease-in; /* Text fades first */
-    }
-    #enter-screen.hiding h1 {
-        opacity: 0; /* Class to trigger the text fade */
-    }
-    /* FIXED: Glow animation pulses intensity, not color */
-    @keyframes enterGlow {
-      from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
-      to { text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 50px #0ff, 0 0 80px #0ff; }
-    }
-    /* Twinkling star background for enter screen */
-    @keyframes twinkle {
-      0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
-    }
-    .star {
-        position: absolute;
-        background-color: white;
-        border-radius: 50%;
-        box-shadow: 0 0 4px #fff, 0 0 8px #fff;
-        animation: twinkle 4s infinite;
-    }
-    /* --- END: ENTER SCREEN STYLES --- */
+    /* --- NEW & FIXED: ENTER SCREEN STYLES --- */
+    #enter-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity 0.5s ease-out;
+    }
+    #enter-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #enter-screen h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 8vw, 4rem);
+      color: #fff;
+      text-shadow: 
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px #0ff,
+        0 0 70px #0ff;
+      animation: enterGlow 3s ease-in-out infinite alternate;
+      user-select: none;
+      opacity: 1;
+      transition: opacity 0.5s ease-in; /* Text fades first */
+    }
+    #enter-screen.hiding h1 {
+        opacity: 0; /* Class to trigger the text fade */
+    }
+    /* FIXED: Glow animation pulses intensity, not color */
+    @keyframes enterGlow {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
+      to { text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 50px #0ff, 0 0 80px #0ff; }
+    }
+    /* Twinkling star background for enter screen */
+    @keyframes twinkle {
+      0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
+    }
+    .star {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: 0 0 4px #fff, 0 0 8px #fff;
+        animation: twinkle 4s infinite;
+    }
+    /* --- END: ENTER SCREEN STYLES --- */
 
-    canvas#space { 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      z-index: 0; 
-      display: block; 
-      opacity: 0;
-      transition: opacity 1s ease-in;
-    }
-    canvas#space.fade-in { opacity: 1; }
-    #logo-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      opacity: 0;
-      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
-      text-align: center;
-    }
-    #logo-wrapper.fade-in { opacity: 1; }
-    #logo-wrapper.move-top {
-      top: 60px;
-      transform: translate(-50%, 0);
-      position: fixed;
-    }
-    #logo { 
-      width: 300px; 
-      max-width: 80vw;
-      transform-origin: center center;
-      display: block;
-      margin: 0 auto;
-    }
-    .logo-tagline {
-      font-size: 0.85rem;
-      color: white;
-      font-weight: 400;
-      margin-top: 8px;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
-      opacity: 0;
-      transition: opacity 1.5s ease 0.5s;
-      letter-spacing: 0.5px;
-      font-family: 'Poppins', sans-serif;
-    }
-    #logo-wrapper.fade-in .logo-tagline {
-      opacity: 1;
-    }
-    @keyframes logoPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
-    .content {
-      position: absolute;
-      top: 200px; /* Fallback only */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 90%;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1.5s ease, top 0.3s ease; /* Added top transition */
-      font-size: 1.2rem;
-      color: #ccc;
-      z-index: 5;
-      padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      height: auto; 
-      min-height: 300px; 
-    }
-    .content.visible { opacity: 1; }
-    .brand-tagline {
-      font-size: 1.1rem;
-      color: #0ff;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px #0ff;
-      animation: taglineGlow 3s ease-in-out infinite alternate;
-    }
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 600;
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: white;
-      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
-      animation: titlePulse 3s ease-in-out infinite alternate;
-      letter-spacing: 2px;
-    }
-    @keyframes titlePulse {
-      0% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff; }
-      100% { text-shadow: 0 0 30px #ffd700, 0 0 50px #ffd700, 0 0 70px #ffd700; }
-    }
-    .content p {
-      font-size: 1.3rem;
-      line-height: 1.8;
-      font-weight: 400;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-      animation: textFloat 4s ease-in-out infinite alternate;
-    }
-    @keyframes textFloat {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-5px); }
-    }
-    .magical-text {
-      color: #ff5ec4;
-      font-weight: 600;
-      text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4;
-      animation: magicalGlow 2s ease-in-out infinite alternate;
-    }
-    .glow-text {
-      color: #0ff;
-      font-weight: 600;
-      text-shadow: 0 0 15px #0ff, 0 0 25px #0ff;
-    }
-    .power-text {
-      color: #ffd700;
-      font-weight: 700;
-      text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700;
-      animation: powerPulse 1.5s ease-in-out infinite alternate;
-    }
-    @keyframes magicalGlow {
-      0% { text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4; }
-      100% { text-shadow: 0 0 25px #ff5ec4, 0 0 35px #ff5ec4, 0 0 45px #ff5ec4; }
-    }
-    @keyframes powerPulse {
-      0% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700; }
-      100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
-    }
-    .support {
-      margin-top: 2.5rem;
-    }
-    .support p { margin: 0.5rem 0; }
-    .support a {
-      color: #0ff;
-      font-weight: bold;
-      text-decoration: none;
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-    }
-    .support a:hover {
-      color: #fff;
-      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
-    }
-    .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform-origin: center center;
-      z-index: 9999;
-      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-      opacity: 1;
-      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-      animation: spin 0.6s linear;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .portfolio-section {
-      margin-top: 5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-    #portfolio-bubble {
-      width: 120px;
-      height: 120px;
-      background-image: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/test/Portfolio%20Bubble%20Test.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 
-        0 0 25px rgba(244, 217, 167, 0.7),
-        0 0 50px rgba(244, 217, 167, 0.5);
-      cursor: pointer;
-      animation: portfolioFloat 4s ease-in-out infinite alternate;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      border: 3px solid rgba(244, 217, 167, 0.4);
-      position: relative;
-    }
-    #portfolio-bubble:hover {
-      transform: scale(1.15);
-      box-shadow: 
-        0 0 35px rgba(244, 217, 167, 0.9),
-        0 0 70px rgba(244, 217, 167, 0.7);
-      border: 3px solid rgba(244, 217, 167, 0.8);
-    }
-    .portfolio-label {
-      color: #f4d9a7;
-      font-size: 1.1rem;
-      font-weight: 600;
-      text-shadow: 0 0 15px rgba(244, 217, 167, 0.6);
-      animation: portfolioLabelGlow 3s ease-in-out infinite alternate;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-    }
-    .portfolio-label.visible {
-      opacity: 1;
-    }
-    @keyframes portfolioLabelGlow {
-      0% { text-shadow: 0 0 15px rgba(244, 217, 167, 0.6); }
-      100% { text-shadow: 0 0 25px rgba(244, 217, 167, 0.8), 0 0 35px rgba(244, 217, 167, 0.4); }
-    }
-    #portfolio-bubble::after {
-      content: 'Click to explore my work!';
-      position: absolute;
-      bottom: 140px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.95);
-      color: #f4d9a7;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      border: 2px solid rgba(244, 217, 167, 0.4);
-      box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
-      text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
-    }
-    #portfolio-bubble:hover::after {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-5px);
-    }
-    .intro-tooltip {
-      position: absolute;
-      bottom: 140px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.95);
-      color: #f4d9a7;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-      border: 2px solid rgba(244, 217, 167, 0.4);
-      box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
-      text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
-    }
-    .intro-tooltip.show {
-      opacity: 1;
-      animation: tooltipPulse 2s ease-in-out infinite alternate;
-    }
-    @keyframes tooltipPulse {
-      0% { transform: translateX(-50%) scale(1); }
-      100% { transform: translateX(-50%) scale(1.05); }
-    }
-    @keyframes portfolioFloat {
-      0% { 
-        transform: translateY(0px) rotate(0deg);
-        box-shadow: 
-          0 0 25px rgba(244, 217, 167, 0.7),
-          0 0 50px rgba(244, 217, 167, 0.5);
-      }
-      100% { 
-        transform: translateY(-10px) rotate(5deg);
-        box-shadow: 
-          0 0 30px rgba(244, 217, 167, 0.8),
-          0 0 60px rgba(244, 217, 167, 0.6);
-      }
-    }
-    .construction-notice {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: #0ff;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      z-index: 999;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    }
-    .construction-notice.visible {
-      opacity: 1;
-    }
-    /* MODIFIED: Loader starts hidden */
-    #loader {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: black;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      padding: 0 15px;
-      transition: opacity 0.8s ease-out;
-      visibility: hidden;
-      opacity: 0;
-    }
-    #loader.visible {
-        visibility: visible;
-        opacity: 1;
-    }
-    #loader.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #loader h2 {
-      color: white;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      font-family: 'Orbitron', sans-serif;
-      letter-spacing: 1px;
-      user-select: none;
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 90vw;
-      display: flex;
-      justify-content: center;
-      gap: 2px;
-      white-space: nowrap;
-      transition: opacity 0.3s ease;
-    }
-    #loader h2 .loading-text {
-      color: #0ff;
-      font-weight: 600;
-      user-select: none;
-      white-space: nowrap;
-      transition: opacity 0.3s ease;
-    }
-    #titleGlow {
-      display: inline-flex;
-      user-select: none;
-      gap: 0;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.3s ease;
-    }
-    #titleGlow span {
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-      color: white;
-      font-weight: 600;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      line-height: 1;
-      padding: 0 0.5px;
-    }
-    .glow-gold {
-      color: #f4d9a7 !important;
-      text-shadow:
-        0 0 5px #f4d9a7,
-        0 0 10px #e8c183,
-        0 0 15px #deb76e,
-        0 0 20px #d4a853,
-        0 0 25px #ca9c43,
-        0 0 30px #bf8f33,
-        0 0 35px #b48223 !important;
-      animation: etherealGlow 2s ease-in-out infinite alternate;
-    }
-    @keyframes etherealGlow {
-      0% { 
-        text-shadow:
-          0 0 5px #f4d9a7, 0 0 10px #e8c183, 0 0 15px #deb76e,
-          0 0 20px #d4a853, 0 0 25px #ca9c43;
-      }
-      100% { 
-        text-shadow:
-          0 0 8px #fce8b8, 0 0 16px #f4d9a7, 0 0 24px #e8c183,
-          0 0 32px #deb76e, 0 0 40px #d4a853, 0 0 48px #ca9c43;
-      }
-    }
-    .loading-bar {
-      position: relative;
-      width: 100%;
-      max-width: 90vw;
-      height: 16px;
-      background: #111;
-      border-radius: 12px;
-      box-shadow:
-        inset 0 0 8px #0ff,
-        0 0 12px #0ff;
-      overflow: hidden;
-      margin: 0 auto 15px;
-      filter: drop-shadow(0 0 8px #0ff);
-      transition: all 0.3s ease;
-    }
-    .loading-bar-fill {
-      position: relative;
-      height: 100%;
-      width: 0%;
-      border-radius: 12px;
-      background: linear-gradient(
-        90deg, #0ff 0%, #00e6e6 25%, #ff5ec4 50%,
-        #e054b8 75%, #ffd700 100%
-      );
-      box-shadow:
-        0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(255, 94, 196, 0.6),
-        0 0 35px rgba(255, 215, 0, 0.4);
-      filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8));
-      overflow: visible;
-      transition: all 0.3s ease;
-    }
-    .loading-bar-sparkles {
-      position: absolute;
-      top: 50%; left: 0;
-      height: 100%;
-      pointer-events: none;
-      overflow: visible;
-      transform: translateY(-50%);
-      z-index: 2;
-    }
-    @keyframes flicker {
-      0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
-      50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
-    }
-    @media screen and (max-width: 768px) {
-      #logo { width: 200px; }
-      #logo-wrapper.move-top { top: 40px; }
-      .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
-      h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
-      .content { font-size: 0.95rem; padding: 0 15px; }
-      .content p { font-size: 1.1rem; line-height: 1.6; }
-      .portfolio-section { margin-top: 3rem; }
-      #portfolio-bubble { width: 80px; height: 80px; }
-      #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-      .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-      .portfolio-label { font-size: 0.9rem; }
-      .construction-notice { font-size: 11px; padding: 5px 10px; }
-    }
-    @media screen and (max-width: 480px) {
-      #logo { width: 160px; }
-      .logo-tagline { font-size: 0.65rem; margin-top: 2px; }
-      h1 { font-size: 1.4rem; margin-bottom: 0.8rem; }
-      .content { font-size: 0.9rem; padding: 0 10px; }
-      .content p { font-size: 1rem; line-height: 1.5; }
-      .portfolio-section { margin-top: 2.5rem; }
-      #portfolio-bubble { width: 70px; height: 70px; }
-      #portfolio-bubble::after { bottom: 100px; font-size: 11px; padding: 4px 6px; }
-      .intro-tooltip { bottom: 100px; font-size: 11px; padding: 4px 6px; }
-      .portfolio-label { font-size: 0.8rem; }
-      .construction-notice { font-size: 10px; padding: 4px 8px; }
-    }
-    @media screen and (max-width: 600px) {
-      .loading-bar { height: 14px; }
-    }
-    @media screen and (max-height: 600px) and (orientation: landscape) {
-      #logo-wrapper.move-top { top: 25px; }
-      h1 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-      .content p { font-size: 0.95rem; line-height: 1.4; }
-      .portfolio-section { margin-top: 1.5rem; }
-      #portfolio-bubble { width: 60px; height: 60px; }
-      .portfolio-label { font-size: 0.75rem; }
-    }
-  </style>
+    canvas#space { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      z-index: 0; 
+      display: block; 
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+    canvas#space.fade-in { opacity: 1; }
+    #logo-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
+      text-align: center;
+    }
+    #logo-wrapper.fade-in { opacity: 1; }
+    #logo-wrapper.move-top {
+      top: 60px;
+      transform: translate(-50%, 0);
+      position: fixed;
+    }
+    #logo { 
+      width: 300px; 
+      max-width: 80vw;
+      transform-origin: center center;
+      display: block;
+      margin: 0 auto;
+    }
+    .logo-tagline {
+      font-size: 0.85rem;
+      color: white;
+      font-weight: 400;
+      margin-top: 8px;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      transition: opacity 1.5s ease 0.5s;
+      letter-spacing: 0.5px;
+      font-family: 'Poppins', sans-serif;
+    }
+    #logo-wrapper.fade-in .logo-tagline {
+      opacity: 1;
+    }
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .content {
+      position: absolute;
+      top: 200px; /* Fallback only */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease, top 0.3s ease; /* Added top transition */
+      font-size: 1.2rem;
+      color: #ccc;
+      z-index: 5;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      height: auto; 
+      min-height: 300px; 
+    }
+    .content.visible { opacity: 1; }
+    .brand-tagline {
+      font-size: 1.1rem;
+      color: #0ff;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #0ff;
+      animation: taglineGlow 3s ease-in-out infinite alternate;
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: white;
+      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
+      animation: titlePulse 3s ease-in-out infinite alternate;
+      letter-spacing: 2px;
+    }
+    @keyframes titlePulse {
+      0% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff; }
+      100% { text-shadow: 0 0 30px #ffd700, 0 0 50px #ffd700, 0 0 70px #ffd700; }
+    }
+    .content p {
+      font-size: 1.3rem;
+      line-height: 1.8;
+  -    font-weight: 400;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      animation: textFloat 4s ease-in-out infinite alternate;
+    }
+    @keyframes textFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-5px); }
+    }
+    .magical-text {
+      color: #ff5ec4;
+      font-weight: 600;
+      text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4;
+      animation: magicalGlow 2s ease-in-out infinite alternate;
+    }
+    .glow-text {
+      color: #0ff;
+      font-weight: 600;
+      text-shadow: 0 0 15px #0ff, 0 0 25px #0ff;
+    }
+    .power-text {
+      color: #ffd700;
+      font-weight: 700;
+      text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700;
+      animation: powerPulse 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes magicalGlow {
+      0% { text-shadow: 0 0 15px #ff5ec4, 0 0 25px #ff5ec4; }
+      100% { text-shadow: 0 0 25px #ff5ec4, 0 0 35px #ff5ec4, 0 0 45px #ff5ec4; }
+    }
+    @keyframes powerPulse {
+      0% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700; }
+      100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
+    }
+    .support {
+      margin-top: 2.5rem;
+    }
+    .support p { margin: 0.5rem 0; }
+    .support a {
+      color: #0ff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+    }
+    .support a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
+    }
+    .sparkle-star {
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform-origin: center center;
+      z-index: 9999;
+      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+      animation: spin 0.6s linear;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .portfolio-section {
+      margin-top: 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    #portfolio-bubble {
+      width: 120px;
+      height: 120px;
+      background-image: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/test/Portfolio%20Bubble%20Test.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 
+        0 0 25px rgba(244, 217, 167, 0.7),
+        0 0 50px rgba(244, 217, 167, 0.5);
+      cursor: pointer;
+      animation: portfolioFloat 4s ease-in-out infinite alternate;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border: 3px solid rgba(244, 217, 167, 0.4);
+      position: relative;
+    }
+    #portfolio-bubble:hover {
+      transform: scale(1.15);
+      box-shadow: 
+        0 0 35px rgba(244, 217, 167, 0.9),
+        0 0 70px rgba(244, 217, 167, 0.7);
+      border: 3px solid rgba(244, 217, 167, 0.8);
+    }
+    .portfolio-label {
+      color: #f4d9a7;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-shadow: 0 0 15px rgba(244, 217, 167, 0.6);
+      animation: portfolioLabelGlow 3s ease-in-out infinite alternate;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    .portfolio-label.visible {
+      opacity: 1;
+    }
+    @keyframes portfolioLabelGlow {
+      0% { text-shadow: 0 0 15px rgba(244, 217, 167, 0.6); }
+      100% { text-shadow: 0 0 25px rgba(244, 217, 167, 0.8), 0 0 35px rgba(244, 217, 167, 0.4); }
+    }
+    #portfolio-bubble::after {
+      content: 'Click to explore my work!';
+      position: absolute;
+      bottom: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.95);
+      color: #f4d9a7;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      border: 2px solid rgba(244, 217, 167, 0.4);
+      box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
+      text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
+    }
+    #portfolio-bubble:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-5px);
+    }
+    .intro-tooltip {
+      position: absolute;
+      bottom: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.95);
+      color: #f4d9a7;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      border: 2px solid rgba(244, 217, 167, 0.4);
+      box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
+      text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
+    }
+    .intro-tooltip.show {
+      opacity: 1;
+      animation: tooltipPulse 2s ease-in-out infinite alternate;
+    }
+    @keyframes tooltipPulse {
+      0% { transform: translateX(-50%) scale(1); }
+      100% { transform: translateX(-50%) scale(1.05); }
+    }
+    @keyframes portfolioFloat {
+      0% { 
+        transform: translateY(0px) rotate(0deg);
+        box-shadow: 
+          0 0 25px rgba(244, 217, 167, 0.7),
+          0 0 50px rgba(244, 217, 167, 0.5);
+      }
+      100% { 
+        transform: translateY(-10px) rotate(5deg);
+        box-shadow: 
+          0 0 30px rgba(244, 217, 167, 0.8),
+          0 0 60px rgba(244, 217, 167, 0.6);
+      }
+    }
+    .construction-notice {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #0ff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      z-index: 999;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    .construction-notice.visible {
+      opacity: 1;
+    }
+    /* MODIFIED: Loader starts hidden */
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 0 15px;
+      transition: opacity 0.8s ease-out;
+      visibility: hidden;
+      opacity: 0;
+    }
+    #loader.visible {
+        visibility: visible;
+        opacity: 1;
+    }
+    #loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #loader h2 {
+      color: white;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      user-select: none;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 90vw;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
+    }
+    #loader h2 .loading-text {
+      color: #0ff;
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
+    }
+    #titleGlow {
+      display: inline-flex;
+      user-select: none;
+      gap: 0;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease;
+    }
+    #titleGlow span {
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+      color: white;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      line-height: 1;
+      padding: 0 0.5px;
+    }
+    .glow-gold {
+      color: #f4d9a7 !important;
+      text-shadow:
+        0 0 5px #f4d9a7,
+        0 0 10px #e8c183,
+        0 0 15px #deb76e,
+        0 0 20px #d4a853,
+        0 0 25px #ca9c43,
+        0 0 30px #bf8f33,
+        0 0 35px #b48223 !important;
+      animation: etherealGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes etherealGlow {
+      0% { 
+        text-shadow:
+          0 0 5px #f4d9a7, 0 0 10px #e8c183, 0 0 15px #deb76e,
+          0 0 20px #d4a853, 0 0 25px #ca9c43;
+      }
+      100% { 
+        text-shadow:
+          0 0 8px #fce8b8, 0 0 16px #f4d9a7, 0 0 24px #e8c183,
+          0 0 32px #deb76e, 0 0 40px #d4a853, 0 0 48px #ca9c43;
+      }
+    }
+    .loading-bar {
+      position: relative;
+      width: 100%;
+      max-width: 90vw;
+      height: 16px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow:
+        inset 0 0 8px #0ff,
+        0 0 12px #0ff;
+      overflow: hidden;
+      margin: 0 auto 15px;
+      filter: drop-shadow(0 0 8px #0ff);
+      transition: all 0.3s ease;
+    }
+    .loading-bar-fill {
+      position: relative;
+      height: 100%;
+      width: 0%;
+      border-radius: 12px;
+      background: linear-gradient(
+        90deg, #0ff 0%, #00e6e6 25%, #ff5ec4 50%,
+        #e054b8 75%, #ffd700 100%
+      );
+      box-shadow:
+        0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(255, 94, 196, 0.6),
+        0 0 35px rgba(255, 215, 0, 0.4);
+      filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8));
+      overflow: visible;
+      transition: all 0.3s ease;
+    }
+    .loading-bar-sparkles {
+      position: absolute;
+      top: 50%; left: 0;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    @keyframes flicker {
+      0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
+      50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
+    }
+    @media screen and (max-width: 768px) {
+      #logo { width: 200px; }
+      #logo-wrapper.move-top { top: 40px; }
+      .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
+      h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
+      .content { font-size: 0.95rem; padding: 0 15px; }
+      .content p { font-size: 1.1rem; line-height: 1.6; }
+      .portfolio-section { margin-top: 3rem; }
+      #portfolio-bubble { width: 80px; height: 80px; }
+      #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+      .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+      .portfolio-label { font-size: 0.9rem; }
+      .construction-notice { font-size: 11px; padding: 5px 10px; }
+    }
+    @media screen and (max-width: 480px) {
+      #logo { width: 160px; }
+      .logo-tagline { font-size: 0.65rem; margin-top: 2px; }
+      h1 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+      .content { font-size: 0.9rem; padding: 0 10px; }
+      .content p { font-size: 1rem; line-height: 1.5; }
+      .portfolio-section { margin-top: 2.5rem; }
+      #portfolio-bubble { width: 70px; height: 70px; }
+      #portfolio-bubble::after { bottom: 100px; font-size: 11px; padding: 4px 6px; }
+      .intro-tooltip { bottom: 100px; font-size: 11px; padding: 4px 6px; }
+      .portfolio-label { font-size: 0.8rem; }
+      .construction-notice { font-size: 10px; padding: 4px 8px; }
+    }
+    @media screen and (max-width: 600px) {
+      .loading-bar { height: 14px; }
+    }
+    @media screen and (max-height: 600px) and (orientation: landscape) {
+      #logo-wrapper.move-top { top: 25px; }
+      h1 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+      .content p { font-size: 0.95rem; line-height: 1.4; }
+      .portfolio-section { margin-top: 1.5rem; }
+      #portfolio-bubble { width: 60px; height: 60px; }
+      .portfolio-label { font-size: 0.75rem; }
+    }
+  </style>
 </head>
 <body>
-  
-  <div id="enter-screen">
-    <h1>Tap to Enter</h1>
-  </div>
+  
+  <div id="enter-screen">
+    <h1>Tap to Enter</h1>
+  </div>
 
-  <div id="loader">
-    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
-    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
-  </div>
+  <div id="loader">
+    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
+    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
+  </div>
 
-  <canvas id="space"></canvas>
+  <canvas id="space"></canvas>
 
-  <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
-    <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
-  </div>
+  <div id="logo-wrapper">
+    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+    <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
+  </div>
 
-  <div class="content" id="mainText">
-    <h1>Welcome to SterlWorld</h1>
-    <p>
-      We're building a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
-      Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
-      Stay tuned — the <span class="power-text">extraordinary</span> awaits.
-    </p>
-    
-    <div class="portfolio-section">
-      <a href="#" id="portfolio-bubble" onclick="window.open('https://sterlworld.artstation.com/', '_blank'); return false;">
-        <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
-      </a>
-      <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
-    </div>
-  </div>
+  <div class="content" id="mainText">
+    <h1>Welcome to SterlWorld</h1>
+    <p>
+      We're building a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
+      Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
+      Stay tuned — the <span class="power-text">extraordinary</span> awaits.
+    </p>
+    
+    <div class="portfolio-section">
+      <a href="#" id="portfolio-bubble" onclick="window.open('https://sterlworld.artstation.com/', '_blank'); return false;">
+        <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
+      </a>
+      <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
+    </div>
+  </div>
 
-  <div class="construction-notice" id="constructionNotice">
-    SterlWorld is still being built • First gateway now open
-  </div>
+  <div class="construction-notice" id="constructionNotice">
+    SterlWorld is still being built • First gateway now open
+  </div>
 
-  <script>
-    const enterScreen = document.getElementById('enter-screen');
-    const loader = document.getElementById('loader');
-    const barFill = document.getElementById('barFill');
-    const titleGlow = document.getElementById('titleGlow');
-    const loadingBar = document.querySelector('.loading-bar');
-    const loadingFill = document.querySelector('.loading-bar-fill');
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
-    const logo = document.getElementById('logo');
-    
-    // --- THIS IS THE ONLY CHANGE: CORRECTED URL ---
-    const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
-    explosionSound.preload = 'auto';
-    
-    const loadingText = 'SterlWorld';
-    for (let char of loadingText) {
-        const span = document.createElement('span');
-        span.textContent = char;
-        if(titleGlow) titleGlow.appendChild(span);
-    }
-    const titleLetters = titleGlow ? titleGlow.querySelectorAll('span') : [];
-    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
-    const sparklesContainer = document.createElement('div');
-    sparklesContainer.className = 'loading-bar-sparkles';
-    if(loadingBar) loadingBar.appendChild(sparklesContainer);
+  <script>
+    const enterScreen = document.getElementById('enter-screen');
+    const loader = document.getElementById('loader');
+    const barFill = document.getElementById('barFill');
+    const titleGlow = document.getElementById('titleGlow');
+    const loadingBar = document.querySelector('.loading-bar');
+    const loadingFill = document.querySelector('.loading-bar-fill');
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
+    const logo = document.getElementById('logo');
+    
+    // --- THIS IS THE ONLY CHANGE: CORRECTED URL ---
+    const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
+    explosionSound.preload = 'auto';
+    
+    const loadingText = 'SterlWorld';
+    for (let char of loadingText) {
+        const span = document.createElement('span');
+        span.textContent = char;
+        if(titleGlow) titleGlow.appendChild(span);
+    }
+    const titleLetters = titleGlow ? titleGlow.querySelectorAll('span') : [];
+    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
+    const sparklesContainer = document.createElement('div');
+    sparklesContainer.className = 'loading-bar-sparkles';
+    if(loadingBar) loadingBar.appendChild(sparklesContainer);
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const isDesktop = window.innerWidth > 768;
+    document.addEventListener('DOMContentLoaded', () => {
+        const isDesktop = window.innerWidth > 768;
 
-        if (isDesktop) {
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.width = `${Math.random() * 2 + 1}px`;
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 4}s`;
-                if(enterScreen) enterScreen.appendChild(star);
-            }
-            
-            if(enterScreen) enterScreen.addEventListener('click', () => {
-                explosionSound.play().then(() => {
-                    explosionSound.pause();
-                    explosionSound.currentTime = 0;
-                }).catch(error => console.log("Audio couldn't be primed:", error));
+        if (isDesktop) {
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 2 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 4}s`;
+                if(enterScreen) enterScreen.appendChild(star);
+            }
+            
+            if(enterScreen) enterScreen.addEventListener('click', () => {
+                explosionSound.play().then(() => {
+                    explosionSound.pause();
+                    explosionSound.currentTime = 0;
+                }).catch(error => console.log("Audio couldn't be primed:", error));
 
-                enterScreen.classList.add('hiding');
-                
-                setTimeout(() => {
-                    enterScreen.classList.add('hidden');
-                    if(loader) loader.classList.add('visible');
-                    startLoadingSequence(explosionSound);
-                    setTimeout(() => enterScreen.remove(), 500);
-                }, 500);
+                enterScreen.classList.add('hiding');
+                
+                setTimeout(() => {
+                    enterScreen.classList.add('hidden');
+                    if(loader) loader.classList.add('visible');
+                    startLoadingSequence(explosionSound);
+                    setTimeout(() => enterScreen.remove(), 500);
+                }, 500);
 
-            }, { once: true });
+            }, { once: true });
 
-        } else { 
-            if(enterScreen) enterScreen.style.display = 'none';
-            if(loader) loader.classList.add('visible');
-            startLoadingSequence();
-        }
-    });
+        } else { 
+            if(enterScreen) enterScreen.style.display = 'none';
+            if(loader) loader.classList.add('visible');
+            startLoadingSequence();
+        }
+    });
 
-    function startLoadingSequence(soundToPlay = null) {
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 8;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                if(loadingFill) loadingFill.style.width = '100%';
-                
-                if(loadingFill) {
-                    loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-                    loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-                    loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-                }
-                if(loadingBar) {
-                    loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-                    loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-                }
-                
-                const loadingTextElement = document.querySelector('.loading-text');
-                if(loadingTextElement) {
-                    loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
-                    loadingTextElement.style.color = '#0ff';
-                }
-                
-                if(titleLetters) titleLetters.forEach(letter => letter.classList.add('glow-gold'));
-                if(loadingFill) loadingFill.classList.add('full');
-                
-                console.log('🚀 Loading complete! Starting transition sequence...');
-                
-                if (soundToPlay) {
-                    soundToPlay.play();
-                }
-                
-                const isMobile = window.innerWidth <= 768;
-                
-                if (isMobile) {
-                    // Mobile-specific final animation sequence
-                    createMobileExplosion();
-                    animate();
-                    setTimeout(() => {
-                        if(loader) loader.classList.add('fade-out');
-                        setTimeout(() => loader ? loader.remove() : null, 800);
-                        const spaceCanvas = document.getElementById('space');
-                        if(spaceCanvas) spaceCanvas.classList.add('fade-in');
-                    }, 100);
-                } else {
-                    // Desktop-specific final animation sequence
-                    createLoadingBarCelebration();
-                    setTimeout(() => {
-                        createLoadingBarExplosion();
-                        animate();
-                        setTimeout(() => {
-                            if(loader) loader.classList.add('fade-out');
-                            setTimeout(() => loader ? loader.remove() : null, 800);
-                            const spaceCanvas = document.getElementById('space');
-                            if(spaceCanvas) spaceCanvas.classList.add('fade-in');
-                        }, 800);
-                    }, 300);
-                }
-            } else {
-                if(loadingFill) loadingFill.style.width = progress + '%';
-                if (Math.random() < 0.6) {
-                    if(loadingBar) {
-                        const barWidth = loadingBar.clientWidth;
-                        const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
-                        createLoadingSparkle(sparkleX);
-                    }
-                }
-            }
-            updateLetterGlow();
-        }, 120);
-    }
+    function startLoadingSequence(soundToPlay = null) {
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 8;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                if(loadingFill) loadingFill.style.width = '100%';
+                
+                if(loadingFill) {
+                    loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
+                    loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
+                    loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
+                }
+                if(loadingBar) {
+                    loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
+                    loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
+                }
+                
+                const loadingTextElement = document.querySelector('.loading-text');
+                if(loadingTextElement) {
+                    loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
+                    loadingTextElement.style.color = '#0ff';
+                }
+                
+                if(titleLetters) titleLetters.forEach(letter => letter.classList.add('glow-gold'));
+                if(loadingFill) loadingFill.classList.add('full');
+                
+                console.log('🚀 Loading complete! Starting transition sequence...');
+                
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    // Mobile-specific final animation sequence
+                    createMobileExplosion(soundToPlay);
+                    animate();
+                    setTimeout(() => {
+                        if(loader) loader.classList.add('fade-out');
+                        setTimeout(() => loader ? loader.remove() : null, 800);
+                        const spaceCanvas = document.getElementById('space');
+                        if(spaceCanvas) spaceCanvas.classList.add('fade-in');
+                    }, 100);
+                } else {
+                    // Desktop-specific final animation sequence
+                    createLoadingBarCelebration();
+                    setTimeout(() => {
+                        createLoadingBarExplosion(soundToPlay);
+                        animate();
+                        setTimeout(() => {
+                            if(loader) loader.classList.add('fade-out');
+                            setTimeout(() => loader ? loader.remove() : null, 800);
+                            const spaceCanvas = document.getElementById('space');
+                            if(spaceCanvas) spaceCanvas.classList.add('fade-in');
+                        }, 800);
+                    }, 300);
+                }
+            } else {
+                if(loadingFill) loadingFill.style.width = progress + '%';
+                if (Math.random() < 0.6) {
+                    if(loadingBar) {
+                        const barWidth = loadingBar.clientWidth;
+                        const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
+                        createLoadingSparkle(sparkleX);
+                    }
+                }
+            }
+            updateLetterGlow();
+        }, 120);
+    }
 
-    let w, h;
-    function resize() {
-      if(!canvas) return;
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-    
-    const starImage = new Image();
-    starImage.src = sparkleImgSrc;
-    starImage.onerror = () => {
-      console.log('Star image failed to load, using fallback');
-      const fallbackCanvas = document.createElement('canvas');
-      fallbackCanvas.width = 20; fallbackCanvas.height = 20;
-      const fallbackCtx = fallbackCanvas.getContext('2d');
-      fallbackCtx.fillStyle = '#ffd700'; fallbackCtx.beginPath();
-      for (let i = 0; i < 5; i++) {
-        const angle = (i * 4 * Math.PI) / 5;
-        const x = 10 + Math.cos(angle) * 8; const y = 10 + Math.sin(angle) * 8;
-        if (i === 0) fallbackCtx.moveTo(x, y); else fallbackCtx.lineTo(x, y);
-      }
-      fallbackCtx.closePath(); fallbackCtx.fill();
-      const fallbackImage = new Image();
-      fallbackImage.src = fallbackCanvas.toDataURL();
-      starImage.src = fallbackImage.src;
-    };
-    starImage.onload = () => {
-      if(ctx) {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, w, h);
-      }
-    };
+    let w, h;
+    function resize() {
+      if(!canvas) return;
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    
+    const starImage = new Image();
+    starImage.src = sparkleImgSrc;
+    starImage.onerror = () => {
+      console.log('Star image failed to load, using fallback');
+      const fallbackCanvas = document.createElement('canvas');
+      fallbackCanvas.width = 20; fallbackCanvas.height = 20;
+      const fallbackCtx = fallbackCanvas.getContext('2d');
+      fallbackCtx.fillStyle = '#ffd700'; fallbackCtx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        const angle = (i * 4 * Math.PI) / 5;
+        const x = 10 + Math.cos(angle) * 8; const y = 10 + Math.sin(angle) * 8;
+        if (i === 0) fallbackCtx.moveTo(x, y); else fallbackCtx.lineTo(x, y);
+      }
+      fallbackCtx.closePath(); fallbackCtx.fill();
+      const fallbackImage = new Image();
+      fallbackImage.src = fallbackCanvas.toDataURL();
+      starImage.src = fallbackImage.src;
+    };
+    starImage.onload = () => {
+      if(ctx) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, w, h);
+      }
+    };
 
-    let stars = [];
-    function createStar() {
-      return {
-        x: (Math.random() - 0.5) * w * 1.5, y: (Math.random() - 0.5) * h * 1.5,
-        z: Math.random() * w, size: Math.random() * 0.8 + 0.3,
-        rotationAngle: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.01,
-      };
-    }
-    for (let i = 0; i < 200; i++) stars.push(createStar());
+    let stars = [];
+    function createStar() {
+      return {
+        x: (Math.random() - 0.5) * w * 1.5, y: (Math.random() - 0.5) * h * 1.5,
+        z: Math.random() * w, size: Math.random() * 0.8 + 0.3,
+        rotationAngle: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
+      };
+    }
+    for (let i = 0; i < 200; i++) stars.push(createStar());
 
-    let warpSpeed = 30;
-    const normalSpeed = 0.5;
-    const warpDuration = 3000;
-    let warpStartTime = null;
-    let warpComplete = false;
-    let lastTime = performance.now();
-    let logoMoveComplete = false;
+    let warpSpeed = 30;
+    const normalSpeed = 0.5;
+    const warpDuration = 3000;
+    let warpStartTime = null;
+    let warpComplete = false;
+    let lastTime = performance.now();
+    let logoMoveComplete = false;
 
-    function animate(time = performance.now()) {
-      if (!warpStartTime) warpStartTime = time;
-      const elapsed = time - warpStartTime;
-      if (elapsed < warpDuration) {
-        const t = elapsed / warpDuration;
-        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
-      } else {
-        warpSpeed = normalSpeed;
-        if (!warpComplete) {
-          warpComplete = true;
-          const logoWrapper = document.getElementById('logo-wrapper');
-          if(logoWrapper) logoWrapper.classList.add('fade-in');
-          setTimeout(() => {
-            if(logoWrapper) logoWrapper.classList.add('move-top');
-            setTimeout(() => {
-              logoMoveComplete = true;
-              startLogoSparkleLoop();
-              const lw = document.getElementById('logo-wrapper');
-              if(lw) {
-                const logoRect = lw.getBoundingClientRect();
-                const logoBottom = logoRect.bottom;
-                const contentMargin = 40;
-                const newContentTop = logoBottom + contentMargin;
-                const content = document.getElementById('mainText');
-                if(content) content.style.top = `${newContentTop}px`;
-                console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
-                setTimeout(() => {
-                  if(content) content.classList.add('visible');
-                  setTimeout(() => {
-                    const notice = document.getElementById('constructionNotice');
-                    if(notice) notice.classList.add('visible');
-                    setTimeout(() => {
-                      const label = document.getElementById('portfolioLabel');
-                      if(label) label.classList.add('visible');
-                      setTimeout(() => {
-                        const tooltip = document.getElementById('portfolioTooltip');
-                        if (tooltip) {
-                          tooltip.classList.add('show');
-                          setTimeout(() => {
-                            tooltip.style.opacity = '0';
-                            setTimeout(() => tooltip.remove(), 500);
-                          }, 2000);
-                        }
-                      }, 800);
-                    }, 600);
-                  }, 800);
-                }, 400);
-              }
-            }, 1600);
-          }, 1500);
-        }
-      }
-      const delta = (time - lastTime) / 16.67;
-      lastTime = time;
-      if(ctx) {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-        ctx.fillRect(0, 0, w, h);
-      }
-      stars.forEach((s, i) => {
-        s.z -= warpSpeed * delta;
-        if (s.z <= 0) { stars[i] = createStar(); return; }
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2; let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
-        if(ctx) {
-          ctx.save();
-          ctx.translate(px, py); ctx.rotate(s.rotationAngle);
-          ctx.shadowBlur = 14; ctx.shadowColor = '#f7de99';
-          ctx.globalAlpha = 0.35;
-          let starSize = s.size * (1 - s.z / w) * 25;
-          if (starImage.complete && starImage.naturalWidth > 0) {
-            ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
-          } else {
-            ctx.fillStyle = '#ffd700'; ctx.beginPath();
-            ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2); ctx.fill();
-          }
-          ctx.restore();
-        }
-        s.rotationAngle += s.rotationSpeed;
-      });
-      requestAnimationFrame(animate);
-    }
+    function animate(time = performance.now()) {
+      if (!warpStartTime) warpStartTime = time;
+      const elapsed = time - warpStartTime;
+      if (elapsed < warpDuration) {
+        const t = elapsed / warpDuration;
+        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+      } else {
+        warpSpeed = normalSpeed;
+        if (!warpComplete) {
+          warpComplete = true;
+          const logoWrapper = document.getElementById('logo-wrapper');
+          if(logoWrapper) logoWrapper.classList.add('fade-in');
+          setTimeout(() => {
+            if(logoWrapper) logoWrapper.classList.add('move-top');
+            setTimeout(() => {
+              logoMoveComplete = true;
+              startLogoSparkleLoop();
+              const lw = document.getElementById('logo-wrapper');
+              if(lw) {
+                const logoRect = lw.getBoundingClientRect();
+                const logoBottom = logoRect.bottom;
+                const contentMargin = 40;
+                const newContentTop = logoBottom + contentMargin;
+                const content = document.getElementById('mainText');
+                if(content) content.style.top = `${newContentTop}px`;
+                console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
+                setTimeout(() => {
+                  if(content) content.classList.add('visible');
+                  setTimeout(() => {
+                    const notice = document.getElementById('constructionNotice');
+                    if(notice) notice.classList.add('visible');
+                    setTimeout(() => {
+                      const label = document.getElementById('portfolioLabel');
+                      if(label) label.classList.add('visible');
+                      setTimeout(() => {
+                        const tooltip = document.getElementById('portfolioTooltip');
+                        if (tooltip) {
+                          tooltip.classList.add('show');
+                          setTimeout(() => {
+                            tooltip.style.opacity = '0';
+                            setTimeout(() => tooltip.remove(), 500);
+                          }, 2000);
+                        }
+                      }, 800);
+                    }, 600);
+                  }, 800);
+                }, 400);
+              }
+            }, 1600);
+          }, 1500);
+        }
+      }
+      const delta = (time - lastTime) / 16.67;
+      lastTime = time;
+      if(ctx) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+        ctx.fillRect(0, 0, w, h);
+      }
+      stars.forEach((s, i) => {
+        s.z -= warpSpeed * delta;
+        if (s.z <= 0) { stars[i] = createStar(); return; }
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2; let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
+        if(ctx) {
+          ctx.save();
+          ctx.translate(px, py); ctx.rotate(s.rotationAngle);
+          ctx.shadowBlur = 14; ctx.shadowColor = '#f7de99';
+          ctx.globalAlpha = 0.35;
+          let starSize = s.size * (1 - s.z / w) * 25;
+          if (starImage.complete && starImage.naturalWidth > 0) {
+            ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+          } else {
+            ctx.fillStyle = '#ffd700'; ctx.beginPath();
+            ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.restore();
+        }
+        s.rotationAngle += s.rotationSpeed;
+      });
+      requestAnimationFrame(animate);
+    }
 
-    function updateLetterGlow() {
-      if(!barFill || !titleLetters) return;
-      const barFillRect = barFill.getBoundingClientRect();
-      titleLetters.forEach((letter) => {
-        const letterRect = letter.getBoundingClientRect();
-        if (letterRect.left <= barFillRect.right) { letter.classList.add('glow-gold'); }
-      });
-    }
+    function updateLetterGlow() {
+      if(!barFill || !titleLetters) return;
+      const barFillRect = barFill.getBoundingClientRect();
+      titleLetters.forEach((letter) => {
+        const letterRect = letter.getBoundingClientRect();
+        if (letterRect.left <= barFillRect.right) { letter.classList.add('glow-gold'); }
+      });
+    }
 
-    function createLoadingSparkle(x) {
-      const sparkle = document.createElement('img');
-      sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
-      sparkle.style.width = sparkle.style.height = `${6 + Math.random() * 6}px`;
-      sparkle.style.position = 'absolute';
-      sparkle.style.top = `${Math.random() * 100}%`; sparkle.style.left = `${x}px`;
-      sparkle.style.opacity = '1';
-      sparkle.style.filter = `drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)`;
-      sparkle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-      if(sparklesContainer) sparklesContainer.appendChild(sparkle);
-      setTimeout(() => {
-        sparkle.style.opacity = '0';
-        sparkle.style.transform = `translateY(-10px) scale(0.5) rotate(${Math.random() * 360}deg)`;
-      }, 50);
-      setTimeout(() => sparkle.remove(), 850);
-    }
+    function createLoadingSparkle(x) {
+      const sparkle = document.createElement('img');
+      sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
+      sparkle.style.width = sparkle.style.height = `${6 + Math.random() * 6}px`;
+      sparkle.style.position = 'absolute';
+      sparkle.style.top = `${Math.random() * 100}%`; sparkle.style.left = `${x}px`;
+      sparkle.style.opacity = '1';
+      sparkle.style.filter = `drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)`;
+      sparkle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+      if(sparklesContainer) sparklesContainer.appendChild(sparkle);
+      setTimeout(() => {
+        sparkle.style.opacity = '0';
+        sparkle.style.transform = `translateY(-10px) scale(0.5) rotate(${Math.random() * 360}deg)`;
+      }, 50);
+      setTimeout(() => sparkle.remove(), 850);
+    }
 
-    function createLoadingBarExplosion() {
-        console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
-        const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
-        const loadingTextEl = document.querySelector('.loading-text');
-        const loadingTextRect = loadingTextEl ? loadingTextEl.getBoundingClientRect() : null;
-        const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
-        
-        if (loadingBarRect) createStarExplosion(loadingBarRect, 40, 'bar');
-        if (loadingTextRect) createStarExplosion(loadingTextRect, 25, 'text');
-        if (titleGlowRect) createStarExplosion(titleGlowRect, 30, 'title');
-        
-        createScreenFlash();
-        
-        setTimeout(() => {
-            if (loadingBar) {
-                loadingBar.style.opacity = '0';
-                loadingBar.style.transform = 'scale(0.8)';
-            }
-        }, 100);
-        
-        setTimeout(() => {
-            if (loadingTextEl) {
-                loadingTextEl.style.opacity = '0';
-                loadingTextEl.style.transform = 'scale(0.8)';
-            }
-        }, 150);
-        
-        setTimeout(() => {
-            if(titleGlow) {
-                titleGlow.style.opacity = '0'; // Added this line to fix the fadeout
-                titleGlow.style.transform = 'scale(0.8)';
-            }
-        }, 150); // Synced with the "Loading" text fadeout
-    }
+    function createLoadingBarExplosion(soundToPlay) {
+        if (soundToPlay) {
+            soundToPlay.play();
+        }
+        console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
+        const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
+        const loadingTextEl = document.querySelector('.loading-text');
+        const loadingTextRect = loadingTextEl ? loadingTextEl.getBoundingClientRect() : null;
+        const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
+        
+        if (loadingBarRect) createStarExplosion(loadingBarRect, 40, 'bar');
+        if (loadingTextRect) createStarExplosion(loadingTextRect, 25, 'text');
+        if (titleGlowRect) createStarExplosion(titleGlowRect, 30, 'title');
+        
+        createScreenFlash();
+        
+        setTimeout(() => {
+            if (loadingBar) {
+                loadingBar.style.opacity = '0';
+                loadingBar.style.transform = 'scale(0.8)';
+            }
+        }, 100);
+        
+        setTimeout(() => {
+            if (loadingTextEl) {
+                loadingTextEl.style.opacity = '0';
+                loadingTextEl.style.transform = 'scale(0.8)';
+            }
+        }, 150);
+        
+        setTimeout(() => {
+            if(titleGlow) {
+                titleGlow.style.opacity = '0'; // Added this line to fix the fadeout
+                titleGlow.style.transform = 'scale(0.8)';
+            }
+        }, 150); // Synced with the "Loading" text fadeout
+    }
 
-    function createScreenFlash() {
-      const flash = document.createElement('div');
-      flash.style.position = 'fixed'; flash.style.top = '0'; flash.style.left = '0';
-      flash.style.width = '100vw'; flash.style.height = '100vh';
-      flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
-      flash.style.pointerEvents = 'none'; flash.style.zIndex = '999998';
-      flash.style.opacity = '1'; flash.style.transition = 'opacity 0.8s ease-out';
-      document.body.appendChild(flash);
-      setTimeout(() => { flash.style.opacity = '0'; }, 100);
-      setTimeout(() => { flash.remove(); }, 900);
-    }
+    function createScreenFlash() {
+      const flash = document.createElement('div');
+      flash.style.position = 'fixed'; flash.style.top = '0'; flash.style.left = '0';
+      flash.style.width = '100vw'; flash.style.height = '100vh';
+      flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
+      flash.style.pointerEvents = 'none'; flash.style.zIndex = '999998';
+      flash.style.opacity = '1'; flash.style.transition = 'opacity 0.8s ease-out';
+      document.body.appendChild(flash);
+      setTimeout(() => { flash.style.opacity = '0'; }, 100);
+      setTimeout(() => { flash.remove(); }, 900);
+    }
 
-    function createMobileExplosion() {
-      const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
-      const loadingTextRect = document.querySelector('.loading-text') ? document.querySelector('.loading-text').getBoundingClientRect() : null;
-      const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
-      if(loadingBarRect) createStarExplosion(loadingBarRect, 12, 'bar');
-      if(loadingTextRect) createStarExplosion(loadingTextRect, 8, 'text');
-      if(titleGlowRect) createStarExplosion(titleGlowRect, 10, 'title');
-      createScreenFlash();
-    }
+    function createMobileExplosion(soundToPlay) {
+      if (soundToPlay) {
+          soundToPlay.play();
+      }
+      const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
+      const loadingTextRect = document.querySelector('.loading-text') ? document.querySelector('.loading-text').getBoundingClientRect() : null;
+      const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
+      if(loadingBarRect) createStarExplosion(loadingBarRect, 12, 'bar');
+      if(loadingTextRect) createStarExplosion(loadingTextRect, 8, 'text');
+      if(titleGlowRect) createStarExplosion(titleGlowRect, 10, 'title');
+      createScreenFlash();
+    }
 
-    function createStarExplosion(elementRect, numStars, type) {
-      if(!elementRect) return;
-      const isMobile = window.innerWidth <= 768;
-      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
-      console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
-      for (let i = 0; i < adjustedStars; i++) {
-        const star = document.createElement('img');
-        star.src = sparkleImgSrc; star.className = 'explosion-star';
-        const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
-        star.style.width = `${size}px`; star.style.height = `${size}px`;
-        star.style.position = 'fixed'; star.style.zIndex = '999999';
-        star.style.pointerEvents = 'none';
-        const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
-        const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
-        const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
-        star.style.filter = glowIntensity;
-        let startX, startY;
-        if (type === 'bar') {
-          startX = elementRect.left + (Math.random() * elementRect.width);
-          startY = elementRect.top + elementRect.height / 2 + (Math.random() - 0.5) * elementRect.height;
-        } else {
-          startX = elementRect.left + (Math.random() * elementRect.width);
-          startY = elementRect.top + (Math.random() * elementRect.height);
-        }
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
-        const finalX = startX + Math.cos(angle) * distance;
-        const finalY = startY + Math.sin(angle) * distance;
-        star.style.left = `${startX - size / 2}px`; star.style.top = `${startY - size / 2}px`;
-        star.style.opacity = '1'; star.style.transform = 'scale(1.2) rotate(0deg)';
-        const animationDuration = isMobile ? '1s' : '1.5s';
-        star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
-        document.body.appendChild(star);
-        star.onerror = () => {
-          star.style.background = glowColor; star.style.borderRadius = '50%';
-          star.style.boxShadow = `0 0 8px ${glowColor}`; star.src = '';
-        };
-        requestAnimationFrame(() => {
-          star.style.left = `${finalX - size / 2}px`; star.style.top = `${finalY - size / 2}px`;
-          star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`;
-          star.style.opacity = '0';
-        });
-        const cleanupTime = isMobile ? 1100 : 1600;
-        setTimeout(() => { if (star.parentNode) { star.remove(); } }, cleanupTime);
-      }
-    }
+    function createStarExplosion(elementRect, numStars, type) {
+      if(!elementRect) return;
+      const isMobile = window.innerWidth <= 768;
+      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
+      console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
+      for (let i = 0; i < adjustedStars; i++) {
+        const star = document.createElement('img');
+        star.src = sparkleImgSrc; star.className = 'explosion-star';
+        const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
+        star.style.width = `${size}px`; star.style.height = `${size}px`;
+        star.style.position = 'fixed'; star.style.zIndex = '999999';
+        star.style.pointerEvents = 'none';
+        const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
+        const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+        const glowIntensity = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
+        star.style.filter = glowIntensity;
+        let startX, startY;
+        if (type === 'bar') {
+          startX = elementRect.left + (Math.random() * elementRect.width);
+          startY = elementRect.top + elementRect.height / 2 + (Math.random() - 0.5) * elementRect.height;
+        } else {
+          startX = elementRect.left + (Math.random() * elementRect.width);
+          startY = elementRect.top + (Math.random() * elementRect.height);
+        }
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
+        const finalX = startX + Math.cos(angle) * distance;
+        const finalY = startY + Math.sin(angle) * distance;
+        star.style.left = `${startX - size / 2}px`; star.style.top = `${startY - size / 2}px`;
+        star.style.opacity = '1'; star.style.transform = 'scale(1.2) rotate(0deg)';
+        const animationDuration = isMobile ? '1s' : '1.5s';
+        star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+        document.body.appendChild(star);
+        star.onerror = () => {
+          star.style.background = glowColor; star.style.borderRadius = '50%';
+          star.style.boxShadow = `0 0 8px ${glowColor}`; star.src = '';
+        };
+        requestAnimationFrame(() => {
+          star.style.left = `${finalX - size / 2}px`; star.style.top = `${finalY - size / 2}px`;
+          star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`;
+          star.style.opacity = '0';
+        });
+        const cleanupTime = isMobile ? 1100 : 1600;
+        setTimeout(() => { if (star.parentNode) { star.remove(); } }, cleanupTime);
+      }
+    }
 
-    function createLoadingBarCelebration() {
-      if(!loadingBar) return;
-      const loadingBarRect = loadingBar.getBoundingClientRect();
-      const centerX = loadingBarRect.left + loadingBarRect.width / 2;
-      const centerY = loadingBarRect.top + loadingBarRect.height / 2;
-      const isMobile = window.innerWidth <= 768;
-      const numSparkles = isMobile ? 15 : 30;
-      for (let i = 0; i < numSparkles; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
-        const size = Math.random() * 15 + 8;
-        sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
-        const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
-        const radius = isMobile ? 40 + Math.random() * 30 : 60 + Math.random() * 40;
-        const startX = centerX + Math.cos(angle) * 25; const startY = centerY + Math.sin(angle) * 15;
-        sparkle.style.left = `${startX - size / 2}px`; sparkle.style.top = `${startY - size / 2}px`;
-        sparkle.style.opacity = '1';
-        sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
-        sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
-        document.body.appendChild(sparkle);
-        void sparkle.offsetWidth;
-        const finalX = centerX + Math.cos(angle) * radius; const finalY = centerY + Math.sin(angle) * radius;
-        sparkle.style.left = `${finalX - size / 2}px`; sparkle.style.top = `${finalY - size / 2}px`;
-        sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
-        sparkle.style.opacity = '0';
-        setTimeout(() => sparkle.remove(), 1500);
-      }
-    }
+    function createLoadingBarCelebration() {
+      if(!loadingBar) return;
+      const loadingBarRect = loadingBar.getBoundingClientRect();
+      const centerX = loadingBarRect.left + loadingBarRect.width / 2;
+      const centerY = loadingBarRect.top + loadingBarRect.height / 2;
+      const isMobile = window.innerWidth <= 768;
+      const numSparkles = isMobile ? 15 : 30;
+      for (let i = 0; i < numSparkles; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
+        const size = Math.random() * 15 + 8;
+        sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
+        const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
+        const radius = isMobile ? 40 + Math.random() * 30 : 60 + Math.random() * 40;
+        const startX = centerX + Math.cos(angle) * 25; const startY = centerY + Math.sin(angle) * 15;
+        sparkle.style.left = `${startX - size / 2}px`; sparkle.style.top = `${startY - size / 2}px`;
+        sparkle.style.opacity = '1';
+        sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
+        sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
+        document.body.appendChild(sparkle);
+        void sparkle.offsetWidth;
+        const finalX = centerX + Math.cos(angle) * radius; const finalY = centerY + Math.sin(angle) * radius;
+        sparkle.style.left = `${finalX - size / 2}px`; sparkle.style.top = `${finalY - size / 2}px`;
+        sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
+        sparkle.style.opacity = '0';
+        setTimeout(() => sparkle.remove(), 1500);
+      }
+    }
 
-    function createSparkleBurst(x, y) {
-      const numStars = 12 + Math.floor(Math.random() * 6);
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
-        const size = Math.random() * 16 + 8;
-        sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
-        sparkle.style.left = `${x - size / 2}px`; sparkle.style.top = `${y - size / 2}px`;
-        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
-        sparkle.style.opacity = '1'; sparkle.style.position = 'fixed';
-        sparkle.style.zIndex = '9999'; sparkle.style.pointerEvents = 'none';
-        sparkle.onerror = () => {
-          sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%';
-          sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = '';
-        };
-        document.body.appendChild(sparkle);
-        void sparkle.offsetWidth;
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 60;
-        const offsetX = Math.cos(angle) * distance; const offsetY = Math.sin(angle) * distance;
-        sparkle.style.left = `${x + offsetX}px`; sparkle.style.top = `${y + offsetY}px`;
-        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-        sparkle.style.opacity = '0';
-        sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
-        setTimeout(() => sparkle.remove(), 600);
-      }
-    }
-    document.addEventListener('click', (e) => { createSparkleBurst(e.clientX, e.clientY); });
-    document.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 0) { createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY); }
-    });
+    function createSparkleBurst(x, y) {
+      const numStars = 12 + Math.floor(Math.random() * 6);
+      for (let i = 0; i < numStars; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
+        const size = Math.random() * 16 + 8;
+        sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${x - size / 2}px`; sparkle.style.top = `${y - size / 2}px`;
+        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+        sparkle.style.opacity = '1'; sparkle.style.position = 'fixed';
+        sparkle.style.zIndex = '9999'; sparkle.style.pointerEvents = 'none';
+        sparkle.onerror = () => {
+          sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%';
+          sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = '';
+        };
+        document.body.appendChild(sparkle);
+        void sparkle.offsetWidth;
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 60;
+        const offsetX = Math.cos(angle) * distance; const offsetY = Math.sin(angle) * distance;
+        sparkle.style.left = `${x + offsetX}px`; sparkle.style.top = `${y + offsetY}px`;
+        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+        sparkle.style.opacity = '0';
+        sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
+        setTimeout(() => sparkle.remove(), 600);
+      }
+    }
+    document.addEventListener('click', (e) => { createSparkleBurst(e.clientX, e.clientY); });
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) { createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY); }
+    });
 
-    function triggerPulse() {
-      if (logoMoveComplete) {
-        if(logo) logo.style.animation = 'logoPulse 1.2s ease-in-out';
-        setTimeout(() => { if(logo) logo.style.animation = ''; }, 1200);
-      }
-    }
+    function triggerPulse() {
+      if (logoMoveComplete) {
+        if(logo) logo.style.animation = 'logoPulse 1.2s ease-in-out';
+        setTimeout(() => { if(logo) logo.style.animation = ''; }, 1200);
+      }
+    }
 
-    function randomPulseLoop() {
-      const delay = 8000 + Math.random() * 12000;
-      setTimeout(() => { triggerPulse(); randomPulseLoop(); }, delay);
-    }
-    window.addEventListener('load', () => { setTimeout(randomPulseLoop, 5000); });
+    function randomPulseLoop() {
+      const delay = 8000 + Math.random() * 12000;
+      setTimeout(() => { triggerPulse(); randomPulseLoop(); }, delay);
+    }
+    window.addEventListener('load', () => { setTimeout(randomPulseLoop, 5000); });
 
-    function createLogoSparkle() {
-      if (!logoMoveComplete) return;
-      const logoEl = document.getElementById('logo');
-      if(!logoEl) return;
-      const rect = logoEl.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const sparkle = document.createElement('img');
-      sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
-      const size = Math.random() * 10 + 4;
-      sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
-      const angle = Math.random() * 2 * Math.PI;
-      const radius = 10 + Math.random() * 30;
-      const offsetX = Math.cos(angle) * radius; const offsetY = Math.sin(angle) * radius;
-      sparkle.style.left = `${centerX + offsetX - size / 2}px`;
-      sparkle.style.top = `${centerY + offsetY - size / 2}px`;
-      sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
-      sparkle.style.opacity = '1';
-      document.body.appendChild(sparkle);
-      void sparkle.offsetWidth;
-      sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
-      sparkle.style.opacity = '0';
-      setTimeout(() => sparkle.remove(), 600);
-    }
+    function createLogoSparkle() {
+      if (!logoMoveComplete) return;
+      const logoEl = document.getElementById('logo');
+      if(!logoEl) return;
+      const rect = logoEl.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const sparkle = document.createElement('img');
+      sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
+      const size = Math.random() * 10 + 4;
+      sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
+      const angle = Math.random() * 2 * Math.PI;
+      const radius = 10 + Math.random() * 30;
+      const offsetX = Math.cos(angle) * radius; const offsetY = Math.sin(angle) * radius;
+      sparkle.style.left = `${centerX + offsetX - size / 2}px`;
+      sparkle.style.top = `${centerY + offsetY - size / 2}px`;
+      sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
+      sparkle.style.opacity = '1';
+      document.body.appendChild(sparkle);
+      void sparkle.offsetWidth;
+      sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
+      sparkle.style.opacity = '0';
+      setTimeout(() => sparkle.remove(), 600);
+    }
 
-    function startLogoSparkleLoop() {
-      setInterval(() => { createLogoSparkle(); }, 2000);
-    }
-  </script>
+    function startLogoSparkleLoop() {
+      setInterval(() => { createLogoSparkle(); }, 2000);
+    }
+  </script>
 </body>
 </html>
