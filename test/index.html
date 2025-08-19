@@ -578,9 +578,6 @@
   </div>
 
   <script>
-    // --- THIS IS THE COMPLETE, FULLY WORKING SCRIPT ---
-
-    // Define all constants and grab all elements at the top level
     const enterScreen = document.getElementById('enter-screen');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
@@ -591,29 +588,27 @@
     const ctx = canvas.getContext('2d');
     const logo = document.getElementById('logo');
     
-    // --- FIXED AUDIO LINK ---
-    const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/sounds/StarGlit.wav');
+    // --- THIS IS THE ONLY CHANGE: CORRECTED URL ---
+    const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
     explosionSound.preload = 'auto';
     
     const loadingText = 'SterlWorld';
     for (let char of loadingText) {
         const span = document.createElement('span');
         span.textContent = char;
-        titleGlow.appendChild(span);
+        if(titleGlow) titleGlow.appendChild(span);
     }
-    const titleLetters = titleGlow.querySelectorAll('span');
+    const titleLetters = titleGlow ? titleGlow.querySelectorAll('span') : [];
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
     const sparklesContainer = document.createElement('div');
     sparklesContainer.className = 'loading-bar-sparkles';
     if(loadingBar) loadingBar.appendChild(sparklesContainer);
 
-    // --- MAIN LOGIC (RUNS AFTER PAGE LOADS) ---
     document.addEventListener('DOMContentLoaded', () => {
         const isDesktop = window.innerWidth > 768;
 
         if (isDesktop) {
-            // Populate enter screen with stars
             for (let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -622,38 +617,34 @@
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 100}%`;
                 star.style.animationDelay = `${Math.random() * 4}s`;
-                enterScreen.appendChild(star);
+                if(enterScreen) enterScreen.appendChild(star);
             }
             
-            enterScreen.addEventListener('click', () => {
-                // Prime audio for playback
+            if(enterScreen) enterScreen.addEventListener('click', () => {
                 explosionSound.play().then(() => {
                     explosionSound.pause();
                     explosionSound.currentTime = 0;
                 }).catch(error => console.log("Audio couldn't be primed:", error));
 
-                // Fade-to-black sequence
-                enterScreen.classList.add('hiding'); // Fades the text
+                enterScreen.classList.add('hiding');
                 
                 setTimeout(() => {
-                    enterScreen.classList.add('hidden'); // Fades the background
-                    if(loader) loader.classList.add('visible'); // Show loader
-                    startLoadingSequence(explosionSound); // Start animation
-                    setTimeout(() => enterScreen.remove(), 500); // Clean up DOM
+                    enterScreen.classList.add('hidden');
+                    if(loader) loader.classList.add('visible');
+                    startLoadingSequence(explosionSound);
+                    setTimeout(() => enterScreen.remove(), 500);
                 }, 500);
 
             }, { once: true });
 
-        } else { // On Mobile
-            enterScreen.style.display = 'none';
+        } else { 
+            if(enterScreen) enterScreen.style.display = 'none';
             if(loader) loader.classList.add('visible');
-            startLoadingSequence(); // No sound for mobile
+            startLoadingSequence();
         }
     });
 
-    // --- MODIFIED LOADING SEQUENCE ---
     function startLoadingSequence(soundToPlay = null) {
-        // This is where your original setInterval logic was moved
         let progress = 0;
         const interval = setInterval(() => {
             progress += Math.random() * 8;
@@ -678,12 +669,11 @@
                     loadingTextElement.style.color = '#0ff';
                 }
                 
-                titleLetters.forEach(letter => letter.classList.add('glow-gold'));
+                if(titleLetters) titleLetters.forEach(letter => letter.classList.add('glow-gold'));
                 if(loadingFill) loadingFill.classList.add('full');
                 
                 console.log('🚀 Loading complete! Starting transition sequence...');
                 
-                // Play sound if it was passed
                 if (soundToPlay) {
                     soundToPlay.play();
                 }
@@ -691,39 +681,26 @@
                 const isMobile = window.innerWidth <= 768;
                 
                 if (isMobile) {
-                    console.log('📱 Mobile detected - using ultra-optimized sequence');
-                    if(loadingBar) {
-                        loadingBar.style.opacity = '0';
-                        loadingBar.style.visibility = 'hidden';
-                    }
-                    const loadingTextEl = document.querySelector('.loading-text');
-                    if(loadingTextEl) {
-                        loadingTextEl.style.opacity = '0';
-                        loadingTextEl.style.visibility = 'hidden';
-                    }
-                    if(titleGlow) {
-                        titleGlow.style.opacity = '0';
-                        titleGlow.style.visibility = 'hidden';
-                    }
+                    // Mobile-specific final animation sequence
                     createMobileExplosion();
                     animate();
                     setTimeout(() => {
-                        console.log('🌟 Fading out loader background and revealing starfield...');
                         if(loader) loader.classList.add('fade-out');
                         setTimeout(() => loader ? loader.remove() : null, 800);
-                        setTimeout(() => document.getElementById('space').classList.add('fade-in'), 200);
+                        const spaceCanvas = document.getElementById('space');
+                        if(spaceCanvas) spaceCanvas.classList.add('fade-in');
                     }, 100);
                 } else {
-                    console.log('💻 Desktop detected - using full sequence');
+                    // Desktop-specific final animation sequence
                     createLoadingBarCelebration();
                     setTimeout(() => {
                         createLoadingBarExplosion();
                         animate();
                         setTimeout(() => {
-                            console.log('🌟 Fading out loader and revealing starfield...');
                             if(loader) loader.classList.add('fade-out');
                             setTimeout(() => loader ? loader.remove() : null, 800);
-                            setTimeout(() => document.getElementById('space').classList.add('fade-in'), 400);
+                            const spaceCanvas = document.getElementById('space');
+                            if(spaceCanvas) spaceCanvas.classList.add('fade-in');
                         }, 800);
                     }, 300);
                 }
@@ -741,9 +718,9 @@
         }, 120);
     }
 
-    // --- ALL ORIGINAL FUNCTIONS ---
     let w, h;
     function resize() {
+      if(!canvas) return;
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
@@ -755,36 +732,31 @@
     starImage.onerror = () => {
       console.log('Star image failed to load, using fallback');
       const fallbackCanvas = document.createElement('canvas');
-      fallbackCanvas.width = 20;
-      fallbackCanvas.height = 20;
+      fallbackCanvas.width = 20; fallbackCanvas.height = 20;
       const fallbackCtx = fallbackCanvas.getContext('2d');
-      fallbackCtx.fillStyle = '#ffd700';
-      fallbackCtx.beginPath();
+      fallbackCtx.fillStyle = '#ffd700'; fallbackCtx.beginPath();
       for (let i = 0; i < 5; i++) {
         const angle = (i * 4 * Math.PI) / 5;
-        const x = 10 + Math.cos(angle) * 8;
-        const y = 10 + Math.sin(angle) * 8;
-        if (i === 0) fallbackCtx.moveTo(x, y);
-        else fallbackCtx.lineTo(x, y);
+        const x = 10 + Math.cos(angle) * 8; const y = 10 + Math.sin(angle) * 8;
+        if (i === 0) fallbackCtx.moveTo(x, y); else fallbackCtx.lineTo(x, y);
       }
-      fallbackCtx.closePath();
-      fallbackCtx.fill();
+      fallbackCtx.closePath(); fallbackCtx.fill();
       const fallbackImage = new Image();
       fallbackImage.src = fallbackCanvas.toDataURL();
       starImage.src = fallbackImage.src;
     };
     starImage.onload = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, w, h);
+      if(ctx) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, w, h);
+      }
     };
 
     let stars = [];
     function createStar() {
       return {
-        x: (Math.random() - 0.5) * w * 1.5,
-        y: (Math.random() - 0.5) * h * 1.5,
-        z: Math.random() * w,
-        size: Math.random() * 0.8 + 0.3,
+        x: (Math.random() - 0.5) * w * 1.5, y: (Math.random() - 0.5) * h * 1.5,
+        z: Math.random() * w, size: Math.random() * 0.8 + 0.3,
         rotationAngle: Math.random() * Math.PI * 2,
         rotationSpeed: (Math.random() - 0.5) * 0.01,
       };
@@ -809,104 +781,98 @@
         warpSpeed = normalSpeed;
         if (!warpComplete) {
           warpComplete = true;
-          document.getElementById('logo-wrapper').classList.add('fade-in');
+          const logoWrapper = document.getElementById('logo-wrapper');
+          if(logoWrapper) logoWrapper.classList.add('fade-in');
           setTimeout(() => {
-            document.getElementById('logo-wrapper').classList.add('move-top');
+            if(logoWrapper) logoWrapper.classList.add('move-top');
             setTimeout(() => {
               logoMoveComplete = true;
               startLogoSparkleLoop();
-              const logoWrapper = document.getElementById('logo-wrapper');
-              const logoRect = logoWrapper.getBoundingClientRect();
-              const logoBottom = logoRect.bottom;
-              const contentMargin = 40;
-              const newContentTop = logoBottom + contentMargin;
-              const content = document.getElementById('mainText');
-              if(content) content.style.top = `${newContentTop}px`;
-              console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
-              setTimeout(() => {
-                if(content) content.classList.add('visible');
+              const lw = document.getElementById('logo-wrapper');
+              if(lw) {
+                const logoRect = lw.getBoundingClientRect();
+                const logoBottom = logoRect.bottom;
+                const contentMargin = 40;
+                const newContentTop = logoBottom + contentMargin;
+                const content = document.getElementById('mainText');
+                if(content) content.style.top = `${newContentTop}px`;
+                console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
                 setTimeout(() => {
-                  document.getElementById('constructionNotice').classList.add('visible');
+                  if(content) content.classList.add('visible');
                   setTimeout(() => {
-                    document.getElementById('portfolioLabel').classList.add('visible');
+                    const notice = document.getElementById('constructionNotice');
+                    if(notice) notice.classList.add('visible');
                     setTimeout(() => {
-                      const tooltip = document.getElementById('portfolioTooltip');
-                      if (tooltip) {
-                        tooltip.classList.add('show');
-                        setTimeout(() => {
-                          tooltip.style.opacity = '0';
-                          setTimeout(() => tooltip.remove(), 500);
-                        }, 2000);
-                      }
-                    }, 800);
-                  }, 600);
-                }, 800);
-              }, 400);
+                      const label = document.getElementById('portfolioLabel');
+                      if(label) label.classList.add('visible');
+                      setTimeout(() => {
+                        const tooltip = document.getElementById('portfolioTooltip');
+                        if (tooltip) {
+                          tooltip.classList.add('show');
+                          setTimeout(() => {
+                            tooltip.style.opacity = '0';
+                            setTimeout(() => tooltip.remove(), 500);
+                          }, 2000);
+                        }
+                      }, 800);
+                    }, 600);
+                  }, 800);
+                }, 400);
+              }
             }, 1600);
           }, 1500);
         }
       }
       const delta = (time - lastTime) / 16.67;
       lastTime = time;
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-      ctx.fillRect(0, 0, w, h);
+      if(ctx) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+        ctx.fillRect(0, 0, w, h);
+      }
       stars.forEach((s, i) => {
         s.z -= warpSpeed * delta;
-        if (s.z <= 0) {
-          stars[i] = createStar();
-          return;
-        }
+        if (s.z <= 0) { stars[i] = createStar(); return; }
         let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
-        if (px < 0 || px >= w || py < 0 || py >= h) {
-          stars[i] = createStar();
-          return;
+        let px = s.x * k + w / 2; let py = s.y * k + h / 2;
+        if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
+        if(ctx) {
+          ctx.save();
+          ctx.translate(px, py); ctx.rotate(s.rotationAngle);
+          ctx.shadowBlur = 14; ctx.shadowColor = '#f7de99';
+          ctx.globalAlpha = 0.35;
+          let starSize = s.size * (1 - s.z / w) * 25;
+          if (starImage.complete && starImage.naturalWidth > 0) {
+            ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+          } else {
+            ctx.fillStyle = '#ffd700'; ctx.beginPath();
+            ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.restore();
         }
-        ctx.save();
-        ctx.translate(px, py);
-        ctx.rotate(s.rotationAngle);
-        ctx.shadowBlur = 14;
-        ctx.shadowColor = '#f7de99';
-        ctx.globalAlpha = 0.35;
-        let starSize = s.size * (1 - s.z / w) * 25;
-        if (starImage.complete && starImage.naturalWidth > 0) {
-          ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
-        } else {
-          ctx.fillStyle = '#ffd700';
-          ctx.beginPath();
-          ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.restore();
         s.rotationAngle += s.rotationSpeed;
       });
       requestAnimationFrame(animate);
     }
 
     function updateLetterGlow() {
-      if(!barFill) return;
+      if(!barFill || !titleLetters) return;
       const barFillRect = barFill.getBoundingClientRect();
       titleLetters.forEach((letter) => {
         const letterRect = letter.getBoundingClientRect();
-        if (letterRect.left <= barFillRect.right) {
-          letter.classList.add('glow-gold');
-        }
+        if (letterRect.left <= barFillRect.right) { letter.classList.add('glow-gold'); }
       });
     }
 
     function createLoadingSparkle(x) {
       const sparkle = document.createElement('img');
-      sparkle.src = sparkleImgSrc;
-      sparkle.className = 'sparkle-star';
+      sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
       sparkle.style.width = sparkle.style.height = `${6 + Math.random() * 6}px`;
       sparkle.style.position = 'absolute';
-      sparkle.style.top = `${Math.random() * 100}%`;
-      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${Math.random() * 100}%`; sparkle.style.left = `${x}px`;
       sparkle.style.opacity = '1';
       sparkle.style.filter = `drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)`;
       sparkle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-      sparklesContainer.appendChild(sparkle);
+      if(sparklesContainer) sparklesContainer.appendChild(sparkle);
       setTimeout(() => {
         sparkle.style.opacity = '0';
         sparkle.style.transform = `translateY(-10px) scale(0.5) rotate(${Math.random() * 360}deg)`;
@@ -915,69 +881,73 @@
     }
 
     function createLoadingBarExplosion() {
-      console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
-      if(!loadingBar) return;
-      const loadingBarRect = loadingBar.getBoundingClientRect();
-      const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
-      const titleGlowRect = titleGlow.getBoundingClientRect();
-      createStarExplosion(loadingBarRect, 40, 'bar');
-      createStarExplosion(loadingTextRect, 25, 'text');
-      createStarExplosion(titleGlowRect, 30, 'title');
-      createScreenFlash();
-      setTimeout(() => {
-        loadingBar.style.opacity = '0';
-        loadingBar.style.transform = 'scale(0.8)';
-      }, 100);
-      setTimeout(() => {
-        document.querySelector('.loading-text').style.opacity = '0';
-        document.querySelector('.loading-text').style.transform = 'scale(0.8)';
-      }, 150);
-      setTimeout(() => {
-        if(titleGlow) titleGlow.style.transform = 'scale(0.8)';
-      }, 200);
+        console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
+        const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
+        const loadingTextEl = document.querySelector('.loading-text');
+        const loadingTextRect = loadingTextEl ? loadingTextEl.getBoundingClientRect() : null;
+        const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
+        
+        if (loadingBarRect) createStarExplosion(loadingBarRect, 40, 'bar');
+        if (loadingTextRect) createStarExplosion(loadingTextRect, 25, 'text');
+        if (titleGlowRect) createStarExplosion(titleGlowRect, 30, 'title');
+        
+        createScreenFlash();
+        
+        setTimeout(() => {
+            if (loadingBar) {
+                loadingBar.style.opacity = '0';
+                loadingBar.style.transform = 'scale(0.8)';
+            }
+        }, 100);
+        
+        setTimeout(() => {
+            if (loadingTextEl) {
+                loadingTextEl.style.opacity = '0';
+                loadingTextEl.style.transform = 'scale(0.8)';
+            }
+        }, 150);
+        
+        setTimeout(() => {
+            if(titleGlow) {
+                titleGlow.style.opacity = '0'; // Added this line to fix the fadeout
+                titleGlow.style.transform = 'scale(0.8)';
+            }
+        }, 150); // Synced with the "Loading" text fadeout
     }
 
     function createScreenFlash() {
       const flash = document.createElement('div');
-      flash.style.position = 'fixed';
-      flash.style.top = '0'; flash.style.left = '0';
+      flash.style.position = 'fixed'; flash.style.top = '0'; flash.style.left = '0';
       flash.style.width = '100vw'; flash.style.height = '100vh';
       flash.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
-      flash.style.pointerEvents = 'none';
-      flash.style.zIndex = '999998';
-      flash.style.opacity = '1';
-      flash.style.transition = 'opacity 0.8s ease-out';
+      flash.style.pointerEvents = 'none'; flash.style.zIndex = '999998';
+      flash.style.opacity = '1'; flash.style.transition = 'opacity 0.8s ease-out';
       document.body.appendChild(flash);
       setTimeout(() => { flash.style.opacity = '0'; }, 100);
       setTimeout(() => { flash.remove(); }, 900);
     }
 
     function createMobileExplosion() {
-      if(!loadingBar) return;
-      const loadingBarRect = loadingBar.getBoundingClientRect();
-      const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
-      const titleGlowRect = titleGlow.getBoundingClientRect();
-      createStarExplosion(loadingBarRect, 12, 'bar');
-      createStarExplosion(loadingTextRect, 8, 'text');
-      createStarExplosion(titleGlowRect, 10, 'title');
+      const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
+      const loadingTextRect = document.querySelector('.loading-text') ? document.querySelector('.loading-text').getBoundingClientRect() : null;
+      const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
+      if(loadingBarRect) createStarExplosion(loadingBarRect, 12, 'bar');
+      if(loadingTextRect) createStarExplosion(loadingTextRect, 8, 'text');
+      if(titleGlowRect) createStarExplosion(titleGlowRect, 10, 'title');
       createScreenFlash();
     }
 
     function createStarExplosion(elementRect, numStars, type) {
-      const centerX = elementRect.left + elementRect.width / 2;
-      const centerY = elementRect.top + elementRect.height / 2;
+      if(!elementRect) return;
       const isMobile = window.innerWidth <= 768;
       const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
       console.log(`💥 Creating ${adjustedStars} stars for ${type} explosion!`);
       for (let i = 0; i < adjustedStars; i++) {
         const star = document.createElement('img');
-        star.src = sparkleImgSrc;
-        star.className = 'explosion-star';
+        star.src = sparkleImgSrc; star.className = 'explosion-star';
         const size = isMobile ? Math.random() * 12 + 6 : Math.random() * 20 + 10;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.position = 'fixed';
-        star.style.zIndex = '999999';
+        star.style.width = `${size}px`; star.style.height = `${size}px`;
+        star.style.position = 'fixed'; star.style.zIndex = '999999';
         star.style.pointerEvents = 'none';
         const glowColors = ['#ffd700', '#ff5ec4', '#0ff', '#fff', '#ffec8b'];
         const glowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
@@ -986,7 +956,7 @@
         let startX, startY;
         if (type === 'bar') {
           startX = elementRect.left + (Math.random() * elementRect.width);
-          startY = centerY + (Math.random() - 0.5) * elementRect.height;
+          startY = elementRect.top + elementRect.height / 2 + (Math.random() - 0.5) * elementRect.height;
         } else {
           startX = elementRect.left + (Math.random() * elementRect.width);
           startY = elementRect.top + (Math.random() * elementRect.height);
@@ -995,22 +965,17 @@
         const distance = isMobile ? 60 + Math.random() * 80 : 150 + Math.random() * 250;
         const finalX = startX + Math.cos(angle) * distance;
         const finalY = startY + Math.sin(angle) * distance;
-        star.style.left = `${startX - size / 2}px`;
-        star.style.top = `${startY - size / 2}px`;
-        star.style.opacity = '1';
-        star.style.transform = 'scale(1.2) rotate(0deg)';
+        star.style.left = `${startX - size / 2}px`; star.style.top = `${startY - size / 2}px`;
+        star.style.opacity = '1'; star.style.transform = 'scale(1.2) rotate(0deg)';
         const animationDuration = isMobile ? '1s' : '1.5s';
         star.style.transition = `all ${animationDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
         document.body.appendChild(star);
         star.onerror = () => {
-          star.style.background = glowColor;
-          star.style.borderRadius = '50%';
-          star.style.boxShadow = `0 0 8px ${glowColor}`;
-          star.src = '';
+          star.style.background = glowColor; star.style.borderRadius = '50%';
+          star.style.boxShadow = `0 0 8px ${glowColor}`; star.src = '';
         };
         requestAnimationFrame(() => {
-          star.style.left = `${finalX - size / 2}px`;
-          star.style.top = `${finalY - size / 2}px`;
+          star.style.left = `${finalX - size / 2}px`; star.style.top = `${finalY - size / 2}px`;
           star.style.transform = `scale(0.1) rotate(${Math.random() * 720 + 360}deg)`;
           star.style.opacity = '0';
         });
@@ -1028,26 +993,20 @@
       const numSparkles = isMobile ? 15 : 30;
       for (let i = 0; i < numSparkles; i++) {
         const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
+        sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
         const size = Math.random() * 15 + 8;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
+        sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
         const angle = (i / numSparkles) * 2 * Math.PI + Math.random() * 0.5;
         const radius = isMobile ? 40 + Math.random() * 30 : 60 + Math.random() * 40;
-        const startX = centerX + Math.cos(angle) * 25;
-        const startY = centerY + Math.sin(angle) * 15;
-        sparkle.style.left = `${startX - size / 2}px`;
-        sparkle.style.top = `${startY - size / 2}px`;
+        const startX = centerX + Math.cos(angle) * 25; const startY = centerY + Math.sin(angle) * 15;
+        sparkle.style.left = `${startX - size / 2}px`; sparkle.style.top = `${startY - size / 2}px`;
         sparkle.style.opacity = '1';
         sparkle.style.filter = `drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)`;
         sparkle.style.transition = 'left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
         document.body.appendChild(sparkle);
         void sparkle.offsetWidth;
-        const finalX = centerX + Math.cos(angle) * radius;
-        const finalY = centerY + Math.sin(angle) * radius;
-        sparkle.style.left = `${finalX - size / 2}px`;
-        sparkle.style.top = `${finalY - size / 2}px`;
+        const finalX = centerX + Math.cos(angle) * radius; const finalY = centerY + Math.sin(angle) * radius;
+        sparkle.style.left = `${finalX - size / 2}px`; sparkle.style.top = `${finalY - size / 2}px`;
         sparkle.style.transform = `scale(0.2) rotate(${Math.random() * 720}deg)`;
         sparkle.style.opacity = '0';
         setTimeout(() => sparkle.remove(), 1500);
@@ -1058,67 +1017,47 @@
       const numStars = 12 + Math.floor(Math.random() * 6);
       for (let i = 0; i < numStars; i++) {
         const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
+        sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
         const size = Math.random() * 16 + 8;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
-        sparkle.style.left = `${x - size / 2}px`;
-        sparkle.style.top = `${y - size / 2}px`;
+        sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${x - size / 2}px`; sparkle.style.top = `${y - size / 2}px`;
         const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
         sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
-        sparkle.style.opacity = '1';
-        sparkle.style.position = 'fixed';
-        sparkle.style.zIndex = '9999';
-        sparkle.style.pointerEvents = 'none';
+        sparkle.style.opacity = '1'; sparkle.style.position = 'fixed';
+        sparkle.style.zIndex = '9999'; sparkle.style.pointerEvents = 'none';
         sparkle.onerror = () => {
-          sparkle.style.background = glowColor;
-          sparkle.style.borderRadius = '50%';
-          sparkle.style.boxShadow = `0 0 6px ${glowColor}`;
-          sparkle.src = '';
+          sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%';
+          sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = '';
         };
         document.body.appendChild(sparkle);
         void sparkle.offsetWidth;
         const angle = Math.random() * 2 * Math.PI;
         const distance = 40 + Math.random() * 60;
-        const offsetX = Math.cos(angle) * distance;
-        const offsetY = Math.sin(angle) * distance;
-        sparkle.style.left = `${x + offsetX}px`;
-        sparkle.style.top = `${y + offsetY}px`;
+        const offsetX = Math.cos(angle) * distance; const offsetY = Math.sin(angle) * distance;
+        sparkle.style.left = `${x + offsetX}px`; sparkle.style.top = `${y + offsetY}px`;
         sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
         sparkle.style.opacity = '0';
         sparkle.style.transition = 'left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out';
         setTimeout(() => sparkle.remove(), 600);
       }
     }
-    document.addEventListener('click', (e) => {
-      createSparkleBurst(e.clientX, e.clientY);
-    });
+    document.addEventListener('click', (e) => { createSparkleBurst(e.clientX, e.clientY); });
     document.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 0) {
-        createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
-      }
+      if (e.touches.length > 0) { createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY); }
     });
 
     function triggerPulse() {
       if (logoMoveComplete) {
         if(logo) logo.style.animation = 'logoPulse 1.2s ease-in-out';
-        setTimeout(() => {
-          if(logo) logo.style.animation = '';
-        }, 1200);
+        setTimeout(() => { if(logo) logo.style.animation = ''; }, 1200);
       }
     }
 
     function randomPulseLoop() {
       const delay = 8000 + Math.random() * 12000;
-      setTimeout(() => {
-        triggerPulse();
-        randomPulseLoop();
-      }, delay);
+      setTimeout(() => { triggerPulse(); randomPulseLoop(); }, delay);
     }
-    window.addEventListener('load', () => {
-      setTimeout(randomPulseLoop, 5000);
-    });
+    window.addEventListener('load', () => { setTimeout(randomPulseLoop, 5000); });
 
     function createLogoSparkle() {
       if (!logoMoveComplete) return;
@@ -1128,15 +1067,12 @@
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
       const sparkle = document.createElement('img');
-      sparkle.src = sparkleImgSrc;
-      sparkle.className = 'sparkle-star';
+      sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
       const size = Math.random() * 10 + 4;
-      sparkle.style.width = `${size}px`;
-      sparkle.style.height = `${size}px`;
+      sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
       const angle = Math.random() * 2 * Math.PI;
       const radius = 10 + Math.random() * 30;
-      const offsetX = Math.cos(angle) * radius;
-      const offsetY = Math.sin(angle) * radius;
+      const offsetX = Math.cos(angle) * radius; const offsetY = Math.sin(angle) * radius;
       sparkle.style.left = `${centerX + offsetX - size / 2}px`;
       sparkle.style.top = `${centerY + offsetY - size / 2}px`;
       sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
@@ -1149,9 +1085,7 @@
     }
 
     function startLogoSparkleLoop() {
-      setInterval(() => {
-        createLogoSparkle();
-      }, 2000);
+      setInterval(() => { createLogoSparkle(); }, 2000);
     }
   </script>
 </body>
