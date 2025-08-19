@@ -591,6 +591,7 @@
     const ctx = canvas.getContext('2d');
     const logo = document.getElementById('logo');
     
+    // --- FIXED AUDIO LINK ---
     const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/sounds/StarGlit.wav');
     explosionSound.preload = 'auto';
     
@@ -605,7 +606,7 @@
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
     const sparklesContainer = document.createElement('div');
     sparklesContainer.className = 'loading-bar-sparkles';
-    loadingBar.appendChild(sparklesContainer);
+    if(loadingBar) loadingBar.appendChild(sparklesContainer);
 
     // --- MAIN LOGIC (RUNS AFTER PAGE LOADS) ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -631,12 +632,12 @@
                     explosionSound.currentTime = 0;
                 }).catch(error => console.log("Audio couldn't be primed:", error));
 
-                // FIXED: Fade-to-black sequence
+                // Fade-to-black sequence
                 enterScreen.classList.add('hiding'); // Fades the text
                 
                 setTimeout(() => {
                     enterScreen.classList.add('hidden'); // Fades the background
-                    loader.classList.add('visible'); // Show loader
+                    if(loader) loader.classList.add('visible'); // Show loader
                     startLoadingSequence(explosionSound); // Start animation
                     setTimeout(() => enterScreen.remove(), 500); // Clean up DOM
                 }, 500);
@@ -645,37 +646,44 @@
 
         } else { // On Mobile
             enterScreen.style.display = 'none';
-            loader.classList.add('visible');
+            if(loader) loader.classList.add('visible');
             startLoadingSequence(); // No sound for mobile
         }
     });
 
     // --- MODIFIED LOADING SEQUENCE ---
     function startLoadingSequence(soundToPlay = null) {
+        // This is where your original setInterval logic was moved
         let progress = 0;
         const interval = setInterval(() => {
             progress += Math.random() * 8;
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(interval);
-                loadingFill.style.width = '100%';
+                if(loadingFill) loadingFill.style.width = '100%';
                 
-                loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-                loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-                loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-                loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-                loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
+                if(loadingFill) {
+                    loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
+                    loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
+                    loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
+                }
+                if(loadingBar) {
+                    loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
+                    loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
+                }
                 
                 const loadingTextElement = document.querySelector('.loading-text');
-                loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
-                loadingTextElement.style.color = '#0ff';
+                if(loadingTextElement) {
+                    loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
+                    loadingTextElement.style.color = '#0ff';
+                }
                 
                 titleLetters.forEach(letter => letter.classList.add('glow-gold'));
-                loadingFill.classList.add('full');
+                if(loadingFill) loadingFill.classList.add('full');
                 
                 console.log('🚀 Loading complete! Starting transition sequence...');
                 
-                // NEW: Play sound if it was passed
+                // Play sound if it was passed
                 if (soundToPlay) {
                     soundToPlay.play();
                 }
@@ -684,18 +692,25 @@
                 
                 if (isMobile) {
                     console.log('📱 Mobile detected - using ultra-optimized sequence');
-                    loadingBar.style.opacity = '0';
-                    loadingBar.style.visibility = 'hidden';
-                    document.querySelector('.loading-text').style.opacity = '0';
-                    document.querySelector('.loading-text').style.visibility = 'hidden';
-                    titleGlow.style.opacity = '0';
-                    titleGlow.style.visibility = 'hidden';
+                    if(loadingBar) {
+                        loadingBar.style.opacity = '0';
+                        loadingBar.style.visibility = 'hidden';
+                    }
+                    const loadingTextEl = document.querySelector('.loading-text');
+                    if(loadingTextEl) {
+                        loadingTextEl.style.opacity = '0';
+                        loadingTextEl.style.visibility = 'hidden';
+                    }
+                    if(titleGlow) {
+                        titleGlow.style.opacity = '0';
+                        titleGlow.style.visibility = 'hidden';
+                    }
                     createMobileExplosion();
                     animate();
                     setTimeout(() => {
                         console.log('🌟 Fading out loader background and revealing starfield...');
-                        loader.classList.add('fade-out');
-                        setTimeout(() => loader.remove(), 800);
+                        if(loader) loader.classList.add('fade-out');
+                        setTimeout(() => loader ? loader.remove() : null, 800);
                         setTimeout(() => document.getElementById('space').classList.add('fade-in'), 200);
                     }, 100);
                 } else {
@@ -706,26 +721,27 @@
                         animate();
                         setTimeout(() => {
                             console.log('🌟 Fading out loader and revealing starfield...');
-                            loader.classList.add('fade-out');
-                            setTimeout(() => loader.remove(), 800);
+                            if(loader) loader.classList.add('fade-out');
+                            setTimeout(() => loader ? loader.remove() : null, 800);
                             setTimeout(() => document.getElementById('space').classList.add('fade-in'), 400);
                         }, 800);
                     }, 300);
                 }
             } else {
-                loadingFill.style.width = progress + '%';
+                if(loadingFill) loadingFill.style.width = progress + '%';
                 if (Math.random() < 0.6) {
-                    const barWidth = loadingBar.clientWidth;
-                    const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
-                    createLoadingSparkle(sparkleX);
+                    if(loadingBar) {
+                        const barWidth = loadingBar.clientWidth;
+                        const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
+                        createLoadingSparkle(sparkleX);
+                    }
                 }
             }
             updateLetterGlow();
         }, 120);
     }
 
-    // --- ALL ORIGINAL FUNCTIONS (NOW PRESENT AND WORKING) ---
-
+    // --- ALL ORIGINAL FUNCTIONS ---
     let w, h;
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -805,10 +821,10 @@
               const contentMargin = 40;
               const newContentTop = logoBottom + contentMargin;
               const content = document.getElementById('mainText');
-              content.style.top = `${newContentTop}px`;
+              if(content) content.style.top = `${newContentTop}px`;
               console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
               setTimeout(() => {
-                content.classList.add('visible');
+                if(content) content.classList.add('visible');
                 setTimeout(() => {
                   document.getElementById('constructionNotice').classList.add('visible');
                   setTimeout(() => {
@@ -869,6 +885,7 @@
     }
 
     function updateLetterGlow() {
+      if(!barFill) return;
       const barFillRect = barFill.getBoundingClientRect();
       titleLetters.forEach((letter) => {
         const letterRect = letter.getBoundingClientRect();
@@ -899,6 +916,7 @@
 
     function createLoadingBarExplosion() {
       console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
+      if(!loadingBar) return;
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
@@ -915,8 +933,7 @@
         document.querySelector('.loading-text').style.transform = 'scale(0.8)';
       }, 150);
       setTimeout(() => {
-        titleGlow.style.opacity = '0';
-        titleGlow.style.transform = 'scale(0.8)';
+        if(titleGlow) titleGlow.style.transform = 'scale(0.8)';
       }, 200);
     }
 
@@ -936,6 +953,7 @@
     }
 
     function createMobileExplosion() {
+      if(!loadingBar) return;
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const loadingTextRect = document.querySelector('.loading-text').getBoundingClientRect();
       const titleGlowRect = titleGlow.getBoundingClientRect();
@@ -1002,6 +1020,7 @@
     }
 
     function createLoadingBarCelebration() {
+      if(!loadingBar) return;
       const loadingBarRect = loadingBar.getBoundingClientRect();
       const centerX = loadingBarRect.left + loadingBarRect.width / 2;
       const centerY = loadingBarRect.top + loadingBarRect.height / 2;
@@ -1083,9 +1102,9 @@
 
     function triggerPulse() {
       if (logoMoveComplete) {
-        logo.style.animation = 'logoPulse 1.2s ease-in-out';
+        if(logo) logo.style.animation = 'logoPulse 1.2s ease-in-out';
         setTimeout(() => {
-          logo.style.animation = '';
+          if(logo) logo.style.animation = '';
         }, 1200);
       }
     }
@@ -1104,6 +1123,7 @@
     function createLogoSparkle() {
       if (!logoMoveComplete) return;
       const logoEl = document.getElementById('logo');
+      if(!logoEl) return;
       const rect = logoEl.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
@@ -1133,7 +1153,6 @@
         createLogoSparkle();
       }, 2000);
     }
-
   </script>
 </body>
 </html>
