@@ -700,7 +700,7 @@
                         }, 800);
                     }, 300);
                 }
-            } else {
+_            } else {
                 if(loadingFill) loadingFill.style.width = progress + '%';
                 if (Math.random() < 0.6) {
                     if(loadingBar) {
@@ -1049,7 +1049,7 @@
     });
 
     function triggerPulse() {
-      if (logoMoveComplete) {
+  .    if (logoMoveComplete) {
         if(logo) logo.style.animation = 'logoPulse 1.2s ease-in-out';
         setTimeout(() => { if(logo) logo.style.animation = ''; }, 1200);
       }
