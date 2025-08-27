@@ -6,6 +6,7 @@
   <title>SterlWorld | Multimedia Universe by Sterlin Griffin</title>
   <meta name="description" content="Enter SterlWorld — an animated universe of games, music, and characters by artist Sterlin Griffin. View portfolio and flagship project Pizza Dales." />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -537,6 +538,97 @@
       #portfolio-bubble { width: 60px; height: 60px; }
       .portfolio-label { font-size: 0.75rem; }
     }
+    .auth-section {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.auth-section.visible { opacity: 1; }
+
+.auth-toggle {
+  display: flex;
+  gap: 1rem;
+}
+
+.auth-tab {
+  background: transparent;
+  color: #ccc;
+  border: 2px solid #333;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.auth-tab.active, .auth-tab:hover {
+  color: #0ff;
+  border-color: #0ff;
+  text-shadow: 0 0 10px #0ff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+  max-width: 90vw;
+}
+
+.auth-form.hidden { display: none; }
+
+.auth-form input {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #333;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 25px;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #0ff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.auth-button {
+  background: linear-gradient(45deg, #0ff, #ff5ec4);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.auth-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.auth-button.logout {
+  background: linear-gradient(45deg, #ff5ec4, #ffd700);
+}
+
+.user-profile {
+  text-align: center;
+  color: #0ff;
+  font-weight: 600;
+}
+
+.user-profile.hidden { display: none; }
   </style>
 </head>
 <body>
@@ -572,6 +664,34 @@
       <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
     </div>
   </div>
+  <div class="auth-section" id="authSection">
+  <!-- Login/Register Toggle -->
+  <div class="auth-toggle">
+    <button id="showLogin" class="auth-tab active">Login</button>
+    <button id="showRegister" class="auth-tab">Register</button>
+  </div>
+  
+  <!-- Login Form -->
+  <div id="loginForm" class="auth-form">
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button id="loginBtn" class="auth-button">Enter SterlWorld</button>
+  </div>
+  
+  <!-- Register Form -->
+  <div id="registerForm" class="auth-form hidden">
+    <input type="email" id="registerEmail" placeholder="Email" required>
+    <input type="password" id="registerPassword" placeholder="Password" required>
+    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+    <button id="registerBtn" class="auth-button">Join SterlWorld</button>
+  </div>
+  
+  <!-- User Profile (shown when logged in) -->
+  <div id="userProfile" class="user-profile hidden">
+    <p>Welcome to SterlWorld, <span id="userEmail"></span></p>
+    <button id="logoutBtn" class="auth-button logout">Sign Out</button>
+  </div>
+</div>
 
   <div class="construction-notice" id="constructionNotice">
     SterlWorld is still being built • First gateway now open
