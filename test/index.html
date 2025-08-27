@@ -1425,11 +1425,85 @@
     }
 
     if(registerBtn) registerBtn.addEventListener('click', async () => {
-        // Full registration logic from your working version
+        const username = document.getElementById('registerUsername').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        document.querySelectorAll('.auth-form input').forEach(input => input.classList.remove('error'));
+        
+        if (!username || username.length < 3 || !/^[a-zA-Z0-9_]+$/.test(username)) {
+            showMessage('Username must be 3+ characters and contain only letters, numbers, or underscores.', 'error');
+            document.getElementById('registerUsername').classList.add('error');
+            return;
+        }
+        if (!email) {
+            showMessage('Please enter an email address.', 'error');
+            document.getElementById('registerEmail').classList.add('error');
+            return;
+        }
+        if (password.length < 6) {
+            showMessage('Password must be at least 6 characters long.', 'error');
+            document.getElementById('registerPassword').classList.add('error');
+            return;
+        }
+        if (password !== confirmPassword) {
+            showMessage('Passwords do not match.', 'error');
+            document.getElementById('confirmPassword').classList.add('error');
+            return;
+        }
+
+        registerBtn.textContent = 'Checking...';
+        registerBtn.disabled = true;
+
+        const isUsernameAvailable = await checkUsernameAvailability(username);
+        if (!isUsernameAvailable) {
+            showMessage('Sorry, that username is already taken.', 'error');
+            document.getElementById('registerUsername').classList.add('error');
+            registerBtn.textContent = 'Join SterlWorld';
+            registerBtn.disabled = false;
+            return;
+        }
+
+        registerBtn.textContent = 'Creating...';
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: { data: { username: username.toLowerCase() } }
+        });
+
+        if (error) {
+            showMessage(error.message, 'error');
+        } else {
+            showMessage('Success! Please check your email to confirm your account.', 'success');
+            document.getElementById('registerForm').reset();
+            showLoginBtn.click();
+        }
+        registerBtn.textContent = 'Join SterlWorld';
+        registerBtn.disabled = false;
     });
 
     if(loginBtn) loginBtn.addEventListener('click', async () => {
-        // Full login logic from your working version
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        if (!email || !password) {
+            showMessage('Please enter both email and password.', 'error');
+            return;
+        }
+
+        loginBtn.textContent = 'Entering...';
+        loginBtn.disabled = true;
+
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            showMessage(error.message, 'error');
+        }
+        // onAuthStateChange will handle the successful login UI update
+        
+        loginBtn.textContent = 'Enter SterlWorld';
+        loginBtn.disabled = false;
     });
 
     if(logoutBtn) logoutBtn.addEventListener('click', async () => {
