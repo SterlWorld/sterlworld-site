@@ -19,7 +19,7 @@
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
 
-    /* --- NEW & FIXED: ENTER SCREEN STYLES --- */
+    /* --- ENTER SCREEN STYLES --- */
     #enter-screen {
       position: fixed;
       top: 0; left: 0;
@@ -54,12 +54,10 @@
     #enter-screen.hiding h1 {
         opacity: 0; /* Class to trigger the text fade */
     }
-    /* FIXED: Glow animation pulses intensity, not color */
     @keyframes enterGlow {
       from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
       to { text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 50px #0ff, 0 0 80px #0ff; }
     }
-    /* Twinkling star background for enter screen */
     @keyframes twinkle {
       0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
     }
@@ -504,16 +502,16 @@
   .auth-section {
     padding: 10px 15px;
   }
-  
+ 
   .auth-form, .user-profile {
     width: 180px;
   }
-  
+ 
   .auth-tab {
     padding: 5px 10px;
     font-size: 12px;
   }
-  
+ 
   .auth-button {
     font-size: 12px;
     padding: 6px 12px;
@@ -524,11 +522,11 @@
   .auth-section {
     padding: 8px 12px;
   }
-  
+ 
   .auth-form, .user-profile {
     width: 160px;
   }
-  
+ 
   .auth-tab {
     padding: 4px 8px;
     font-size: 11px;
@@ -795,7 +793,6 @@
     const ctx = canvas.getContext('2d');
     const logo = document.getElementById('logo');
     
-    // --- THIS IS THE ONLY CHANGE: CORRECTED URL ---
     const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
     explosionSound.preload = 'auto';
     
@@ -1010,24 +1007,24 @@
                     const notice = document.getElementById('constructionNotice');
                     if(notice) notice.classList.add('visible');
                     setTimeout(() => {
-  const label = document.getElementById('portfolioLabel');
-  if(label) label.classList.add('visible');
-  setTimeout(() => {
-    const tooltip = document.getElementById('portfolioTooltip');
-    if (tooltip) {
-      tooltip.classList.add('show');
-      setTimeout(() => {
-        tooltip.style.opacity = '0';
-        setTimeout(() => tooltip.remove(), 500);
-      }, 2000);
-    }
-    // Add auth section after portfolio
-   setTimeout(() => {
-  const authSection = document.getElementById('authSection');
-  if(authSection) authSection.classList.add('visible');
-}, 3200);
-  }, 800);
-}, 600);
+                      const label = document.getElementById('portfolioLabel');
+                      if(label) label.classList.add('visible');
+                      setTimeout(() => {
+                        const tooltip = document.getElementById('portfolioTooltip');
+                        if (tooltip) {
+                          tooltip.classList.add('show');
+                          setTimeout(() => {
+                            tooltip.style.opacity = '0';
+                            setTimeout(() => tooltip.remove(), 500);
+                          }, 2000);
+                        }
+                        // Add auth section after portfolio
+                        setTimeout(() => {
+                          const authSection = document.getElementById('authSection');
+                          if(authSection) authSection.classList.add('visible');
+                        }, 3200);
+                      }, 800);
+                    }, 600);
                   }, 800);
                 }, 400);
               }
@@ -1413,7 +1410,7 @@ registerBtn.addEventListener('click', async () => {
   // Check username availability
   const isUsernameAvailable = await checkUsernameAvailability(username);
   if (!isUsernameAvailable) {
-    showMessage('Username is already taken. Please choose another.', 'error');
+    showMessage('Sorry, but that username is already taken. Please choose another.', 'error');
     document.getElementById('registerUsername').classList.add('error');
     registerBtn.textContent = 'Join SterlWorld';
     registerBtn.disabled = false;
