@@ -642,6 +642,61 @@
 .auth-button.logout {
   background: linear-gradient(45deg, #ff5ec4, #ffd700);
 }
+    .auth-form input.error {
+  border-color: #ff5ec4;
+  box-shadow: 0 0 8px rgba(255, 94, 196, 0.4);
+}
+
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Status messages */
+.auth-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 100001;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.auth-message.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.auth-message.success {
+  color: #0ff;
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.auth-message.error {
+  color: #ff5ec4;
+  border: 2px solid rgba(255, 94, 196, 0.5);
+  box-shadow: 0 0 20px rgba(255, 94, 196, 0.3);
+  text-shadow: 0 0 10px rgba(255, 94, 196, 0.5);
+}
+
+.auth-message.info {
+  color: #ffd700;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
 
 .user-profile {
   text-align: right;
@@ -710,12 +765,13 @@
   </div>
   
   <!-- Register Form -->
-  <div id="registerForm" class="auth-form hidden">
-    <input type="email" id="registerEmail" placeholder="Email" required>
-    <input type="password" id="registerPassword" placeholder="Password" required>
-    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-    <button id="registerBtn" class="auth-button">Join SterlWorld</button>
-  </div>
+<div id="registerForm" class="auth-form hidden">
+  <input type="text" id="registerUsername" placeholder="Username" required>
+  <input type="email" id="registerEmail" placeholder="Email" required>
+  <input type="password" id="registerPassword" placeholder="Password" required>
+  <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+  <button id="registerBtn" class="auth-button">Join SterlWorld</button>
+</div>
   
   <!-- User Profile (shown when logged in) -->
   <div id="userProfile" class="user-profile hidden">
@@ -1258,6 +1314,34 @@ const loginBtn = document.getElementById('loginBtn');
 const registerBtn = document.getElementById('registerBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
+// Message system
+function showMessage(message, type = 'info') {
+  const existingMessage = document.querySelector('.auth-message');
+  if (existingMessage) existingMessage.remove();
+  
+  const messageEl = document.createElement('div');
+  messageEl.className = `auth-message ${type}`;
+  messageEl.textContent = message;
+  document.body.appendChild(messageEl);
+  
+  setTimeout(() => messageEl.classList.add('show'), 100);
+  setTimeout(() => {
+    messageEl.classList.remove('show');
+    setTimeout(() => messageEl.remove(), 300);
+  }, 4000);
+}
+
+// Check username availability
+async function checkUsernameAvailability(username) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('username', username.toLowerCase())
+    .single();
+  
+  return !data; // Returns true if username is available
+}
+
 // Toggle between login and register forms
 showLoginBtn.addEventListener('click', () => {
   showLoginBtn.classList.add('active');
@@ -1275,29 +1359,106 @@ showRegisterBtn.addEventListener('click', () => {
 
 // Register function
 registerBtn.addEventListener('click', async () => {
-  const email = document.getElementById('registerEmail').value;
+  const username = document.getElementById('registerUsername').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
   const password = document.getElementById('registerPassword').value;
   const confirmPassword = document.getElementById('confirmPassword').value;
   
-  if (password !== confirmPassword) {
-    alert('Passwords do not match!');
+  // Clear previous errors
+  document.querySelectorAll('.auth-form input').forEach(input => {
+    input.classList.remove('error');
+  });
+  
+  // Validation
+  if (!username) {
+    showMessage('Please enter a username', 'error');
+    document.getElementById('registerUsername').classList.add('error');
     return;
   }
   
-  registerBtn.textContent = 'Joining...';
+  if (username.length < 3) {
+    showMessage('Username must be at least 3 characters long', 'error');
+    document.getElementById('registerUsername').classList.add('error');
+    return;
+  }
+  
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+    showMessage('Username can only contain letters, numbers, and underscores', 'error');
+    document.getElementById('registerUsername').classList.add('error');
+    return;
+  }
+  
+  if (!email) {
+    showMessage('Please enter an email address', 'error');
+    document.getElementById('registerEmail').classList.add('error');
+    return;
+  }
+  
+  if (password !== confirmPassword) {
+    showMessage('Passwords do not match', 'error');
+    document.getElementById('registerPassword').classList.add('error');
+    document.getElementById('confirmPassword').classList.add('error');
+    return;
+  }
+  
+  if (password.length < 6) {
+    showMessage('Password must be at least 6 characters long', 'error');
+    document.getElementById('registerPassword').classList.add('error');
+    return;
+  }
+  
+  registerBtn.textContent = 'Checking username...';
   registerBtn.disabled = true;
   
+  // Check username availability
+  const isUsernameAvailable = await checkUsernameAvailability(username);
+  if (!isUsernameAvailable) {
+    showMessage('Username is already taken. Please choose another.', 'error');
+    document.getElementById('registerUsername').classList.add('error');
+    registerBtn.textContent = 'Join SterlWorld';
+    registerBtn.disabled = false;
+    return;
+  }
+  
+  registerBtn.textContent = 'Creating account...';
+  
+  // Register with Supabase
   const { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
+    options: {
+      data: {
+        username: username.toLowerCase()
+      }
+    }
   });
   
   if (error) {
-    alert('Registration error: ' + error.message);
+    if (error.message.includes('User already registered')) {
+      showMessage('An account with this email already exists. Please log in instead.', 'error');
+    } else {
+      showMessage('Registration error: ' + error.message, 'error');
+    }
     registerBtn.textContent = 'Join SterlWorld';
     registerBtn.disabled = false;
   } else {
-    alert('Registration successful! Check your email to confirm your account.');
+    if (data.user && !data.user.email_confirmed_at) {
+      showMessage('Registration successful! Please check your email to confirm your account before logging in.', 'success');
+    } else {
+      showMessage('Registration successful! You can now log in.', 'success');
+    }
+    
+    // Clear form
+    document.getElementById('registerUsername').value = '';
+    document.getElementById('registerEmail').value = '';
+    document.getElementById('registerPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    
+    // Switch to login form
+    setTimeout(() => {
+      showLoginBtn.click();
+    }, 2000);
+    
     registerBtn.textContent = 'Join SterlWorld';
     registerBtn.disabled = false;
   }
@@ -1305,8 +1466,20 @@ registerBtn.addEventListener('click', async () => {
 
 // Login function
 loginBtn.addEventListener('click', async () => {
-  const email = document.getElementById('loginEmail').value;
+  const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
+  
+  // Clear previous errors
+  document.querySelectorAll('.auth-form input').forEach(input => {
+    input.classList.remove('error');
+  });
+  
+  if (!email || !password) {
+    showMessage('Please enter both email and password', 'error');
+    if (!email) document.getElementById('loginEmail').classList.add('error');
+    if (!password) document.getElementById('loginPassword').classList.add('error');
+    return;
+  }
   
   loginBtn.textContent = 'Entering...';
   loginBtn.disabled = true;
@@ -1317,11 +1490,32 @@ loginBtn.addEventListener('click', async () => {
   });
   
   if (error) {
-    alert('Login error: ' + error.message);
+    if (error.message.includes('Email not confirmed')) {
+      showMessage('Please check your email and confirm your account before logging in.', 'info');
+    } else if (error.message.includes('Invalid login credentials')) {
+      showMessage('Invalid email or password. Please try again.', 'error');
+      document.getElementById('loginEmail').classList.add('error');
+      document.getElementById('loginPassword').classList.add('error');
+    } else {
+      showMessage('Login error: ' + error.message, 'error');
+    }
     loginBtn.textContent = 'Enter SterlWorld';
     loginBtn.disabled = false;
   } else {
-    showUserProfile(data.user);
+    // Get user profile with username
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', data.user.id)
+      .single();
+    
+    if (profile) {
+      showUserProfile(data.user, profile.username);
+      showMessage(`Welcome back to SterlWorld, ${profile.username}!`, 'success');
+    } else {
+      showUserProfile(data.user, data.user.email);
+      showMessage('Welcome to SterlWorld!', 'success');
+    }
   }
 });
 
@@ -1330,15 +1524,17 @@ logoutBtn.addEventListener('click', async () => {
   const { error } = await supabase.auth.signOut();
   if (!error) {
     showAuthForms();
+    showMessage('You have been signed out. Come back soon!', 'info');
   }
 });
 
 // Show user profile when logged in
-function showUserProfile(user) {
+function showUserProfile(user, displayName) {
   loginForm.classList.add('hidden');
   registerForm.classList.add('hidden');
   userProfile.classList.remove('hidden');
-  document.getElementById('userEmail').textContent = user.email;
+  document.querySelector('.auth-toggle').style.display = 'none';
+  document.getElementById('userEmail').textContent = displayName;
 }
 
 // Show auth forms when logged out
@@ -1346,7 +1542,45 @@ function showAuthForms() {
   userProfile.classList.add('hidden');
   loginForm.classList.remove('hidden');
   document.querySelector('.auth-toggle').style.display = 'flex';
+  
+  // Clear forms
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  loginBtn.textContent = 'Enter SterlWorld';
+  loginBtn.disabled = false;
 }
+
+// Check if user is already logged in on page load
+supabase.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', session.user.id)
+      .single()
+      .then(({ data: profile }) => {
+        const displayName = profile ? profile.username : session.user.email;
+        showUserProfile(session.user, displayName);
+      });
+  }
+});
+
+// Listen for auth changes
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', session.user.id)
+      .single()
+      .then(({ data: profile }) => {
+        const displayName = profile ? profile.username : session.user.email;
+        showUserProfile(session.user, displayName);
+      });
+  } else if (event === 'SIGNED_OUT') {
+    showAuthForms();
+  }
+});
   </script>
 </body>
 </html>
