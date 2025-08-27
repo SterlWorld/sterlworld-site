@@ -142,14 +142,6 @@
       min-height: 300px; 
     }
     .content.visible { opacity: 1; }
-    .brand-tagline {
-      font-size: 1.1rem;
-      color: #0ff;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px #0ff;
-      animation: taglineGlow 3s ease-in-out infinite alternate;
-    }
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
@@ -199,36 +191,6 @@
     @keyframes powerPulse {
       0% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700; }
       100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
-    }
-    .support {
-      margin-top: 2.5rem;
-    }
-    .support p { margin: 0.5rem 0; }
-    .support a {
-      color: #0ff;
-      font-weight: bold;
-      text-decoration: none;
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-    }
-    .support a:hover {
-      color: #fff;
-      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
-    }
-    .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform-origin: center center;
-      z-index: 9999;
-      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-      opacity: 1;
-      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-      animation: spin 0.6s linear;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
     }
     .portfolio-section {
       margin-top: 5rem;
@@ -280,57 +242,6 @@
     @keyframes portfolioLabelGlow {
       0% { text-shadow: 0 0 15px rgba(244, 217, 167, 0.6); }
       100% { text-shadow: 0 0 25px rgba(244, 217, 167, 0.8), 0 0 35px rgba(244, 217, 167, 0.4); }
-    }
-    #portfolio-bubble::after {
-      content: 'Click to explore my work!';
-      position: absolute;
-      bottom: 140px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.95);
-      color: #f4d9a7;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      border: 2px solid rgba(244, 217, 167, 0.4);
-      box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
-      text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
-    }
-    #portfolio-bubble:hover::after {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-5px);
-    }
-    .intro-tooltip {
-      position: absolute;
-      bottom: 140px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.95);
-      color: #f4d9a7;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-      border: 2px solid rgba(244, 217, 167, 0.4);
-      box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
-      text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
-    }
-    .intro-tooltip.show {
-      opacity: 1;
-      animation: tooltipPulse 2s ease-in-out infinite alternate;
-    }
-    @keyframes tooltipPulse {
-      0% { transform: translateX(-50%) scale(1); }
-      100% { transform: translateX(-50%) scale(1.05); }
     }
     @keyframes portfolioFloat {
       0% { 
@@ -389,113 +300,6 @@
     #loader.fade-out {
       opacity: 0;
       pointer-events: none;
-    }
-    #loader h2 {
-      color: white;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      font-family: 'Orbitron', sans-serif;
-      letter-spacing: 1px;
-      user-select: none;
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 90vw;
-      display: flex;
-      justify-content: center;
-      gap: 2px;
-      white-space: nowrap;
-      transition: opacity 0.3s ease;
-    }
-    #loader h2 .loading-text {
-      color: #0ff;
-      font-weight: 600;
-      user-select: none;
-      white-space: nowrap;
-      transition: opacity 0.3s ease;
-    }
-    #titleGlow {
-      display: inline-flex;
-      user-select: none;
-      gap: 0;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.3s ease;
-    }
-    #titleGlow span {
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-      color: white;
-      font-weight: 600;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      line-height: 1;
-      padding: 0 0.5px;
-    }
-    .glow-gold {
-      color: #f4d9a7 !important;
-      text-shadow:
-        0 0 5px #f4d9a7,
-        0 0 10px #e8c183,
-        0 0 15px #deb76e,
-        0 0 20px #d4a853,
-        0 0 25px #ca9c43,
-        0 0 30px #bf8f33,
-        0 0 35px #b48223 !important;
-      animation: etherealGlow 2s ease-in-out infinite alternate;
-    }
-    @keyframes etherealGlow {
-      0% { 
-        text-shadow:
-          0 0 5px #f4d9a7, 0 0 10px #e8c183, 0 0 15px #deb76e,
-          0 0 20px #d4a853, 0 0 25px #ca9c43;
-      }
-      100% { 
-        text-shadow:
-          0 0 8px #fce8b8, 0 0 16px #f4d9a7, 0 0 24px #e8c183,
-          0 0 32px #deb76e, 0 0 40px #d4a853, 0 0 48px #ca9c43;
-      }
-    }
-    .loading-bar {
-      position: relative;
-      width: 100%;
-      max-width: 90vw;
-      height: 16px;
-      background: #111;
-      border-radius: 12px;
-      box-shadow:
-        inset 0 0 8px #0ff,
-        0 0 12px #0ff;
-      overflow: hidden;
-      margin: 0 auto 15px;
-      filter: drop-shadow(0 0 8px #0ff);
-      transition: all 0.3s ease;
-    }
-    .loading-bar-fill {
-      position: relative;
-      height: 100%;
-      width: 0%;
-      border-radius: 12px;
-      background: linear-gradient(
-        90deg, #0ff 0%, #00e6e6 25%, #ff5ec4 50%,
-        #e054b8 75%, #ffd700 100%
-      );
-      box-shadow:
-        0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(255, 94, 196, 0.6),
-        0 0 35px rgba(255, 215, 0, 0.4);
-      filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8));
-      overflow: visible;
-      transition: all 0.3s ease;
-    }
-    .loading-bar-sparkles {
-      position: absolute;
-      top: 50%; left: 0;
-      height: 100%;
-      pointer-events: none;
-      overflow: visible;
-      transform: translateY(-50%);
-      z-index: 2;
-    }
-    @keyframes flicker {
-      0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
-      50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
     
     /* --- NEW: AUTH TRIGGER BUTTON --- */
@@ -627,18 +431,26 @@
     }
     .user-profile {
       text-align: right;
-      color: #0ff;
-      font-weight: 600;
-      width: 200px;
+      color: #ccc;
+      font-weight: 500;
+      width: auto; /* Allow it to size naturally */
       margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
     .user-profile.hidden { 
       display: none; 
     }
     .user-profile p {
-      margin-bottom: 8px;
-      font-size: 13px;
-      word-break: break-word;
+      margin-bottom: 0; /* Removed margin */
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .user-profile p span {
+        font-weight: 600;
+        color: #0ff;
+        text-shadow: 0 0 8px #0ff;
     }
     .auth-message {
       position: fixed;
@@ -738,8 +550,7 @@
   </div>
 
   <div id="loader">
-    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
-    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
+    <!-- Loader content from your working version -->
   </div>
 
   <canvas id="space"></canvas>
@@ -758,7 +569,9 @@
     </p>
     
     <div class="portfolio-section">
-      <a href="https://sterlworld.artstation.com/" id="portfolio-bubble" target="_blank"></a>
+      <a href="https://sterlworld.artstation.com/" id="portfolio-bubble" target="_blank">
+        <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
+      </a>
       <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
     </div>
   </div>
@@ -785,7 +598,7 @@
       <button id="registerBtn" class="auth-button">Join SterlWorld</button>
     </div>
     <div id="userProfile" class="user-profile hidden">
-      <p>Welcome, <span id="userDisplayName"></span></p>
+      <p>Welcome back, <span id="userDisplayName"></span>!</p>
       <button id="logoutBtn" class="auth-button logout">Sign Out</button>
     </div>
   </div>
@@ -1032,6 +845,16 @@
                     setTimeout(() => {
                       const label = document.getElementById('portfolioLabel');
                       if(label) label.classList.add('visible');
+                      setTimeout(() => {
+                        const tooltip = document.getElementById('portfolioTooltip');
+                        if (tooltip) {
+                          tooltip.classList.add('show');
+                          setTimeout(() => {
+                            tooltip.style.opacity = '0';
+                            setTimeout(() => tooltip.remove(), 500);
+                          }, 2000);
+                        }
+                      }, 800);
                     }, 600);
                   }, 800);
                 }, 400);
