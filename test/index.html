@@ -142,6 +142,14 @@
       min-height: 300px; 
     }
     .content.visible { opacity: 1; }
+    .brand-tagline {
+      font-size: 1.1rem;
+      color: #0ff;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #0ff;
+      animation: taglineGlow 3s ease-in-out infinite alternate;
+    }
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 600;
@@ -191,6 +199,36 @@
     @keyframes powerPulse {
       0% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700; }
       100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
+    }
+    .support {
+      margin-top: 2.5rem;
+    }
+    .support p { margin: 0.5rem 0; }
+    .support a {
+      color: #0ff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+    }
+    .support a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff;
+    }
+    .sparkle-star {
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform-origin: center center;
+      z-index: 9999;
+      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+      animation: spin 0.6s linear;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
     .portfolio-section {
       margin-top: 5rem;
@@ -329,6 +367,7 @@
     .construction-notice.visible {
       opacity: 1;
     }
+    /* MODIFIED: Loader starts hidden */
     #loader {
       position: fixed;
       top: 0; left: 0;
@@ -352,246 +391,328 @@
       opacity: 0;
       pointer-events: none;
     }
-    
-    /* --- NEW: AUTH TRIGGER BUTTON --- */
-    .auth-trigger-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      background: transparent;
-      border: 2px solid rgba(0, 255, 255, 0.5);
-      color: rgba(0, 255, 255, 0.8);
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateY(-20px);
-      pointer-events: none;
-    }
-    .auth-trigger-btn.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .auth-trigger-btn:hover {
-      background: rgba(0, 255, 255, 0.1);
-      color: #0ff;
-      border-color: #0ff;
-      text-shadow: 0 0 8px #0ff;
-    }
-    .auth-trigger-btn.hidden {
-      opacity: 0 !important;
-      transform: translateY(-20px) !important;
-      pointer-events: none !important;
-    }
-
-    /* --- UPDATED: AUTH SECTION --- */
-    .auth-section {
-      position: fixed;
-      top: 70px; /* Position below the trigger button */
-      right: 20px;
-      z-index: 50;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      border: 2px solid rgba(0, 255, 255, 0.3);
-      padding: 15px 20px;
-      opacity: 0;
-      transform: translateY(-20px) scale(0.95);
-      transform-origin: top right;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      pointer-events: none;
-    }
-    .auth-section.open { 
-      opacity: 1; 
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-    .auth-toggle {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-      justify-content: flex-end;
-    }
-    .auth-tab {
-      background: transparent;
-      color: #ccc;
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      padding: 6px 12px;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 500;
-      font-size: 13px;
-    }
-    .auth-tab.active, .auth-tab:hover {
-      color: #0ff;
-      border-color: #0ff;
-      text-shadow: 0 0 8px #0ff;
-      background: rgba(0, 255, 255, 0.1);
-    }
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: 200px;
-      margin-left: auto;
-    }
-    .auth-form.hidden { 
-      display: none; 
-    }
-    .auth-form input {
-      background: rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+    #loader h2 {
       color: white;
-      padding: 8px 12px;
-      border-radius: 15px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 13px;
-      transition: all 0.3s ease;
-    }
-    .auth-form input:focus {
-      outline: none;
-      border-color: #0ff;
-      box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
-    }
-    .auth-button {
-      background: linear-gradient(45deg, #0ff, #ff5ec4);
-      border: none;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 15px;
-      cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      transition: all 0.3s ease;
-    }
-    .auth-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-    }
-    .auth-button.logout {
-      background: linear-gradient(45deg, #ff5ec4, #ffd700);
-    }
-    .user-profile {
-      text-align: right;
-      color: #ccc;
-      font-weight: 500;
-      width: auto; /* Allow it to size naturally */
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .user-profile.hidden { 
-      display: none; 
-    }
-    .user-profile p {
-      margin-bottom: 0; /* Removed margin */
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    .user-profile p span {
-        font-weight: 600;
-        color: #0ff;
-        text-shadow: 0 0 8px #0ff;
-    }
-    .auth-message {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.9);
-      padding: 12px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      z-index: 100001;
-      opacity: 0;
-      transition: all 0.3s ease;
-      pointer-events: none;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      user-select: none;
+      margin-bottom: 20px;
+      width: 100%;
       max-width: 90vw;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
     }
-    .auth-message.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .auth-message.success {
+    #loader h2 .loading-text {
       color: #0ff;
-      border: 2px solid rgba(0, 255, 255, 0.5);
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
     }
-    .auth-message.error {
-      color: #ff5ec4;
-      border: 2px solid rgba(255, 94, 196, 0.5);
+    #titleGlow {
+      display: inline-flex;
+      user-select: none;
+      gap: 0;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease;
     }
-    .auth-message.info {
-      color: #ffd700;
-      border: 2px solid rgba(255, 215, 0, 0.5);
+    #titleGlow span {
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+      color: white;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      line-height: 1;
+      padding: 0 0.5px;
     }
-    
-    /* --- MOBILE RESPONSIVENESS FIXES --- */
+    .glow-gold {
+      color: #f4d9a7 !important;
+      text-shadow:
+        0 0 5px #f4d9a7,
+        0 0 10px #e8c183,
+        0 0 15px #deb76e,
+        0 0 20px #d4a853,
+        0 0 25px #ca9c43,
+        0 0 30px #bf8f33,
+        0 0 35px #b48223 !important;
+      animation: etherealGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes etherealGlow {
+      0% { 
+        text-shadow:
+          0 0 5px #f4d9a7, 0 0 10px #e8c183, 0 0 15px #deb76e,
+          0 0 20px #d4a853, 0 0 25px #ca9c43;
+      }
+      100% { 
+        text-shadow:
+          0 0 8px #fce8b8, 0 0 16px #f4d9a7, 0 0 24px #e8c183,
+          0 0 32px #deb76e, 0 0 40px #d4a853, 0 0 48px #ca9c43;
+      }
+    }
+    .loading-bar {
+      position: relative;
+      width: 100%;
+      max-width: 90vw;
+      height: 16px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow:
+        inset 0 0 8px #0ff,
+        0 0 12px #0ff;
+      overflow: hidden;
+      margin: 0 auto 15px;
+      filter: drop-shadow(0 0 8px #0ff);
+      transition: all 0.3s ease;
+    }
+    .loading-bar-fill {
+      position: relative;
+      height: 100%;
+      width: 0%;
+      border-radius: 12px;
+      background: linear-gradient(
+        90deg, #0ff 0%, #00e6e6 25%, #ff5ec4 50%,
+        #e054b8 75%, #ffd700 100%
+      );
+      box-shadow:
+        0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(255, 94, 196, 0.6),
+        0 0 35px rgba(255, 215, 0, 0.4);
+      filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8));
+      overflow: visible;
+      transition: all 0.3s ease;
+    }
+    .loading-bar-sparkles {
+      position: absolute;
+      top: 50%; left: 0;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    @keyframes flicker {
+      0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
+      50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
+    }
     @media screen and (max-width: 768px) {
-      #logo {
-        width: 200px;
-      }
-      h1 {
-        font-size: 2rem;
-      }
-      .content p {
-        font-size: 1.1rem;
-      }
-      .auth-trigger-btn {
-        top: 15px;
-        right: 15px;
-        font-size: 13px;
-        padding: 6px 12px;
-      }
-      .auth-section {
-        top: 60px;
-        right: 15px;
-        padding: 10px 15px;
-      }
-      .auth-form, .user-profile {
-        width: 180px;
-      }
-      .auth-tab {
-        padding: 5px 10px;
-        font-size: 12px;
-      }
-      .auth-button {
-        font-size: 12px;
-        padding: 6px 12px;
-      }
-    }
+  .auth-section {
+    padding: 10px 15px;
+  }
+ 
+  .auth-form, .user-profile {
+    width: 180px;
+  }
+ 
+  .auth-tab {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+ 
+  .auth-button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
 
-    @media screen and (max-width: 480px) {
-      #logo {
-        width: 180px;
-      }
-      h1 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-      }
-      .content p {
-        font-size: 1rem;
-        line-height: 1.6;
-      }
-      .portfolio-section {
-        margin-top: 3rem;
-      }
-      #portfolio-bubble {
-        width: 100px;
-        height: 100px;
-      }
-    }
+@media screen and (max-width: 480px) {
+  .auth-section {
+    padding: 8px 12px;
+  }
+ 
+  .auth-form, .user-profile {
+    width: 160px;
+  }
+ 
+  .auth-tab {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}
+
+/* Auth bar at top right */
+.auth-section {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom-left-radius: 15px;
+  border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+  border-left: 2px solid rgba(0, 255, 255, 0.3);
+  padding: 15px 20px;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.8s ease;
+  pointer-events: none;
+}
+
+.auth-section.visible { 
+  opacity: 1; 
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.auth-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  justify-content: flex-end;
+}
+
+.auth-tab {
+  background: transparent;
+  color: #ccc;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  user-select: none;
+}
+
+.auth-tab.active, .auth-tab:hover {
+  color: #0ff;
+  border-color: #0ff;
+  text-shadow: 0 0 8px #0ff;
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 200px;
+  margin-left: auto;
+}
+
+.auth-form.hidden { 
+  display: none; 
+}
+
+.auth-form input {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #0ff;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+.auth-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.auth-button {
+  background: linear-gradient(45deg, #0ff, #ff5ec4);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.auth-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.auth-button.logout {
+  background: linear-gradient(45deg, #ff5ec4, #ffd700);
+}
+    .auth-form input.error {
+  border-color: #ff5ec4;
+  box-shadow: 0 0 8px rgba(255, 94, 196, 0.4);
+}
+
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Status messages */
+.auth-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 100001;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.auth-message.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.auth-message.success {
+  color: #0ff;
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.auth-message.error {
+  color: #ff5ec4;
+  border: 2px solid rgba(255, 94, 196, 0.5);
+  box-shadow: 0 0 20px rgba(255, 94, 196, 0.3);
+  text-shadow: 0 0 10px rgba(255, 94, 196, 0.5);
+}
+
+.auth-message.info {
+  color: #ffd700;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.user-profile {
+  text-align: right;
+  color: #0ff;
+  font-weight: 600;
+  width: 200px;
+  margin-left: auto;
+}
+
+.user-profile.hidden { 
+  display: none; 
+}
+
+.user-profile p {
+  margin-bottom: 8px;
+  font-size: 13px;
+  word-break: break-word;
+}
   </style>
 </head>
 <body>
@@ -601,7 +722,8 @@
   </div>
 
   <div id="loader">
-    <!-- Loader content from your working version -->
+    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
+    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
   </div>
 
   <canvas id="space"></canvas>
@@ -620,48 +742,47 @@
     </p>
     
     <div class="portfolio-section">
-      <a href="https://sterlworld.artstation.com/" id="portfolio-bubble" target="_blank">
+      <a href="#" id="portfolio-bubble" onclick="window.open('https://sterlworld.artstation.com/', '_blank'); return false;">
         <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
       </a>
       <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
     </div>
   </div>
-
-  <!-- NEW: Auth Trigger Button -->
-  <button id="authTrigger" class="auth-trigger-btn">Login / Register</button>
-
-  <!-- UPDATED: Auth Section -->
   <div class="auth-section" id="authSection">
-    <div class="auth-toggle">
-      <button id="showLogin" class="auth-tab active">Login</button>
-      <button id="showRegister" class="auth-tab">Register</button>
-    </div>
-    <div id="loginForm" class="auth-form">
-      <input type="email" id="loginEmail" placeholder="Email" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <button id="loginBtn" class="auth-button">Enter SterlWorld</button>
-    </div>
-    <div id="registerForm" class="auth-form hidden">
-      <input type="text" id="registerUsername" placeholder="Username" required>
-      <input type="email" id="registerEmail" placeholder="Email" required>
-      <input type="password" id="registerPassword" placeholder="Password" required>
-      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-      <button id="registerBtn" class="auth-button">Join SterlWorld</button>
-    </div>
-    <div id="userProfile" class="user-profile hidden">
-      <p>Welcome back, <span id="userDisplayName"></span>!</p>
-      <button id="logoutBtn" class="auth-button logout">Sign Out</button>
-    </div>
+  <!-- Login/Register Toggle -->
+  <div class="auth-toggle">
+    <button id="showLogin" class="auth-tab active">Login</button>
+    <button id="showRegister" class="auth-tab">Register</button>
   </div>
+  
+  <!-- Login Form -->
+  <div id="loginForm" class="auth-form">
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button id="loginBtn" class="auth-button">Enter SterlWorld</button>
+  </div>
+  
+  <!-- Register Form -->
+<div id="registerForm" class="auth-form hidden">
+  <input type="text" id="registerUsername" placeholder="Username" required>
+  <input type="email" id="registerEmail" placeholder="Email" required>
+  <input type="password" id="registerPassword" placeholder="Password" required>
+  <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+  <button id="registerBtn" class="auth-button">Join SterlWorld</button>
+</div>
+  
+  <!-- User Profile (shown when logged in) -->
+  <div id="userProfile" class="user-profile hidden">
+    <p>Welcome to SterlWorld, <span id="userEmail"></span></p>
+    <button id="logoutBtn" class="auth-button logout">Sign Out</button>
+  </div>
+</div>
 
   <div class="construction-notice" id="constructionNotice">
     SterlWorld is still being built • First gateway now open
   </div>
 
   <script>
-    // --- THIS SCRIPT IS NOW COMPLETE AND FULLY INTEGRATED ---
-    
-    // Get all DOM elements at the top for clarity
     const enterScreen = document.getElementById('enter-screen');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
@@ -882,14 +1003,6 @@
                 console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
                 setTimeout(() => {
                   if(content) content.classList.add('visible');
-                  
-                  // Show the trigger button here
-                  supabase.auth.getSession().then(({ data: { session } }) => {
-                     if (!session) {
-                         showAuthTrigger(); 
-                     }
-                  });
-
                   setTimeout(() => {
                     const notice = document.getElementById('constructionNotice');
                     if(notice) notice.classList.add('visible');
@@ -905,6 +1018,11 @@
                             setTimeout(() => tooltip.remove(), 500);
                           }, 2000);
                         }
+                        // Add auth section after portfolio
+                        setTimeout(() => {
+                          const authSection = document.getElementById('authSection');
+                          if(authSection) authSection.classList.add('visible');
+                        }, 3200);
                       }, 800);
                     }, 600);
                   }, 800);
@@ -1178,212 +1296,288 @@
     function startLogoSparkleLoop() {
       setInterval(() => { createLogoSparkle(); }, 2000);
     }
-    
-    // --- SUPABASE & AUTH LOGIC ---
-    const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    // Supabase configuration - YOU NEED TO ADD YOUR OWN VALUES HERE
+const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    const authTrigger = document.getElementById('authTrigger');
-    const authSection = document.getElementById('authSection');
-    const showLoginBtn = document.getElementById('showLogin');
-    const showRegisterBtn = document.getElementById('showRegister');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const userProfile = document.getElementById('userProfile');
-    const loginBtn = document.getElementById('loginBtn');
-    const registerBtn = document.getElementById('registerBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const userDisplayName = document.getElementById('userDisplayName');
+// Auth form elements
+const showLoginBtn = document.getElementById('showLogin');
+const showRegisterBtn = document.getElementById('showRegister');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const userProfile = document.getElementById('userProfile');
+const loginBtn = document.getElementById('loginBtn');
+const registerBtn = document.getElementById('registerBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
-    function showAuthTrigger() {
-        if (authTrigger) authTrigger.classList.add('visible');
-    }
+// Message system
+function showMessage(message, type = 'info') {
+  const existingMessage = document.querySelector('.auth-message');
+  if (existingMessage) existingMessage.remove();
+  
+  const messageEl = document.createElement('div');
+  messageEl.className = `auth-message ${type}`;
+  messageEl.textContent = message;
+  document.body.appendChild(messageEl);
+  
+  setTimeout(() => messageEl.classList.add('show'), 100);
+  setTimeout(() => {
+    messageEl.classList.remove('show');
+    setTimeout(() => messageEl.remove(), 300);
+  }, 4000);
+}
 
-    if (authTrigger) {
-        authTrigger.addEventListener('click', () => {
-            if (authSection) authSection.classList.toggle('open');
-        });
-    }
+// Check username availability
+async function checkUsernameAvailability(username) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('username', username.toLowerCase())
+    .single();
+  
+  return !data; // Returns true if username is available
+}
 
-    document.addEventListener('click', (event) => {
-        if (authSection && authTrigger && !authSection.contains(event.target) && !authTrigger.contains(event.target)) {
-            authSection.classList.remove('open');
-        }
-    });
+// Toggle between login and register forms
+showLoginBtn.addEventListener('click', () => {
+  showLoginBtn.classList.add('active');
+  showRegisterBtn.classList.remove('active');
+  loginForm.classList.remove('hidden');
+  registerForm.classList.add('hidden');
+});
 
-    function showUserProfile(user, displayName) {
-      if (authTrigger) authTrigger.classList.add('hidden');
-      if (authSection) authSection.classList.add('open');
-      if (loginForm) loginForm.classList.add('hidden');
-      if (registerForm) registerForm.classList.add('hidden');
-      const authToggle = document.querySelector('.auth-toggle');
-      if (authToggle) authToggle.style.display = 'none';
-      if (userProfile) userProfile.classList.remove('hidden');
-      if (userDisplayName) userDisplayName.textContent = displayName;
-    }
+showRegisterBtn.addEventListener('click', () => {
+  showRegisterBtn.classList.add('active');
+  showLoginBtn.classList.remove('active');
+  registerForm.classList.remove('hidden');
+  loginForm.classList.add('hidden');
+});
 
-    function showAuthForms() {
-      if (userProfile) userProfile.classList.add('hidden');
-      const authToggle = document.querySelector('.auth-toggle');
-      if (authToggle) authToggle.style.display = 'flex';
-      if (showLoginBtn) showLoginBtn.click();
-      if (authTrigger) authTrigger.classList.remove('hidden');
-      if (authSection) authSection.classList.remove('open');
-      
-      const loginEmail = document.getElementById('loginEmail');
-      const loginPassword = document.getElementById('loginPassword');
-      if(loginEmail) loginEmail.value = '';
-      if(loginPassword) loginPassword.value = '';
-      if(loginBtn) {
-          loginBtn.textContent = 'Enter SterlWorld';
-          loginBtn.disabled = false;
+// Register function
+registerBtn.addEventListener('click', async () => {
+  const username = document.getElementById('registerUsername').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  
+  // Clear previous errors
+  document.querySelectorAll('.auth-form input').forEach(input => {
+    input.classList.remove('error');
+  });
+  
+  // Validation
+  if (!username) {
+    showMessage('Please enter a username', 'error');
+    document.getElementById('registerUsername').classList.add('error');
+    return;
+  }
+  
+  if (username.length < 3) {
+    showMessage('Username must be at least 3 characters long', 'error');
+    document.getElementById('registerUsername').classList.add('error');
+    return;
+  }
+  
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+    showMessage('Username can only contain letters, numbers, and underscores', 'error');
+    document.getElementById('registerUsername').classList.add('error');
+    return;
+  }
+  
+  if (!email) {
+    showMessage('Please enter an email address', 'error');
+    document.getElementById('registerEmail').classList.add('error');
+    return;
+  }
+  
+  if (password !== confirmPassword) {
+    showMessage('Passwords do not match', 'error');
+    document.getElementById('registerPassword').classList.add('error');
+    document.getElementById('confirmPassword').classList.add('error');
+    return;
+  }
+  
+  if (password.length < 6) {
+    showMessage('Password must be at least 6 characters long', 'error');
+    document.getElementById('registerPassword').classList.add('error');
+    return;
+  }
+  
+  registerBtn.textContent = 'Checking username...';
+  registerBtn.disabled = true;
+  
+  // Check username availability
+  const isUsernameAvailable = await checkUsernameAvailability(username);
+  if (!isUsernameAvailable) {
+    showMessage('Sorry, but that username is already taken. Please choose another.', 'error');
+    document.getElementById('registerUsername').classList.add('error');
+    registerBtn.textContent = 'Join SterlWorld';
+    registerBtn.disabled = false;
+    return;
+  }
+  
+  registerBtn.textContent = 'Creating account...';
+  
+  // Register with Supabase
+  const { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      data: {
+        username: username.toLowerCase()
       }
     }
-
-    supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN' && session) {
-            supabase.from('profiles').select('username').eq('id', session.user.id).single()
-                .then(({ data: profile }) => {
-                    const displayName = profile ? profile.username : session.user.email;
-                    showUserProfile(session.user, displayName);
-                });
-        } else if (event === 'SIGNED_OUT') {
-            showAuthForms();
-        }
-    });
+  });
+  
+  if (error) {
+    if (error.message.includes('User already registered')) {
+      showMessage('An account with this email already exists. Please log in instead.', 'error');
+    } else {
+      showMessage('Registration error: ' + error.message, 'error');
+    }
+    registerBtn.textContent = 'Join SterlWorld';
+    registerBtn.disabled = false;
+  } else {
+    if (data.user && !data.user.email_confirmed_at) {
+      showMessage('Registration successful! Please check your email to confirm your account before logging in.', 'success');
+    } else {
+      showMessage('Registration successful! You can now log in.', 'success');
+    }
     
-    // All your existing Supabase functions like showMessage, checkUsernameAvailability,
-    // and the button click listeners are assumed to be here from your working version.
-    // The following is a copy of that logic to ensure completeness.
+    // Clear form
+    document.getElementById('registerUsername').value = '';
+    document.getElementById('registerEmail').value = '';
+    document.getElementById('registerPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
     
-    function showMessage(message, type = 'info') {
-      const existingMessage = document.querySelector('.auth-message');
-      if (existingMessage) existingMessage.remove();
-      
-      const messageEl = document.createElement('div');
-      messageEl.className = `auth-message ${type}`;
-      messageEl.textContent = message;
-      document.body.appendChild(messageEl);
-      
-      setTimeout(() => messageEl.classList.add('show'), 100);
-      setTimeout(() => {
-        messageEl.classList.remove('show');
-        setTimeout(() => messageEl.remove(), 300);
-      }, 4000);
+    // Switch to login form
+    setTimeout(() => {
+      showLoginBtn.click();
+    }, 2000);
+    
+    registerBtn.textContent = 'Join SterlWorld';
+    registerBtn.disabled = false;
+  }
+});
+
+// Login function
+loginBtn.addEventListener('click', async () => {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  
+  // Clear previous errors
+  document.querySelectorAll('.auth-form input').forEach(input => {
+    input.classList.remove('error');
+  });
+  
+  if (!email || !password) {
+    showMessage('Please enter both email and password', 'error');
+    if (!email) document.getElementById('loginEmail').classList.add('error');
+    if (!password) document.getElementById('loginPassword').classList.add('error');
+    return;
+  }
+  
+  loginBtn.textContent = 'Entering...';
+  loginBtn.disabled = true;
+  
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  
+  if (error) {
+    if (error.message.includes('Email not confirmed')) {
+      showMessage('Please check your email and confirm your account before logging in.', 'info');
+    } else if (error.message.includes('Invalid login credentials')) {
+      showMessage('Invalid email or password. Please try again.', 'error');
+      document.getElementById('loginEmail').classList.add('error');
+      document.getElementById('loginPassword').classList.add('error');
+    } else {
+      showMessage('Login error: ' + error.message, 'error');
     }
-
-    async function checkUsernameAvailability(username) {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('username')
-        .eq('username', username.toLowerCase())
-        .single();
-      return !data;
+    loginBtn.textContent = 'Enter SterlWorld';
+    loginBtn.disabled = false;
+  } else {
+    // Get user profile with username
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', data.user.id)
+      .single();
+    
+    if (profile) {
+      showUserProfile(data.user, profile.username);
+      showMessage(`Welcome back to SterlWorld, ${profile.username}!`, 'success');
+    } else {
+      showUserProfile(data.user, data.user.email);
+      showMessage('Welcome to SterlWorld!', 'success');
     }
+  }
+});
 
-    if(showLoginBtn && showRegisterBtn && loginForm && registerForm) {
-        showLoginBtn.addEventListener('click', () => {
-            showLoginBtn.classList.add('active');
-            showRegisterBtn.classList.remove('active');
-            loginForm.classList.remove('hidden');
-            registerForm.classList.add('hidden');
-        });
+// Logout function
+logoutBtn.addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut();
+  if (!error) {
+    showAuthForms();
+    showMessage('You have been signed out. Come back soon!', 'info');
+  }
+});
 
-        showRegisterBtn.addEventListener('click', () => {
-            showRegisterBtn.classList.add('active');
-            showLoginBtn.classList.remove('active');
-            registerForm.classList.remove('hidden');
-            loginForm.classList.add('hidden');
-        });
-    }
+// Show user profile when logged in
+function showUserProfile(user, displayName) {
+  loginForm.classList.add('hidden');
+  registerForm.classList.add('hidden');
+  userProfile.classList.remove('hidden');
+  document.querySelector('.auth-toggle').style.display = 'none';
+  document.getElementById('userEmail').textContent = displayName;
+}
 
-    if(registerBtn) registerBtn.addEventListener('click', async () => {
-        const username = document.getElementById('registerUsername').value.trim();
-        const email = document.getElementById('registerEmail').value.trim();
-        const password = document.getElementById('registerPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        
-        document.querySelectorAll('.auth-form input').forEach(input => input.classList.remove('error'));
-        
-        if (!username || username.length < 3 || !/^[a-zA-Z0-9_]+$/.test(username)) {
-            showMessage('Username must be 3+ characters and contain only letters, numbers, or underscores.', 'error');
-            document.getElementById('registerUsername').classList.add('error');
-            return;
-        }
-        if (!email) {
-            showMessage('Please enter an email address.', 'error');
-            document.getElementById('registerEmail').classList.add('error');
-            return;
-        }
-        if (password.length < 6) {
-            showMessage('Password must be at least 6 characters long.', 'error');
-            document.getElementById('registerPassword').classList.add('error');
-            return;
-        }
-        if (password !== confirmPassword) {
-            showMessage('Passwords do not match.', 'error');
-            document.getElementById('confirmPassword').classList.add('error');
-            return;
-        }
+// Show auth forms when logged out
+function showAuthForms() {
+  userProfile.classList.add('hidden');
+  loginForm.classList.remove('hidden');
+  document.querySelector('.auth-toggle').style.display = 'flex';
+  
+  // Clear forms
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  loginBtn.textContent = 'Enter SterlWorld';
+  loginBtn.disabled = false;
+}
 
-        registerBtn.textContent = 'Checking...';
-        registerBtn.disabled = true;
+// Check if user is already logged in on page load
+supabase.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', session.user.id)
+      .single()
+      .then(({ data: profile }) => {
+        const displayName = profile ? profile.username : session.user.email;
+        showUserProfile(session.user, displayName);
+      });
+  }
+});
 
-        const isUsernameAvailable = await checkUsernameAvailability(username);
-        if (!isUsernameAvailable) {
-            showMessage('Sorry, that username is already taken.', 'error');
-            document.getElementById('registerUsername').classList.add('error');
-            registerBtn.textContent = 'Join SterlWorld';
-            registerBtn.disabled = false;
-            return;
-        }
-
-        registerBtn.textContent = 'Creating...';
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-            options: { data: { username: username.toLowerCase() } }
-        });
-
-        if (error) {
-            showMessage(error.message, 'error');
-        } else {
-            showMessage('Success! Please check your email to confirm your account.', 'success');
-            document.getElementById('registerForm').reset();
-            showLoginBtn.click();
-        }
-        registerBtn.textContent = 'Join SterlWorld';
-        registerBtn.disabled = false;
-    });
-
-    if(loginBtn) loginBtn.addEventListener('click', async () => {
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-
-        if (!email || !password) {
-            showMessage('Please enter both email and password.', 'error');
-            return;
-        }
-
-        loginBtn.textContent = 'Entering...';
-        loginBtn.disabled = true;
-
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-        if (error) {
-            showMessage(error.message, 'error');
-        }
-        // onAuthStateChange will handle the successful login UI update
-        
-        loginBtn.textContent = 'Enter SterlWorld';
-        loginBtn.disabled = false;
-    });
-
-    if(logoutBtn) logoutBtn.addEventListener('click', async () => {
-        await supabase.auth.signOut();
-    });
-
+// Listen for auth changes
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', session.user.id)
+      .single()
+      .then(({ data: profile }) => {
+        const displayName = profile ? profile.username : session.user.email;
+        showUserProfile(session.user, displayName);
+      });
+  } else if (event === 'SIGNED_OUT') {
+    showAuthForms();
+  }
+});
   </script>
 </body>
 </html>
