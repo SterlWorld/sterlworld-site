@@ -923,19 +923,24 @@
                     const notice = document.getElementById('constructionNotice');
                     if(notice) notice.classList.add('visible');
                     setTimeout(() => {
-                      const label = document.getElementById('portfolioLabel');
-                      if(label) label.classList.add('visible');
-                      setTimeout(() => {
-                        const tooltip = document.getElementById('portfolioTooltip');
-                        if (tooltip) {
-                          tooltip.classList.add('show');
-                          setTimeout(() => {
-                            tooltip.style.opacity = '0';
-                            setTimeout(() => tooltip.remove(), 500);
-                          }, 2000);
-                        }
-                      }, 800);
-                    }, 600);
+  const label = document.getElementById('portfolioLabel');
+  if(label) label.classList.add('visible');
+  setTimeout(() => {
+    const tooltip = document.getElementById('portfolioTooltip');
+    if (tooltip) {
+      tooltip.classList.add('show');
+      setTimeout(() => {
+        tooltip.style.opacity = '0';
+        setTimeout(() => tooltip.remove(), 500);
+      }, 2000);
+    }
+    // Add auth section after portfolio
+    setTimeout(() => {
+      const authSection = document.getElementById('authSection');
+      if(authSection) authSection.classList.add('visible');
+    }, 1200);
+  }, 800);
+}, 600);
                   }, 800);
                 }, 400);
               }
@@ -1207,6 +1212,110 @@
     function startLogoSparkleLoop() {
       setInterval(() => { createLogoSparkle(); }, 2000);
     }
+    // Supabase configuration - YOU NEED TO ADD YOUR OWN VALUES HERE
+const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+// Auth form elements
+const showLoginBtn = document.getElementById('showLogin');
+const showRegisterBtn = document.getElementById('showRegister');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const userProfile = document.getElementById('userProfile');
+const loginBtn = document.getElementById('loginBtn');
+const registerBtn = document.getElementById('registerBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+
+// Toggle between login and register forms
+showLoginBtn.addEventListener('click', () => {
+  showLoginBtn.classList.add('active');
+  showRegisterBtn.classList.remove('active');
+  loginForm.classList.remove('hidden');
+  registerForm.classList.add('hidden');
+});
+
+showRegisterBtn.addEventListener('click', () => {
+  showRegisterBtn.classList.add('active');
+  showLoginBtn.classList.remove('active');
+  registerForm.classList.remove('hidden');
+  loginForm.classList.add('hidden');
+});
+
+// Register function
+registerBtn.addEventListener('click', async () => {
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+  
+  registerBtn.textContent = 'Joining...';
+  registerBtn.disabled = true;
+  
+  const { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: password,
+  });
+  
+  if (error) {
+    alert('Registration error: ' + error.message);
+    registerBtn.textContent = 'Join SterlWorld';
+    registerBtn.disabled = false;
+  } else {
+    alert('Registration successful! Check your email to confirm your account.');
+    registerBtn.textContent = 'Join SterlWorld';
+    registerBtn.disabled = false;
+  }
+});
+
+// Login function
+loginBtn.addEventListener('click', async () => {
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  loginBtn.textContent = 'Entering...';
+  loginBtn.disabled = true;
+  
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  
+  if (error) {
+    alert('Login error: ' + error.message);
+    loginBtn.textContent = 'Enter SterlWorld';
+    loginBtn.disabled = false;
+  } else {
+    showUserProfile(data.user);
+  }
+});
+
+// Logout function
+logoutBtn.addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut();
+  if (!error) {
+    showAuthForms();
+  }
+});
+
+// Show user profile when logged in
+function showUserProfile(user) {
+  loginForm.classList.add('hidden');
+  registerForm.classList.add('hidden');
+  userProfile.classList.remove('hidden');
+  document.getElementById('userEmail').textContent = user.email;
+}
+
+// Show auth forms when logged out
+function showAuthForms() {
+  userProfile.classList.add('hidden');
+  loginForm.classList.remove('hidden');
+  document.querySelector('.auth-toggle').style.display = 'flex';
+}
   </script>
 </body>
 </html>
