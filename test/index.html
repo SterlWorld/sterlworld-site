@@ -49,10 +49,10 @@
       animation: enterGlow 3s ease-in-out infinite alternate;
       user-select: none;
       opacity: 1;
-      transition: opacity 0.5s ease-in; /* Text fades first */
+      transition: opacity 0.5s ease-in;
     }
     #enter-screen.hiding h1 {
-        opacity: 0; /* Class to trigger the text fade */
+      opacity: 0;
     }
     @keyframes enterGlow {
       from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
@@ -62,11 +62,11 @@
       0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
     }
     .star {
-        position: absolute;
-        background-color: white;
-        border-radius: 50%;
-        box-shadow: 0 0 4px #fff, 0 0 8px #fff;
-        animation: twinkle 4s infinite;
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 0 4px #fff, 0 0 8px #fff;
+      animation: twinkle 4s infinite;
     }
     /* --- END: ENTER SCREEN STYLES --- */
 
@@ -80,22 +80,53 @@
       transition: opacity 1s ease-in;
     }
     canvas#space.fade-in { opacity: 1; }
+    
+    /* --- Mobile Fix: Use Flexbox for Main Layout --- */
+    #main-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 100px; /* Base padding for mobile layout */
+      transition: padding-top 1.5s ease;
+      z-index: 1;
+    }
+
     #logo-wrapper {
-      position: absolute;
-      top: 50%;
+      position: fixed; /* Keep logo at the top */
+      top: 60px;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%);
       z-index: 10;
       opacity: 0;
-      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
+      transition: opacity 1.5s ease, top 1.5s ease;
       text-align: center;
     }
     #logo-wrapper.fade-in { opacity: 1; }
+    /* Desktop fix - keeps logo centered and animates up */
     #logo-wrapper.move-top {
+      position: fixed;
       top: 60px;
       transform: translate(-50%, 0);
-      position: fixed;
     }
+    
+    /* Mobile Fix: Adjusted logo sizing for better flow */
+    @media screen and (max-width: 768px) {
+      #main-container {
+        padding-top: 140px; /* Give more space for the logo and auth button at the top */
+      }
+      #logo-wrapper.move-top {
+        top: 30px; /* Adjust logo position for mobile to not interfere with content */
+      }
+      #logo {
+        width: 180px; /* Smaller logo size */
+        max-width: 70vw;
+      }
+    }
+
     #logo { 
       width: 300px; 
       max-width: 80vw;
@@ -121,16 +152,18 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.02); }
     }
+    
+    /* Mobile Fix: Content is no longer absolutely positioned */
     .content {
-      position: absolute;
-      top: 200px; /* Fallback only */
-      left: 50%;
-      transform: translateX(-50%);
+      position: relative; /* Use relative positioning */
+      top: 0; /* Remove top offset */
+      left: 0; /* Remove left offset */
+      transform: none; /* Remove transform */
       width: 100%;
       max-width: 90%;
       text-align: center;
       opacity: 0;
-      transition: opacity 1.5s ease, top 0.3s ease; /* Added top transition */
+      transition: opacity 1.5s ease;
       font-size: 1.2rem;
       color: #ccc;
       z-index: 5;
@@ -139,9 +172,10 @@
       flex-direction: column;
       justify-content: flex-start;
       height: auto; 
-      min-height: 300px; 
+      margin-top: 20px; /* Add some space below logo */
     }
     .content.visible { opacity: 1; }
+    
     .brand-tagline {
       font-size: 1.1rem;
       color: #0ff;
@@ -383,8 +417,8 @@
       opacity: 0;
     }
     #loader.visible {
-        visibility: visible;
-        opacity: 1;
+      visibility: visible;
+      opacity: 1;
     }
     #loader.fade-out {
       opacity: 0;
@@ -538,7 +572,7 @@
     /* --- UPDATED: AUTH SECTION --- */
     .auth-section {
       position: fixed;
-      top: 70px; /* Position below the trigger button */
+      top: 70px;
       right: 20px;
       z-index: 50;
       background: rgba(0, 0, 0, 0.8);
@@ -629,7 +663,7 @@
       text-align: right;
       color: #ccc;
       font-weight: 500;
-      width: auto; /* Allow it to size naturally */
+      width: auto;
       margin-left: auto;
       display: flex;
       align-items: center;
@@ -639,14 +673,14 @@
       display: none; 
     }
     .user-profile p {
-      margin-bottom: 0; /* Removed margin */
+      margin-bottom: 0;
       font-size: 14px;
       white-space: nowrap;
     }
     .user-profile p span {
-        font-weight: 600;
-        color: #0ff;
-        text-shadow: 0 0 8px #0ff;
+      font-weight: 600;
+      color: #0ff;
+      text-shadow: 0 0 8px #0ff;
     }
     .auth-message {
       position: fixed;
@@ -684,9 +718,6 @@
     
     /* --- MOBILE RESPONSIVENESS FIXES --- */
     @media screen and (max-width: 768px) {
-      #logo {
-        width: 200px;
-      }
       h1 {
         font-size: 2rem;
       }
@@ -715,12 +746,12 @@
         font-size: 12px;
         padding: 6px 12px;
       }
+      .portfolio-section {
+        margin-top: 3rem;
+      }
     }
 
     @media screen and (max-width: 480px) {
-      #logo {
-        width: 180px;
-      }
       h1 {
         font-size: 1.8rem;
         margin-bottom: 1rem;
@@ -730,11 +761,16 @@
         line-height: 1.6;
       }
       .portfolio-section {
-        margin-top: 3rem;
+        margin-top: 2rem;
       }
       #portfolio-bubble {
         width: 100px;
         height: 100px;
+      }
+      .construction-notice {
+        bottom: 10px;
+        font-size: 12px;
+        padding: 6px 12px;
       }
     }
   </style>
@@ -752,24 +788,26 @@
 
   <canvas id="space"></canvas>
 
-  <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
-    <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
-  </div>
-
-  <div class="content" id="mainText">
-    <h1>Welcome to SterlWorld</h1>
-    <p>
-      We're building a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
-      Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
-      Stay tuned — the <span class="power-text">extraordinary</span> awaits.
-    </p>
+  <div id="main-container">
+    <div id="logo-wrapper">
+      <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+      <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
+    </div>
     
-    <div class="portfolio-section">
-      <a href="https://sterlworld.artstation.com/" id="portfolio-bubble" target="_blank">
-        <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
-      </a>
-      <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
+    <div class="content" id="mainText">
+      <h1>Welcome to SterlWorld</h1>
+      <p>
+        We're building a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
+        Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
+        Stay tuned — the <span class="power-text">extraordinary</span> awaits.
+      </p>
+      
+      <div class="portfolio-section">
+        <a href="https://sterlworld.artstation.com/" id="portfolio-bubble" target="_blank">
+          <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
+        </a>
+        <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
+      </div>
     </div>
   </div>
 
@@ -823,9 +861,9 @@
     
     const loadingText = 'SterlWorld';
     for (let char of loadingText) {
-        const span = document.createElement('span');
-        span.textContent = char;
-        if(titleGlow) titleGlow.appendChild(span);
+      const span = document.createElement('span');
+      span.textContent = char;
+      if(titleGlow) titleGlow.appendChild(span);
     }
     const titleLetters = titleGlow ? titleGlow.querySelectorAll('span') : [];
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
@@ -835,116 +873,116 @@
     if(loadingBar) loadingBar.appendChild(sparklesContainer);
 
     document.addEventListener('DOMContentLoaded', () => {
-        const isDesktop = window.innerWidth > 768;
+      const isDesktop = window.innerWidth > 768;
 
-        if (isDesktop) {
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.width = `${Math.random() * 2 + 1}px`;
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 4}s`;
-                if(enterScreen) enterScreen.appendChild(star);
-            }
-            
-            if(enterScreen) enterScreen.addEventListener('click', () => {
-                explosionSound.play().then(() => {
-                    explosionSound.pause();
-                    explosionSound.currentTime = 0;
-                }).catch(error => console.log("Audio couldn't be primed:", error));
-
-                enterScreen.classList.add('hiding');
-                
-                setTimeout(() => {
-                    enterScreen.classList.add('hidden');
-                    if(loader) loader.classList.add('visible');
-                    startLoadingSequence(explosionSound);
-                    setTimeout(() => enterScreen.remove(), 500);
-                }, 500);
-
-            }, { once: true });
-
-        } else { 
-            if(enterScreen) enterScreen.style.display = 'none';
-            if(loader) loader.classList.add('visible');
-            startLoadingSequence();
+      if (isDesktop) {
+        for (let i = 0; i < 50; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.width = `${Math.random() * 2 + 1}px`;
+          star.style.height = star.style.width;
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.top = `${Math.random() * 100}%`;
+          star.style.animationDelay = `${Math.random() * 4}s`;
+          if(enterScreen) enterScreen.appendChild(star);
         }
+        
+        if(enterScreen) enterScreen.addEventListener('click', () => {
+          explosionSound.play().then(() => {
+            explosionSound.pause();
+            explosionSound.currentTime = 0;
+          }).catch(error => console.log("Audio couldn't be primed:", error));
+
+          enterScreen.classList.add('hiding');
+          
+          setTimeout(() => {
+            enterScreen.classList.add('hidden');
+            if(loader) loader.classList.add('visible');
+            startLoadingSequence(explosionSound);
+            setTimeout(() => enterScreen.remove(), 500);
+          }, 500);
+
+        }, { once: true });
+
+      } else { 
+        if(enterScreen) enterScreen.style.display = 'none';
+        if(loader) loader.classList.add('visible');
+        startLoadingSequence();
+      }
     });
 
     function startLoadingSequence(soundToPlay = null) {
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 8;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                if(loadingFill) loadingFill.style.width = '100%';
-                
-                if(loadingFill) {
-                    loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-                    loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-                    loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-                }
-                if(loadingBar) {
-                    loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-                    loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-                }
-                
-                const loadingTextElement = document.querySelector('.loading-text');
-                if(loadingTextElement) {
-                    loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
-                    loadingTextElement.style.color = '#0ff';
-                }
-                
-                if(titleLetters) titleLetters.forEach(letter => letter.classList.add('glow-gold'));
-                if(loadingFill) loadingFill.classList.add('full');
-                
-                console.log('🚀 Loading complete! Starting transition sequence...');
-                
-                if (soundToPlay) {
-                    soundToPlay.play();
-                }
-                
-                const isMobile = window.innerWidth <= 768;
-                
-                if (isMobile) {
-                    // Mobile-specific final animation sequence
-                    createMobileExplosion();
-                    animate();
-                    setTimeout(() => {
-                        if(loader) loader.classList.add('fade-out');
-                        setTimeout(() => loader ? loader.remove() : null, 800);
-                        const spaceCanvas = document.getElementById('space');
-                        if(spaceCanvas) spaceCanvas.classList.add('fade-in');
-                    }, 100);
-                } else {
-                    // Desktop-specific final animation sequence
-                    createLoadingBarCelebration();
-                    setTimeout(() => {
-                        createLoadingBarExplosion();
-                        animate();
-                        setTimeout(() => {
-                            if(loader) loader.classList.add('fade-out');
-                            setTimeout(() => loader ? loader.remove() : null, 800);
-                            const spaceCanvas = document.getElementById('space');
-                            if(spaceCanvas) spaceCanvas.classList.add('fade-in');
-                        }, 800);
-                    }, 300);
-                }
-            } else {
-                if(loadingFill) loadingFill.style.width = progress + '%';
-                if (Math.random() < 0.6) {
-                    if(loadingBar) {
-                        const barWidth = loadingBar.clientWidth;
-                        const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
-                        createLoadingSparkle(sparkleX);
-                    }
-                }
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 8;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          if(loadingFill) loadingFill.style.width = '100%';
+          
+          if(loadingFill) {
+            loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
+            loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
+            loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
+          }
+          if(loadingBar) {
+            loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
+            loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
+          }
+          
+          const loadingTextElement = document.querySelector('.loading-text');
+          if(loadingTextElement) {
+            loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff';
+            loadingTextElement.style.color = '#0ff';
+          }
+          
+          if(titleLetters) titleLetters.forEach(letter => letter.classList.add('glow-gold'));
+          if(loadingFill) loadingFill.classList.add('full');
+          
+          console.log('🚀 Loading complete! Starting transition sequence...');
+          
+          if (soundToPlay) {
+            soundToPlay.play();
+          }
+          
+          const isMobile = window.innerWidth <= 768;
+          
+          if (isMobile) {
+            // Mobile-specific final animation sequence
+            createMobileExplosion();
+            animate();
+            setTimeout(() => {
+              if(loader) loader.classList.add('fade-out');
+              setTimeout(() => loader ? loader.remove() : null, 800);
+              const spaceCanvas = document.getElementById('space');
+              if(spaceCanvas) spaceCanvas.classList.add('fade-in');
+            }, 100);
+          } else {
+            // Desktop-specific final animation sequence
+            createLoadingBarCelebration();
+            setTimeout(() => {
+              createLoadingBarExplosion();
+              animate();
+              setTimeout(() => {
+                if(loader) loader.classList.add('fade-out');
+                setTimeout(() => loader ? loader.remove() : null, 800);
+                const spaceCanvas = document.getElementById('space');
+                if(spaceCanvas) spaceCanvas.classList.add('fade-in');
+              }, 800);
+            }, 300);
+          }
+        } else {
+          if(loadingFill) loadingFill.style.width = progress + '%';
+          if (Math.random() < 0.6) {
+            if(loadingBar) {
+              const barWidth = loadingBar.clientWidth;
+              const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
+              createLoadingSparkle(sparkleX);
             }
-            updateLetterGlow();
-        }, 120);
+          }
+        }
+        updateLetterGlow();
+      }, 120);
     }
 
     let w, h;
@@ -1017,23 +1055,15 @@
             setTimeout(() => {
               logoMoveComplete = true;
               startLogoSparkleLoop();
-              const lw = document.getElementById('logo-wrapper');
-              if(lw) {
-                const logoRect = lw.getBoundingClientRect();
-                const logoBottom = logoRect.bottom;
-                const contentMargin = 40;
-                const newContentTop = logoBottom + contentMargin;
-                const content = document.getElementById('mainText');
-                if(content) content.style.top = `${newContentTop}px`;
-                console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
+              const content = document.getElementById('mainText');
+              if(content) {
                 setTimeout(() => {
                   if(content) content.classList.add('visible');
                   
-                  // Show the trigger button here
                   supabase.auth.getSession().then(({ data: { session } }) => {
-                     if (!session) {
-                         showAuthTrigger(); 
-                     }
+                    if (!session) {
+                      showAuthTrigger(); 
+                    }
                   });
 
                   setTimeout(() => {
@@ -1103,7 +1133,8 @@
     function createLoadingSparkle(x) {
       const sparkle = document.createElement('img');
       sparkle.src = sparkleImgSrc; sparkle.className = 'sparkle-star';
-      sparkle.style.width = sparkle.style.height = `${6 + Math.random() * 6}px`;
+      const size = Math.random() * 6 + 6;
+      sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
       sparkle.style.position = 'absolute';
       sparkle.style.top = `${Math.random() * 100}%`; sparkle.style.left = `${x}px`;
       sparkle.style.opacity = '1';
@@ -1118,38 +1149,38 @@
     }
 
     function createLoadingBarExplosion() {
-        console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
-        const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
-        const loadingTextEl = document.querySelector('.loading-text');
-        const loadingTextRect = loadingTextEl ? loadingTextEl.getBoundingClientRect() : null;
-        const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
-        
-        if (loadingBarRect) createStarExplosion(loadingBarRect, 40, 'bar');
-        if (loadingTextRect) createStarExplosion(loadingTextRect, 25, 'text');
-        if (titleGlowRect) createStarExplosion(titleGlowRect, 30, 'title');
-        
-        createScreenFlash();
-        
-        setTimeout(() => {
-            if (loadingBar) {
-                loadingBar.style.opacity = '0';
-                loadingBar.style.transform = 'scale(0.8)';
-            }
-        }, 100);
-        
-        setTimeout(() => {
-            if (loadingTextEl) {
-                loadingTextEl.style.opacity = '0';
-                loadingTextEl.style.transform = 'scale(0.8)';
-            }
-        }, 150);
-        
-        setTimeout(() => {
-            if(titleGlow) {
-                titleGlow.style.opacity = '0'; // Added this line to fix the fadeout
-                titleGlow.style.transform = 'scale(0.8)';
-            }
-        }, 150); // Synced with the "Loading" text fadeout
+      console.log('🎆 LOADING BAR EXPLOSION STARTING! 🎆');
+      const loadingBarRect = loadingBar ? loadingBar.getBoundingClientRect() : null;
+      const loadingTextEl = document.querySelector('.loading-text');
+      const loadingTextRect = loadingTextEl ? loadingTextEl.getBoundingClientRect() : null;
+      const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
+      
+      if (loadingBarRect) createStarExplosion(loadingBarRect, 40, 'bar');
+      if (loadingTextRect) createStarExplosion(loadingTextRect, 25, 'text');
+      if (titleGlowRect) createStarExplosion(titleGlowRect, 30, 'title');
+      
+      createScreenFlash();
+      
+      setTimeout(() => {
+        if (loadingBar) {
+          loadingBar.style.opacity = '0';
+          loadingBar.style.transform = 'scale(0.8)';
+        }
+      }, 100);
+      
+      setTimeout(() => {
+        if (loadingTextEl) {
+          loadingTextEl.style.opacity = '0';
+          loadingTextEl.style.transform = 'scale(0.8)';
+        }
+      }, 150);
+      
+      setTimeout(() => {
+        if(titleGlow) {
+          titleGlow.style.opacity = '0';
+          titleGlow.style.transform = 'scale(0.8)';
+        }
+      }, 150);
     }
 
     function createScreenFlash() {
@@ -1261,7 +1292,7 @@
         const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
         sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
         sparkle.style.opacity = '1'; sparkle.style.position = 'fixed';
-        sparkle.style.zIndex = '9999'; sparkle.style.pointerEvents = 'none';
+        sparkle.style.zIndex = '9999'; sparkle.style.pointer-events = 'none';
         sparkle.onerror = () => {
           sparkle.style.background = glowColor; sparkle.style.borderRadius = '50%';
           sparkle.style.boxShadow = `0 0 6px ${glowColor}`; sparkle.src = '';
@@ -1343,19 +1374,19 @@
     const userDisplayName = document.getElementById('userDisplayName');
 
     function showAuthTrigger() {
-        if (authTrigger) authTrigger.classList.add('visible');
+      if (authTrigger) authTrigger.classList.add('visible');
     }
 
     if (authTrigger) {
-        authTrigger.addEventListener('click', () => {
-            if (authSection) authSection.classList.toggle('open');
-        });
+      authTrigger.addEventListener('click', () => {
+        if (authSection) authSection.classList.toggle('open');
+      });
     }
 
     document.addEventListener('click', (event) => {
-        if (authSection && authTrigger && !authSection.contains(event.target) && !authTrigger.contains(event.target)) {
-            authSection.classList.remove('open');
-        }
+      if (authSection && authTrigger && !authSection.contains(event.target) && !authTrigger.contains(event.target)) {
+        authSection.classList.remove('open');
+      }
     });
 
     function showUserProfile(user, displayName) {
@@ -1382,21 +1413,21 @@
       if(loginEmail) loginEmail.value = '';
       if(loginPassword) loginPassword.value = '';
       if(loginBtn) {
-          loginBtn.textContent = 'Enter SterlWorld';
-          loginBtn.disabled = false;
+        loginBtn.textContent = 'Enter SterlWorld';
+        loginBtn.disabled = false;
       }
     }
 
     supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN' && session) {
-            supabase.from('profiles').select('username').eq('id', session.user.id).single()
-                .then(({ data: profile }) => {
-                    const displayName = profile ? profile.username : session.user.email;
-                    showUserProfile(session.user, displayName);
-                });
-        } else if (event === 'SIGNED_OUT') {
-            showAuthForms();
-        }
+      if (event === 'SIGNED_IN' && session) {
+        supabase.from('profiles').select('username').eq('id', session.user.id).single()
+          .then(({ data: profile }) => {
+            const displayName = profile ? profile.username : session.user.email;
+            showUserProfile(session.user, displayName);
+          });
+      } else if (event === 'SIGNED_OUT') {
+        showAuthForms();
+      }
     });
     
     function showMessage(message, type = 'info') {
@@ -1425,105 +1456,105 @@
     }
 
     if(showLoginBtn && showRegisterBtn && loginForm && registerForm) {
-        showLoginBtn.addEventListener('click', () => {
-            showLoginBtn.classList.add('active');
-            showRegisterBtn.classList.remove('active');
-            loginForm.classList.remove('hidden');
-            registerForm.classList.add('hidden');
-        });
+      showLoginBtn.addEventListener('click', () => {
+        showLoginBtn.classList.add('active');
+        showRegisterBtn.classList.remove('active');
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+      });
 
-        showRegisterBtn.addEventListener('click', () => {
-            showRegisterBtn.classList.add('active');
-            showLoginBtn.classList.remove('active');
-            registerForm.classList.remove('hidden');
-            loginForm.classList.add('hidden');
-        });
+      showRegisterBtn.addEventListener('click', () => {
+        showRegisterBtn.classList.add('active');
+        showLoginBtn.classList.remove('active');
+        registerForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+      });
     }
 
     if(registerBtn) registerBtn.addEventListener('click', async () => {
-        const username = document.getElementById('registerUsername').value.trim();
-        const email = document.getElementById('registerEmail').value.trim();
-        const password = document.getElementById('registerPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        
-        document.querySelectorAll('.auth-form input').forEach(input => input.classList.remove('error'));
-        
-        if (!username || username.length < 3 || !/^[a-zA-Z0-9_]+$/.test(username)) {
-            showMessage('Username must be 3+ characters and contain only letters, numbers, or underscores.', 'error');
-            document.getElementById('registerUsername').classList.add('error');
-            return;
-        }
-        if (!email) {
-            showMessage('Please enter an email address.', 'error');
-            document.getElementById('registerEmail').classList.add('error');
-            return;
-        }
-        if (password.length < 6) {
-            showMessage('Password must be at least 6 characters long.', 'error');
-            document.getElementById('registerPassword').classList.add('error');
-            return;
-        }
-        if (password !== confirmPassword) {
-            showMessage('Passwords do not match.', 'error');
-            document.getElementById('confirmPassword').classList.add('error');
-            return;
-        }
+      const username = document.getElementById('registerUsername').value.trim();
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      document.querySelectorAll('.auth-form input').forEach(input => input.classList.remove('error'));
+      
+      if (!username || username.length < 3 || !/^[a-zA-Z0-9_]+$/.test(username)) {
+        showMessage('Username must be 3+ characters and contain only letters, numbers, or underscores.', 'error');
+        document.getElementById('registerUsername').classList.add('error');
+        return;
+      }
+      if (!email) {
+        showMessage('Please enter an email address.', 'error');
+        document.getElementById('registerEmail').classList.add('error');
+        return;
+      }
+      if (password.length < 6) {
+        showMessage('Password must be at least 6 characters long.', 'error');
+        document.getElementById('registerPassword').classList.add('error');
+        return;
+      }
+      if (password !== confirmPassword) {
+        showMessage('Passwords do not match.', 'error');
+        document.getElementById('confirmPassword').classList.add('error');
+        return;
+      }
 
-        registerBtn.textContent = 'Checking...';
-        registerBtn.disabled = true;
+      registerBtn.textContent = 'Checking...';
+      registerBtn.disabled = true;
 
-        const isUsernameAvailable = await checkUsernameAvailability(username);
-        if (!isUsernameAvailable) {
-            showMessage('Sorry, that username is already taken.', 'error');
-            document.getElementById('registerUsername').classList.add('error');
-            registerBtn.textContent = 'Join SterlWorld';
-            registerBtn.disabled = false;
-            return;
-        }
-
-        registerBtn.textContent = 'Creating...';
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-            options: { data: { username: username.toLowerCase() } }
-        });
-
-        if (error) {
-            showMessage(error.message, 'error');
-        } else {
-            showMessage('Success! Please check your email to confirm your account.', 'success');
-            document.getElementById('registerForm').reset();
-            showLoginBtn.click();
-        }
+      const isUsernameAvailable = await checkUsernameAvailability(username);
+      if (!isUsernameAvailable) {
+        showMessage('Sorry, that username is already taken.', 'error');
+        document.getElementById('registerUsername').classList.add('error');
         registerBtn.textContent = 'Join SterlWorld';
         registerBtn.disabled = false;
+        return;
+      }
+
+      registerBtn.textContent = 'Creating...';
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: { data: { username: username.toLowerCase() } }
+      });
+
+      if (error) {
+        showMessage(error.message, 'error');
+      } else {
+        showMessage('Success! Please check your email to confirm your account.', 'success');
+        document.getElementById('registerForm').reset();
+        showLoginBtn.click();
+      }
+      registerBtn.textContent = 'Join SterlWorld';
+      registerBtn.disabled = false;
     });
 
     if(loginBtn) loginBtn.addEventListener('click', async () => {
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
 
-        if (!email || !password) {
-            showMessage('Please enter both email and password.', 'error');
-            return;
-        }
+      if (!email || !password) {
+        showMessage('Please enter both email and password.', 'error');
+        return;
+      }
 
-        loginBtn.textContent = 'Entering...';
-        loginBtn.disabled = true;
+      loginBtn.textContent = 'Entering...';
+      loginBtn.disabled = true;
 
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-        if (error) {
-            showMessage(error.message, 'error');
-        }
-        // onAuthStateChange will handle the successful login UI update
-        
-        loginBtn.textContent = 'Enter SterlWorld';
-        loginBtn.disabled = false;
+      if (error) {
+        showMessage(error.message, 'error');
+      }
+      // onAuthStateChange will handle the successful login UI update
+      
+      loginBtn.textContent = 'Enter SterlWorld';
+      loginBtn.disabled = false;
     });
 
     if(logoutBtn) logoutBtn.addEventListener('click', async () => {
-        await supabase.auth.signOut();
+      await supabase.auth.signOut();
     });
 
   </script>
