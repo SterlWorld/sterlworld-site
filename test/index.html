@@ -118,6 +118,21 @@
     #logo-wrapper.fade-in .logo-tagline {
       opacity: 1;
     }
+    #header-fade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 180px; /* Adjust this height as needed to match the bottom of your logo */
+  z-index: 9; /* This must be between the logo (10) and the content (5) */
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.9) 80%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
     @keyframes logoPulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.02); }
@@ -757,6 +772,7 @@
     <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
     <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
   </div>
+  <div id="header-fade"></div>
 
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
