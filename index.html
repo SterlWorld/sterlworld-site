@@ -499,44 +499,68 @@
       0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
       50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
-    @media screen and (max-width: 768px) {
-      #logo { width: 200px; }
-      #logo-wrapper.move-top { top: 40px; }
-      .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
-      h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
-      .content { font-size: 0.95rem; padding: 0 15px; }
-      .content p { font-size: 1.1rem; line-height: 1.6; }
-      .portfolio-section { margin-top: 3rem; }
-      #portfolio-bubble { width: 80px; height: 80px; }
-      #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-      .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-      .portfolio-label { font-size: 0.9rem; }
-      .construction-notice { font-size: 11px; padding: 5px 10px; }
-    }
-    @media screen and (max-width: 480px) {
-      #logo { width: 160px; }
-      .logo-tagline { font-size: 0.65rem; margin-top: 2px; }
-      h1 { font-size: 1.4rem; margin-bottom: 0.8rem; }
-      .content { font-size: 0.9rem; padding: 0 10px; }
-      .content p { font-size: 1rem; line-height: 1.5; }
-      .portfolio-section { margin-top: 2.5rem; }
-      #portfolio-bubble { width: 70px; height: 70px; }
-      #portfolio-bubble::after { bottom: 100px; font-size: 11px; padding: 4px 6px; }
-      .intro-tooltip { bottom: 100px; font-size: 11px; padding: 4px 6px; }
-      .portfolio-label { font-size: 0.8rem; }
-      .construction-notice { font-size: 10px; padding: 4px 8px; }
-    }
-    @media screen and (max-width: 600px) {
-      .loading-bar { height: 14px; }
-    }
-    @media screen and (max-height: 600px) and (orientation: landscape) {
-      #logo-wrapper.move-top { top: 25px; }
-      h1 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-      .content p { font-size: 0.95rem; line-height: 1.4; }
-      .portfolio-section { margin-top: 1.5rem; }
-      #portfolio-bubble { width: 60px; height: 60px; }
-      .portfolio-label { font-size: 0.75rem; }
-    }
+    /* --- NEW & IMPROVED: MOBILE RESPONSIVENESS FIXES --- */
+@media screen and (max-width: 768px) {
+  #logo { width: 200px; }
+  #logo-wrapper.move-top { top: 40px; }
+  .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
+  h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
+  .content { font-size: 0.95rem; padding: 0 15px; }
+  .content p { font-size: 1.1rem; line-height: 1.6; }
+  .portfolio-section { margin-top: 3rem; }
+  #portfolio-bubble { width: 80px; height: 80px; }
+  #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+  .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+  .portfolio-label { font-size: 0.9rem; }
+  .construction-notice { font-size: 11px; padding: 5px 10px; }
+  .auth-trigger-btn {
+    top: 15px;
+    right: 15px;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+  .auth-section {
+    top: 60px;
+    right: 15px;
+    padding: 10px 15px;
+  }
+  .auth-form, .user-profile {
+    width: 180px;
+  }
+  .auth-tab {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  .auth-button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+@media screen and (max-width: 480px) {
+  #logo { width: 160px; }
+  .logo-tagline { font-size: 0.65rem; margin-top: 2px; }
+  h1 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+  .content { font-size: 0.9rem; padding: 0 10px; }
+  .content p { font-size: 1rem; line-height: 1.5; }
+  .portfolio-section { margin-top: 2.5rem; }
+  #portfolio-bubble { width: 70px; height: 70px; }
+  #portfolio-bubble::after { bottom: 100px; font-size: 11px; padding: 4px 6px; }
+  .intro-tooltip { bottom: 100px; font-size: 11px; padding: 4px 6px; }
+  .portfolio-label { font-size: 0.8rem; }
+  .construction-notice { font-size: 10px; padding: 4px 8px; }
+}
+@media screen and (max-width: 600px) {
+  .loading-bar { height: 14px; }
+}
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  #logo-wrapper.move-top { top: 25px; }
+  h1 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .content p { font-size: 0.95rem; line-height: 1.4; }
+  .portfolio-section { margin-top: 1.5rem; }
+  #portfolio-bubble { width: 60px; height: 60px; }
+  .portfolio-label { font-size: 0.75rem; }
+}
+    
   </style>
 </head>
 <body>
