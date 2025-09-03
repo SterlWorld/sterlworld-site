@@ -688,17 +688,44 @@
     .auth-button.logout {
       background: linear-gradient(45deg, #ff5ec4, #ffd700);
     }
-    .user-profile {
+    /* --- NEW: USER PROFILE TOP BAR STYLES --- */
+#userProfile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
   display: flex;
-  flex-direction: column; /* Stacks the text and button vertically */
-  align-items: center; /* Centers the content horizontally */
   justify-content: center;
-  text-align: center;
+  align-items: center;
+  gap: 15px;
   color: #ccc;
   font-weight: 500;
-  padding: 10px; /* Add some padding for spacing */
-  gap: 15px;
-  width: 100%; /* Take up the full width of the parent container */
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+#userProfile.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#userProfile.hidden { 
+  display: none; 
+}
+#userProfile p {
+  margin-bottom: 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+#userProfile p span {
+  font-weight: 600;
+  color: #0ff;
+  text-shadow: 0 0 8px #0ff;
 }
     .user-profile.hidden { 
       display: none; 
@@ -843,6 +870,12 @@
   <button id="authTrigger" class="auth-trigger-btn">Login / Register</button>
 
   <!-- UPDATED: Auth Section -->
+  <nav id="userProfile" class="user-profile hidden">
+    <p>Welcome back, <span id="userDisplayName"></span>!</p>
+    <button id="logoutBtn" class="auth-button logout">Sign Out</button>
+  </nav>
+
+  <button id="authTrigger" class="auth-trigger-btn">Login / Register</button>
   <div class="auth-section" id="authSection">
     <div class="auth-toggle">
       <button id="showLogin" class="auth-tab active">Login</button>
@@ -859,10 +892,6 @@
       <input type="password" id="registerPassword" placeholder="Password" required>
       <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
       <button id="registerBtn" class="auth-button">Join SterlWorld</button>
-    </div>
-    <div id="userProfile" class="user-profile hidden">
-      <p>Welcome back, <span id="userDisplayName"></span>!</p>
-      <button id="logoutBtn" class="auth-button logout">Sign Out</button>
     </div>
   </div>
 
@@ -1422,34 +1451,38 @@
         }
     });
 
-    function showUserProfile(user, displayName) {
-      if (authTrigger) authTrigger.classList.add('hidden');
-      if (authSection) authSection.classList.add('open');
-      if (loginForm) loginForm.classList.add('hidden');
-      if (registerForm) registerForm.classList.add('hidden');
-      const authToggle = document.querySelector('.auth-toggle');
-      if (authToggle) authToggle.style.display = 'none';
-      if (userProfile) userProfile.classList.remove('hidden');
-      if (userDisplayName) userDisplayName.textContent = displayName;
-    }
+   function showUserProfile(user, displayName) {
+  if (authTrigger) authTrigger.classList.add('hidden');
+  if (authSection) authSection.classList.remove('open'); // Always hide the pop-up
+  if (userProfile) {
+    userProfile.classList.remove('hidden');
+    userProfile.classList.add('visible'); // Show the new top bar
+  }
+  if (userDisplayName) userDisplayName.textContent = displayName;
+}
 
-    function showAuthForms() {
-      if (userProfile) userProfile.classList.add('hidden');
-      const authToggle = document.querySelector('.auth-toggle');
-      if (authToggle) authToggle.style.display = 'flex';
-      if (showLoginBtn) showLoginBtn.click();
-      if (authTrigger) authTrigger.classList.remove('hidden');
-      if (authSection) authSection.classList.remove('open');
-      
-      const loginEmail = document.getElementById('loginEmail');
-      const loginPassword = document.getElementById('loginPassword');
-      if(loginEmail) loginEmail.value = '';
-      if(loginPassword) loginPassword.value = '';
-      if(loginBtn) {
-          loginBtn.textContent = 'Enter SterlWorld';
-          loginBtn.disabled = false;
-      }
-    }
+function showAuthForms() {
+  if (userProfile) {
+    userProfile.classList.remove('visible');
+    userProfile.classList.add('hidden'); // Hide the top bar
+  }
+  if (authTrigger) authTrigger.classList.remove('hidden');
+  if (authSection) authSection.classList.remove('open');
+  
+  // These lines handle clearing the forms and showing the login tabs
+  const authToggle = document.querySelector('.auth-toggle');
+  if (authToggle) authToggle.style.display = 'flex';
+  if (showLoginBtn) showLoginBtn.click();
+  
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPassword = document.getElementById('loginPassword');
+  if(loginEmail) loginEmail.value = '';
+  if(loginPassword) loginPassword.value = '';
+  if(loginBtn) {
+      loginBtn.textContent = 'Enter SterlWorld';
+      loginBtn.disabled = false;
+  }
+}
 
     supabase.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_IN' && session) {
