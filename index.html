@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <title>SterlWorld | Multimedia Universe by Sterlin Griffin</title>
   <meta name="description" content="Enter SterlWorld — an animated universe of games, music, and characters by artist Sterlin Griffin. View portfolio and flagship project Pizza Dales." />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -14,11 +15,12 @@
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow: hidden;
+      overflow-y: auto; /* This allows vertical scrolling */
+      overflow-x: hidden; /* This keeps horizontal scrolling off */
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
 
-    /* --- NEW & FIXED: ENTER SCREEN STYLES --- */
+    /* --- ENTER SCREEN STYLES --- */
     #enter-screen {
       position: fixed;
       top: 0; left: 0;
@@ -53,12 +55,10 @@
     #enter-screen.hiding h1 {
         opacity: 0; /* Class to trigger the text fade */
     }
-    /* FIXED: Glow animation pulses intensity, not color */
     @keyframes enterGlow {
       from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
       to { text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 50px #0ff, 0 0 80px #0ff; }
     }
-    /* Twinkling star background for enter screen */
     @keyframes twinkle {
       0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
     }
@@ -118,6 +118,67 @@
     #logo-wrapper.fade-in .logo-tagline {
       opacity: 1;
     }
+    /* --- MOBILE RESPONSIVENESS FIXES --- */
+@media screen and (max-width: 768px) {
+  #logo { width: 200px; }
+  #logo-wrapper.move-top { top: 60px; }
+  .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
+  h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
+  .content { font-size: 0.95rem; padding: 0 15px; }
+  .content p { font-size: 1.1rem; line-height: 1.6; }
+  .portfolio-section { margin-top: 3rem; }
+  #portfolio-bubble { width: 80px; height: 80px; }
+  #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+  .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+  .portfolio-label { font-size: 0.9rem; }
+  .construction-notice { font-size: 11px; padding: 5px 10px; }
+  .auth-trigger-btn {
+    top: 15px;
+    right: 15px;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+  .auth-section {
+    top: 60px;
+    right: 15px;
+    padding: 10px 15px;
+  }
+  .auth-form, .user-profile {
+    width: 180px;
+  }
+  .auth-tab {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  .auth-button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+  @media screen and (max-width: 480px) {
+    #logo { width: 160px; }
+    .logo-tagline { font-size: 0.65rem; margin-top: 2px; }
+    h1 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+    .content { font-size: 0.9rem; padding: 0 10px; }
+    .content p { font-size: 1rem; line-height: 1.5; }
+    .portfolio-section { margin-top: 2.5rem; }
+    #portfolio-bubble { width: 70px; height: 70px; }
+    #portfolio-bubble::after { bottom: 100px; font-size: 11px; padding: 4px 6px; }
+    .intro-tooltip { bottom: 100px; font-size: 11px; padding: 4px 6px; }
+    .portfolio-label { font-size: 0.8rem; }
+    .construction-notice { font-size: 10px; padding: 4px 8px; }
+  }
+  @media screen and (max-width: 600px) {
+    .loading-bar { height: 14px; }
+  }
+  @media screen and (max-height: 600px) and (orientation: landscape) {
+    #logo-wrapper.move-top { top: 25px; }
+    h1 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .content p { font-size: 0.95rem; line-height: 1.4; }
+    .portfolio-section { margin-top: 1.5rem; }
+    #portfolio-bubble { width: 60px; height: 60px; }
+    .portfolio-label { font-size: 0.75rem; }
+  }
     @keyframes logoPulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.02); }
@@ -368,7 +429,6 @@
     .construction-notice.visible {
       opacity: 1;
     }
-    /* MODIFIED: Loader starts hidden */
     #loader {
       position: fixed;
       top: 0; left: 0;
@@ -499,68 +559,276 @@
       0%, 100% { filter: drop-shadow(0 0 10px #ffd700); opacity: 1; }
       50% { filter: drop-shadow(0 0 20px #fff68f); opacity: 0.8; }
     }
-    /* --- NEW & IMPROVED: MOBILE RESPONSIVENESS FIXES --- */
-@media screen and (max-width: 768px) {
-  #logo { width: 200px; }
-  #logo-wrapper.move-top { top: 40px; }
-  .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
-  h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
-  .content { font-size: 0.95rem; padding: 0 15px; }
-  .content p { font-size: 1.1rem; line-height: 1.6; }
-  .portfolio-section { margin-top: 3rem; }
-  #portfolio-bubble { width: 80px; height: 80px; }
-  #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-  .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-  .portfolio-label { font-size: 0.9rem; }
-  .construction-notice { font-size: 11px; padding: 5px 10px; }
-  .auth-trigger-btn {
-    top: 15px;
-    right: 15px;
-    font-size: 13px;
-    padding: 6px 12px;
-  }
-  .auth-section {
-    top: 60px;
-    right: 15px;
-    padding: 10px 15px;
-  }
-  .auth-form, .user-profile {
-    width: 180px;
-  }
-  .auth-tab {
-    padding: 5px 10px;
-    font-size: 12px;
-  }
-  .auth-button {
-    font-size: 12px;
-    padding: 6px 12px;
-  }
-}
-@media screen and (max-width: 480px) {
-  #logo { width: 160px; }
-  .logo-tagline { font-size: 0.65rem; margin-top: 2px; }
-  h1 { font-size: 1.4rem; margin-bottom: 0.8rem; }
-  .content { font-size: 0.9rem; padding: 0 10px; }
-  .content p { font-size: 1rem; line-height: 1.5; }
-  .portfolio-section { margin-top: 2.5rem; }
-  #portfolio-bubble { width: 70px; height: 70px; }
-  #portfolio-bubble::after { bottom: 100px; font-size: 11px; padding: 4px 6px; }
-  .intro-tooltip { bottom: 100px; font-size: 11px; padding: 4px 6px; }
-  .portfolio-label { font-size: 0.8rem; }
-  .construction-notice { font-size: 10px; padding: 4px 8px; }
-}
-@media screen and (max-width: 600px) {
-  .loading-bar { height: 14px; }
-}
-@media screen and (max-height: 600px) and (orientation: landscape) {
-  #logo-wrapper.move-top { top: 25px; }
-  h1 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-  .content p { font-size: 0.95rem; line-height: 1.4; }
-  .portfolio-section { margin-top: 1.5rem; }
-  #portfolio-bubble { width: 60px; height: 60px; }
-  .portfolio-label { font-size: 0.75rem; }
-}
     
+    /* --- NEW: AUTH TRIGGER BUTTON --- */
+    .auth-trigger-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: transparent;
+      border: 2px solid rgba(0, 255, 255, 0.5);
+      color: rgba(0, 255, 255, 0.8);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+    }
+    .auth-trigger-btn.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .auth-trigger-btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+      color: #0ff;
+      border-color: #0ff;
+      text-shadow: 0 0 8px #0ff;
+    }
+    .auth-trigger-btn.hidden {
+      opacity: 0 !important;
+      transform: translateY(-20px) !important;
+      pointer-events: none !important;
+    }
+
+    /* --- UPDATED: AUTH SECTION --- */
+    .auth-section {
+  position: fixed;
+  top: 70px; /* Position below the trigger button */
+  right: 20px;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  padding: 15px 20px;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+  transform-origin: top right;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  max-width: 90vw; /* Limit the width for mobile */
+}
+    .auth-section.open { 
+      opacity: 1; 
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .auth-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      justify-content: flex-end;
+    }
+    .auth-tab {
+      background: transparent;
+      color: #ccc;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .auth-tab.active, .auth-tab:hover {
+      color: #0ff;
+      border-color: #0ff;
+      text-shadow: 0 0 8px #0ff;
+      background: rgba(0, 255, 255, 0.1);
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 200px;
+      margin-left: auto;
+    }
+    .auth-form.hidden { 
+      display: none; 
+    }
+    .auth-form input {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 15px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+    .auth-form input:focus {
+      outline: none;
+      border-color: #0ff;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    }
+    .auth-button {
+      background: linear-gradient(45deg, #0ff, #ff5ec4);
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+    .auth-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    }
+    .auth-button.logout {
+      background: linear-gradient(45deg, #ff5ec4, #ffd700);
+    }
+    /* --- NEW: USER PROFILE TOP BAR STYLES --- */
+#userProfile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  color: #ccc;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+#userProfile.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#userProfile.hidden { 
+  display: none; 
+}
+#userProfile p {
+  margin-bottom: 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+#userProfile p span {
+  font-weight: 600;
+  color: #0ff;
+  text-shadow: 0 0 8px #0ff;
+}
+    .user-profile.hidden { 
+      display: none; 
+    }
+    .user-profile p {
+      margin-bottom: 0; /* Removed margin */
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .user-profile p span {
+        font-weight: 600;
+        color: #0ff;
+        text-shadow: 0 0 8px #0ff;
+    }
+    .auth-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 100001;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .auth-message.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .auth-message.success {
+      color: #0ff;
+      border: 2px solid rgba(0, 255, 255, 0.5);
+    }
+    .auth-message.error {
+      color: #ff5ec4;
+      border: 2px solid rgba(255, 94, 196, 0.5);
+    }
+    .auth-message.info {
+      color: #ffd700;
+      border: 2px solid rgba(255, 215, 0, 0.5);
+    }
+    
+    /* --- MOBILE RESPONSIVENESS FIXES --- */
+    @media screen and (max-width: 768px) {
+      #logo {
+        width: 200px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .content p {
+        font-size: 1.1rem;
+      }
+      .auth-trigger-btn {
+        top: 15px;
+        right: 15px;
+        font-size: 13px;
+        padding: 6px 12px;
+      }
+      .auth-section {
+        top: 60px;
+        right: 15px;
+        padding: 10px 15px;
+      }
+      .auth-form, .user-profile {
+        width: 180px;
+      }
+      .auth-tab {
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+      .auth-button {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      #logo {
+        width: 180px;
+      }
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+      .content p {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+      .portfolio-section {
+        margin-top: 3rem;
+      }
+      #portfolio-bubble {
+        width: 100px;
+        height: 100px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -580,6 +848,7 @@
     <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
     <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
   </div>
+  <div id="header-fade"></div>
 
   <div class="content" id="mainText">
     <h1>Welcome to SterlWorld</h1>
@@ -590,15 +859,48 @@
     </p>
     
     <div class="portfolio-section">
-      <a href="#" id="portfolio-bubble" onclick="window.open('https://sterlworld.artstation.com/', '_blank'); return false;">
+      <a href="https://sterlworld.artstation.com/" id="portfolio-bubble" target="_blank">
         <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
       </a>
       <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
     </div>
   </div>
 
+  <!-- NEW: Auth Trigger Button -->
+  <button id="authTrigger" class="auth-trigger-btn">Login / Register</button>
+
+  <!-- UPDATED: Auth Section -->
+  <nav id="userProfile" class="user-profile hidden">
+    <p>Welcome back, <span id="userDisplayName"></span>!</p>
+    <button id="logoutBtn" class="auth-button logout">Sign Out</button>
+  </nav>
+
+  <button id="authTrigger" class="auth-trigger-btn">Login / Register</button>
+  <div class="auth-section" id="authSection">
+    <div class="auth-toggle">
+      <button id="showLogin" class="auth-tab active">Login</button>
+      <button id="showRegister" class="auth-tab">Register</button>
+    </div>
+    <div id="loginForm" class="auth-form">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button id="loginBtn" class="auth-button">Enter SterlWorld</button>
+    </div>
+    <div id="registerForm" class="auth-form hidden">
+      <input type="text" id="registerUsername" placeholder="Username" required>
+      <input type="email" id="registerEmail" placeholder="Email" required>
+      <input type="password" id="registerPassword" placeholder="Password" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <button id="registerBtn" class="auth-button">Join SterlWorld</button>
+    </div>
+  </div>
+
+  
 
   <script>
+    // --- THIS SCRIPT IS NOW COMPLETE AND FULLY INTEGRATED ---
+    
+    // Get all DOM elements at the top for clarity
     const enterScreen = document.getElementById('enter-screen');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
@@ -609,7 +911,6 @@
     const ctx = canvas.getContext('2d');
     const logo = document.getElementById('logo');
     
-    // --- THIS IS THE ONLY CHANGE: CORRECTED URL ---
     const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
     explosionSound.preload = 'auto';
     
@@ -820,6 +1121,14 @@
                 console.log(`📐 Logo bottom: ${logoBottom}px, Content positioned at: ${newContentTop}px`);
                 setTimeout(() => {
                   if(content) content.classList.add('visible');
+                  
+                  // Show the trigger button here
+                  supabase.auth.getSession().then(({ data: { session } }) => {
+                     if (!session) {
+                         showAuthTrigger(); 
+                     }
+                  });
+
                   setTimeout(() => {
                     const notice = document.getElementById('constructionNotice');
                     if(notice) notice.classList.add('visible');
@@ -1108,6 +1417,231 @@
     function startLogoSparkleLoop() {
       setInterval(() => { createLogoSparkle(); }, 2000);
     }
+    
+    // --- SUPABASE & AUTH LOGIC ---
+    const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    const authTrigger = document.getElementById('authTrigger');
+    const authSection = document.getElementById('authSection');
+    const showLoginBtn = document.getElementById('showLogin');
+    const showRegisterBtn = document.getElementById('showRegister');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const userProfile = document.getElementById('userProfile');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userDisplayName = document.getElementById('userDisplayName');
+
+    function showAuthTrigger() {
+        if (authTrigger) authTrigger.classList.add('visible');
+    }
+
+    if (authTrigger) {
+        authTrigger.addEventListener('click', () => {
+            if (authSection) authSection.classList.toggle('open');
+        });
+    }
+
+    document.addEventListener('click', (event) => {
+        if (authSection && authTrigger && !authSection.contains(event.target) && !authTrigger.contains(event.target)) {
+            authSection.classList.remove('open');
+        }
+    });
+
+   function showUserProfile(user, displayName) {
+  if (authTrigger) authTrigger.classList.add('hidden');
+  if (authSection) authSection.classList.remove('open'); // Always hide the pop-up
+  if (userProfile) {
+    userProfile.classList.remove('hidden');
+    userProfile.classList.add('visible'); // Show the new top bar
+  }
+  if (userDisplayName) userDisplayName.textContent = displayName;
+}
+
+function showAuthForms() {
+  if (userProfile) {
+    userProfile.classList.remove('visible');
+    userProfile.classList.add('hidden'); // Hide the top bar
+  }
+  if (authTrigger) authTrigger.classList.remove('hidden');
+  if (authSection) authSection.classList.remove('open');
+  
+  // These lines handle clearing the forms and showing the login tabs
+  const authToggle = document.querySelector('.auth-toggle');
+  if (authToggle) authToggle.style.display = 'flex';
+  if (showLoginBtn) showLoginBtn.click();
+  
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPassword = document.getElementById('loginPassword');
+  if(loginEmail) loginEmail.value = '';
+  if(loginPassword) loginPassword.value = '';
+  if(loginBtn) {
+      loginBtn.textContent = 'Enter SterlWorld';
+      loginBtn.disabled = false;
+  }
+}
+
+    // A new function to check the current auth status and update the UI
+async function checkAuthStatus() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+        // If a user is logged in, show the profile bar
+        supabase.from('profiles').select('username').eq('id', session.user.id).single()
+            .then(({ data: profile }) => {
+                const displayName = profile ? profile.username : session.user.email;
+                showUserProfile(session.user, displayName);
+            });
+    } else {
+        // If no user is logged in, show the auth trigger button
+        showAuthForms();
+    }
+}
+
+// Listen for auth state changes (e.g., after login/logout)
+supabase.auth.onAuthStateChange((event, session) => {
+    checkAuthStatus();
+});
+
+// Call the new function once when the page initially loads
+document.addEventListener('DOMContentLoaded', checkAuthStatus);
+    
+    function showMessage(message, type = 'info') {
+      const existingMessage = document.querySelector('.auth-message');
+      if (existingMessage) existingMessage.remove();
+      
+      const messageEl = document.createElement('div');
+      messageEl.className = `auth-message ${type}`;
+      messageEl.textContent = message;
+      document.body.appendChild(messageEl);
+      
+      setTimeout(() => messageEl.classList.add('show'), 100);
+      setTimeout(() => {
+        messageEl.classList.remove('show');
+        setTimeout(() => messageEl.remove(), 300);
+      }, 4000);
+    }
+
+    async function checkUsernameAvailability(username) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('username', username.toLowerCase())
+        .single();
+      return !data;
+    }
+
+    if(showLoginBtn && showRegisterBtn && loginForm && registerForm) {
+        showLoginBtn.addEventListener('click', () => {
+            showLoginBtn.classList.add('active');
+            showRegisterBtn.classList.remove('active');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        });
+
+        showRegisterBtn.addEventListener('click', () => {
+            showRegisterBtn.classList.add('active');
+            showLoginBtn.classList.remove('active');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+    }
+
+    if(registerBtn) registerBtn.addEventListener('click', async () => {
+        const username = document.getElementById('registerUsername').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        document.querySelectorAll('.auth-form input').forEach(input => input.classList.remove('error'));
+        
+        if (!username || username.length < 3 || !/^[a-zA-Z0-9_]+$/.test(username)) {
+            showMessage('Username must be 3+ characters and contain only letters, numbers, or underscores.', 'error');
+            document.getElementById('registerUsername').classList.add('error');
+            return;
+        }
+        if (!email) {
+            showMessage('Please enter an email address.', 'error');
+            document.getElementById('registerEmail').classList.add('error');
+            return;
+        }
+        if (password.length < 6) {
+            showMessage('Password must be at least 6 characters long.', 'error');
+            document.getElementById('registerPassword').classList.add('error');
+            return;
+        }
+        if (password !== confirmPassword) {
+            showMessage('Passwords do not match.', 'error');
+            document.getElementById('confirmPassword').classList.add('error');
+            return;
+        }
+
+        registerBtn.textContent = 'Checking...';
+        registerBtn.disabled = true;
+
+        const isUsernameAvailable = await checkUsernameAvailability(username);
+        if (!isUsernameAvailable) {
+            showMessage('Sorry, that username is already taken.', 'error');
+            document.getElementById('registerUsername').classList.add('error');
+            registerBtn.textContent = 'Join SterlWorld';
+            registerBtn.disabled = false;
+            return;
+        }
+
+        registerBtn.textContent = 'Creating...';
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: { data: { username: username.toLowerCase() } }
+        });
+
+        if (error) {
+            showMessage(error.message, 'error');
+        } else {
+            showMessage('Success! Please check your email to confirm your account.', 'success');
+            document.getElementById('registerForm').reset();
+            showLoginBtn.click();
+        }
+        registerBtn.textContent = 'Join SterlWorld';
+        registerBtn.disabled = false;
+    });
+
+    if(loginBtn) loginBtn.addEventListener('click', async () => {
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        if (!email || !password) {
+            showMessage('Please enter both email and password.', 'error');
+            return;
+        }
+
+        loginBtn.textContent = 'Entering...';
+        loginBtn.disabled = true;
+
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            showMessage(error.message, 'error');
+        }
+        // onAuthStateChange will handle the successful login UI update
+        
+        loginBtn.textContent = 'Enter SterlWorld';
+        loginBtn.disabled = false;
+    });
+
+    if(logoutBtn) logoutBtn.addEventListener('click', async () => {
+        await supabase.auth.signOut();
+    });
+
+    // Disable pull-to-refresh on mobile
+document.body.addEventListener('touchmove', function(e) {
+  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+  }
+}, { passive: false });
+
   </script>
 </body>
 </html>
