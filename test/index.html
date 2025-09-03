@@ -120,41 +120,41 @@
     }
     /* --- MOBILE RESPONSIVENESS FIXES --- */
 @media screen and (max-width: 768px) {
-    #logo { width: 200px; }
-    #logo-wrapper.move-top { top: 40px; }
-    .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
-    h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
-    .content { font-size: 0.95rem; padding: 0 15px; }
-    .content p { font-size: 1.1rem; line-height: 1.6; }
-    .portfolio-section { margin-top: 3rem; }
-    #portfolio-bubble { width: 80px; height: 80px; }
-    #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-    .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
-    .portfolio-label { font-size: 0.9rem; }
-    .construction-notice { font-size: 11px; padding: 5px 10px; }
-    .auth-trigger-btn {
-      top: 15px;
-      right: 15px;
-      font-size: 13px;
-      padding: 6px 12px;
-    }
-    .auth-section {
-      top: 60px;
-      right: 15px;
-      padding: 10px 15px;
-    }
-    .auth-form, .user-profile {
-      width: 180px;
-    }
-    .auth-tab {
-      padding: 5px 10px;
-      font-size: 12px;
-    }
-    .auth-button {
-      font-size: 12px;
-      padding: 6px 12px;
-    }
+  #logo { width: 200px; }
+  #logo-wrapper.move-top { top: 40px; }
+  .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
+  h1 { font-size: 1.6rem; margin-bottom: 1rem; letter-spacing: 1px; }
+  .content { font-size: 0.95rem; padding: 0 15px; }
+  .content p { font-size: 1.1rem; line-height: 1.6; }
+  .portfolio-section { margin-top: 3rem; }
+  #portfolio-bubble { width: 80px; height: 80px; }
+  #portfolio-bubble::after { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+  .intro-tooltip { bottom: 120px; font-size: 12px; padding: 6px 8px; }
+  .portfolio-label { font-size: 0.9rem; }
+  .construction-notice { font-size: 11px; padding: 5px 10px; }
+  .auth-trigger-btn {
+    top: 15px;
+    right: 15px;
+    font-size: 13px;
+    padding: 6px 12px;
   }
+  .auth-section {
+    top: 60px;
+    right: 15px;
+    padding: 10px 15px;
+  }
+  .auth-form, .user-profile {
+    width: 180px;
+  }
+  .auth-tab {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  .auth-button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
   @media screen and (max-width: 480px) {
     #logo { width: 160px; }
     .logo-tagline { font-size: 0.65rem; margin-top: 2px; }
@@ -599,21 +599,22 @@
 
     /* --- UPDATED: AUTH SECTION --- */
     .auth-section {
-      position: fixed;
-      top: 70px; /* Position below the trigger button */
-      right: 20px;
-      z-index: 50;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      border: 2px solid rgba(0, 255, 255, 0.3);
-      padding: 15px 20px;
-      opacity: 0;
-      transform: translateY(-20px) scale(0.95);
-      transform-origin: top right;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      pointer-events: none;
-    }
+  position: fixed;
+  top: 70px; /* Position below the trigger button */
+  right: 20px;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  padding: 15px 20px;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+  transform-origin: top right;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  max-width: 90vw; /* Limit the width for mobile */
+}
     .auth-section.open { 
       opacity: 1; 
       transform: translateY(0) scale(1);
@@ -688,15 +689,17 @@
       background: linear-gradient(45deg, #ff5ec4, #ffd700);
     }
     .user-profile {
-      text-align: right;
-      color: #ccc;
-      font-weight: 500;
-      width: auto; /* Allow it to size naturally */
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
+  display: flex;
+  flex-direction: column; /* Stacks the text and button vertically */
+  align-items: center; /* Centers the content horizontally */
+  justify-content: center;
+  text-align: center;
+  color: #ccc;
+  font-weight: 500;
+  padding: 10px; /* Add some padding for spacing */
+  gap: 15px;
+  width: 100%; /* Take up the full width of the parent container */
+}
     .user-profile.hidden { 
       display: none; 
     }
