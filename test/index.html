@@ -1484,17 +1484,29 @@ function showAuthForms() {
   }
 }
 
-    supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN' && session) {
-            supabase.from('profiles').select('username').eq('id', session.user.id).single()
-                .then(({ data: profile }) => {
-                    const displayName = profile ? profile.username : session.user.email;
-                    showUserProfile(session.user, displayName);
-                });
-        } else if (event === 'SIGNED_OUT') {
-            showAuthForms();
-        }
-    });
+    // A new function to check the current auth status and update the UI
+async function checkAuthStatus() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+        // If a user is logged in, show the profile bar
+        supabase.from('profiles').select('username').eq('id', session.user.id).single()
+            .then(({ data: profile }) => {
+                const displayName = profile ? profile.username : session.user.email;
+                showUserProfile(session.user, displayName);
+            });
+    } else {
+        // If no user is logged in, show the auth trigger button
+        showAuthForms();
+    }
+}
+
+// Listen for auth state changes (e.g., after login/logout)
+supabase.auth.onAuthStateChange((event, session) => {
+    checkAuthStatus();
+});
+
+// Call the new function once when the page initially loads
+document.addEventListener('DOMContentLoaded', checkAuthStatus);
     
     function showMessage(message, type = 'info') {
       const existingMessage = document.querySelector('.auth-message');
@@ -1622,6 +1634,13 @@ function showAuthForms() {
     if(logoutBtn) logoutBtn.addEventListener('click', async () => {
         await supabase.auth.signOut();
     });
+
+    // Disable pull-to-refresh on mobile
+document.body.addEventListener('touchmove', function(e) {
+  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+  }
+}, { passive: false });
 
   </script>
 </body>
