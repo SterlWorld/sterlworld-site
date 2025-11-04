@@ -19,6 +19,19 @@
       overflow-x: hidden; /* This keeps horizontal scrolling off */
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
+/* Minimal styles for new hero */
+.eyebrow { font-size:.9rem; opacity:.85; letter-spacing:.08em; margin-bottom:2px; }
+.headline { font-family:'Orbitron',sans-serif; font-weight:600; font-size:clamp(2rem,4vw,3.25rem); margin:.25rem 0 .75rem; }
+.glow { text-shadow:0 0 12px #00fff2, 0 0 32px #00fff2; }
+.subhead { max-width:58ch; margin:0 auto 10px; opacity:.92; }
+.value-points { list-style:none; padding:0; margin:6px 0 14px; opacity:.96; }
+.value-points li { margin:6px 0; }
+.cta-row { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:8px; }
+.btn { padding:10px 16px; border-radius:999px; border:1px solid rgba(255,255,255,.18); backdrop-filter: blur(6px); cursor:pointer; }
+.btn-primary { background:#00fff2; color:#031314; font-weight:700; }
+.btn-ghost { background:transparent; color:#fff; }
+.btn-link { color:#ffd166; text-decoration:underline; background:transparent; border:none; }
+.footnote { font-size:.85rem; opacity:.7; margin-top:6px; }
 
     /* --- ENTER SCREEN STYLES --- */
     #enter-screen {
@@ -291,81 +304,6 @@
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
-    }
-    .portfolio-section {
-      margin-top: 5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-    #portfolio-bubble {
-      width: 120px;
-      height: 120px;
-      background-image: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/test/Portfolio%20Bubble%20Test.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 
-        0 0 25px rgba(244, 217, 167, 0.7),
-        0 0 50px rgba(244, 217, 167, 0.5);
-      cursor: pointer;
-      animation: portfolioFloat 4s ease-in-out infinite alternate;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      border: 3px solid rgba(244, 217, 167, 0.4);
-      position: relative;
-    }
-    #portfolio-bubble:hover {
-      transform: scale(1.15);
-      box-shadow: 
-        0 0 35px rgba(244, 217, 167, 0.9),
-        0 0 70px rgba(244, 217, 167, 0.7);
-      border: 3px solid rgba(244, 217, 167, 0.8);
-    }
-    .portfolio-label {
-      color: #f4d9a7;
-      font-size: 1.1rem;
-      font-weight: 600;
-      text-shadow: 0 0 15px rgba(244, 217, 167, 0.6);
-      animation: portfolioLabelGlow 3s ease-in-out infinite alternate;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-    }
-    .portfolio-label.visible {
-      opacity: 1;
-    }
-    @keyframes portfolioLabelGlow {
-      0% { text-shadow: 0 0 15px rgba(244, 217, 167, 0.6); }
-      100% { text-shadow: 0 0 25px rgba(244, 217, 167, 0.8), 0 0 35px rgba(244, 217, 167, 0.4); }
-    }
-    #portfolio-bubble::after {
-      content: 'Click to explore my work!';
-      position: absolute;
-      bottom: 140px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.95);
-      color: #f4d9a7;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      border: 2px solid rgba(244, 217, 167, 0.4);
-      box-shadow: 0 0 20px rgba(244, 217, 167, 0.4);
-      text-shadow: 0 0 10px rgba(244, 217, 167, 0.6);
-    }
-    #portfolio-bubble:hover::after {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-5px);
     }
     .intro-tooltip {
       position: absolute;
@@ -844,27 +782,31 @@
 
   <canvas id="space"></canvas>
 
-  <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
-    <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
-  </div>
-  <div id="header-fade"></div>
+ <div class="content" id="mainText">
+  <p class="eyebrow">A Multimedia Universe by Sterlin Griffin</p>
+  <h2 class="headline">Welcome to <span class="glow">SterlWorld</span></h2>
+  <p class="subhead">
+    A living multimedia universe—games, animation, music, and worlds that evolve with you.
+  </p>
 
-  <div class="content" id="mainText">
-    <h1>Welcome to SterlWorld</h1>
-    <p>
-      We're building a <span class="magical-text">world of creativity and wonder</span> just for you.<br />
-      Our site is still being built, but <span class="glow-text">new adventures are coming soon</span>.<br />
-      Stay tuned — the <span class="power-text">extraordinary</span> awaits.
-    </p>
-    
-    <div class="portfolio-section">
-      <a href="https://sterlworld.artstation.com/" id="portfolio-bubble" target="_blank">
-        <div class="intro-tooltip" id="portfolioTooltip">Click to explore!</div>
-      </a>
-      <div class="portfolio-label" id="portfolioLabel">Explore My Portfolio</div>
-    </div>
+  <ul class="value-points">
+    <li>Reserve your <strong>SterlWorld ID</strong> (name badge + profile)</li>
+    <li><strong>Save progress</strong> across micro-games & devices</li>
+    <li>Earn <strong>Star Shards</strong> for early access & merch perks</li>
+    <li><strong>Vote</strong> on new worlds and characters</li>
+  </ul>
+
+  <div class="cta-row">
+    <button id="cta-register" class="btn btn-primary">Create Your SterlWorld ID</button>
+    <button id="cta-guest" class="btn btn-ghost">Enter as Guest</button>
+    <a id="cta-crust" class="btn btn-link" href="/games/crust-master">Play Crust Master</a>
   </div>
+
+  <p class="footnote">Site under active construction—founders get first-look access.</p>
+</div>
+
+    
+    
 
   <!-- NEW: Auth Trigger Button -->
   <button id="authTrigger" class="auth-trigger-btn">Login / Register</button>
@@ -1450,6 +1392,22 @@
             authSection.classList.remove('open');
         }
     });
+
+    // HERO CTA wiring (open Register tab; smooth scroll as guest)
+const ctaRegister = document.getElementById('cta-register');
+const ctaGuest = document.getElementById('cta-guest');
+
+ctaRegister?.addEventListener('click', () => {
+  const authSection = document.getElementById('authSection');
+  const showRegisterBtn = document.getElementById('showRegister');
+  authSection?.classList.add('open');
+  showRegisterBtn?.click();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+ctaGuest?.addEventListener('click', () => {
+  document.getElementById('mainText')?.scrollIntoView({ behavior:'smooth', block:'end' });
+});
 
    function showUserProfile(user, displayName) {
   if (authTrigger) authTrigger.classList.add('hidden');
