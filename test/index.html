@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>SterlWorld | Multimedia Universe by Sterlin Griffin</title>
-  <meta name="description" content="Enter SterlWorld — an animated universe of games, music, and characters by artist Sterlin Griffin. View portfolio and flagship project Pizza Dales." />
+  <title>SterlWorld</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -15,173 +14,288 @@
       background: black;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden;
       cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
 
-    /* --- ENTER SCREEN STYLES --- */
+    /* --- ENTER SCREEN --- */
     #enter-screen {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: black; display: flex; align-items: center; justify-content: center;
-      z-index: 100000; cursor: pointer; opacity: 1; transition: opacity 0.5s ease-out;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity 0.5s ease-out;
     }
     #enter-screen.hidden { opacity: 0; pointer-events: none; }
     #enter-screen h1 {
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(2rem, 8vw, 4rem);
       color: #fff;
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0ff, 0 0 70px #0ff;
+      text-shadow:
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px #0ff,
+        0 0 70px #0ff;
       animation: enterGlow 3s ease-in-out infinite alternate;
-      user-select: none; opacity: 1; transition: opacity 0.5s ease-in;
+      user-select: none;
+      opacity: 1;
+      transition: opacity 0.5s ease-in;
     }
     #enter-screen.hiding h1 { opacity: 0; }
+
     @keyframes enterGlow {
       from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
       to   { text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 50px #0ff, 0 0 80px #0ff; }
     }
-    @keyframes twinkle { 0% {opacity:0;} 50% {opacity:0.8;} 100%{opacity:0;} }
-    .star { position:absolute; background:#fff; border-radius:50%; box-shadow:0 0 4px #fff, 0 0 8px #fff; animation: twinkle 4s infinite; }
-    /* --- END: ENTER SCREEN STYLES --- */
+    @keyframes twinkle {
+      0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
+    }
+    .star {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 0 4px #fff, 0 0 8px #fff;
+      animation: twinkle 4s infinite;
+    }
 
-    canvas#space { position: fixed; top:0; left:0; z-index:0; display:block; opacity:0; transition:opacity 1s ease-in; }
+    /* --- LOADER --- */
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 0 15px;
+      transition: opacity 0.8s ease-out;
+      visibility: hidden;
+      opacity: 0;
+    }
+    #loader.visible { visibility: visible; opacity: 1; }
+    #loader.fade-out { opacity: 0; pointer-events: none; }
+
+    #loader h2 {
+      color: white;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      user-select: none;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 90vw;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      white-space: nowrap;
+    }
+    #loader h2 .loading-text {
+      color: #0ff;
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+    }
+    #titleGlow {
+      display: inline-flex;
+      user-select: none;
+      gap: 0;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+    #titleGlow span {
+      transition: text-shadow 0.3s ease, color 0.3s ease;
+      color: white;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      line-height: 1;
+      padding: 0 0.5px;
+    }
+    .glow-gold {
+      color: #f4d9a7 !important;
+      text-shadow:
+        0 0 5px #f4d9a7,
+        0 0 10px #e8c183,
+        0 0 15px #deb76e,
+        0 0 20px #d4a853,
+        0 0 25px #ca9c43,
+        0 0 30px #bf8f33,
+        0 0 35px #b48223 !important;
+      animation: etherealGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes etherealGlow {
+      0% {
+        text-shadow:
+          0 0 5px #f4d9a7, 0 0 10px #e8c183, 0 0 15px #deb76e,
+          0 0 20px #d4a853, 0 0 25px #ca9c43;
+      }
+      100% {
+        text-shadow:
+          0 0 8px #fce8b8, 0 0 16px #f4d9a7, 0 0 24px #e8c183,
+          0 0 32px #deb76e, 0 0 40px #d4a853, 0 0 48px #ca9c43;
+      }
+    }
+
+    .loading-bar {
+      position: relative;
+      width: 100%;
+      max-width: 90vw;
+      height: 16px;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: inset 0 0 8px #0ff, 0 0 12px #0ff;
+      overflow: hidden;
+      margin: 0 auto 15px;
+      filter: drop-shadow(0 0 8px #0ff);
+    }
+    .loading-bar-fill {
+      position: relative;
+      height: 100%;
+      width: 0%;
+      border-radius: 12px;
+      background: linear-gradient(
+        90deg, #0ff 0%, #00e6e6 25%, #ff5ec4 50%,
+        #e054b8 75%, #ffd700 100%
+      );
+      box-shadow:
+        0 0 15px rgba(0, 255, 255, 0.8),
+        0 0 25px rgba(255, 94, 196, 0.6),
+        0 0 35px rgba(255, 215, 0, 0.4);
+      filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8));
+      transition: width 0.3s ease;
+    }
+
+    /* --- CANVAS --- */
+    canvas#space {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 0;
+      display: block;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
     canvas#space.fade-in { opacity: 1; }
 
+    /* --- LOGO WRAPPER --- */
     #logo-wrapper {
-      position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);
-      z-index: 10; opacity:0; transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease; text-align:center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
+      text-align: center;
+      pointer-events: none;
     }
     #logo-wrapper.fade-in { opacity: 1; }
-    #logo-wrapper.move-top { top: 60px; transform: translate(-50%, 0); position: fixed; }
-    #logo { width:300px; max-width:80vw; transform-origin:center center; display:block; margin:0 auto; }
-
+    #logo-wrapper.move-top {
+      top: 60px;
+      transform: translate(-50%, 0);
+      position: fixed;
+    }
+    #logo {
+      width: 300px;
+      max-width: 80vw;
+      transform-origin: center center;
+      display: block;
+      margin: 0 auto;
+    }
     .logo-tagline {
-      font-size: 0.85rem; color: #fff; font-weight: 400; margin-top: 8px;
-      text-shadow: 0 0 12px rgba(255,255,255,.8), 0 0 20px rgba(255,255,255,.4);
-      opacity: 0; transition: opacity 1.5s ease 0.5s; letter-spacing: .5px;
+      font-size: 0.85rem;
+      color: white;
+      font-weight: 400;
+      margin-top: 8px;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      transition: opacity 1.5s ease 0.5s;
+      letter-spacing: 0.5px;
       font-family: 'Poppins', sans-serif;
     }
     #logo-wrapper.fade-in .logo-tagline { opacity: 1; }
 
-    /* --- MOBILE RESPONSIVENESS TUNING --- */
+    /* --- MESSAGE --- */
+    #message {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 200px;
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      z-index: 5;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+    #message.visible { opacity: 1; }
+    #message h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 2.3rem;
+      margin-bottom: 1rem;
+      color: white;
+      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
+      letter-spacing: 2px;
+    }
+    #message p {
+      font-size: 1.25rem;
+      line-height: 1.7;
+      color: #ccc;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+    }
+
     @media screen and (max-width: 768px) {
       #logo { width: 200px; }
       #logo-wrapper.move-top { top: 60px; }
-      .logo-tagline { font-size: .7rem; margin-top: 4px; letter-spacing: .3px; }
+      .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
+      #message h1 { font-size: 1.7rem; }
+      #message p { font-size: 1.05rem; }
+    }
+    @media screen and (max-width: 480px) {
+      #logo { width: 170px; }
+      #message h1 { font-size: 1.5rem; }
+      #message p { font-size: 1rem; }
     }
 
-    @keyframes logoPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.02);} }
-
-    /* --- CONTENT (Hero) --- */
-    .content {
-      position: absolute; top: 200px; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 90%; text-align: center; opacity: 0;
-      transition: opacity 1.5s ease, top 0.3s ease;
-      font-size: 1.2rem; color:#ccc; z-index:5; padding:0 20px;
-      display:flex; flex-direction:column; justify-content:flex-start; height:auto; min-height:300px;
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
     }
-    .content.visible { opacity: 1; }
 
-    /* NEW HERO STYLES */
-    .eyebrow { font-size:.9rem; opacity:.85; letter-spacing:.08em; margin-bottom:2px; }
-    .headline { font-family:'Orbitron',sans-serif; font-weight:600; font-size: clamp(2rem, 4vw, 3.25rem); margin: 0.25rem 0 0.75rem; }
-    .glow { text-shadow: 0 0 12px #00fff2, 0 0 32px #00fff2; }
-    .subhead { max-width: 58ch; margin: 0 auto 10px; opacity:.92; }
-    .value-points { list-style:none; padding:0; margin:6px 0 14px; opacity:.96; }
-    .value-points li { margin: 6px 0; }
-    .cta-row { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:8px; }
-    .btn { padding: 10px 16px; border-radius: 999px; border:1px solid rgba(255,255,255,.18); backdrop-filter: blur(6px); cursor:pointer; }
-    .btn-primary { background:#00fff2; color:#031314; font-weight:700; }
-    .btn-ghost { background:transparent; color:#fff; }
-    .btn-link { color:#ffd166; text-decoration: underline; background: transparent; border:none; }
-    .footnote { font-size:.85rem; opacity:.7; margin-top:6px; }
-
-    /* Legacy animated text styles (still used elsewhere) */
-    .brand-tagline{font-size:1.1rem;color:#0ff;font-weight:600;margin-bottom:1rem;text-shadow:0 0 10px #0ff;animation:taglineGlow 3s ease-in-out infinite alternate;}
-    @keyframes taglineGlow{0%{text-shadow:0 0 10px #0ff;}100%{text-shadow:0 0 18px #ffd700;}}
-    h1{font-family:'Orbitron',sans-serif;font-weight:600;font-size:2.5rem;margin-bottom:1.5rem;color:white;text-shadow:0 0 20px #0ff,0 0 40px #0ff,0 0 60px #0ff;animation:titlePulse 3s ease-in-out infinite alternate;letter-spacing:2px;}
-    @keyframes titlePulse{0%{text-shadow:0 0 20px #0ff,0 0 40px #0ff,0 0 60px #0ff;}100%{text-shadow:0 0 30px #ffd700,0 0 50px #ffd700,0 0 70px #ffd700;}}
-    .content p { font-size:1.3rem; line-height:1.8; font-weight:400; text-shadow:0 0 10px rgba(255,255,255,.3); animation:textFloat 4s ease-in-out infinite alternate; }
-    @keyframes textFloat{0%{transform:translateY(0);}100%{transform:translateY(-5px);}}
-
-    /* Removed portfolio bubble visually (safety) */
-    .portfolio-section, #portfolio-bubble { display:none !important; }
-
-    .construction-notice {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: rgba(0,0,0,.8); color:#0ff; padding:8px 16px; border-radius:20px; font-size:14px; font-weight:500;
-      border:1px solid rgba(0,255,255,.3); box-shadow:0 0 15px rgba(0,255,255,.2); opacity:0; transition:opacity 1.5s ease; z-index:999;
-      text-shadow: 0 0 10px rgba(0,255,255,.5);
+    /* Sparkle image elements */
+    .sparkle-star {
+      pointer-events: none;
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      transform-origin: center center;
+      z-index: 9999;
+      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
+      animation: spin 0.6s linear;
     }
-    .construction-notice.visible{opacity:1;}
-
-    #loader{position:fixed; top:0; left:0; width:100%; height:100%; background:black; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:99999; padding:0 15px; transition:opacity .8s ease-out; visibility:hidden; opacity:0;}
-    #loader.visible{visibility:visible; opacity:1;}
-    #loader.fade-out{opacity:0; pointer-events:none;}
-    #loader h2{color:white; font-size:clamp(1.5rem,5vw,2.5rem); font-family:'Orbitron',sans-serif; letter-spacing:1px; user-select:none; margin-bottom:20px; width:100%; max-width:90vw; display:flex; justify-content:center; gap:2px; white-space:nowrap; transition:opacity .3s ease;}
-    #loader h2 .loading-text{color:#0ff; font-weight:600; user-select:none; white-space:nowrap; transition:opacity .3s ease;}
-    #titleGlow{display:inline-flex; user-select:none; gap:0; flex-wrap:nowrap; justify-content:center; align-items:center; transition:opacity .3s ease;}
-    #titleGlow span{transition:text-shadow .3s ease, color .3s ease; color:white; font-weight:600; font-size:clamp(1.5rem,5vw,2.5rem); line-height:1; padding:0 .5px;}
-    .glow-gold{color:#f4d9a7 !important; text-shadow:0 0 5px #f4d9a7, 0 0 10px #e8c183, 0 0 15px #deb76e, 0 0 20px #d4a853, 0 0 25px #ca9c43, 0 0 30px #bf8f33, 0 0 35px #b48223 !important; animation:etherealGlow 2s ease-in-out infinite alternate;}
-    @keyframes etherealGlow{0%{text-shadow:0 0 5px #f4d9a7,0 0 10px #e8c183,0 0 15px #deb76e,0 0 20px #d4a853,0 0 25px #ca9c43;}100%{text-shadow:0 0 8px #fce8b8,0 0 16px #f4d9a7,0 0 24px #e8c183,0 0 32px #deb76e,0 0 40px #d4a853,0 0 48px #ca9c43;}}
-    .loading-bar{position:relative; width:100%; max-width:90vw; height:16px; background:#111; border-radius:12px; box-shadow: inset 0 0 8px #0ff, 0 0 12px #0ff; overflow:hidden; margin:0 auto 15px; filter: drop-shadow(0 0 8px #0ff); transition:all .3s ease;}
-    .loading-bar-fill{position:relative; height:100%; width:0%; border-radius:12px; background: linear-gradient(90deg, #0ff 0%, #00e6e6 25%, #ff5ec4 50%, #e054b8 75%, #ffd700 100%); box-shadow: 0 0 15px rgba(0,255,255,.8), 0 0 25px rgba(255,94,196,.6), 0 0 35px rgba(255,215,0,.4); filter: drop-shadow(0 0 12px rgba(0,255,255,.8)); overflow:visible; transition:all .3s ease;}
-    .loading-bar-sparkles{position:absolute; top:50%; left:0; height:100%; pointer-events:none; overflow:visible; transform:translateY(-50%); z-index:2;}
-
-    /* AUTH Trigger & Panel */
-    .auth-trigger-btn{position:fixed; top:20px; right:20px; z-index:100; background:transparent; border:2px solid rgba(0,255,255,.5); color:rgba(0,255,255,.8); font-family:'Poppins',sans-serif; font-weight:600; font-size:14px; padding:8px 16px; border-radius:20px; cursor:pointer; transition:all .3s ease; opacity:0; transform:translateY(-20px); pointer-events:none;}
-    .auth-trigger-btn.visible{opacity:1; transform:translateY(0); pointer-events:auto;}
-    .auth-trigger-btn:hover{background:rgba(0,255,255,.1); color:#0ff; border-color:#0ff; text-shadow:0 0 8px #0ff;}
-    .auth-trigger-btn.hidden{opacity:0 !important; transform:translateY(-20px) !important; pointer-events:none !important;}
-
-    .auth-section{
-      position: fixed; top:70px; right:20px; z-index:50; background: rgba(0,0,0,.8); backdrop-filter: blur(10px);
-      border-radius:15px; border:2px solid rgba(0,255,255,.3); padding:15px 20px; opacity:0; transform: translateY(-20px) scale(.95);
-      transform-origin: top right; transition: all .4s cubic-bezier(.25,.46,.45,.94); pointer-events:none; max-width:90vw;
-    }
-    .auth-section.open{opacity:1; transform: translateY(0) scale(1); pointer-events:auto;}
-    .auth-toggle{display:flex; gap:8px; margin-bottom:12px; justify-content:flex-end;}
-    .auth-tab{background:transparent; color:#ccc; border:1px solid rgba(0,255,255,.3); padding:6px 12px; border-radius:15px; cursor:pointer; transition:all .3s ease; font-family:'Poppins',sans-serif; font-weight:500; font-size:13px;}
-    .auth-tab.active,.auth-tab:hover{color:#0ff; border-color:#0ff; text-shadow:0 0 8px #0ff; background:rgba(0,255,255,.1);}
-    .auth-form{display:flex; flex-direction:column; gap:8px; width:200px; margin-left:auto;}
-    .auth-form.hidden{display:none;}
-    .auth-form input{background:rgba(0,0,0,.7); border:1px solid rgba(255,255,255,.2); color:white; padding:8px 12px; border-radius:15px; font-family:'Poppins',sans-serif; font-size:13px; transition:all .3s ease;}
-    .auth-form input:focus{outline:none; border-color:#0ff; box-shadow:0 0 8px rgba(0,255,255,.4);}
-    .auth-button{background:linear-gradient(45deg,#0ff,#ff5ec4); border:none; color:white; padding:8px 16px; border-radius:15px; cursor:pointer; font-family:'Poppins',sans-serif; font-weight:600; font-size:13px; transition:all .3s ease;}
-    .auth-button:hover{transform:scale(1.05); box-shadow:0 0 15px rgba(0,255,255,.5);}
-    .auth-button.logout{background:linear-gradient(45deg,#ff5ec4,#ffd700);}
-
-    #userProfile{position:fixed; top:0; left:0; width:100%; z-index:99; background:rgba(0,0,0,.5); backdrop-filter:blur(10px); padding:10px 20px; display:flex; justify-content:center; align-items:center; gap:15px; color:#ccc; font-weight:500; opacity:0; transform:translateY(-100%); transition:all .5s cubic-bezier(.25,.46,.45,.94); pointer-events:none;}
-    #userProfile.visible{opacity:1; transform:translateY(0); pointer-events:auto;}
-    #userProfile.hidden{display:none;}
-    #userProfile p{margin-bottom:0; font-size:14px; white-space:nowrap;}
-    #userProfile p span{font-weight:600; color:#0ff; text-shadow:0 0 8px #0ff;}
-
-    .auth-message{position:fixed; top:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.9); padding:12px 20px; border-radius:20px; font-size:14px; font-weight:500; z-index:100001; opacity:0; transition:all .3s ease; pointer-events:none; max-width:90vw; text-align:center;}
-    .auth-message.show{opacity:1; pointer-events:auto;}
-    .auth-message.success{color:#0ff; border:2px solid rgba(0,255,255,.5);}
-    .auth-message.error{color:#ff5ec4; border:2px solid rgba(255,94,196,.5);}
-    .auth-message.info{color:#ffd700; border:2px solid rgba(255,215,0,.5);}
-
-    /* Mobile tweaks */
-    @media screen and (max-width: 768px){
-      #logo{width:200px;}
-      h1{font-size:2rem;}
-      .content p{font-size:1.1rem;}
-      .auth-trigger-btn{top:15px; right:15px; font-size:13px; padding:6px 12px;}
-      .auth-section{top:60px; right:15px; padding:10px 15px;}
-      .auth-form, .user-profile{width:180px;}
-      .auth-tab{padding:5px 10px; font-size:12px;}
-      .auth-button{font-size:12px; padding:6px 12px;}
-    }
-    @media screen and (max-width:480px){
-      #logo{width:180px;}
-      .content p{font-size:1rem; line-height:1.6;}
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
+
 <body>
-  <div id="enter-screen"><h1>Tap to Enter</h1></div>
+  <div id="enter-screen">
+    <h1>Tap to Enter</h1>
+  </div>
 
   <div id="loader">
     <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
@@ -194,56 +308,14 @@
     <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
     <div class="logo-tagline">A Multimedia Experience created by Sterlin Griffin</div>
   </div>
-  <div id="header-fade"></div>
 
-  <!-- NEW HERO CONTENT (replaces portfolio bubble area) -->
-  <div class="content" id="mainText">
-    <p class="eyebrow">A Multimedia Universe by Sterlin Griffin</p>
-    <h2 class="headline">Welcome to <span class="glow">SterlWorld</span></h2>
-    <p class="subhead">A living multimedia universe—games, animation, music, and worlds that evolve with you.</p>
-    <ul class="value-points">
-      <li>Reserve your <strong>SterlWorld ID</strong> (name badge + profile)</li>
-      <li><strong>Save progress</strong> across micro-games & devices</li>
-      <li>Earn <strong>Star Shards</strong> for early access & merch perks</li>
-      <li><strong>Vote</strong> on new worlds and characters</li>
-    </ul>
-    <div class="cta-row">
-      <button id="cta-register" class="btn btn-primary">Create Your SterlWorld ID</button>
-      <button id="cta-guest" class="btn btn-ghost">Enter as Guest</button>
-      <a id="cta-crust" class="btn btn-link" href="/games/crust-master">Play Crust Master</a>
-    </div>
-    <p class="footnote">Site under active construction—founders get first-look access.</p>
-  </div>
-
-  <!-- Auth UI -->
-  <button id="authTrigger" class="auth-trigger-btn">Login / Register</button>
-
-  <nav id="userProfile" class="user-profile hidden">
-    <p>Welcome back, <span id="userDisplayName"></span>!</p>
-    <button id="logoutBtn" class="auth-button logout">Sign Out</button>
-  </nav>
-
-  <div class="auth-section" id="authSection">
-    <div class="auth-toggle">
-      <button id="showLogin" class="auth-tab active">Login</button>
-      <button id="showRegister" class="auth-tab">Register</button>
-    </div>
-    <div id="loginForm" class="auth-form">
-      <input type="email" id="loginEmail" placeholder="Email" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <button id="loginBtn" class="auth-button">Enter SterlWorld</button>
-    </div>
-    <div id="registerForm" class="auth-form hidden">
-      <input type="text" id="registerUsername" placeholder="Username" required>
-      <input type="email" id="registerEmail" placeholder="Email" required>
-      <input type="password" id="registerPassword" placeholder="Password" required>
-      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-      <button id="registerBtn" class="auth-button">Join SterlWorld</button>
-    </div>
+  <div id="message">
+    <h1>See you all in 2026</h1>
+    <p>SterlWorld is powering up.</p>
   </div>
 
   <script>
-    // --- EXISTING STARFIELD / LOADER / EFFECTS (unchanged) ---
+    // Elements
     const enterScreen = document.getElementById('enter-screen');
     const loader = document.getElementById('loader');
     const barFill = document.getElementById('barFill');
@@ -253,21 +325,25 @@
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     const logo = document.getElementById('logo');
+    const message = document.getElementById('message');
 
+    // Assets
     const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
     explosionSound.preload = 'auto';
 
-    const loadingText = 'SterlWorld';
-    for (let char of loadingText) {
-      const span = document.createElement('span'); span.textContent = char; if (titleGlow) titleGlow.appendChild(span);
-    }
-    const titleLetters = titleGlow ? titleGlow.querySelectorAll('span') : [];
     const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
     const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
-    const sparklesContainer = document.createElement('div');
-    sparklesContainer.className = 'loading-bar-sparkles';
-    if (loadingBar) loadingBar.appendChild(sparklesContainer);
 
+    // Build "SterlWorld" letters in loader title
+    const loadingText = 'SterlWorld';
+    for (let char of loadingText) {
+      const span = document.createElement('span');
+      span.textContent = char;
+      titleGlow.appendChild(span);
+    }
+    const titleLetters = titleGlow.querySelectorAll('span');
+
+    // Enter screen stars (desktop only)
     document.addEventListener('DOMContentLoaded', () => {
       const isDesktop = window.innerWidth > 768;
 
@@ -280,386 +356,283 @@
           star.style.left = `${Math.random() * 100}%`;
           star.style.top = `${Math.random() * 100}%`;
           star.style.animationDelay = `${Math.random() * 4}s`;
-          if (enterScreen) enterScreen.appendChild(star);
+          enterScreen.appendChild(star);
         }
 
-        enterScreen?.addEventListener('click', () => {
-          explosionSound.play().then(() => { explosionSound.pause(); explosionSound.currentTime = 0; }).catch(()=>{});
+        // Desktop: tap to enter
+        enterScreen.addEventListener('click', () => {
+          // Prime audio (not required, but keeps your vibe)
+          explosionSound.play().then(() => {
+            explosionSound.pause();
+            explosionSound.currentTime = 0;
+          }).catch(() => {});
+
           enterScreen.classList.add('hiding');
           setTimeout(() => {
             enterScreen.classList.add('hidden');
-            loader?.classList.add('visible');
+            loader.classList.add('visible');
             startLoadingSequence(explosionSound);
             setTimeout(() => enterScreen.remove(), 500);
           }, 500);
-        }, { once:true });
+        }, { once: true });
 
       } else {
-        if (enterScreen) enterScreen.style.display = 'none';
-        loader?.classList.add('visible');
+        // Mobile: skip enter screen (your previous behavior)
+        enterScreen.style.display = 'none';
+        loader.classList.add('visible');
         startLoadingSequence();
       }
     });
 
-    function startLoadingSequence(soundToPlay=null) {
+    // Loading sequence
+    function startLoadingSequence(soundToPlay = null) {
       let progress = 0;
+
       const interval = setInterval(() => {
         progress += Math.random() * 8;
-        if (progress >= 100) {
-          progress = 100; clearInterval(interval);
-          if (loadingFill) loadingFill.style.width = '100%';
-          if (loadingFill) {
-            loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-            loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-            loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-          }
-          if (loadingBar) {
-            loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-            loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-          }
-          const loadingTextElement = document.querySelector('.loading-text');
-          if (loadingTextElement) { loadingTextElement.style.textShadow = '0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff'; loadingTextElement.style.color = '#0ff'; }
-          titleLetters?.forEach(letter => letter.classList.add('glow-gold'));
-          loadingFill?.classList.add('full');
 
-          if (soundToPlay) soundToPlay.play();
-          const isMobile = window.innerWidth <= 768;
-          if (isMobile) {
-            createMobileExplosion(); animate();
-            setTimeout(() => { loader?.classList.add('fade-out'); setTimeout(() => loader ? loader.remove() : null, 800); document.getElementById('space')?.classList.add('fade-in'); }, 100);
-          } else {
-            createLoadingBarCelebration();
-            setTimeout(() => {
-              createLoadingBarExplosion(); animate();
-              setTimeout(() => { loader?.classList.add('fade-out'); setTimeout(() => loader ? loader.remove() : null, 800); document.getElementById('space')?.classList.add('fade-in'); }, 800);
-            }, 300);
-          }
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+
+          loadingFill.style.width = '100%';
+
+          // Gold finish
+          loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
+          loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
+          loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
+          loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
+          loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
+
+          titleLetters.forEach(letter => letter.classList.add('glow-gold'));
+
+          if (soundToPlay) soundToPlay.play().catch(() => {});
+
+          // Start starfield animation, fade loader out
+          animate();
+          setTimeout(() => {
+            loader.classList.add('fade-out');
+            setTimeout(() => loader.remove(), 800);
+            canvas.classList.add('fade-in');
+          }, 150);
         } else {
-          if (loadingFill) loadingFill.style.width = progress + '%';
-          if (Math.random() < 0.6 && loadingBar) {
-            const barWidth = loadingBar.clientWidth;
-            const sparkleX = (progress / 100) * barWidth + (Math.random() * 10 - 5);
-            createLoadingSparkle(sparkleX);
-          }
+          loadingFill.style.width = progress + '%';
         }
+
         updateLetterGlow();
       }, 120);
     }
 
+    // Starfield canvas setup
     let w, h;
-    function resize(){ if(!canvas) return; w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize); resize();
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
     const starImage = new Image();
     starImage.src = sparkleImgSrc;
-    starImage.onerror = () => {
-      const fallbackCanvas = document.createElement('canvas'); fallbackCanvas.width=20; fallbackCanvas.height=20;
-      const fallbackCtx = fallbackCanvas.getContext('2d'); fallbackCtx.fillStyle='#ffd700'; fallbackCtx.beginPath();
-      for (let i=0;i<5;i++){ const angle=(i*4*Math.PI)/5; const x=10+Math.cos(angle)*8; const y=10+Math.sin(angle)*8; if(i===0) fallbackCtx.moveTo(x,y); else fallbackCtx.lineTo(x,y); }
-      fallbackCtx.closePath(); fallbackCtx.fill();
-      const fallbackImage = new Image(); fallbackImage.src = fallbackCanvas.toDataURL(); starImage.src = fallbackImage.src;
-    };
-    starImage.onload = () => { if(ctx){ ctx.fillStyle='black'; ctx.fillRect(0,0,w,h); } };
 
-    let stars=[]; function createStar(){ return { x:(Math.random()-0.5)*w*1.5, y:(Math.random()-0.5)*h*1.5, z:Math.random()*w, size:Math.random()*0.8+0.3, rotationAngle:Math.random()*Math.PI*2, rotationSpeed:(Math.random()-0.5)*0.01 }; }
-    for (let i=0;i<200;i++) stars.push(createStar());
-    let warpSpeed=30; const normalSpeed=0.5; const warpDuration=3000; let warpStartTime=null; let warpComplete=false; let lastTime=performance.now(); let logoMoveComplete=false;
+    let stars = [];
+    function createStar() {
+      return {
+        x: (Math.random() - 0.5) * w * 1.5,
+        y: (Math.random() - 0.5) * h * 1.5,
+        z: Math.random() * w,
+        size: Math.random() * 0.8 + 0.3,
+        rotationAngle: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
+      };
+    }
+    for (let i = 0; i < 200; i++) stars.push(createStar());
 
-    function animate(time=performance.now()){
-      if(!warpStartTime) warpStartTime=time;
-      const elapsed=time-warpStartTime;
-      if(elapsed<warpDuration){ const t=elapsed/warpDuration; warpSpeed=30*(1-t*t*t)+normalSpeed*(t*t*t); }
-      else {
-        warpSpeed=normalSpeed;
-        if(!warpComplete){
-          warpComplete=true;
-          const logoWrapper=document.getElementById('logo-wrapper'); logoWrapper?.classList.add('fade-in');
-          setTimeout(()=>{
-            logoWrapper?.classList.add('move-top');
-            setTimeout(()=>{
-              logoMoveComplete=true; startLogoSparkleLoop();
-              const lw=document.getElementById('logo-wrapper'); if(lw){
-                const logoRect=lw.getBoundingClientRect(); const newContentTop = logoRect.bottom + 40;
-                const content=document.getElementById('mainText'); if(content) content.style.top = `${newContentTop}px`;
-                setTimeout(()=>{
-                  if(content) content.classList.add('visible');
+    let warpSpeed = 30;
+    const normalSpeed = 0.5;
+    const warpDuration = 3000;
+    let warpStartTime = null;
+    let warpComplete = false;
+    let lastTime = performance.now();
+    let logoMoveComplete = false;
 
-                  // Show login button if not signed in
-                  supabase.auth.getSession().then(({ data:{ session } }) => { if(!session){ showAuthTrigger(); } });
+    function animate(time = performance.now()) {
+      if (!warpStartTime) warpStartTime = time;
+      const elapsed = time - warpStartTime;
 
-                  setTimeout(()=>{ const notice=document.getElementById('constructionNotice'); notice?.classList.add('visible'); }, 800);
-                }, 400);
-              }
-            },1600);
-          },1500);
+      // Ease from warp to normal
+      if (elapsed < warpDuration) {
+        const t = elapsed / warpDuration;
+        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
+      } else {
+        warpSpeed = normalSpeed;
+
+        if (!warpComplete) {
+          warpComplete = true;
+
+          const logoWrapper = document.getElementById('logo-wrapper');
+          logoWrapper.classList.add('fade-in');
+
+          setTimeout(() => {
+            logoWrapper.classList.add('move-top');
+
+            setTimeout(() => {
+              logoMoveComplete = true;
+              startLogoSparkleLoop();
+
+              // Position message under logo
+              const logoRect = logoWrapper.getBoundingClientRect();
+              const logoBottom = logoRect.bottom;
+              const contentMargin = 40;
+              message.style.top = `${logoBottom + contentMargin}px`;
+
+              setTimeout(() => message.classList.add('visible'), 400);
+              setTimeout(() => randomPulseLoop(), 1200);
+
+            }, 1600);
+
+          }, 1500);
         }
       }
-      const delta=(time-lastTime)/16.67; lastTime=time;
-      if(ctx){ ctx.fillStyle="rgba(0,0,0,0.3)"; ctx.fillRect(0,0,w,h); }
-      stars.forEach((s,i)=>{
-        s.z -= warpSpeed*delta; if(s.z<=0){ stars[i]=createStar(); return; }
-        let k=128.0/s.z; let px=s.x*k + w/2; let py=s.y*k + h/2;
-        if(px<0||px>=w||py<0||py>=h){ stars[i]=createStar(); return; }
-        if(ctx){
-          ctx.save(); ctx.translate(px,py); ctx.rotate(s.rotationAngle); ctx.shadowBlur=14; ctx.shadowColor='#f7de99'; ctx.globalAlpha=.35;
-          let starSize = s.size * (1 - s.z / w) * 25;
-          if(starImage.complete && starImage.naturalWidth>0){ ctx.drawImage(starImage, -starSize/2, -starSize/2, starSize, starSize); }
-          else { ctx.fillStyle='#ffd700'; ctx.beginPath(); ctx.arc(0,0,starSize/2,0,Math.PI*2); ctx.fill(); }
-          ctx.restore();
+
+      // Delta timing
+      const delta = (time - lastTime) / 16.67;
+      lastTime = time;
+
+      // Draw
+      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.fillRect(0, 0, w, h);
+
+      stars.forEach((s, i) => {
+        s.z -= warpSpeed * delta;
+        if (s.z <= 0) { stars[i] = createStar(); return; }
+
+        let k = 128.0 / s.z;
+        let px = s.x * k + w / 2;
+        let py = s.y * k + h / 2;
+
+        if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
+
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(s.rotationAngle);
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#f7de99';
+        ctx.globalAlpha = 0.35;
+
+        let starSize = s.size * (1 - s.z / w) * 25;
+
+        if (starImage.complete && starImage.naturalWidth > 0) {
+          ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
+        } else {
+          ctx.fillStyle = '#ffd700';
+          ctx.beginPath();
+          ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2);
+          ctx.fill();
         }
+
+        ctx.restore();
         s.rotationAngle += s.rotationSpeed;
       });
+
       requestAnimationFrame(animate);
     }
 
-    function updateLetterGlow(){
-      if(!barFill || !titleLetters) return;
+    // Glow letters as bar fills
+    function updateLetterGlow() {
       const barFillRect = barFill.getBoundingClientRect();
-      titleLetters.forEach((letter)=>{ const r=letter.getBoundingClientRect(); if (r.left <= barFillRect.right){ letter.classList.add('glow-gold'); }});
+      titleLetters.forEach((letter) => {
+        const letterRect = letter.getBoundingClientRect();
+        if (letterRect.left <= barFillRect.right) letter.classList.add('glow-gold');
+      });
     }
 
-    function createLoadingSparkle(x){
-      const sparkle=document.createElement('img'); sparkle.src=sparkleImgSrc; sparkle.className='sparkle-star';
-      sparkle.style.width = sparkle.style.height = `${6 + Math.random()*6}px`;
-      sparkle.style.position='absolute'; sparkle.style.top=`${Math.random()*100}%`; sparkle.style.left=`${x}px`;
-      sparkle.style.opacity='1'; sparkle.style.filter='drop-shadow(0 0 8px #ff5ec4) brightness(2) saturate(1.5)';
-      sparkle.style.transition='opacity .8s ease, transform .8s ease';
-      sparklesContainer?.appendChild(sparkle);
-      setTimeout(()=>{ sparkle.style.opacity='0'; sparkle.style.transform=`translateY(-10px) scale(.5) rotate(${Math.random()*360}deg)`; }, 50);
-      setTimeout(()=>sparkle.remove(), 850);
-    }
+    // Click/touch sparkle burst (kept)
+    function createSparkleBurst(x, y) {
+      const numStars = 12 + Math.floor(Math.random() * 6);
+      for (let i = 0; i < numStars; i++) {
+        const sparkle = document.createElement('img');
+        sparkle.src = sparkleImgSrc;
+        sparkle.className = 'sparkle-star';
 
-    function createLoadingBarExplosion(){
-      const loadingBarRect = loadingBar?.getBoundingClientRect();
-      const loadingTextEl = document.querySelector('.loading-text');
-      const loadingTextRect = loadingTextEl ? loadingTextEl.getBoundingClientRect() : null;
-      const titleGlowRect = titleGlow ? titleGlow.getBoundingClientRect() : null;
+        const size = Math.random() * 16 + 8;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${x - size / 2}px`;
+        sparkle.style.top = `${y - size / 2}px`;
 
-      if (loadingBarRect) createStarExplosion(loadingBarRect, 40, 'bar');
-      if (loadingTextRect) createStarExplosion(loadingTextRect, 25, 'text');
-      if (titleGlowRect) createStarExplosion(titleGlowRect, 30, 'title');
-      createScreenFlash();
+        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
+        sparkle.style.opacity = '1';
+        sparkle.style.position = 'fixed';
+        sparkle.style.zIndex = '9999';
+        sparkle.style.pointerEvents = 'none';
 
-      setTimeout(()=>{ if(loadingBar){ loadingBar.style.opacity='0'; loadingBar.style.transform='scale(0.8)'; } }, 100);
-      setTimeout(()=>{ if(loadingTextEl){ loadingTextEl.style.opacity='0'; loadingTextEl.style.transform='scale(0.8)'; } }, 150);
-      setTimeout(()=>{ if(titleGlow){ titleGlow.style.opacity='0'; titleGlow.style.transform='scale(0.8)'; } }, 150);
-    }
+        document.body.appendChild(sparkle);
+        void sparkle.offsetWidth;
 
-    function createScreenFlash(){
-      const flash=document.createElement('div');
-      flash.style.position='fixed'; flash.style.top='0'; flash.style.left='0'; flash.style.width='100vw'; flash.style.height='100vh';
-      flash.style.background='radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0.1) 50%, transparent 100%)';
-      flash.style.pointerEvents='none'; flash.style.zIndex='999998'; flash.style.opacity='1'; flash.style.transition='opacity .8s ease-out';
-      document.body.appendChild(flash);
-      setTimeout(()=>{ flash.style.opacity='0'; }, 100);
-      setTimeout(()=>{ flash.remove(); }, 900);
-    }
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 60;
+        sparkle.style.left = `${x + Math.cos(angle) * distance}px`;
+        sparkle.style.top  = `${y + Math.sin(angle) * distance}px`;
+        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+        sparkle.style.opacity = '0';
 
-    function createMobileExplosion(){
-      const loadingBarRect = loadingBar?.getBoundingClientRect();
-      const loadingTextRect = document.querySelector('.loading-text')?.getBoundingClientRect();
-      const titleGlowRect = titleGlow?.getBoundingClientRect();
-      if(loadingBarRect) createStarExplosion(loadingBarRect, 12, 'bar');
-      if(loadingTextRect) createStarExplosion(loadingTextRect, 8, 'text');
-      if(titleGlowRect) createStarExplosion(titleGlowRect, 10, 'title');
-      createScreenFlash();
-    }
-
-    function createStarExplosion(elementRect, numStars, type){
-      if(!elementRect) return;
-      const isMobile = window.innerWidth <= 768;
-      const adjustedStars = isMobile ? Math.floor(numStars * 0.4) : numStars;
-      for(let i=0;i<adjustedStars;i++){
-        const star=document.createElement('img'); star.src=sparkleImgSrc; star.className='explosion-star';
-        const size = isMobile ? Math.random()*12+6 : Math.random()*20+10;
-        star.style.width=`${size}px`; star.style.height=`${size}px`; star.style.position='fixed'; star.style.zIndex='999999'; star.style.pointerEvents='none';
-        const glowColors=['#ffd700','#ff5ec4','#0ff','#fff','#ffec8b']; const glowColor=glowColors[Math.floor(Math.random()*glowColors.length)];
-        star.style.filter = isMobile ? `drop-shadow(0 0 8px ${glowColor}) brightness(2) saturate(1.5)` : `drop-shadow(0 0 12px ${glowColor}) drop-shadow(0 0 24px ${glowColor}) brightness(3) saturate(2)`;
-        let startX, startY;
-        if(type==='bar'){ startX = elementRect.left + (Math.random()*elementRect.width); startY = elementRect.top + elementRect.height/2 + (Math.random()-0.5)*elementRect.height; }
-        else { startX = elementRect.left + (Math.random()*elementRect.width); startY = elementRect.top + (Math.random()*elementRect.height); }
-        const angle=Math.random()*2*Math.PI; const distance = isMobile ? 60 + Math.random()*80 : 150 + Math.random()*250;
-        const finalX=startX + Math.cos(angle)*distance; const finalY=startY + Math.sin(angle)*distance;
-        star.style.left=`${startX - size/2}px`; star.style.top=`${startY - size/2}px`; star.style.opacity='1'; star.style.transform='scale(1.2) rotate(0deg)';
-        const dur = isMobile ? '1s' : '1.5s'; star.style.transition = `all ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
-        document.body.appendChild(star);
-        star.onerror = ()=>{ star.style.background=glowColor; star.style.borderRadius='50%'; star.style.boxShadow=`0 0 8px ${glowColor}`; star.src=''; };
-        requestAnimationFrame(()=>{ star.style.left=`${finalX - size/2}px`; star.style.top=`${finalY - size/2}px`; star.style.transform=`scale(0.1) rotate(${Math.random()*720+360}deg)`; star.style.opacity='0';});
-        setTimeout(()=>{ star.remove(); }, isMobile ? 1100 : 1600);
+        setTimeout(() => sparkle.remove(), 600);
       }
     }
+    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
 
-    function createLoadingBarCelebration(){
-      if(!loadingBar) return;
-      const r=loadingBar.getBoundingClientRect(); const cx=r.left+r.width/2; const cy=r.top+r.height/2; const isMobile=window.innerWidth<=768; const n=isMobile?15:30;
-      for(let i=0;i<n;i++){
-        const s=document.createElement('img'); s.src=sparkleImgSrc; s.className='sparkle-star';
-        const size=Math.random()*15+8; s.style.width=`${size}px`; s.style.height=`${size}px`;
-        const angle=(i/n)*2*Math.PI + Math.random()*0.5; const radius=isMobile?40+Math.random()*30:60+Math.random()*40;
-        const startX=cx + Math.cos(angle)*25; const startY=cy + Math.sin(angle)*15;
-        s.style.left=`${startX - size/2}px`; s.style.top=`${startY - size/2}px`; s.style.opacity='1';
-        s.style.filter='drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 18px #ffec8b) brightness(3) saturate(2)';
-        s.style.transition='left 1.5s ease-out, top 1.5s ease-out, opacity 1.5s ease-out, transform 1.5s ease-out';
-        document.body.appendChild(s); void s.offsetWidth;
-        const fx=cx + Math.cos(angle)*radius; const fy=cy + Math.sin(angle)*radius;
-        s.style.left=`${fx - size/2}px`; s.style.top=`${fy - size/2}px`; s.style.transform=`scale(0.2) rotate(${Math.random()*720}deg)`; s.style.opacity='0';
-        setTimeout(()=>s.remove(),1500);
+    // Logo pulse loop
+    function triggerPulse() {
+      if (logoMoveComplete) {
+        logo.style.animation = 'logoPulse 1.2s ease-in-out';
+        setTimeout(() => logo.style.animation = '', 1200);
       }
     }
-
-    function createSparkleBurst(x,y){
-      const n=12 + Math.floor(Math.random()*6);
-      for(let i=0;i<n;i++){
-        const s=document.createElement('img'); s.src=sparkleImgSrc; s.className='sparkle-star';
-        const size=Math.random()*16+8; s.style.width=`${size}px`; s.style.height=`${size}px`; s.style.left=`${x - size/2}px`; s.style.top=`${y - size/2}px`;
-        const glow=sparkleColors[Math.floor(Math.random()*sparkleColors.length)];
-        s.style.filter=`drop-shadow(0 0 6px ${glow}) brightness(2.2) saturate(1.8)`; s.style.opacity='1'; s.style.position='fixed'; s.style.zIndex='9999'; s.style.pointerEvents='none';
-        s.onerror=()=>{ s.style.background=glow; s.style.borderRadius='50%'; s.style.boxShadow=`0 0 6px ${glow}`; s.src=''; };
-        document.body.appendChild(s); void s.offsetWidth;
-        const angle=Math.random()*2*Math.PI; const dist=40+Math.random()*60; const ox=Math.cos(angle)*dist; const oy=Math.sin(angle)*dist;
-        s.style.left=`${x + ox}px`; s.style.top=`${y + oy}px`; s.style.transform=`scale(.5) rotate(${Math.random()*360}deg)`; s.style.opacity='0';
-        s.style.transition='left .6s ease-out, top .6s ease-out, opacity .6s ease-out, transform .6s ease-out';
-        setTimeout(()=>s.remove(),600);
-      }
-    }
-    document.addEventListener('click', e => createSparkleBurst(e.clientX, e.clientY));
-    document.addEventListener('touchstart', e => { if(e.touches.length>0) createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY); });
-
-    function triggerPulse(){ if(logoMoveComplete){ if(logo) logo.style.animation='logoPulse 1.2s ease-in-out'; setTimeout(()=>{ if(logo) logo.style.animation=''; }, 1200); } }
-    function randomPulseLoop(){ const d=8000 + Math.random()*12000; setTimeout(()=>{ triggerPulse(); randomPulseLoop(); }, d); }
-    window.addEventListener('load', ()=>{ setTimeout(randomPulseLoop, 5000); });
-    function createLogoSparkle(){
-      if(!logoMoveComplete) return; const el=document.getElementById('logo'); if(!el) return;
-      const r=el.getBoundingClientRect(); const cx=r.left + r.width/2; const cy=r.top + r.height/2;
-      const s=document.createElement('img'); s.src=sparkleImgSrc; s.className='sparkle-star';
-      const size=Math.random()*10+4; s.style.width=`${size}px`; s.style.height=`${size}px`;
-      const ang=Math.random()*2*Math.PI; const rad=10 + Math.random()*30; const ox=Math.cos(ang)*rad; const oy=Math.sin(ang)*rad;
-      s.style.left=`${cx + ox - size/2}px`; s.style.top=`${cy + oy - size/2}px`; s.style.filter='drop-shadow(0 0 12px #fff) brightness(3) saturate(2)';
-      s.style.opacity='1'; document.body.appendChild(s); void s.offsetWidth; s.style.transform=`scale(.4) rotate(${Math.random()*360}deg)`; s.style.opacity='0';
-      setTimeout(()=>s.remove(),600);
-    }
-    function startLogoSparkleLoop(){ setInterval(()=>{ createLogoSparkle(); }, 2000); }
-
-    // --- SUPABASE & AUTH LOGIC (existing) ---
-    const supabaseUrl = 'https://ivhcljsnsvdxbsmwhiim.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2aGNsanNuc3ZkeGJzbXdoaWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNTE1MTksImV4cCI6MjA2OTcyNzUxOX0.BDaGmJw75rNuAxQRYNd4w5Qh-9k-aUAEX7Ic3kvKENU';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-    const authTrigger = document.getElementById('authTrigger');
-    const authSection = document.getElementById('authSection');
-    const showLoginBtn = document.getElementById('showLogin');
-    const showRegisterBtn = document.getElementById('showRegister');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const userProfile = document.getElementById('userProfile');
-    const loginBtn = document.getElementById('loginBtn');
-    const registerBtn = document.getElementById('registerBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const userDisplayName = document.getElementById('userDisplayName');
-
-    function showAuthTrigger(){ authTrigger?.classList.add('visible'); }
-    authTrigger?.addEventListener('click', () => { authSection?.classList.toggle('open'); });
-    document.addEventListener('click', (event) => {
-      if (authSection && authTrigger && !authSection.contains(event.target) && !authTrigger.contains(event.target)) {
-        authSection.classList.remove('open');
-      }
-    });
-
-    function showUserProfile(user, displayName){
-      authTrigger?.classList.add('hidden');
-      authSection?.classList.remove('open');
-      if (userProfile){ userProfile.classList.remove('hidden'); userProfile.classList.add('visible'); }
-      if (userDisplayName) userDisplayName.textContent = displayName;
-    }
-    function showAuthForms(){
-      if (userProfile){ userProfile.classList.remove('visible'); userProfile.classList.add('hidden'); }
-      authTrigger?.classList.remove('hidden');
-      authSection?.classList.remove('open');
-      const authToggle = document.querySelector('.auth-toggle'); if (authToggle) authToggle.style.display = 'flex';
-      showLoginBtn?.click();
-      const loginEmail = document.getElementById('loginEmail'); const loginPassword = document.getElementById('loginPassword');
-      if(loginEmail) loginEmail.value = ''; if(loginPassword) loginPassword.value = '';
-      if(loginBtn){ loginBtn.textContent = 'Enter SterlWorld'; loginBtn.disabled = false; }
+    function randomPulseLoop() {
+      const delay = 8000 + Math.random() * 12000;
+      setTimeout(() => { triggerPulse(); randomPulseLoop(); }, delay);
     }
 
-    async function checkAuthStatus(){
-      const { data:{ session } } = await supabase.auth.getSession();
-      if (session){
-        supabase.from('profiles').select('username').eq('id', session.user.id).single()
-          .then(({ data: profile }) => { const displayName = profile ? profile.username : session.user.email; showUserProfile(session.user, displayName); });
-      } else {
-        showAuthForms();
-      }
+    // Logo sparkle loop
+    function createLogoSparkle() {
+      if (!logoMoveComplete) return;
+
+      const rect = logo.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const sparkle = document.createElement('img');
+      sparkle.src = sparkleImgSrc;
+      sparkle.className = 'sparkle-star';
+
+      const size = Math.random() * 10 + 4;
+      sparkle.style.width = `${size}px`;
+      sparkle.style.height = `${size}px`;
+
+      const angle = Math.random() * 2 * Math.PI;
+      const radius = 10 + Math.random() * 30;
+      sparkle.style.left = `${centerX + Math.cos(angle) * radius - size / 2}px`;
+      sparkle.style.top  = `${centerY + Math.sin(angle) * radius - size / 2}px`;
+
+      sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
+      sparkle.style.opacity = '1';
+
+      document.body.appendChild(sparkle);
+      void sparkle.offsetWidth;
+
+      sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
+      sparkle.style.opacity = '0';
+
+      setTimeout(() => sparkle.remove(), 600);
     }
-    supabase.auth.onAuthStateChange(()=>{ checkAuthStatus(); });
-    document.addEventListener('DOMContentLoaded', checkAuthStatus);
-
-    function showMessage(message, type='info'){
-      const existing=document.querySelector('.auth-message'); if(existing) existing.remove();
-      const el=document.createElement('div'); el.className=`auth-message ${type}`; el.textContent=message; document.body.appendChild(el);
-      setTimeout(()=>el.classList.add('show'),100); setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),300); }, 4000);
+    function startLogoSparkleLoop() {
+      setInterval(() => createLogoSparkle(), 2000);
     }
-
-    async function checkUsernameAvailability(username){
-      const { data } = await supabase.from('profiles').select('username').eq('username', username.toLowerCase()).single();
-      return !data;
-    }
-
-    showLoginBtn?.addEventListener('click', ()=>{ showLoginBtn.classList.add('active'); showRegisterBtn?.classList.remove('active'); loginForm?.classList.remove('hidden'); registerForm?.classList.add('hidden'); });
-    showRegisterBtn?.addEventListener('click', ()=>{ showRegisterBtn.classList.add('active'); showLoginBtn?.classList.remove('active'); registerForm?.classList.remove('hidden'); loginForm?.classList.add('hidden'); });
-
-    registerBtn?.addEventListener('click', async ()=>{
-      const username = document.getElementById('registerUsername').value.trim();
-      const email = document.getElementById('registerEmail').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-
-      document.querySelectorAll('.auth-form input').forEach(i=>i.classList.remove('error'));
-      if(!username || username.length<3 || !/^[a-zA-Z0-9_]+$/.test(username)){ showMessage('Username must be 3+ characters and contain only letters, numbers, or underscores.','error'); document.getElementById('registerUsername').classList.add('error'); return; }
-      if(!email){ showMessage('Please enter an email address.','error'); document.getElementById('registerEmail').classList.add('error'); return; }
-      if(password.length<6){ showMessage('Password must be at least 6 characters long.','error'); document.getElementById('registerPassword').classList.add('error'); return; }
-      if(password!==confirmPassword){ showMessage('Passwords do not match.','error'); document.getElementById('confirmPassword').classList.add('error'); return; }
-
-      registerBtn.textContent='Checking...'; registerBtn.disabled=true;
-      const ok = await checkUsernameAvailability(username);
-      if(!ok){ showMessage('Sorry, that username is already taken.','error'); document.getElementById('registerUsername').classList.add('error'); registerBtn.textContent='Join SterlWorld'; registerBtn.disabled=false; return; }
-
-      registerBtn.textContent='Creating...';
-      const { error } = await supabase.auth.signUp({ email, password, options:{ data:{ username: username.toLowerCase() } }});
-      if(error){ showMessage(error.message,'error'); }
-      else { showMessage('Success! Please check your email to confirm your account.','success'); document.getElementById('registerForm').reset(); showLoginBtn?.click(); }
-      registerBtn.textContent='Join SterlWorld'; registerBtn.disabled=false;
-    });
-
-    loginBtn?.addEventListener('click', async ()=>{
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-      if(!email || !password){ showMessage('Please enter both email and password.','error'); return; }
-      loginBtn.textContent='Entering...'; loginBtn.disabled=true;
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if(error){ showMessage(error.message,'error'); }
-      loginBtn.textContent='Enter SterlWorld'; loginBtn.disabled=false;
-    });
-
-    logoutBtn?.addEventListener('click', async ()=>{ await supabase.auth.signOut(); });
-
-    // Disable pull-to-refresh on mobile
-    document.body.addEventListener('touchmove', function(e){ if(e.target.tagName!=='INPUT' && e.target.tagName!=='TEXTAREA'){ e.preventDefault(); } }, { passive:false });
-
-    // --- NEW: Wire hero CTAs to auth & scroll ---
-    const ctaRegister = document.getElementById('cta-register');
-    const ctaGuest = document.getElementById('cta-guest');
-    ctaRegister?.addEventListener('click', ()=>{
-      // open the login/register panel (Register tab)
-      authSection?.classList.add('open');
-      showRegisterBtn?.click();
-      // bring to top if needed
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    ctaGuest?.addEventListener('click', ()=>{
-      // simple smooth scroll down a bit
-      document.getElementById('mainText')?.scrollIntoView({ behavior:'smooth', block:'end' });
-    });
   </script>
 </body>
 </html>
