@@ -16,9 +16,9 @@
       font-family: 'Poppins', sans-serif;
       color: white;
       overflow-x: hidden;
-      overflow-y: auto; /* allow page scrolling */
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+      overflow-y: auto; /* allow scrolling */
       -webkit-overflow-scrolling: touch;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
     }
 
     /* --- ENTER SCREEN --- */
@@ -56,6 +56,7 @@
       from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
       to   { text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 50px #0ff, 0 0 80px #0ff; }
     }
+
     @keyframes twinkle {
       0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
     }
@@ -184,6 +185,7 @@
       display: block;
       opacity: 0;
       transition: opacity 1s ease-in;
+      pointer-events: none; /* ensure scrolling/taps work */
     }
     canvas#space.fade-in { opacity: 1; }
 
@@ -212,23 +214,26 @@
       display: block;
       margin: 0 auto;
     }
-    /* Hide tagline completely (still in CSS so nothing shows) */
-    .logo-tagline { display: none !important; }
 
-    /* --- MESSAGE --- */
+    /* --- CONTENT WRAPPER (THIS FIXES SCROLL) --- */
+    #content {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      padding: 0 20px 90px;
+      /* padding-top is set dynamically after logo moves */
+    }
+
+    /* --- MESSAGE (NOW IN NORMAL FLOW) --- */
     #message {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 200px;
       width: 100%;
       max-width: 980px;
+      margin: 0 auto;
       text-align: center;
       opacity: 0;
       transition: opacity 1.5s ease;
-      z-index: 5;
-      padding: 0 20px 80px; /* padding-bottom helps scroll breathing room */
-      pointer-events: auto; /* allow scroll/tap within content */
+      padding: 0;
+      pointer-events: auto;
     }
     #message.visible { opacity: 1; }
 
@@ -241,12 +246,11 @@
       text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
       letter-spacing: 2px;
     }
-
     #message p {
       font-size: 1.12rem;
       line-height: 1.75;
-      color: #ddd;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.22);
+      color: #e0e0e0;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.16);
       max-width: 920px;
       margin: 0 auto 18px;
     }
@@ -254,11 +258,10 @@
     /* Featured project block */
     #featured {
       margin: 22px auto 0;
-      display: block;
       width: min(860px, 92vw);
       padding: 18px 18px 16px;
       border-radius: 16px;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.32);
       box-shadow:
         inset 0 0 18px rgba(0, 255, 255, 0.10),
         0 0 22px rgba(0, 255, 255, 0.12);
@@ -285,15 +288,15 @@
       line-height: 1.55;
       color: #d6d6d6;
       margin-bottom: 14px;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.18);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.14);
     }
     #featured .shot {
       width: 100%;
       border-radius: 14px;
       display: block;
       box-shadow:
-        0 0 18px rgba(255, 215, 0, 0.10),
-        0 0 26px rgba(0, 255, 255, 0.10);
+        0 0 18px rgba(255, 215, 0, 0.08),
+        0 0 26px rgba(0, 255, 255, 0.08);
       opacity: 0.96;
     }
 
@@ -335,9 +338,6 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-
-    /* Ensure fixed canvas doesn't block scroll on mobile */
-    canvas#space { pointer-events: none; }
   </style>
 </head>
 
@@ -357,27 +357,30 @@
     <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
   </div>
 
-  <div id="message">
-    <h1>Welcome to SterlWorld</h1>
-    <p>
-      SterlWorld is an independent studio creating original worlds through mobile games and 2D animation.
-      Each release is designed as part of a connected universe—built around recurring characters, consistent visual identity,
-      and experiences that expand over time. The studio’s work blends interactive design, storytelling, and playful experimentation
-      to create projects that feel cohesive, intentional, and alive. The first title in development, Pizza Dales: Detention Dash,
-      marks the opening release in the SterlWorld lineup.
-    </p>
+  <!-- Content lives in normal document flow (scroll works) -->
+  <div id="content">
+    <div id="message">
+      <h1>Welcome to SterlWorld</h1>
+      <p>
+        SterlWorld is an independent studio creating original worlds through mobile games and 2D animation.
+        Each release is designed as part of a connected universe—built around recurring characters, consistent visual identity,
+        and experiences that expand over time. The studio’s work blends interactive design, storytelling, and playful experimentation
+        to create projects that feel cohesive, intentional, and alive. The first title in development, Pizza Dales: Detention Dash,
+        marks the opening release in the SterlWorld lineup.
+      </p>
 
-    <div id="featured" aria-label="Featured project">
-      <h2>FEATURED PROJECT</h2>
-      <div class="title">Pizza Dales: Detention Dash</div>
-      <div class="desc">A mobile game currently in development as the opening release in the SterlWorld lineup.</div>
-      <img
-        class="shot"
-        src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/test/sterlgithub.png"
-        alt="Pizza Dales: Detention Dash preview image"
-        loading="lazy"
-        decoding="async"
-      />
+      <div id="featured" aria-label="Featured project">
+        <h2>FEATURED PROJECT</h2>
+        <div class="title">Pizza Dales: Detention Dash</div>
+        <div class="desc">A mobile game currently in development as the opening release in the SterlWorld lineup.</div>
+        <img
+          class="shot"
+          src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/test/sterlgithub.png"
+          alt="Pizza Dales: Detention Dash preview image"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
     </div>
   </div>
 
@@ -393,6 +396,7 @@
     const ctx = canvas.getContext('2d');
     const logo = document.getElementById('logo');
     const message = document.getElementById('message');
+    const content = document.getElementById('content');
 
     // Assets
     const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
@@ -426,9 +430,7 @@
           enterScreen.appendChild(star);
         }
 
-        // Desktop: tap to enter
         enterScreen.addEventListener('click', () => {
-          // Prime audio (not required, but keeps your vibe)
           explosionSound.play().then(() => {
             explosionSound.pause();
             explosionSound.currentTime = 0;
@@ -482,6 +484,7 @@
             setTimeout(() => loader.remove(), 800);
             canvas.classList.add('fade-in');
           }, 150);
+
         } else {
           loadingFill.style.width = progress + '%';
         }
@@ -523,6 +526,12 @@
     let lastTime = performance.now();
     let logoMoveComplete = false;
 
+    // NEW: global fade for starfield (starts at 0 then blooms in)
+    const starFadeDuration = 1600; // ms to fade star brightness in after warp completes
+    let starFadeStartTime = null;
+
+    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+
     function animate(time = performance.now()) {
       if (!warpStartTime) warpStartTime = time;
       const elapsed = time - warpStartTime;
@@ -547,14 +556,17 @@
               logoMoveComplete = true;
               startLogoSparkleLoop();
 
-              // Position message under logo
+              // Set padding-top so content begins BELOW the fixed logo (scroll friendly)
               const logoRect = logoWrapper.getBoundingClientRect();
-              const logoBottom = logoRect.bottom;
               const contentMargin = 40;
-              message.style.top = `${logoBottom + contentMargin}px`;
+              content.style.paddingTop = `${logoRect.bottom + contentMargin}px`;
 
-              setTimeout(() => message.classList.add('visible'), 400);
+              // Now reveal content
+              setTimeout(() => message.classList.add('visible'), 300);
               setTimeout(() => randomPulseLoop(), 1200);
+
+              // Start star fade-in moment (your vision)
+              starFadeStartTime = performance.now();
 
             }, 1600);
 
@@ -562,12 +574,21 @@
         }
       }
 
+      // Starfield global fade (0 -> 1)
+      let starfieldFade = 1;
+      if (starFadeStartTime) {
+        starfieldFade = clamp01((time - starFadeStartTime) / starFadeDuration);
+      } else {
+        // Before fade begins, keep stars basically invisible (matches your vision)
+        starfieldFade = 0;
+      }
+
       // Delta timing
       const delta = (time - lastTime) / 16.67;
       lastTime = time;
 
-      // Draw
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      // Draw background slightly darker for readability
+      ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
       ctx.fillRect(0, 0, w, h);
 
       stars.forEach((s, i) => {
@@ -580,12 +601,19 @@
 
         if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
 
+        // Depth-based fade: stars become more visible as they "approach"
+        const depthAlpha = clamp01(1 - (s.z / w)); // 0 far away -> 1 near
+        const baseAlpha = 0.22; // LOWERED from 0.35 for readability
+        const finalAlpha = baseAlpha * starfieldFade * (0.25 + 0.75 * depthAlpha);
+
         ctx.save();
         ctx.translate(px, py);
         ctx.rotate(s.rotationAngle);
-        ctx.shadowBlur = 14;
+
+        // Lower shadow intensity a bit (text readability)
+        ctx.shadowBlur = 10;
         ctx.shadowColor = '#f7de99';
-        ctx.globalAlpha = 0.35;
+        ctx.globalAlpha = finalAlpha;
 
         let starSize = s.size * (1 - s.z / w) * 25;
 
