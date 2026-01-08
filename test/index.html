@@ -229,7 +229,7 @@
       transform: translateX(-50%);
       top: 200px;
       width: 100%;
-      max-width: 90%;
+      max-width: 980px;
       text-align: center;
       opacity: 0;
       transition: opacity 1.5s ease;
@@ -248,10 +248,58 @@
       letter-spacing: 2px;
     }
     #message p {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       line-height: 1.7;
-      color: #ccc;
+      color: #ddd;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    /* Featured project block */
+    #featured {
+      margin-top: 24px;
+      display: inline-block;
+      width: min(860px, 92vw);
+      padding: 18px 18px 16px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.35);
+      box-shadow:
+        inset 0 0 18px rgba(0, 255, 255, 0.10),
+        0 0 22px rgba(0, 255, 255, 0.12);
+      backdrop-filter: blur(6px);
+    }
+    #featured h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      color: #fff;
+      text-shadow: 0 0 14px rgba(0, 255, 255, 0.45);
+    }
+    #featured .title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255,255,255,0.35);
+    }
+    #featured .desc {
+      font-size: 1.0rem;
+      line-height: 1.55;
+      color: #d6d6d6;
+      margin-bottom: 14px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.18);
+    }
+    #featured .shot {
+      width: 100%;
+      border-radius: 14px;
+      display: block;
+      box-shadow:
+        0 0 18px rgba(255, 215, 0, 0.10),
+        0 0 26px rgba(0, 255, 255, 0.10);
+      opacity: 0.95;
     }
 
     @media screen and (max-width: 768px) {
@@ -259,12 +307,16 @@
       #logo-wrapper.move-top { top: 60px; }
       .logo-tagline { font-size: 0.7rem; margin-top: 4px; letter-spacing: 0.3px;}
       #message h1 { font-size: 1.7rem; }
-      #message p { font-size: 1.05rem; }
+      #message p { font-size: 1.02rem; }
+      #featured .title { font-size: 1.2rem; }
+      #featured .desc { font-size: 0.98rem; }
     }
     @media screen and (max-width: 480px) {
       #logo { width: 170px; }
       #message h1 { font-size: 1.5rem; }
-      #message p { font-size: 1rem; }
+      #message p { font-size: 0.98rem; }
+      #featured { padding: 14px; }
+      #featured h2 { font-size: 1rem; }
     }
 
     @keyframes logoPulse {
@@ -306,10 +358,29 @@
 
   <div id="logo-wrapper">
     <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
+    <div class="logo-tagline">An independent multimedia studio founded by Sterlin Griffin</div>
+  </div>
 
   <div id="message">
-    <h1>See you all in 2026</h1>
-    <p>SterlWorld is powering up.</p>
+    <h1>Welcome to SterlWorld</h1>
+    <p>
+      SterlWorld is an evolving creative studio focused on original mobile games, 2D animated concepts, and interactive experiences—
+      built to explore the intersection of story, technology, and play.
+    </p>
+
+    <div id="featured" aria-label="Featured project">
+      <h2>FEATURED PROJECT</h2>
+      <div class="title">Pizza Dales: Detention Dash</div>
+      <div class="desc">A fast-paced mobile game set in the world of SterlWorld. More projects and updates are actively in development.</div>
+      <!-- Replace this image URL with your actual Detention Dash title screen image when ready -->
+      <img
+        class="shot"
+        src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/PizzaDales_DetentionDash_TitleScreen.png"
+        alt="Pizza Dales: Detention Dash title screen"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
   </div>
 
   <script>
