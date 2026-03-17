@@ -31,66 +31,51 @@ body {
   color: #0ff;
   text-decoration: none;
   font-size: 0.9rem;
-  opacity: 0.8;
 }
 
-#main-nav a:hover {
-  opacity: 1;
-}
-
-/* FOOTER */
-footer {
+/* STARFIELD */
+canvas {
   position: fixed;
-  bottom: 15px;
-  width: 100%;
-  text-align: center;
-  font-size: 0.75rem;
-  color: #666;
-  z-index: 20;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
-footer a {
-  color: #0ff;
-  text-decoration: none;
+/* CENTER CONTENT */
+#center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  text-align: center;
+  z-index: 10;
+  max-width: 600px;
+  padding: 20px;
 }
 
 /* LOGO */
-#logo-wrapper {
-  position: fixed;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 10;
-}
-
 #logo {
   width: 220px;
+  margin-bottom: 20px;
 }
 
-.logo-tagline {
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-/* MESSAGE */
-#message {
-  position: fixed;
-  top: 260px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  max-width: 600px;
-}
-
-#message h1 {
+/* TITLE */
+h1 {
   font-family: 'Orbitron';
-  font-size: 2rem;
-  margin-bottom: 15px;
+  font-size: 2.2rem;
+  margin-bottom: 10px;
   text-shadow: 0 0 20px #0ff;
 }
 
-#message p {
+/* TAGLINE */
+.tagline {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
+
+/* DESCRIPTION */
+p {
   color: #ccc;
   margin-bottom: 25px;
 }
@@ -115,14 +100,29 @@ footer a {
 .cta-buttons a:hover {
   background: #0ff;
   color: black;
+  box-shadow: 0 0 12px #0ff;
 }
 
-/* CANVAS */
-canvas {
+/* FOOTER */
+footer {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #666;
+  z-index: 20;
+}
+
+footer a {
+  color: #0ff;
+  text-decoration: none;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  #logo { width: 160px; }
+  h1 { font-size: 1.6rem; }
 }
 </style>
 </head>
@@ -137,13 +137,13 @@ canvas {
 
 <canvas id="space"></canvas>
 
-<div id="logo-wrapper">
-  <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/about/SterlWorld%20Logo%202026.png" id="logo" />
-  <div class="logo-tagline">A Multimedia Experience by Sterlin Griffin</div>
-</div>
+<div id="center">
+  <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/about/SterlWorld%20Logo%202026.png" id="logo">
 
-<div id="message">
+  <div class="tagline">A Multimedia Experience by Sterlin Griffin</div>
+
   <h1>A Universe in the Making</h1>
+
   <p>
     SterlWorld is an independent game and multimedia studio creating original worlds,
     characters, and interactive experiences.
@@ -167,6 +167,7 @@ const canvas = document.getElementById('space');
 const ctx = canvas.getContext('2d');
 
 let w, h;
+
 function resize() {
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
@@ -174,28 +175,49 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
+/* ORIGINAL-STYLE DEPTH STARFIELD */
 let stars = [];
-for (let i = 0; i < 150; i++) {
-  stars.push({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    size: Math.random() * 2
-  });
+
+function createStar() {
+  return {
+    x: (Math.random() - 0.5) * w * 2,
+    y: (Math.random() - 0.5) * h * 2,
+    z: Math.random() * w,
+  };
 }
+
+for (let i = 0; i < 200; i++) stars.push(createStar());
 
 function animate() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, w, h);
 
-  stars.forEach(s => {
-    ctx.fillStyle = "white";
-    ctx.fillRect(s.x, s.y, s.size, s.size);
-    s.y += 0.3;
-    if (s.y > h) s.y = 0;
+  stars.forEach((s, i) => {
+    s.z -= 0.5;
+
+    if (s.z <= 0) {
+      stars[i] = createStar();
+      return;
+    }
+
+    let k = 128 / s.z;
+    let px = s.x * k + w / 2;
+    let py = s.y * k + h / 2;
+
+    if (px < 0 || px >= w || py < 0 || py >= h) {
+      stars[i] = createStar();
+      return;
+    }
+
+    let size = (1 - s.z / w) * 3;
+
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(px, py, size, size);
   });
 
   requestAnimationFrame(animate);
 }
+
 animate();
 </script>
 
