@@ -1,135 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SterlWorld</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>SterlWorld</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow: hidden;
+      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
+    }
 
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    /* NAV */
+    #main-nav {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      z-index: 50;
+      display: flex;
+      gap: 20px;
+      font-size: 0.9rem;
+    }
+    #main-nav a {
+      color: #0ff;
+      text-decoration: none;
+      opacity: 0.8;
+    }
+    #main-nav a:hover { opacity: 1; }
 
-body {
-  background: black;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  overflow: hidden;
-}
+    /* ENTER SCREEN */
+    #enter-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      cursor: pointer;
+    }
 
-/* NAV */
-#main-nav {
-  position: fixed;
-  top: 20px;
-  right: 30px;
-  z-index: 20;
-  display: flex;
-  gap: 20px;
-}
+    #enter-screen h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 8vw, 4rem);
+      text-shadow: 0 0 40px #0ff;
+      animation: enterGlow 3s infinite alternate;
+    }
 
-#main-nav a {
-  color: #0ff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
+    @keyframes enterGlow {
+      from { text-shadow: 0 0 20px #0ff; }
+      to { text-shadow: 0 0 60px #0ff; }
+    }
 
-#main-nav a:hover {
-  opacity: 1;
-}
+    /* LOADER */
+    #loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 99999;
+    }
 
-/* STARFIELD */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
-}
+    .loading-bar {
+      width: 300px;
+      height: 12px;
+      background: #111;
+      border-radius: 10px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
 
-/* CENTER CONTENT */
-#center {
-  position: fixed;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 10;
-  max-width: 600px;
-  padding: 20px;
-}
+    .loading-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #0ff;
+    }
 
-/* LOGO */
-#logo {
-  width: 220px;
-  margin-bottom: 25px;
-}
+    /* CANVAS */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
 
-/* TAGLINE */
-.tagline {
-  font-size: 0.85rem;
-  opacity: 0.8;
-  margin-bottom: 20px;
-}
+    /* LOGO */
+    #logo-wrapper {
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+      display: none;
+    }
 
-/* TITLE */
-h1 {
-  font-family: 'Orbitron';
-  font-size: 2.2rem;
-  margin-bottom: 15px;
-  text-shadow: 0 0 20px #0ff;
-}
+    #logo { width: 220px; }
 
-/* DESCRIPTION */
-p {
-  color: #ccc;
-  margin-bottom: 25px;
-}
+    /* MESSAGE */
+    #message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+      display: none;
+    }
 
-/* BUTTONS */
-.cta-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
+    #message h1 {
+      font-family: 'Orbitron';
+      text-shadow: 0 0 20px #0ff;
+      margin-bottom: 10px;
+    }
 
-.cta-buttons a {
-  padding: 10px 18px;
-  border: 1px solid #0ff;
-  color: #0ff;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: 0.3s;
-}
+    #message p {
+      color: #ccc;
+      margin-bottom: 20px;
+    }
 
-.cta-buttons a:hover {
-  background: #0ff;
-  color: black;
-  box-shadow: 0 0 12px #0ff;
-}
+    .cta a {
+      margin: 5px;
+      padding: 10px 16px;
+      border: 1px solid #0ff;
+      color: #0ff;
+      text-decoration: none;
+    }
 
-/* FOOTER */
-footer {
-  position: fixed;
-  bottom: 15px;
-  width: 100%;
-  text-align: center;
-  font-size: 0.75rem;
-  color: #666;
-  z-index: 20;
-}
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.75rem;
+      display: none;
+    }
 
-footer a {
-  color: #0ff;
-  text-decoration: none;
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  #logo { width: 160px; }
-  h1 { font-size: 1.6rem; }
-}
-</style>
+  </style>
 </head>
 
 <body>
@@ -140,21 +157,31 @@ footer a {
   <a href="/contact">Contact</a>
 </nav>
 
+<div id="enter-screen">
+  <h1>Tap to Enter</h1>
+</div>
+
+<div id="loader">
+  <div>Loading SterlWorld</div>
+  <div class="loading-bar">
+    <div class="loading-bar-fill" id="barFill"></div>
+  </div>
+</div>
+
 <canvas id="space"></canvas>
 
-<div id="center">
+<div id="logo-wrapper">
   <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/about/SterlWorld%20Logo%202026.png" id="logo">
+</div>
 
-  <div class="tagline">A Multimedia Experience by Sterlin Griffin</div>
-
+<div id="message">
   <h1>A Universe in the Making</h1>
-
   <p>
     SterlWorld is an independent game and multimedia studio creating original worlds,
     characters, and interactive experiences.
   </p>
 
-  <div class="cta-buttons">
+  <div class="cta">
     <a href="/pizzadales">Pizza Dales</a>
     <a href="/about">About</a>
     <a href="/contact">Contact</a>
@@ -168,31 +195,51 @@ footer a {
 </footer>
 
 <script>
-const canvas = document.getElementById('space');
-const ctx = canvas.getContext('2d');
+const enter = document.getElementById("enter-screen");
+const loader = document.getElementById("loader");
+const fill = document.getElementById("barFill");
+
+enter.onclick = () => {
+  enter.style.display = "none";
+  loader.style.display = "flex";
+
+  let progress = 0;
+  let interval = setInterval(() => {
+    progress += 5;
+    fill.style.width = progress + "%";
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      loader.style.display = "none";
+
+      document.getElementById("logo-wrapper").style.display = "block";
+      document.getElementById("message").style.display = "block";
+      document.querySelector("footer").style.display = "block";
+    }
+  }, 80);
+};
+
+/* STARFIELD */
+const canvas = document.getElementById("space");
+const ctx = canvas.getContext("2d");
 
 let w, h;
-
 function resize() {
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
 }
-window.addEventListener('resize', resize);
 resize();
+window.addEventListener("resize", resize);
 
-/* STAR IMAGE */
 const starImage = new Image();
-starImage.src = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
+starImage.src = "https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png";
 
 let stars = [];
-
 function createStar() {
   return {
     x: (Math.random() - 0.5) * w * 2,
     y: (Math.random() - 0.5) * h * 2,
-    z: Math.random() * w,
-    size: Math.random() * 0.8 + 0.3,
-    rotation: Math.random() * Math.PI * 2
+    z: Math.random() * w
   };
 }
 
@@ -204,43 +251,21 @@ function animate() {
 
   stars.forEach((s, i) => {
     s.z -= 0.5;
-
-    if (s.z <= 0) {
-      stars[i] = createStar();
-      return;
-    }
+    if (s.z <= 0) stars[i] = createStar();
 
     let k = 128 / s.z;
     let px = s.x * k + w / 2;
     let py = s.y * k + h / 2;
 
-    if (px < 0 || px >= w || py < 0 || py >= h) {
-      stars[i] = createStar();
-      return;
-    }
-
-    let size = s.size * (1 - s.z / w) * 25;
-
-    ctx.save();
-    ctx.translate(px, py);
-    ctx.rotate(s.rotation);
-
-    ctx.globalAlpha = 0.35;
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = '#f7de99';
+    let size = (1 - s.z / w) * 20;
 
     if (starImage.complete) {
-      ctx.drawImage(starImage, -size / 2, -size / 2, size, size);
+      ctx.drawImage(starImage, px, py, size, size);
     }
-
-    ctx.restore();
-
-    s.rotation += 0.002;
   });
 
   requestAnimationFrame(animate);
 }
-
 animate();
 </script>
 
