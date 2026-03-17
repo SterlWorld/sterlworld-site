@@ -20,14 +20,21 @@
 
     /* NAV */
     nav {
-      position: fixed;
-      top: 20px;
-      right: 30px;
-      z-index: 9999;
-      display: flex;
-      gap: 20px;
-      font-size: 0.9rem;
-    }
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  z-index: 9999;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+nav.visible {
+  opacity: 1;
+}
 
     nav a {
       color: #0ff;
@@ -234,6 +241,7 @@ enter.onclick = () => {
         document.getElementById("logo-wrapper").classList.add("visible");
         document.getElementById("message").classList.add("visible");
         document.querySelector("footer").classList.add("visible");
+        document.querySelector("nav").classList.add("visible");
 
       }, 300);
     }
