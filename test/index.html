@@ -1,733 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>SterlWorld</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SterlWorld</title>
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
-    html, body {
-      height: 100%;
-      width: 100%;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      overflow-x: hidden;
-      overflow-y: auto; /* allow scrolling */
-      -webkit-overflow-scrolling: touch;
-      cursor: url('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/Dale%20Glove%20cursor2.png') 4 0, auto;
-    }
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* --- ENTER SCREEN --- */
-    #enter-screen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100000;
-      cursor: pointer;
-      opacity: 1;
-      transition: opacity 0.5s ease-out;
-    }
-    #enter-screen.hidden { opacity: 0; pointer-events: none; }
-    #enter-screen h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(2rem, 8vw, 4rem);
-      color: #fff;
-      text-shadow:
-        0 0 10px #fff,
-        0 0 20px #fff,
-        0 0 40px #0ff,
-        0 0 70px #0ff;
-      animation: enterGlow 3s ease-in-out infinite alternate;
-      user-select: none;
-      opacity: 1;
-      transition: opacity 0.5s ease-in;
-    }
-    #enter-screen.hiding h1 { opacity: 0; }
+body {
+  background: black;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  overflow: hidden;
+}
 
-    @keyframes enterGlow {
-      from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px #0ff, 0 0 60px #0ff; }
-      to   { text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 50px #0ff, 0 0 80px #0ff; }
-    }
+/* NAV */
+#main-nav {
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  z-index: 20;
+  display: flex;
+  gap: 20px;
+}
 
-    @keyframes twinkle {
-      0% { opacity: 0; } 50% { opacity: 0.8; } 100% { opacity: 0; }
-    }
-    .star {
-      position: absolute;
-      background-color: white;
-      border-radius: 50%;
-      box-shadow: 0 0 4px #fff, 0 0 8px #fff;
-      animation: twinkle 4s infinite;
-    }
+#main-nav a {
+  color: #0ff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
 
-    /* --- LOADER --- */
-    #loader {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: black;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      padding: 0 15px;
-      transition: opacity 0.8s ease-out;
-      visibility: hidden;
-      opacity: 0;
-    }
-    #loader.visible { visibility: visible; opacity: 1; }
-    #loader.fade-out { opacity: 0; pointer-events: none; }
+#main-nav a:hover {
+  opacity: 1;
+}
 
-    #loader h2 {
-      color: white;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      font-family: 'Orbitron', sans-serif;
-      letter-spacing: 1px;
-      user-select: none;
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 90vw;
-      display: flex;
-      justify-content: center;
-      gap: 2px;
-      white-space: nowrap;
-    }
-    #loader h2 .loading-text {
-      color: #0ff;
-      font-weight: 600;
-      user-select: none;
-      white-space: nowrap;
-    }
-    #titleGlow {
-      display: inline-flex;
-      user-select: none;
-      gap: 0;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-    }
-    #titleGlow span {
-      transition: text-shadow 0.3s ease, color 0.3s ease;
-      color: white;
-      font-weight: 600;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      line-height: 1;
-      padding: 0 0.5px;
-    }
-    .glow-gold {
-      color: #f4d9a7 !important;
-      text-shadow:
-        0 0 5px #f4d9a7,
-        0 0 10px #e8c183,
-        0 0 15px #deb76e,
-        0 0 20px #d4a853,
-        0 0 25px #ca9c43,
-        0 0 30px #bf8f33,
-        0 0 35px #b48223 !important;
-      animation: etherealGlow 2s ease-in-out infinite alternate;
-    }
-    @keyframes etherealGlow {
-      0% {
-        text-shadow:
-          0 0 5px #f4d9a7, 0 0 10px #e8c183, 0 0 15px #deb76e,
-          0 0 20px #d4a853, 0 0 25px #ca9c43;
-      }
-      100% {
-        text-shadow:
-          0 0 8px #fce8b8, 0 0 16px #f4d9a7, 0 0 24px #e8c183,
-          0 0 32px #deb76e, 0 0 40px #d4a853, 0 0 48px #ca9c43;
-      }
-    }
+/* FOOTER */
+footer {
+  position: fixed;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #666;
+  z-index: 20;
+}
 
-    .loading-bar {
-      position: relative;
-      width: 100%;
-      max-width: 90vw;
-      height: 16px;
-      background: #111;
-      border-radius: 12px;
-      box-shadow: inset 0 0 8px #0ff, 0 0 12px #0ff;
-      overflow: hidden;
-      margin: 0 auto 15px;
-      filter: drop-shadow(0 0 8px #0ff);
-    }
-    .loading-bar-fill {
-      position: relative;
-      height: 100%;
-      width: 0%;
-      border-radius: 12px;
-      background: linear-gradient(
-        90deg, #0ff 0%, #00e6e6 25%, #ff5ec4 50%,
-        #e054b8 75%, #ffd700 100%
-      );
-      box-shadow:
-        0 0 15px rgba(0, 255, 255, 0.8),
-        0 0 25px rgba(255, 94, 196, 0.6),
-        0 0 35px rgba(255, 215, 0, 0.4);
-      filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8));
-      transition: width 0.3s ease;
-    }
+footer a {
+  color: #0ff;
+  text-decoration: none;
+}
 
-    /* --- CANVAS --- */
-    canvas#space {
-      position: fixed;
-      top: 0; left: 0;
-      z-index: 0;
-      display: block;
-      opacity: 0;
-      transition: opacity 1s ease-in;
-      pointer-events: none; /* ensure scrolling/taps work */
-    }
-    canvas#space.fade-in { opacity: 1; }
+/* LOGO */
+#logo-wrapper {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
 
-    /* --- LOGO WRAPPER --- */
-    #logo-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      opacity: 0;
-      transition: opacity 1.5s ease, top 1.5s ease, transform 1.5s ease;
-      text-align: center;
-      pointer-events: none;
-    }
-    #logo-wrapper.fade-in { opacity: 1; }
-    #logo-wrapper.move-top {
-      top: 60px;
-      transform: translate(-50%, 0);
-      position: fixed;
-    }
-    #logo {
-      width: 300px;
-      max-width: 80vw;
-      transform-origin: center center;
-      display: block;
-      margin: 0 auto;
-    }
+#logo {
+  width: 220px;
+}
 
-    /* --- CONTENT WRAPPER (THIS FIXES SCROLL) --- */
-    #content {
-      position: relative;
-      z-index: 5;
-      width: 100%;
-      padding: 0 20px 90px;
-      /* padding-top is set dynamically after logo moves */
-    }
+.logo-tagline {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
 
-    /* --- MESSAGE (NOW IN NORMAL FLOW) --- */
-    #message {
-      width: 100%;
-      max-width: 980px;
-      margin: 0 auto;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      padding: 0;
-      pointer-events: auto;
-    }
-    #message.visible { opacity: 1; }
+/* MESSAGE */
+#message {
+  position: fixed;
+  top: 260px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: 600px;
+}
 
-    #message h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 600;
-      font-size: 2.3rem;
-      margin-bottom: 1rem;
-      color: white;
-      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff;
-      letter-spacing: 2px;
-    }
-    #message p {
-      font-size: 1.12rem;
-      line-height: 1.75;
-      color: #e0e0e0;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.16);
-      max-width: 920px;
-      margin: 0 auto 18px;
-    }
+#message h1 {
+  font-family: 'Orbitron';
+  font-size: 2rem;
+  margin-bottom: 15px;
+  text-shadow: 0 0 20px #0ff;
+}
 
-    /* Featured project block */
-    #featured {
-      margin: 22px auto 0;
-      width: min(860px, 92vw);
-      padding: 18px 18px 16px;
-      border-radius: 16px;
-      background: rgba(0, 0, 0, 0.32);
-      box-shadow:
-        inset 0 0 18px rgba(0, 255, 255, 0.10),
-        0 0 22px rgba(0, 255, 255, 0.12);
-      backdrop-filter: blur(6px);
-    }
-    #featured h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 600;
-      font-size: 1.05rem;
-      letter-spacing: 1.5px;
-      margin-bottom: 8px;
-      color: #fff;
-      text-shadow: 0 0 14px rgba(0, 255, 255, 0.45);
-    }
-    #featured .title {
-      font-size: 1.35rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #fff;
-      text-shadow: 0 0 12px rgba(255,255,255,0.35);
-    }
-    #featured .desc {
-      font-size: 1.0rem;
-      line-height: 1.55;
-      color: #d6d6d6;
-      margin-bottom: 14px;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.14);
-    }
-    #featured .shot {
-      width: 100%;
-      border-radius: 14px;
-      display: block;
-      box-shadow:
-        0 0 18px rgba(255, 215, 0, 0.08),
-        0 0 26px rgba(0, 255, 255, 0.08);
-      opacity: 0.96;
-    }
+#message p {
+  color: #ccc;
+  margin-bottom: 25px;
+}
 
-    @media screen and (max-width: 768px) {
-      #logo { width: 200px; }
-      #logo-wrapper.move-top { top: 60px; }
-      #message h1 { font-size: 1.7rem; }
-      #message p { font-size: 1.02rem; }
-      #featured .title { font-size: 1.2rem; }
-      #featured .desc { font-size: 0.98rem; }
-    }
-    @media screen and (max-width: 480px) {
-      #logo { width: 170px; }
-      #message h1 { font-size: 1.5rem; }
-      #message p { font-size: 0.98rem; }
-      #featured { padding: 14px; }
-      #featured h2 { font-size: 1rem; }
-    }
+/* BUTTONS */
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
 
-    @keyframes logoPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
+.cta-buttons a {
+  padding: 10px 18px;
+  border: 1px solid #0ff;
+  color: #0ff;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: 0.3s;
+}
 
-    /* Sparkle image elements */
-    .sparkle-star {
-      pointer-events: none;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      transform-origin: center center;
-      z-index: 9999;
-      transition: left 0.6s ease-out, top 0.6s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
-      opacity: 1;
-      filter: drop-shadow(0 0 6px #fff) brightness(2.2) saturate(1.8);
-      animation: spin 0.6s linear;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-  </style>
+.cta-buttons a:hover {
+  background: #0ff;
+  color: black;
+}
+
+/* CANVAS */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+</style>
 </head>
 
 <body>
-  <div id="enter-screen">
-    <h1>Tap to Enter</h1>
+
+<nav id="main-nav">
+  <a href="/">Home</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+</nav>
+
+<canvas id="space"></canvas>
+
+<div id="logo-wrapper">
+  <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/about/SterlWorld%20Logo%202026.png" id="logo" />
+  <div class="logo-tagline">A Multimedia Experience by Sterlin Griffin</div>
+</div>
+
+<div id="message">
+  <h1>A Universe in the Making</h1>
+  <p>
+    SterlWorld is an independent game and multimedia studio creating original worlds,
+    characters, and interactive experiences.
+  </p>
+
+  <div class="cta-buttons">
+    <a href="/pizzadales">Pizza Dales</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
   </div>
+</div>
+
+<footer>
+  © 2025 SterlWorld Entertainment LLC<br>
+  <a href="/privacy">Privacy Policy</a> • 
+  <a href="/terms">Terms of Service</a>
+</footer>
+
+<script>
+const canvas = document.getElementById('space');
+const ctx = canvas.getContext('2d');
+
+let w, h;
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+let stars = [];
+for (let i = 0; i < 150; i++) {
+  stars.push({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    size: Math.random() * 2
+  });
+}
+
+function animate() {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, w, h);
+
+  stars.forEach(s => {
+    ctx.fillStyle = "white";
+    ctx.fillRect(s.x, s.y, s.size, s.size);
+    s.y += 0.3;
+    if (s.y > h) s.y = 0;
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
 
-  <div id="loader">
-    <h2><span class="loading-text">Loading</span>&nbsp;<span id="titleGlow"></span></h2>
-    <div class="loading-bar"><div class="loading-bar-fill" id="barFill"></div></div>
-  </div>
-
-  <canvas id="space"></canvas>
-
-  <div id="logo-wrapper">
-    <img src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/SterlWorld_Logo.png" id="logo" alt="SterlWorld Logo" />
-  </div>
-
-  <!-- Content lives in normal document flow (scroll works) -->
-  <div id="content">
-    <div id="message">
-      <h1>Welcome to SterlWorld</h1>
-      <p>
-        SterlWorld is an independent studio creating original worlds through mobile games and 2D animation.
-        Each release is designed as part of a connected universe—built around recurring characters, consistent visual identity,
-        and experiences that expand over time. The studio’s work blends interactive design, storytelling, and playful experimentation
-        to create projects that feel cohesive, intentional, and alive. The first title in development, Pizza Dales: Detention Dash,
-        marks the opening release in the SterlWorld lineup.
-      </p>
-
-      <div id="featured" aria-label="Featured project">
-        <h2>FEATURED PROJECT</h2>
-        <div class="title">Pizza Dales: Detention Dash</div>
-        <div class="desc">A mobile game currently in development as the opening release in the SterlWorld lineup.</div>
-        <img
-          class="shot"
-          src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/test/sterlgithub.png"
-          alt="Pizza Dales: Detention Dash preview image"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Elements
-    const enterScreen = document.getElementById('enter-screen');
-    const loader = document.getElementById('loader');
-    const barFill = document.getElementById('barFill');
-    const titleGlow = document.getElementById('titleGlow');
-    const loadingBar = document.querySelector('.loading-bar');
-    const loadingFill = document.querySelector('.loading-bar-fill');
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
-    const logo = document.getElementById('logo');
-    const message = document.getElementById('message');
-    const content = document.getElementById('content');
-
-    // Assets
-    const explosionSound = new Audio('https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/test/StarGlit.wav');
-    explosionSound.preload = 'auto';
-
-    const sparkleImgSrc = 'https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png';
-    const sparkleColors = ['#0ff', '#ffd700', '#ff5ec4', '#00f2ff', '#fff'];
-
-    // Build "SterlWorld" letters in loader title
-    const loadingText = 'SterlWorld';
-    for (let char of loadingText) {
-      const span = document.createElement('span');
-      span.textContent = char;
-      titleGlow.appendChild(span);
-    }
-    const titleLetters = titleGlow.querySelectorAll('span');
-
-    // Enter screen stars (desktop only)
-    document.addEventListener('DOMContentLoaded', () => {
-      const isDesktop = window.innerWidth > 768;
-
-      if (isDesktop) {
-        for (let i = 0; i < 50; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          star.style.width = `${Math.random() * 2 + 1}px`;
-          star.style.height = star.style.width;
-          star.style.left = `${Math.random() * 100}%`;
-          star.style.top = `${Math.random() * 100}%`;
-          star.style.animationDelay = `${Math.random() * 4}s`;
-          enterScreen.appendChild(star);
-        }
-
-        enterScreen.addEventListener('click', () => {
-          explosionSound.play().then(() => {
-            explosionSound.pause();
-            explosionSound.currentTime = 0;
-          }).catch(() => {});
-
-          enterScreen.classList.add('hiding');
-          setTimeout(() => {
-            enterScreen.classList.add('hidden');
-            loader.classList.add('visible');
-            startLoadingSequence(explosionSound);
-            setTimeout(() => enterScreen.remove(), 500);
-          }, 500);
-        }, { once: true });
-
-      } else {
-        // Mobile: skip enter screen
-        enterScreen.style.display = 'none';
-        loader.classList.add('visible');
-        startLoadingSequence();
-      }
-    });
-
-    // Loading sequence
-    function startLoadingSequence(soundToPlay = null) {
-      let progress = 0;
-
-      const interval = setInterval(() => {
-        progress += Math.random() * 8;
-
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(interval);
-
-          loadingFill.style.width = '100%';
-
-          // Gold finish
-          loadingFill.style.background = 'linear-gradient(90deg, #f4d9a7, #e8c183, #deb76e, #f4d9a7)';
-          loadingFill.style.boxShadow = '0 0 20px #f4d9a7, 0 0 40px #e8c183, 0 0 60px #deb76e';
-          loadingFill.style.filter = 'drop-shadow(0 0 15px #f4d9a7)';
-          loadingBar.style.boxShadow = 'inset 0 0 8px #f4d9a7, 0 0 20px #e8c183';
-          loadingBar.style.filter = 'drop-shadow(0 0 15px #deb76e)';
-
-          titleLetters.forEach(letter => letter.classList.add('glow-gold'));
-
-          if (soundToPlay) soundToPlay.play().catch(() => {});
-
-          // Start starfield animation, fade loader out
-          animate();
-          setTimeout(() => {
-            loader.classList.add('fade-out');
-            setTimeout(() => loader.remove(), 800);
-            canvas.classList.add('fade-in');
-          }, 150);
-
-        } else {
-          loadingFill.style.width = progress + '%';
-        }
-
-        updateLetterGlow();
-      }, 120);
-    }
-
-    // Starfield canvas setup
-    let w, h;
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    const starImage = new Image();
-    starImage.src = sparkleImgSrc;
-
-    let stars = [];
-    function createStar() {
-      return {
-        x: (Math.random() - 0.5) * w * 1.5,
-        y: (Math.random() - 0.5) * h * 1.5,
-        z: Math.random() * w,
-        size: Math.random() * 0.8 + 0.3,
-        rotationAngle: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.01,
-      };
-    }
-    for (let i = 0; i < 200; i++) stars.push(createStar());
-
-    let warpSpeed = 30;
-    const normalSpeed = 0.5;
-    const warpDuration = 3000;
-    let warpStartTime = null;
-    let warpComplete = false;
-    let lastTime = performance.now();
-    let logoMoveComplete = false;
-
-    // NEW: global fade for starfield (starts at 0 then blooms in)
-    const starFadeDuration = 1600; // ms to fade star brightness in after warp completes
-    let starFadeStartTime = null;
-
-    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
-
-    function animate(time = performance.now()) {
-      if (!warpStartTime) warpStartTime = time;
-      const elapsed = time - warpStartTime;
-
-      // Ease from warp to normal
-      if (elapsed < warpDuration) {
-        const t = elapsed / warpDuration;
-        warpSpeed = 30 * (1 - t * t * t) + normalSpeed * (t * t * t);
-      } else {
-        warpSpeed = normalSpeed;
-
-        if (!warpComplete) {
-          warpComplete = true;
-
-          const logoWrapper = document.getElementById('logo-wrapper');
-          logoWrapper.classList.add('fade-in');
-
-          setTimeout(() => {
-            logoWrapper.classList.add('move-top');
-
-            setTimeout(() => {
-              logoMoveComplete = true;
-              startLogoSparkleLoop();
-
-              // Set padding-top so content begins BELOW the fixed logo (scroll friendly)
-              const logoRect = logoWrapper.getBoundingClientRect();
-              const contentMargin = 40;
-              content.style.paddingTop = `${logoRect.bottom + contentMargin}px`;
-
-              // Now reveal content
-              setTimeout(() => message.classList.add('visible'), 300);
-              setTimeout(() => randomPulseLoop(), 1200);
-
-              // Start star fade-in moment (your vision)
-              starFadeStartTime = performance.now();
-
-            }, 1600);
-
-          }, 1500);
-        }
-      }
-
-      // Starfield global fade (0 -> 1)
-      let starfieldFade = 1;
-      if (starFadeStartTime) {
-        starfieldFade = clamp01((time - starFadeStartTime) / starFadeDuration);
-      } else {
-        // Before fade begins, keep stars basically invisible (matches your vision)
-        starfieldFade = 0;
-      }
-
-      // Delta timing
-      const delta = (time - lastTime) / 16.67;
-      lastTime = time;
-
-      // Draw background slightly darker for readability
-      ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
-      ctx.fillRect(0, 0, w, h);
-
-      stars.forEach((s, i) => {
-        s.z -= warpSpeed * delta;
-        if (s.z <= 0) { stars[i] = createStar(); return; }
-
-        let k = 128.0 / s.z;
-        let px = s.x * k + w / 2;
-        let py = s.y * k + h / 2;
-
-        if (px < 0 || px >= w || py < 0 || py >= h) { stars[i] = createStar(); return; }
-
-        // Depth-based fade: stars become more visible as they "approach"
-        const depthAlpha = clamp01(1 - (s.z / w)); // 0 far away -> 1 near
-        const baseAlpha = 0.22; // LOWERED from 0.35 for readability
-        const finalAlpha = baseAlpha * starfieldFade * (0.25 + 0.75 * depthAlpha);
-
-        ctx.save();
-        ctx.translate(px, py);
-        ctx.rotate(s.rotationAngle);
-
-        // Lower shadow intensity a bit (text readability)
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#f7de99';
-        ctx.globalAlpha = finalAlpha;
-
-        let starSize = s.size * (1 - s.z / w) * 25;
-
-        if (starImage.complete && starImage.naturalWidth > 0) {
-          ctx.drawImage(starImage, -starSize / 2, -starSize / 2, starSize, starSize);
-        } else {
-          ctx.fillStyle = '#ffd700';
-          ctx.beginPath();
-          ctx.arc(0, 0, starSize / 2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.restore();
-        s.rotationAngle += s.rotationSpeed;
-      });
-
-      requestAnimationFrame(animate);
-    }
-
-    // Glow letters as bar fills
-    function updateLetterGlow() {
-      const barFillRect = barFill.getBoundingClientRect();
-      titleLetters.forEach((letter) => {
-        const letterRect = letter.getBoundingClientRect();
-        if (letterRect.left <= barFillRect.right) letter.classList.add('glow-gold');
-      });
-    }
-
-    // Click/touch sparkle burst (kept)
-    function createSparkleBurst(x, y) {
-      const numStars = 12 + Math.floor(Math.random() * 6);
-      for (let i = 0; i < numStars; i++) {
-        const sparkle = document.createElement('img');
-        sparkle.src = sparkleImgSrc;
-        sparkle.className = 'sparkle-star';
-
-        const size = Math.random() * 16 + 8;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
-        sparkle.style.left = `${x - size / 2}px`;
-        sparkle.style.top = `${y - size / 2}px`;
-
-        const glowColor = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
-        sparkle.style.filter = `drop-shadow(0 0 6px ${glowColor}) brightness(2.2) saturate(1.8)`;
-        sparkle.style.opacity = '1';
-        sparkle.style.position = 'fixed';
-        sparkle.style.zIndex = '9999';
-        sparkle.style.pointerEvents = 'none';
-
-        document.body.appendChild(sparkle);
-        void sparkle.offsetWidth;
-
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 60;
-        sparkle.style.left = `${x + Math.cos(angle) * distance}px`;
-        sparkle.style.top  = `${y + Math.sin(angle) * distance}px`;
-        sparkle.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-        sparkle.style.opacity = '0';
-
-        setTimeout(() => sparkle.remove(), 600);
-      }
-    }
-    document.addEventListener('click', (e) => createSparkleBurst(e.clientX, e.clientY));
-    document.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 0) createSparkleBurst(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
-
-    // Logo pulse loop
-    function triggerPulse() {
-      if (logoMoveComplete) {
-        logo.style.animation = 'logoPulse 1.2s ease-in-out';
-        setTimeout(() => logo.style.animation = '', 1200);
-      }
-    }
-    function randomPulseLoop() {
-      const delay = 8000 + Math.random() * 12000;
-      setTimeout(() => { triggerPulse(); randomPulseLoop(); }, delay);
-    }
-
-    // Logo sparkle loop
-    function createLogoSparkle() {
-      if (!logoMoveComplete) return;
-
-      const rect = logo.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      const sparkle = document.createElement('img');
-      sparkle.src = sparkleImgSrc;
-      sparkle.className = 'sparkle-star';
-
-      const size = Math.random() * 10 + 4;
-      sparkle.style.width = `${size}px`;
-      sparkle.style.height = `${size}px`;
-
-      const angle = Math.random() * 2 * Math.PI;
-      const radius = 10 + Math.random() * 30;
-      sparkle.style.left = `${centerX + Math.cos(angle) * radius - size / 2}px`;
-      sparkle.style.top  = `${centerY + Math.sin(angle) * radius - size / 2}px`;
-
-      sparkle.style.filter = `drop-shadow(0 0 12px #fff) brightness(3) saturate(2)`;
-      sparkle.style.opacity = '1';
-
-      document.body.appendChild(sparkle);
-      void sparkle.offsetWidth;
-
-      sparkle.style.transform = `scale(0.4) rotate(${Math.random() * 360}deg)`;
-      sparkle.style.opacity = '0';
-
-      setTimeout(() => sparkle.remove(), 600);
-    }
-    function startLogoSparkleLoop() {
-      setInterval(() => createLogoSparkle(), 2000);
-    }
-  </script>
 </body>
 </html>
