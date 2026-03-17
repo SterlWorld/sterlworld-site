@@ -73,11 +73,11 @@ nav a:hover {
   z-index:99999;
 }
 
-#loader h2 {
+  #loader h2 {
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   text-align: center;
 }
-
+  
 .loading-bar {
   width:420px;
   height:20px;
@@ -94,6 +94,20 @@ nav a:hover {
   background:linear-gradient(90deg,#0ff,#ff5ec4,#ffd700);
   box-shadow:0 0 25px #0ff;
   transition:width 0.3s ease;
+}
+
+/* GLOW TEXT */
+#titleGlow { display:inline-flex; }
+
+#titleGlow span {
+  color:white;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.glow-gold {
+  color:#f4d9a7 !important;
+  text-shadow:0 0 5px #f4d9a7,0 0 10px #e8c183,0 0 20px #deb76e;
 }
 
 /* CANVAS */
@@ -132,6 +146,7 @@ canvas.visible { opacity:1; }
   text-align:center;
   opacity:0;
   transition:1.5s;
+  pointer-events:auto;
 }
 #message.visible { opacity:1; }
 
@@ -145,7 +160,7 @@ canvas.visible { opacity:1; }
   margin-bottom:20px;
 }
 
-/* CTA */
+/* CTA UPGRADE */
 .cta a {
   margin:5px;
   padding:12px 18px;
@@ -158,6 +173,7 @@ canvas.visible { opacity:1; }
 
   background:rgba(0,255,255,0.18);
   backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
 
   box-shadow:
     0 0 8px rgba(0,255,255,0.4),
@@ -169,6 +185,9 @@ canvas.visible { opacity:1; }
 .cta a:hover {
   transform:scale(1.08);
   background:rgba(0,255,255,0.41);
+  box-shadow:
+    0 0 14px rgba(0,255,255,0.8),
+    inset 0 0 10px rgba(0,255,255,0.4);
 }
 
 /* FOOTER */
@@ -184,15 +203,23 @@ footer {
 }
 footer.visible { opacity:1; }
 
+/* LOGO PULSE */
+@keyframes logoPulse {
+  0%,100% { transform:scale(1); }
+  50% { transform:scale(1.05); }
+}
+
 /* SPARKLE */
 .sparkle {
   position:fixed;
   width:8px;
   pointer-events:none;
+  z-index:9999;
+  transition:0.6s;
 }
 
 /* ========================= */
-/* 📱 MOBILE FIX (REAL FIX) */
+/* 📱 MOBILE FIX (ONLY ADDITION) */
 /* ========================= */
 @media (max-width: 768px) {
 
@@ -203,33 +230,32 @@ footer.visible { opacity:1; }
   }
 
   #logo-wrapper {
-    position:relative;
-    top:90px;
-    transform:none;
+    top:40px;
   }
 
   #logo {
-    width:140px;
+    width:130px;
   }
 
   #message {
-    position:relative;
-    top:110px;
-    left:auto;
-    transform:none;
+    top:65%;
+    transform:translate(-50%,-50%);
     width:90%;
-    margin:0 auto;
   }
 
   #message h1 {
-    font-size:1.5rem;
+    font-size:1.4rem;
+  }
+
+  #message p {
+    font-size:0.9rem;
   }
 
   .cta {
     display:flex;
     flex-direction:column;
-    gap:12px;
     align-items:center;
+    gap:12px;
   }
 
   .cta a {
@@ -239,13 +265,17 @@ footer.visible { opacity:1; }
   }
 
   footer {
-    position:relative;
-    margin-top:40px;
-    bottom:auto;
+    font-size:0.7rem;
+    bottom:5px;
   }
 
   .loading-bar {
     width:260px;
+    height:16px;
+  }
+
+  #loader h2 {
+    font-size:1.4rem;
   }
 }
 
@@ -297,7 +327,150 @@ footer.visible { opacity:1; }
 </footer>
 
 <script>
-// (your JS stays EXACTLY the same — no changes needed)
+
+/* ELEMENTS */
+const enter = document.getElementById("enter-screen");
+const loader = document.getElementById("loader");
+const fill = document.getElementById("barFill");
+const titleGlow = document.getElementById("titleGlow");
+const logo = document.getElementById("logo");
+
+/* BUILD TITLE */
+const text = "SterlWorld";
+for (let c of text) {
+  const span = document.createElement("span");
+  span.textContent = c;
+  titleGlow.appendChild(span);
+}
+const letters = titleGlow.querySelectorAll("span");
+
+/* LOADING */
+enter.onclick = () => {
+  enter.style.display = "none";
+  loader.style.display = "flex";
+
+  let progress = 0;
+
+  const interval = setInterval(() => {
+    progress += Math.random()*8;
+    fill.style.width = progress + "%";
+
+    updateGlow();
+
+    if (progress >= 100) {
+      clearInterval(interval);
+
+      /* GOLD FINISH */
+      fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
+      fill.style.boxShadow = "0 0 25px #f4d9a7";
+      letters.forEach(l => l.classList.add("glow-gold"));
+
+      setTimeout(() => {
+        loader.style.display = "none";
+
+        document.getElementById("space").classList.add("visible");
+        document.getElementById("logo-wrapper").classList.add("visible");
+        document.getElementById("message").classList.add("visible");
+        document.querySelector("footer").classList.add("visible");
+        document.querySelector("nav").classList.add("visible");
+
+        startPulse();
+        startSparkles();
+
+      }, 300);
+    }
+  },120);
+};
+
+function updateGlow() {
+  const bar = fill.getBoundingClientRect();
+  letters.forEach(l => {
+    if (l.getBoundingClientRect().left <= bar.right) {
+      l.classList.add("glow-gold");
+    }
+  });
+}
+
+/* STARFIELD */
+const canvas = document.getElementById("space");
+const ctx = canvas.getContext("2d");
+
+let w,h;
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize",resize);
+
+const img = new Image();
+img.src="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/main/Star.png";
+
+let stars=[];
+for(let i=0;i<200;i++){
+  stars.push({x:(Math.random()-0.5)*w*2,y:(Math.random()-0.5)*h*2,z:Math.random()*w});
+}
+
+  function animate(){
+  ctx.clearRect(0, 0, w, h);
+
+  stars.forEach((s,i)=>{
+    s.z -= 0.25;
+
+    if(s.z<=0) stars[i]={x:(Math.random()-0.5)*w*2,y:(Math.random()-0.5)*h*2,z:w};
+
+    let k=128/s.z;
+    let x=s.x*k+w/2;
+    let y=s.y*k+h/2;
+    let size=(1-s.z/w)*20;
+
+    ctx.globalAlpha = 0.25;
+    if(img.complete) ctx.drawImage(img,x,y,size,size);
+  });
+
+  requestAnimationFrame(animate);
+}
+  
+animate();
+
+/* LOGO PULSE */
+function startPulse(){
+  setInterval(()=>{
+    logo.style.animation="logoPulse 1.2s ease";
+    setTimeout(()=>logo.style.animation="",1200);
+  },8000);
+}
+
+/* SPARKLES */
+function startSparkles(){
+  setInterval(()=>{
+    const rect=logo.getBoundingClientRect();
+
+    const s=document.createElement("img");
+    s.src=img.src;
+    s.className="sparkle";
+
+    const angle=Math.random()*Math.PI*2;
+    const dist=20+Math.random()*40;
+
+    const randX = rect.left + Math.random() * rect.width;
+const randY = rect.top + Math.random() * rect.height;
+
+s.style.left = randX + "px";
+s.style.top  = randY + "px";
+
+    document.body.appendChild(s);
+
+    setTimeout(()=>{
+      s.style.transform=`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(0.5)`;
+      s.style.opacity="0";
+    },10);
+
+    setTimeout(()=>s.remove(),600);
+
+  },2000);
+}
+
 </script>
 
 </body>
