@@ -36,9 +36,13 @@ nav.visible { opacity:1; }
 nav a {
   color:#0ff;
   text-decoration:none;
-  opacity:0.8;
+  opacity:0.6;
+  transition:0.3s;
 }
-nav a:hover { opacity:1; }
+nav a:hover { 
+  opacity:1; 
+  text-shadow:0 0 8px #0ff;
+}
 
 /* ENTER */
 #enter-screen {
@@ -151,13 +155,33 @@ canvas.visible { opacity:1; }
   margin-bottom:20px;
 }
 
+/* CTA UPGRADE */
 .cta a {
   margin:5px;
-  padding:10px 16px;
-  border:1px solid #0ff;
+  padding:12px 18px;
+  border:1px solid rgba(0,255,255,0.6);
   color:#0ff;
   text-decoration:none;
-  border-radius:6px;
+  border-radius:8px;
+
+  /* NEW */
+  background:rgba(0,255,255,0.08);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+
+  box-shadow:
+    0 0 8px rgba(0,255,255,0.4),
+    inset 0 0 6px rgba(0,255,255,0.2);
+
+  transition:all 0.25s ease;
+}
+
+.cta a:hover {
+  transform:scale(1.08);
+  background:rgba(0,255,255,0.15);
+  box-shadow:
+    0 0 14px rgba(0,255,255,0.8),
+    inset 0 0 10px rgba(0,255,255,0.4);
 }
 
 /* FOOTER */
