@@ -165,12 +165,13 @@ canvas.visible { opacity:1; }
   margin:5px;
   padding:12px 18px;
   border:1px solid rgba(0,255,255,0.6);
-  color:#0ff;
+  color:white;
   text-decoration:none;
   border-radius:8px;
 
-  /* NEW */
-  background:rgba(0,255,255,0.08);
+  text-shadow: 0 0 6px rgba(255,255,255,0.6);
+
+  background:rgba(0,255,255,0.18);
   backdrop-filter:blur(6px);
   -webkit-backdrop-filter:blur(6px);
 
@@ -183,7 +184,7 @@ canvas.visible { opacity:1; }
 
 .cta a:hover {
   transform:scale(1.08);
-  background:rgba(0,255,255,0.15);
+  background:rgba(0,255,255,0.41);
   box-shadow:
     0 0 14px rgba(0,255,255,0.8),
     inset 0 0 10px rgba(0,255,255,0.4);
@@ -215,6 +216,72 @@ footer.visible { opacity:1; }
   pointer-events:none;
   z-index:9999;
   transition:0.6s;
+}
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 768px) {
+
+  /* NAV → center top */
+  nav {
+    right: 50%;
+    transform: translateX(50%);
+    top: 15px;
+    gap: 16px;
+    font-size: 0.85rem;
+  }
+
+  /* LOGO → smaller + lower */
+  #logo-wrapper {
+    top: 80px;
+  }
+
+  #logo {
+    width: 160px;
+  }
+
+  /* MESSAGE → better spacing */
+  #message {
+    width: 90%;
+  }
+
+  #message h1 {
+    font-size: 1.6rem;
+  }
+
+  #message p {
+    font-size: 0.9rem;
+  }
+
+  /* CTA → STACK vertically */
+  .cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cta a {
+    width: 80%;
+    max-width: 260px;
+    text-align: center;
+    padding: 14px;
+  }
+
+  /* LOADER → scale down */
+  .loading-bar {
+    width: 260px;
+    height: 16px;
+  }
+
+  #loader h2 {
+    font-size: 1.5rem;
+  }
+
+  /* FOOTER → tighter */
+  footer {
+    font-size: 0.7rem;
+    bottom: 8px;
+  }
 }
 
 </style>
@@ -349,12 +416,12 @@ for(let i=0;i<200;i++){
   stars.push({x:(Math.random()-0.5)*w*2,y:(Math.random()-0.5)*h*2,z:Math.random()*w});
 }
 
-function animate(){
-  ctx.fillStyle="rgba(0,0,0,0.3)";
-  ctx.fillRect(0,0,w,h);
+  function animate(){
+  ctx.clearRect(0, 0, w, h);
 
   stars.forEach((s,i)=>{
-    s.z-=0.5;
+    s.z -= 0.25;
+
     if(s.z<=0) stars[i]={x:(Math.random()-0.5)*w*2,y:(Math.random()-0.5)*h*2,z:w};
 
     let k=128/s.z;
@@ -362,12 +429,13 @@ function animate(){
     let y=s.y*k+h/2;
     let size=(1-s.z/w)*20;
 
-    ctx.globalAlpha=0.35;
+    ctx.globalAlpha = 0.25;
     if(img.complete) ctx.drawImage(img,x,y,size,size);
   });
 
   requestAnimationFrame(animate);
 }
+  
 animate();
 
 /* LOGO PULSE */
