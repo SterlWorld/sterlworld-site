@@ -209,6 +209,11 @@ footer.visible { opacity:1; }
   50% { transform:scale(1.05); }
 }
 
+@keyframes loadFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
 /* SPARKLE */
 .sparkle {
   position:fixed;
@@ -358,32 +363,32 @@ const interval = setInterval(() => {
 
   if (progress > 100) progress = 100;
 
-  fill.style.width = progress + "%";
-  updateGlow();
+  fill.style.animation = "loadFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards";
 
-  if (progress >= 100) {
-    clearInterval(interval);
+updateGlowLoop();
 
-    /* GOLD FINISH */
-    fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
-    fill.style.boxShadow = "0 0 25px #f4d9a7";
-    letters.forEach(l => l.classList.add("glow-gold"));
+setTimeout(() => {
 
-    setTimeout(() => {
-      loader.style.display = "none";
+  /* GOLD FINISH */
+  fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
+  fill.style.boxShadow = "0 0 25px #f4d9a7";
+  letters.forEach(l => l.classList.add("glow-gold"));
 
-      document.getElementById("space").classList.add("visible");
-      document.getElementById("logo-wrapper").classList.add("visible");
-      document.getElementById("message").classList.add("visible");
-      document.querySelector("footer").classList.add("visible");
-      document.querySelector("nav").classList.add("visible");
+  setTimeout(() => {
+    loader.style.display = "none";
 
-      startPulse();
-      startSparkles();
+    document.getElementById("space").classList.add("visible");
+    document.getElementById("logo-wrapper").classList.add("visible");
+    document.getElementById("message").classList.add("visible");
+    document.querySelector("footer").classList.add("visible");
+    document.querySelector("nav").classList.add("visible");
 
-    }, 300);
-  }
-}, 16);
+    startPulse();
+    startSparkles();
+
+  }, 300);
+
+}, 1800);
 };
 
 function updateGlow() {
@@ -392,9 +397,19 @@ function updateGlow() {
     if (l.getBoundingClientRect().left <= bar.right) {
       l.classList.add("glow-gold");
     }
+    
   });
 }
 
+function updateGlowLoop() {
+  const interval = setInterval(() => {
+    updateGlow();
+
+    if (fill.getBoundingClientRect().width >= fill.parentElement.offsetWidth) {
+      clearInterval(interval);
+    }
+  }, 16);
+}
 /* STARFIELD */
 const canvas = document.getElementById("space");
 const ctx = canvas.getContext("2d");
