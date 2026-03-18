@@ -349,37 +349,41 @@ enter.onclick = () => {
   enter.style.display = "none";
   loader.style.display = "flex";
 
-  let progress = 0;
+  const duration = 2600; // ~2.6 seconds (feels faster than 3)
+const startTime = Date.now();
 
-  const interval = setInterval(() => {
-    progress += Math.random()*8;
-    fill.style.width = progress + "%";
+const interval = setInterval(() => {
+  const elapsed = Date.now() - startTime;
+  let progress = (elapsed / duration) * 100;
 
-    updateGlow();
+  if (progress > 100) progress = 100;
 
-    if (progress >= 100) {
-      clearInterval(interval);
+  fill.style.width = progress + "%";
+  updateGlow();
 
-      /* GOLD FINISH */
-      fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
-      fill.style.boxShadow = "0 0 25px #f4d9a7";
-      letters.forEach(l => l.classList.add("glow-gold"));
+  if (progress >= 100) {
+    clearInterval(interval);
 
-      setTimeout(() => {
-        loader.style.display = "none";
+    /* GOLD FINISH */
+    fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
+    fill.style.boxShadow = "0 0 25px #f4d9a7";
+    letters.forEach(l => l.classList.add("glow-gold"));
 
-        document.getElementById("space").classList.add("visible");
-        document.getElementById("logo-wrapper").classList.add("visible");
-        document.getElementById("message").classList.add("visible");
-        document.querySelector("footer").classList.add("visible");
-        document.querySelector("nav").classList.add("visible");
+    setTimeout(() => {
+      loader.style.display = "none";
 
-        startPulse();
-        startSparkles();
+      document.getElementById("space").classList.add("visible");
+      document.getElementById("logo-wrapper").classList.add("visible");
+      document.getElementById("message").classList.add("visible");
+      document.querySelector("footer").classList.add("visible");
+      document.querySelector("nav").classList.add("visible");
 
-      }, 300);
-    }
-  },120);
+      startPulse();
+      startSparkles();
+
+    }, 300);
+  }
+}, 16);
 };
 
 function updateGlow() {
