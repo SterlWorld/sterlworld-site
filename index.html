@@ -93,7 +93,6 @@ nav a:hover {
   width:0%;
   background:linear-gradient(90deg,#0ff,#ff5ec4,#ffd700);
   box-shadow:0 0 25px #0ff;
-  transition:width 0.3s ease;
 }
 
 /* GLOW TEXT */
@@ -354,41 +353,32 @@ enter.onclick = () => {
   enter.style.display = "none";
   loader.style.display = "flex";
 
-  const duration = 2600; // ~2.6 seconds (feels faster than 3)
-const startTime = Date.now();
-
-const interval = setInterval(() => {
-  const elapsed = Date.now() - startTime;
-  let progress = (elapsed / duration) * 100;
-
-  if (progress > 100) progress = 100;
-
   fill.style.animation = "loadFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards";
 
-updateGlowLoop();
-
-setTimeout(() => {
-
-  /* GOLD FINISH */
-  fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
-  fill.style.boxShadow = "0 0 25px #f4d9a7";
-  letters.forEach(l => l.classList.add("glow-gold"));
+  updateGlowLoop();
 
   setTimeout(() => {
-    loader.style.display = "none";
 
-    document.getElementById("space").classList.add("visible");
-    document.getElementById("logo-wrapper").classList.add("visible");
-    document.getElementById("message").classList.add("visible");
-    document.querySelector("footer").classList.add("visible");
-    document.querySelector("nav").classList.add("visible");
+    /* GOLD FINISH */
+    fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
+    fill.style.boxShadow = "0 0 25px #f4d9a7";
+    letters.forEach(l => l.classList.add("glow-gold"));
 
-    startPulse();
-    startSparkles();
+    setTimeout(() => {
+      loader.style.display = "none";
 
-  }, 300);
+      document.getElementById("space").classList.add("visible");
+      document.getElementById("logo-wrapper").classList.add("visible");
+      document.getElementById("message").classList.add("visible");
+      document.querySelector("footer").classList.add("visible");
+      document.querySelector("nav").classList.add("visible");
 
-}, 1800);
+      startPulse();
+      startSparkles();
+
+    }, 300);
+
+  }, 1800);
 };
 
 function updateGlow() {
@@ -397,7 +387,6 @@ function updateGlow() {
     if (l.getBoundingClientRect().left <= bar.right) {
       l.classList.add("glow-gold");
     }
-    
   });
 }
 
@@ -410,6 +399,7 @@ function updateGlowLoop() {
     }
   }, 16);
 }
+
 /* STARFIELD */
 const canvas = document.getElementById("space");
 const ctx = canvas.getContext("2d");
