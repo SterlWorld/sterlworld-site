@@ -18,12 +18,18 @@ body {
 
 /* NAV */
 nav {
-  position:fixed;
-  top:20px;
-  right:30px;
-  display:flex;
-  gap:20px;
-  font-size:0.9rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 15px 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  font-size: 0.9rem;
 }
 nav a {
   color:#fff;
@@ -38,7 +44,7 @@ nav a:hover {
 .container {
   max-width:900px;
   margin:0 auto;
-  padding:120px 20px 60px;
+  padding:140px 20px 60px;
   text-align:center;
 }
 
@@ -84,6 +90,20 @@ footer {
 }
 footer a {
   color:#fff;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    width: 200px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
 }
 
 </style>
