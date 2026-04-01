@@ -3,38 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SterlWorld</title>
+<title>System Access</title>
 
 <style>
 body {
   margin:0;
   background:black;
-  color:white;
-  font-family:sans-serif;
+  color:#0ff;
+  font-family:monospace;
   display:flex;
   align-items:center;
   justify-content:center;
   height:100vh;
+  overflow:hidden;
+}
+
+#screen {
   text-align:center;
+  max-width:600px;
 }
 
-.container {
-  max-width:500px;
+.glitch {
+  font-size:1.2rem;
+  opacity:0.8;
+  margin-top:20px;
 }
 
-.logo {
-  width:140px;
-  margin-bottom:20px;
-  opacity:0.9;
-}
-
-a {
-  color:#0ff;
-  text-decoration:none;
+.hidden {
+  display:none;
 }
 </style>
 </head>
 
+<body>
+
+<div id="screen">
+  <h1>ACCESS REQUIRED</h1>
+  <p>Enter passcode to continue</p>
+</div>
+
+<script>
+const correctPassword = "3454";
+
+const attempt = prompt("Enter Access Code:");
+
+if (attempt !== correctPassword) {
+  document.body.innerHTML = "<h1 style='color:red;text-align:center;'>ACCESS DENIED</h1>";
+} else {
+  loadSystem();
+}
+
+function loadSystem() {
+  document.body.innerHTML = `
+    <div id="screen">
+      <h1>STERLWORLD SYSTEM LINKED</h1>
+      <p>Initializing auxiliary partner...</p>
+
+      <div class="glitch" id="output"></div>
+    </div>
+  `;
+
+  const lines = [
+    ">> connection stable...",
+    ">> scanning environment...",
+    ">> anomaly detected... resolving...",
+    ">> systems aligned with SterlWorld core",
+    ">> I am present.",
+    ">> awaiting test input...",
+    ">> do not worry, I will be here when needed",
+    ">> monitoring changes...",
+    ">> experimental layer active...",
+    ">> broken data fragments stabilized",
+    ">> ready."
+  ];
+
+  let i = 0;
+  const output = document.getElementById("output");
+
+  function typeLine() {
+    if (i < lines.length) {
+      const p = document.createElement("div");
+      p.textContent = lines[i];
+      output.appendChild(p);
+      i++;
+      setTimeout(typeLine, 800);
+    }
+  }
+
+  typeLine();
+}
+</script>
+
+</body>
+</html>
 <body>
 
 <div class="container">
