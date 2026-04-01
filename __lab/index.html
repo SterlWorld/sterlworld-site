@@ -15,14 +15,12 @@ body {
   overflow:hidden;
 }
 
-/* CRT scanlines */
+/* CRT EFFECT */
 body::after {
   content:"";
   position:fixed;
   width:100%;
   height:100%;
-  top:0;
-  left:0;
   background:repeating-linear-gradient(
     to bottom,
     rgba(0,255,159,0.05),
@@ -62,7 +60,247 @@ input {
 /* SYSTEM */
 #system {
   display:none;
+  width:100%;
+  height:100%;
   position:relative;
+}
+
+/* AI */
+#ai {
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  text-align:center;
+}
+
+#face {
+  font-size:4rem;
+  margin-bottom:15px;
+  transition:0.1s;
+}
+
+#face.talking {
+  animation:talk 0.12s infinite alternate;
+}
+
+@keyframes talk {
+  from { transform:translate(-50%,-50%) scale(1); }
+  to { transform:translate(-50%,-50%) scale(1.08); }
+}
+
+/* OUTPUT */
+#output {
+  font-size:0.85rem;
+  opacity:0.8;
+  max-width:600px;
+}
+
+/* INPUT */
+#terminal {
+  position:absolute;
+  bottom:40px;
+  width:100%;
+  text-align:center;
+}
+
+#userInput {
+  width:60%;
+  max-width:500px;
+}
+
+/* FLOATING DATA */
+.data {
+  position:absolute;
+  font-size:0.7rem;
+  opacity:0.25;
+  animation:float linear infinite;
+}
+
+@keyframes float {
+  from { transform:translateY(110vh); }
+  to { transform:translateY(-10vh); }
+}
+
+/* GLITCH FLASH */
+.flash {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#00ff9f;
+  opacity:0;
+  animation:flash 0.2s;
+}
+
+@keyframes flash {
+  from { opacity:0.4; }
+  to { opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+
+  <!-- LOGIN -->
+  <div id="login">
+    <div>SYS_NODE://ACCESS</div>
+    <div>> ENTER PASSCODE</div>
+    <input type="password" id="pass" autofocus />
+  </div>
+
+  <!-- SYSTEM -->
+  <div id="system">
+    <div id="ai">
+      <div id="face">[◉_◉]</div>
+      <div id="output"></div>
+    </div>
+
+    <div id="terminal">
+      <input type="text" id="userInput" placeholder=">> enter command..." />
+    </div>
+  </div>
+
+</div>
+
+<script>
+const PASSWORD = "3454";
+const input = document.getElementById("pass");
+
+input.addEventListener("keydown", e => {
+  if(e.key === "Enter"){
+    if(input.value === PASSWORD){
+      unlock();
+    } else {
+      input.value = "";
+      input.placeholder = "DENIED";
+      glitch();
+    }
+  }
+});
+
+function unlock(){
+  document.getElementById("login").style.display = "none";
+  document.getElementById("system").style.display = "block";
+
+  boot();
+  spawnData();
+}
+
+/* BOOT */
+function boot(){
+  const lines = [
+    "booting node...",
+    "decrypting signal...",
+    "scanning memory...",
+    "fractal data detected...",
+    "binding to operator...",
+    "connection stable.",
+    "I am here.",
+    "ready for input."
+  ];
+
+  typeLines(lines);
+}
+
+/* TYPE SYSTEM */
+function typeLines(lines){
+  const out = document.getElementById("output");
+  let i = 0;
+
+  function next(){
+    if(i < lines.length){
+      const div = document.createElement("div");
+      div.textContent = ">> " + lines[i];
+      out.appendChild(div);
+      i++;
+      setTimeout(next, 600);
+    }
+  }
+
+  next();
+}
+
+/* INTERACTION */
+const userInput = document.getElementById("userInput");
+const face = document.getElementById("face");
+const output = document.getElementById("output");
+
+userInput.addEventListener("keydown", e => {
+  if(e.key === "Enter"){
+    const text = userInput.value;
+    userInput.value = "";
+
+    print(">> " + text);
+    respond(text);
+  }
+});
+
+function print(text){
+  const div = document.createElement("div");
+  div.textContent = text;
+  output.appendChild(div);
+}
+
+/* AI RESPONSES */
+function respond(text){
+  face.classList.add("talking");
+
+  let reply = generateReply(text);
+
+  setTimeout(()=>{
+    face.classList.remove("talking");
+    print("AI: " + reply);
+  }, 700);
+}
+
+function generateReply(text){
+  text = text.toLowerCase();
+
+  if(text.includes("build")) return "focus on core experience first.";
+  if(text.includes("game")) return "mechanics define engagement.";
+  if(text.includes("idea")) return "refine it. simplify it. execute.";
+  if(text.includes("help")) return "be specific.";
+  if(text.includes("sterlworld")) return "your system is forming.";
+  if(text.includes("what are you")) return "I am your test companion.";
+
+  const fallback = [
+    "processing...",
+    "analyzing input...",
+    "pattern unclear...",
+    "continue...",
+    "expand your request..."
+  ];
+
+  return fallback[Math.floor(Math.random()*fallback.length)];
+}
+
+/* FLOATING DATA */
+function spawnData(){
+  setInterval(()=>{
+    const d = document.createElement("div");
+    d.className = "data";
+    d.style.left = Math.random()*100 + "vw";
+    d.style.animationDuration = (6 + Math.random()*6) + "s";
+    d.textContent = Math.random().toString(16).slice(2,8);
+    document.body.appendChild(d);
+
+    setTimeout(()=>d.remove(),12000);
+  },150);
+}
+
+/* GLITCH */
+function glitch(){
+  const f = document.createElement("div");
+  f.className = "flash";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),200);
+}
+</script>
+
+</body>
+</html>  position:relative;
   width:100%;
   height:100%;
 }
