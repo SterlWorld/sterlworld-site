@@ -1,28 +1,30 @@
 # SterlWorld — Official Website
 
-A fully custom-built production website for SterlWorld Entertainment LLC.
+A fully custom-built, interactive production website for SterlWorld Entertainment LLC.
 
 ## Overview
-This site serves as the central hub for the SterlWorld universe, featuring original IP, games, and studio updates. Built from scratch using HTML, CSS, and JavaScript, with a focus on performance, visual identity, and user experience.
+SterlWorld.com is the central hub for an original multimedia universe, designed to feel like an experience rather than a traditional website. It introduces users to the world through a cinematic entry sequence, dynamic visuals, and interactive navigation.
 
 ## Key Features
-- Multi-page responsive layout (Home, About, Contact, Projects)
-- Custom UI/UX design and animations
-- Integrated game and IP showcases (Pizza Dales and more)
-- Continuous iteration and updates (600+ commits)
+- Cinematic loading and entry sequence ("Tap to Enter" experience)
+- Custom animated UI with a living starfield background
+- Multi-page architecture (Home, About, Contact, Project pages)
+- Integrated IP showcase (Pizza Dales and future projects)
+- Responsive design for desktop and mobile
+- Continuous iteration and improvements (600+ commits)
 
 ## Tech Stack
 - HTML5
-- CSS3
-- JavaScript
-- Git / GitHub version control
+- CSS3 (custom animations, transitions)
+- JavaScript (UI logic, interactivity)
+- Git / GitHub for version control
 
 ## Development Approach
-This project is developed independently, handling:
-- Frontend architecture
-- UI/UX design
-- Deployment and maintenance
-- Continuous iteration and improvements
+This project is fully developed independently, including:
+- Frontend architecture and structure
+- UI/UX design and interaction design
+- Animation systems and transitions
+- Deployment and ongoing maintenance
 
 ## Status
 Actively maintained and evolving alongside the SterlWorld ecosystem.
