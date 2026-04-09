@@ -1,21 +1,31 @@
-# Pizza Dales: Detention Dash (In Development)
+# SterlWorld — Official Website
 
-A mobile endless runner built in Unity (C#), focused on responsive gameplay systems and player feedback.
+A fully custom-built production website for SterlWorld Entertainment LLC.
 
-## Current Status
-In active development — core gameplay systems are implemented and functional. Currently polishing visuals, animations, and game feel.
+## Overview
+This site serves as the central hub for the SterlWorld universe, featuring original IP, games, and studio updates. Built from scratch using HTML, CSS, and JavaScript, with a focus on performance, visual identity, and user experience.
 
-## Core Systems Implemented
-- Player movement and jump system
-- Token physics (burst + bounce behavior)
-- Enemy chase system (Rocket pressure mechanic)
-- Health and recovery system
-- UI flow (Game Over, scoring, feedback loops)
+## Key Features
+- Multi-page responsive layout (Home, About, Contact, Projects)
+- Custom UI/UX design and animations
+- Integrated game and IP showcases (Pizza Dales and more)
+- Continuous iteration and updates (600+ commits)
 
-## What This Project Demonstrates
-- Gameplay systems design and implementation
-- Player feedback and game feel iteration
-- End-to-end solo development pipeline in Unity
+## Tech Stack
+- HTML5
+- CSS3
+- JavaScript
+- Git / GitHub version control
 
-## Learn More
+## Development Approach
+This project is developed independently, handling:
+- Frontend architecture
+- UI/UX design
+- Deployment and maintenance
+- Continuous iteration and improvements
+
+## Status
+Actively maintained and evolving alongside the SterlWorld ecosystem.
+
+## Live Site
 https://sterlworld.com
