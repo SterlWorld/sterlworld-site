@@ -1,5 +1,13 @@
 # SterlWorld — Official Website
 
+## Quick Start for Reviewers
+
+1. Visit: https://sterlworld.com  
+2. Tap "Enter" to experience the intro sequence  
+3. Navigate through the site (Pizza Dales, About, Contact)
+
+This project is designed as an interactive experience rather than a static website.
+
 A fully custom-built, interactive production website for SterlWorld Entertainment LLC.
 
 ## Overview
