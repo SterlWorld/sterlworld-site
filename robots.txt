@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sterlworld.com/sitemap.xml
