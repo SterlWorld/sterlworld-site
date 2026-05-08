@@ -2,66 +2,88 @@
 <html lang="en">
 <head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YGPZXDQV5Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YGPZXDQV5Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-YGPZXDQV5Q');
-</script>
+    gtag('config', 'G-YGPZXDQV5Q');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>About SterlWorld</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta 
+    name="description" 
+    content="SterlWorld is an independent multimedia studio creating original games, characters, and connected universes including Pizza Dales: Detention Dash."
+  />
+
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;500;600;700&display=swap" 
+    rel="stylesheet" 
+  />
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: #ddd;
-      line-height: 1.7;
-      padding: 20px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* GLOBAL LINKS */
+    body {
+      background: #000;
+      color: #ddd;
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.8;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
     a {
-      color: #0ff;
+      color: #00eaff;
       text-decoration: none;
+      transition: opacity 0.2s ease;
     }
 
     a:hover {
-      opacity: 0.7;
+      opacity: 0.75;
     }
 
     /* NAV */
+
     nav {
       display: flex;
-      justify-content: flex-end;
-      gap: 20px;
-      margin-bottom: 20px;
-      padding-right: 10px;
+      justify-content: center;
+      gap: 28px;
+      margin-bottom: 28px;
+      padding-top: 10px;
     }
 
     nav a {
-      font-size: 0.9rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #00f7ff;
     }
 
     /* LOGO */
+
     .logo {
       display: block;
-      margin: 20px auto 10px auto;
-      width: 140px;
-      max-width: 60%;
+      width: 170px;
+      max-width: 65%;
+      margin: 10px auto 24px auto;
+      filter: drop-shadow(0 0 10px rgba(0,255,255,0.12));
     }
 
     /* MAIN */
+
     main {
-      max-width: 600px;
+      max-width: 760px;
       margin: 0 auto;
       text-align: center;
     }
@@ -69,48 +91,102 @@
     h1 {
       font-family: 'Orbitron', sans-serif;
       color: #fff;
-      font-size: 2.2rem;
-      margin-bottom: 20px;
+      font-size: 2.7rem;
+      margin-bottom: 28px;
+      letter-spacing: 1px;
     }
 
     p {
-      margin-bottom: 18px;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
+      margin-bottom: 26px;
+      color: #d7d7d7;
     }
 
     .highlight {
+      font-size: 1.3rem;
+      font-weight: 700;
       color: #fff;
-      font-weight: 600;
-      font-size: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .section-break {
+      width: 90px;
+      height: 2px;
+      background: rgba(0,255,255,0.25);
+      margin: 38px auto;
+      border-radius: 999px;
+    }
+
+    .project-link {
+      color: #00f0ff;
+      font-weight: 700;
     }
 
     .contact {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #aaa;
-      line-height: 1.6;
+      margin-top: 55px;
+      padding-top: 10px;
     }
 
     .contact strong {
-      color: #fff;
       display: block;
-      margin-bottom: 6px;
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 14px;
+    }
+
+    .contact a {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
     }
 
     footer {
-      margin-top: 50px;
+      margin-top: 60px;
       text-align: center;
-      font-size: 0.8rem;
-      color: #555;
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.8;
+      padding-bottom: 20px;
+    }
+
+    footer a {
+      color: #00eaff;
     }
 
     /* MOBILE */
+
     @media (max-width: 600px) {
-      h1 { font-size: 1.7rem; }
-      p { font-size: 1rem; }
-      nav { justify-content: center; }
-      .logo { width: 120px; }
+
+      body {
+        padding: 18px;
+      }
+
+      nav {
+        gap: 22px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .logo {
+        width: 145px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1.03rem;
+      }
+
+      .highlight {
+        font-size: 1.15rem;
+      }
+
     }
+
   </style>
 </head>
 
@@ -123,50 +199,73 @@
   </nav>
 
   <img 
-    src="/assets/images/SterlWorld-Logo-2026.png" 
-    alt="SterlWorld Logo" 
+    src="/assets/images/SterlWorld-Logo-2026.png"
+    alt="SterlWorld Logo"
     class="logo"
   />
 
   <main>
+
     <h1>About SterlWorld</h1>
 
     <p class="highlight">
-      SterlWorld is an independent game and multimedia studio founded by Sterlin Griffin, focused on creating original games, characters, and interactive experiences.
+      SterlWorld is an independent multimedia studio founded by Sterlin Griffin, focused on building original games, characters, and connected interactive worlds.
+    </p>
+
+    <div class="section-break"></div>
+
+    <p>
+      Built around strong identity, expressive gameplay, and memorable characters, SterlWorld develops original intellectual properties spanning games, animation, storytelling, and interactive media.
     </p>
 
     <p>
-      The studio is currently developing its flagship title, <a href="/pizzadales"><strong>Pizza Dales: Detention Dash</strong></a>, a fast-paced mobile game that introduces players to the world of Pizza Dales and its characters.
+      The studio’s flagship universe,
+      <a href="/pizzadales" class="project-link">
+        Pizza Dales
+      </a>,
+      introduces a fast-paced, character-driven arcade world centered around momentum, humor, rivalry, and chaos.
     </p>
 
     <p>
-      SterlWorld is built on a long-term vision of creating a connected universe of original intellectual properties spanning games, animation, storytelling, and interactive media.
+      SterlWorld’s first official release,
+      <a href="/pizzadales" class="project-link">
+        Pizza Dales: Detention Dash
+      </a>,
+      is available now on the App Store, bringing players into the halls of Yokey Oats High as they outrun Rocket and survive the nonstop energy of the Pizza Dales universe.
     </p>
 
     <p>
-      Each project is designed with a focus on strong identity, memorable characters, and gameplay-driven experiences that feel expressive, engaging, and distinct.
+      Every project within SterlWorld is designed with a focus on gameplay-first experiences, recognizable visual identity, emotional energy, and long-term worldbuilding.
     </p>
 
     <p>
-      While currently operated as an independent studio, SterlWorld is actively growing toward becoming a full-scale multimedia brand.
+      As the universe expands, SterlWorld will continue growing into a larger connected ecosystem of original entertainment properties and interactive experiences.
     </p>
 
-    <p class="highlight">
-      This is only the beginning.
-    </p>
+    <div class="section-break"></div>
 
     <div class="contact">
       <strong>Contact</strong>
-      <a href="mailto:info@sterlworld.com">info@sterlworld.com</a><br>
-      <a href="mailto:support@sterlworld.com">support@sterlworld.com</a>
+
+      <a href="mailto:info@sterlworld.com">
+        info@sterlworld.com
+      </a>
+
+      <a href="mailto:support@sterlworld.com">
+        support@sterlworld.com
+      </a>
     </div>
+
   </main>
 
   <footer>
-  © 2025 SterlWorld Entertainment LLC<br>
-  <a href="/privacy">Privacy Policy</a> • 
-  <a href="/terms">Terms of Service</a>
-</footer>
+    © 2026 SterlWorld Entertainment LLC
+    <br>
+
+    <a href="/privacy">Privacy Policy</a>
+    •
+    <a href="/terms">Terms of Service</a>
+  </footer>
 
 </body>
 </html>
