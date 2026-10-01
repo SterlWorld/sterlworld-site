@@ -359,23 +359,27 @@
 
 
     .logo {
+  display: block;
 
-      display: block;
+  width:
+    clamp(
+      285px,
+      23vw,
+      370px
+    );
 
-      width:
-        clamp(
-          320px,
-          27vw,
-          430px
-        );
+  height: auto;
 
-      height: auto;
+  filter:
+    drop-shadow(
+      0 0 18px
+      rgba(255,255,255,0.07)
+    );
 
-      filter:
-        drop-shadow(
-          0 0 18px
-          rgba(255,255,255,0.07)
-        );
+  transition:
+    transform 1.2s ease,
+    filter 1.2s ease;
+}
 
       transition:
         transform 1.2s ease,
@@ -664,9 +668,9 @@
 
       gap:
         clamp(
-          100px,
-          14vw,
-          240px
+          110px,
+          15vw,
+          260px
         );
 
       margin-bottom: 7vh;
@@ -674,34 +678,33 @@
 
 
     .world-button {
+  position: relative;
 
-      position: relative;
+  width:
+    clamp(
+      330px,
+      25vw,
+      420px
+    );
 
-      width:
-        clamp(
-          280px,
-          21vw,
-          340px
-        );
+  height:
+    clamp(
+      175px,
+      13vw,
+      215px
+    );
 
-      height:
-        clamp(
-          145px,
-          11vw,
-          175px
-        );
+  display: flex;
 
-      display: flex;
+  align-items: center;
 
-      align-items: center;
+  justify-content: center;
 
-      justify-content: center;
+  text-decoration: none;
 
-      text-decoration: none;
-
-      transition:
-        transform 0.4s ease;
-    }
+  transition:
+    transform 0.4s ease;
+}
 
 
     .world-button img {
@@ -1544,8 +1547,8 @@
 
         width:
           min(
-            290px,
-            76vw
+            260px,
+            70vw
           );
       }
 
@@ -1583,10 +1586,10 @@
       .world-button {
 
         width:
-          255px;
+          275px;
 
         height:
-          130px;
+          140px;
       }
 
 
@@ -1654,17 +1657,17 @@
       .logo {
 
         width:
-          260px;
+          235px;
       }
 
 
       .world-button {
 
         width:
-          235px;
+          255px;
 
         height:
-          120px;
+          130px;
       }
 
 
