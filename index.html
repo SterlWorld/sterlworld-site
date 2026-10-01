@@ -1,551 +1,838 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YGPZXDQV5Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YGPZXDQV5Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-YGPZXDQV5Q');
+  </script>
 
-  gtag('config', 'G-YGPZXDQV5Q');
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://sterlworld.com/#organization",
-      "name": "SterlWorld Entertainment LLC",
-      "url": "https://sterlworld.com",
-      "logo": "https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png",
-      "description": "An independent creative studio building games, worlds, and interactive experiences.",
-      "founder": {
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://sterlworld.com/#organization",
+        "name": "SterlWorld Entertainment LLC",
+        "url": "https://sterlworld.com",
+        "logo": "https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png",
+        "description": "An independent creative studio building games, worlds, and interactive experiences.",
+        "founder": {
+          "@type": "Person",
+          "name": "Sterlin Griffin",
+          "url": "https://sterlworld.com"
+        },
+        "sameAs": [
+          "https://sterlworld.com"
+        ]
+      },
+      {
         "@type": "Person",
+        "@id": "https://sterlworld.com/#person",
         "name": "Sterlin Griffin",
-        "url": "https://sterlworld.com"
-      },
-      "sameAs": [
-        "https://sterlworld.com"
-      ]
-    },
-    {
-      "@type": "Person",
-      "@id": "https://sterlworld.com/#person",
-      "name": "Sterlin Griffin",
-      "url": "https://sterlworld.com",
-      "jobTitle": "Founder & Creative Director",
-      "affiliation": {
-        "@id": "https://sterlworld.com/#organization"
-      },
-      "sameAs": [
-        "https://sterlworld.com"
-      ]
-    }
-  ]
-}
-</script>
+        "url": "https://sterlworld.com",
+        "jobTitle": "Founder & Creative Director",
+        "affiliation": {
+          "@id": "https://sterlworld.com/#organization"
+        },
+        "sameAs": [
+          "https://sterlworld.com"
+        ]
+      }
+    ]
+  }
+  </script>
 
-  
   <title>SterlWorld Entertainment — Games, Worlds, and Creative Experiences</title>
-<meta name="description" content="An independent creative studio building games, worlds, and interactive experiences.">
 
-<!-- OpenGraph -->
-<meta property="og:title" content="SterlWorld Entertainment — Games, Worlds, and Creative Experiences">
-<meta property="og:description" content="An independent creative studio building games, worlds, and interactive experiences.">
-<meta property="og:image" content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png">
-<meta property="og:url" content="https://sterlworld.com">
-<meta property="og:type" content="website">
+  <meta
+    name="description"
+    content="An independent creative studio building games, worlds, and interactive experiences."
+  >
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SterlWorld Entertainment — Games, Worlds, and Creative Experiences">
-<meta name="twitter:description" content="An independent creative studio building games, worlds, and interactive experiences.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png">
+  <!-- OpenGraph -->
+  <meta
+    property="og:title"
+    content="SterlWorld Entertainment — Games, Worlds, and Creative Experiences"
+  >
 
-  
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta
+    property="og:description"
+    content="An independent creative studio building games, worlds, and interactive experiences."
+  >
+
+  <meta
+    property="og:image"
+    content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png"
+  >
+
+  <meta property="og:url" content="https://sterlworld.com">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta
+    name="twitter:title"
+    content="SterlWorld Entertainment — Games, Worlds, and Creative Experiences"
+  >
+
+  <meta
+    name="twitter:description"
+    content="An independent creative studio building games, worlds, and interactive experiences."
+  >
+
+  <meta
+    name="twitter:image"
+    content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png"
+  >
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, user-scalable=no"
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow: hidden;
+    }
 
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    /* =========================
+       NAV
+       ========================= */
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+    nav {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      z-index: 9999;
 
-html, body {
-  height:100%;
-  width:100%;
-  background:black;
-  font-family:'Poppins', sans-serif;
-  color:white;
-  overflow:hidden;
-}
+      display: flex;
+      gap: 20px;
 
-/* NAV */
-nav {
-  position:fixed;
-  top:20px;
-  right:30px;
-  z-index:9999;
-  display:flex;
-  gap:20px;
-  font-size:0.9rem;
-  opacity:0;
-  transition:opacity 1.5s ease;
-}
-nav.visible { opacity:1; }
+      font-size: 0.9rem;
 
-nav a {
-  color:#0ff;
-  text-decoration:none;
-  opacity:0.6;
-  transition:0.3s;
-}
-nav a:hover { 
-  opacity:1; 
-  text-shadow:0 0 8px #0ff;
-}
+      opacity: 1;
+    }
 
-/* ENTER */
-#enter-screen {
-  position:fixed;
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:100000;
-  cursor:pointer;
-}
-#enter-screen h1 {
-  font-family:'Orbitron';
-  font-size:clamp(2rem,8vw,4rem);
-  text-shadow:0 0 40px #0ff;
-}
+    nav a {
+      color: #0ff;
+      text-decoration: none;
+      opacity: 0.6;
 
-/* LOADER */
-#loader {
-  position:fixed;
-  width:100%;
-  height:100%;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  z-index:99999;
-}
+      transition: 0.3s;
+    }
 
-  #loader h2 {
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
-  text-align: center;
-}
-  
-.loading-bar {
-  width:420px;
-  height:20px;
-  background:#111;
-  border-radius:12px;
-  overflow:hidden;
-  margin-top:20px;
-  box-shadow:0 0 12px #0ff;
-}
+    nav a:hover {
+      opacity: 1;
 
-.loading-bar-fill {
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#0ff,#ff5ec4,#ffd700);
-  box-shadow:0 0 25px #0ff;
-}
+      text-shadow:
+        0 0 8px #0ff;
+    }
 
-/* GLOW TEXT */
-#titleGlow { display:inline-flex; }
 
-#titleGlow span {
-  color:white;
-  font-weight:600;
-  transition:0.3s;
-}
+    /* =========================
+       STARFIELD
+       ========================= */
 
-.glow-gold {
-  color:#f4d9a7 !important;
-  text-shadow:0 0 5px #f4d9a7,0 0 10px #e8c183,0 0 20px #deb76e;
-}
+    canvas {
+      position: fixed;
 
-/* CANVAS */
-canvas {
-  position:fixed;
-  top:0;
-  left:0;
-  opacity:0;
-  transition:opacity 1s;
-}
-canvas.visible { opacity:1; }
+      top: 0;
+      left: 0;
 
-/* LOGO */
-#logo-wrapper {
-  position:fixed;
-  top:60px;
-  left:50%;
-  transform:translateX(-50%);
-  text-align:center;
-  z-index:10;
-  opacity:0;
-  transition:1.5s;
-}
-#logo-wrapper.visible { opacity:1; }
+      width: 100%;
+      height: 100%;
 
-#logo {
-  width:220px;
-}
+      opacity: 1;
 
-/* MESSAGE */
-#message {
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
-  opacity:0;
-  transition:1.5s;
-  pointer-events:auto;
-}
-#message.visible { opacity:1; }
+      z-index: 0;
+    }
 
-#message h1 {
-  font-family:'Orbitron';
-  text-shadow:0 0 20px #0ff;
-  margin-bottom:10px;
-}
-#message p {
-  color:#ccc;
-  margin-bottom:20px;
-}
 
-/* CTA UPGRADE */
-.cta a {
-  margin:5px;
-  padding:12px 18px;
-  border:1px solid rgba(0,255,255,0.6);
-  color:white;
-  text-decoration:none;
-  border-radius:8px;
+    /* =========================
+       LOGO
+       ========================= */
 
-  text-shadow: 0 0 6px rgba(255,255,255,0.6);
+    #logo-wrapper {
+      position: fixed;
 
-  background:rgba(0,255,255,0.18);
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
+      top: 60px;
+      left: 50%;
 
-  box-shadow:
-    0 0 8px rgba(0,255,255,0.4),
-    inset 0 0 6px rgba(0,255,255,0.2);
+      transform: translateX(-50%);
 
-  transition:all 0.25s ease;
-}
+      text-align: center;
 
-.cta a:hover {
-  transform:scale(1.08);
-  background:rgba(0,255,255,0.41);
-  box-shadow:
-    0 0 14px rgba(0,255,255,0.8),
-    inset 0 0 10px rgba(0,255,255,0.4);
-}
+      z-index: 10;
 
-/* FOOTER */
-footer {
-  position:fixed;
-  bottom:10px;
-  width:100%;
-  text-align:center;
-  font-size:0.75rem;
-  color:#666;
-  opacity:0;
-  transition:1.5s;
-}
-footer.visible { opacity:1; }
+      opacity: 1;
+    }
 
-/* LOGO PULSE */
-@keyframes logoPulse {
-  0%,100% { transform:scale(1); }
-  50% { transform:scale(1.05); }
-}
+    #logo {
+      width: 220px;
+    }
 
-@keyframes loadFill {
-  from { width: 0%; }
-  to { width: 100%; }
-}
 
-/* SPARKLE */
-.sparkle {
-  position:fixed;
-  width:8px;
-  pointer-events:none;
-  z-index:9999;
-  transition:0.6s;
-}
+    /* =========================
+       MESSAGE
+       ========================= */
 
-/* ========================= */
-/* 📱 MOBILE FIX (ONLY ADDITION) */
-/* ========================= */
-@media (max-width: 768px) {
+    #message {
+      position: fixed;
 
-  nav {
-    right:50%;
-    transform:translateX(50%);
-    top:15px;
-  }
+      top: 50%;
+      left: 50%;
 
-  #logo-wrapper {
-    top:100px;
-  }
+      transform: translate(-50%, -50%);
 
-  #logo {
-    width:130px;
-  }
+      width: 90%;
 
-  #message {
-    top:65%;
-    transform:translate(-50%,-50%);
-    width:90%;
-  }
+      max-width: 800px;
 
-  #message h1 {
-    font-size:1.4rem;
-  }
+      text-align: center;
 
-  #message p {
-    font-size:0.9rem;
-  }
+      opacity: 1;
 
-  .cta {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:12px;
-  }
+      pointer-events: auto;
 
-  .cta a {
-    width:85%;
-    max-width:260px;
-    padding:14px;
-  }
+      z-index: 10;
+    }
 
-  footer {
-    font-size:0.7rem;
-    bottom:5px;
-  }
+    #message h1 {
+      font-family: 'Orbitron', sans-serif;
 
-  .loading-bar {
-    width:260px;
-    height:16px;
-  }
+      text-shadow:
+        0 0 20px #0ff;
 
-  #loader h2 {
-    font-size:1.4rem;
-  }
-}
+      margin-bottom: 10px;
+    }
 
-</style>
+    #message p {
+      color: #ccc;
+
+      margin-bottom: 20px;
+    }
+
+
+    /* =========================
+       CTA BUTTONS
+       ========================= */
+
+    .cta a {
+      display: inline-block;
+
+      margin: 5px;
+
+      padding: 12px 18px;
+
+      border: 1px solid rgba(0, 255, 255, 0.6);
+
+      color: white;
+
+      text-decoration: none;
+
+      border-radius: 8px;
+
+      text-shadow:
+        0 0 6px rgba(255, 255, 255, 0.6);
+
+      background:
+        rgba(0, 255, 255, 0.18);
+
+      backdrop-filter: blur(6px);
+
+      -webkit-backdrop-filter: blur(6px);
+
+      box-shadow:
+        0 0 8px rgba(0, 255, 255, 0.4),
+        inset 0 0 6px rgba(0, 255, 255, 0.2);
+
+      transition:
+        all 0.25s ease;
+    }
+
+    .cta a:hover {
+      transform: scale(1.08);
+
+      background:
+        rgba(0, 255, 255, 0.41);
+
+      box-shadow:
+        0 0 14px rgba(0, 255, 255, 0.8),
+        inset 0 0 10px rgba(0, 255, 255, 0.4);
+    }
+
+
+    /* =========================
+       FOOTER
+       ========================= */
+
+    footer {
+      position: fixed;
+
+      bottom: 10px;
+
+      width: 100%;
+
+      text-align: center;
+
+      font-size: 0.75rem;
+
+      color: #666;
+
+      opacity: 1;
+
+      z-index: 10;
+    }
+
+
+    /* =========================
+       LOGO PULSE
+       ========================= */
+
+    @keyframes logoPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+    }
+
+
+    /* =========================
+       SPARKLES
+       ========================= */
+
+    .sparkle {
+      position: fixed;
+
+      width: 8px;
+
+      pointer-events: none;
+
+      z-index: 9999;
+
+      transition: 0.6s;
+    }
+
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 768px) {
+
+      nav {
+        right: 50%;
+
+        transform: translateX(50%);
+
+        top: 15px;
+      }
+
+      #logo-wrapper {
+        top: 100px;
+      }
+
+      #logo {
+        width: 130px;
+      }
+
+      #message {
+        top: 65%;
+
+        transform: translate(-50%, -50%);
+
+        width: 90%;
+      }
+
+      #message h1 {
+        font-size: 1.4rem;
+      }
+
+      #message p {
+        font-size: 0.9rem;
+      }
+
+      .cta {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 12px;
+      }
+
+      .cta a {
+        width: 85%;
+
+        max-width: 260px;
+
+        padding: 14px;
+      }
+
+      footer {
+        font-size: 0.7rem;
+
+        bottom: 5px;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-<nav>
-  <a href="/">Home</a>
-  <a href="/about">About</a>
-  <a href="/contact">Contact</a>
-</nav>
 
-<div id="enter-screen">
-  <h1>Tap to Enter</h1>
-</div>
+  <!-- =========================
+       NAVIGATION
+       ========================= -->
 
-<div id="loader">
-  <h2>
-    <span>Loading</span>&nbsp;<span id="titleGlow"></span>
-  </h2>
-  <div class="loading-bar">
-    <div class="loading-bar-fill" id="barFill"></div>
-  </div>
-</div>
+  <nav>
 
-<canvas id="space"></canvas>
+    <a href="/">Home</a>
 
-<div id="logo-wrapper">
-  <img id="logo" src="/assets/images/SterlWorld-Logo-2026.png">
-</div>
-
-<div id="message">
-  <h1>A Universe in the Making</h1>
-  <p>SterlWorld is an independent game and multimedia studio creating original worlds.</p>
-
-  <div class="cta">
-    <a href="/pizzadales">Pizza Dales</a>
     <a href="/about">About</a>
+
     <a href="/contact">Contact</a>
+
+  </nav>
+
+
+  <!-- =========================
+       STARFIELD
+       ========================= -->
+
+  <canvas id="space"></canvas>
+
+
+  <!-- =========================
+       STERLWORLD LOGO
+       ========================= -->
+
+  <div id="logo-wrapper">
+
+    <img
+      id="logo"
+      src="/assets/images/SterlWorld-Logo-2026.png"
+      alt="SterlWorld"
+    >
+
   </div>
-</div>
 
-<footer>
-  © 2025–2026 SterlWorld Entertainment LLC<br>
-  <a href="/privacy" style="color:#0ff;">Privacy Policy</a> • 
-  <a href="/terms" style="color:#0ff;">Terms of Service</a>
-</footer>
 
-<script>
+  <!-- =========================
+       MAIN MESSAGE
+       ========================= -->
 
-/* ELEMENTS */
-const enter = document.getElementById("enter-screen");
-const loader = document.getElementById("loader");
-const fill = document.getElementById("barFill");
-const titleGlow = document.getElementById("titleGlow");
-const logo = document.getElementById("logo");
+  <div id="message">
 
-/* BUILD TITLE */
-const text = "SterlWorld";
-for (let c of text) {
-  const span = document.createElement("span");
-  span.textContent = c;
-  titleGlow.appendChild(span);
-}
-const letters = titleGlow.querySelectorAll("span");
+    <h1>
+      A Universe in the Making
+    </h1>
 
-/* LOADING */
-enter.onclick = () => {
-  enter.style.display = "none";
-  loader.style.display = "flex";
+    <p>
+      SterlWorld is an independent game and multimedia studio creating original worlds.
+    </p>
 
-  fill.style.animation = "loadFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards";
+    <div class="cta">
 
-  updateGlowLoop();
+      <a href="/pizzadales">
+        Pizza Dales
+      </a>
 
-  setTimeout(() => {
+      <a href="/about">
+        About
+      </a>
 
-    /* GOLD FINISH */
-    fill.style.background = "linear-gradient(90deg,#f4d9a7,#e8c183,#deb76e)";
-    fill.style.boxShadow = "0 0 25px #f4d9a7";
-    letters.forEach(l => l.classList.add("glow-gold"));
+      <a href="/contact">
+        Contact
+      </a>
 
-    setTimeout(() => {
-      loader.style.display = "none";
+    </div>
 
-      document.getElementById("space").classList.add("visible");
-      document.getElementById("logo-wrapper").classList.add("visible");
-      document.getElementById("message").classList.add("visible");
-      document.querySelector("footer").classList.add("visible");
-      document.querySelector("nav").classList.add("visible");
+  </div>
 
-      startPulse();
-      startSparkles();
 
-    }, 300);
+  <!-- =========================
+       FOOTER
+       ========================= -->
 
-  }, 1800);
-};
+  <footer>
 
-function updateGlow() {
-  const bar = fill.getBoundingClientRect();
-  letters.forEach(l => {
-    if (l.getBoundingClientRect().left <= bar.right) {
-      l.classList.add("glow-gold");
+    © 2025–2026 SterlWorld Entertainment LLC<br>
+
+    <a
+      href="/privacy"
+      style="color:#0ff;"
+    >
+      Privacy Policy
+    </a>
+
+    •
+
+    <a
+      href="/terms"
+      style="color:#0ff;"
+    >
+      Terms of Service
+    </a>
+
+  </footer>
+
+
+  <script>
+
+    /* ==================================================
+       STERLWORLD — IMMEDIATE START
+       
+       No:
+       - Tap to Enter
+       - Loading screen
+       - Loading bar
+       - Artificial delay
+       - Click-to-start
+       ================================================== */
+
+
+    /* =========================
+       ELEMENTS
+       ========================= */
+
+    const logo =
+      document.getElementById("logo");
+
+    const canvas =
+      document.getElementById("space");
+
+    const ctx =
+      canvas.getContext("2d");
+
+
+    /* =========================
+       STARFIELD SETUP
+       ========================= */
+
+    let w;
+    let h;
+
+    function resize() {
+
+      w = canvas.width =
+        window.innerWidth;
+
+      h = canvas.height =
+        window.innerHeight;
+
     }
-  });
-}
 
-function updateGlowLoop() {
-  const interval = setInterval(() => {
-    updateGlow();
+    resize();
 
-    if (fill.getBoundingClientRect().width >= fill.parentElement.offsetWidth) {
-      clearInterval(interval);
+    window.addEventListener(
+      "resize",
+      resize
+    );
+
+
+    /* =========================
+       STAR IMAGE
+       ========================= */
+
+    const img =
+      new Image();
+
+    img.src =
+      "/assets/images/Star.png";
+
+
+    /* =========================
+       CREATE STARS
+       ========================= */
+
+    let stars = [];
+
+    for (
+      let i = 0;
+      i < 200;
+      i++
+    ) {
+
+      stars.push({
+
+        x:
+          (Math.random() - 0.5)
+          * w * 2,
+
+        y:
+          (Math.random() - 0.5)
+          * h * 2,
+
+        z:
+          Math.random() * w
+
+      });
+
     }
-  }, 16);
-}
 
-/* STARFIELD */
-const canvas = document.getElementById("space");
-const ctx = canvas.getContext("2d");
 
-let w,h;
-function resize(){
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener("resize",resize);
+    /* =========================
+       STARFIELD ANIMATION
+       ========================= */
 
-const img = new Image();
-img.src = "/assets/images/Star.png";
+    function animate() {
 
-let stars=[];
-for(let i=0;i<200;i++){
-  stars.push({x:(Math.random()-0.5)*w*2,y:(Math.random()-0.5)*h*2,z:Math.random()*w});
-}
+      ctx.clearRect(
+        0,
+        0,
+        w,
+        h
+      );
 
-  function animate(){
-  ctx.clearRect(0, 0, w, h);
 
-  stars.forEach((s,i)=>{
-    s.z -= 0.25;
+      stars.forEach(
+        (s, i) => {
 
-    if(s.z<=0) stars[i]={x:(Math.random()-0.5)*w*2,y:(Math.random()-0.5)*h*2,z:w};
+          s.z -= 0.25;
 
-    let k=128/s.z;
-    let x=s.x*k+w/2;
-    let y=s.y*k+h/2;
-    let size=(1-s.z/w)*20;
 
-    ctx.globalAlpha = 0.25;
-    if(img.complete) ctx.drawImage(img,x,y,size,size);
-  });
+          if (s.z <= 0) {
 
-  requestAnimationFrame(animate);
-}
-  
-animate();
+            stars[i] = {
 
-/* LOGO PULSE */
-function startPulse(){
-  setInterval(()=>{
-    logo.style.animation="logoPulse 1.2s ease";
-    setTimeout(()=>logo.style.animation="",1200);
-  },8000);
-}
+              x:
+                (Math.random() - 0.5)
+                * w * 2,
 
-/* SPARKLES */
-function startSparkles(){
-  setInterval(()=>{
-    const rect=logo.getBoundingClientRect();
+              y:
+                (Math.random() - 0.5)
+                * h * 2,
 
-    const s=document.createElement("img");
-    s.src=img.src;
-    s.className="sparkle";
+              z: w
 
-    const angle=Math.random()*Math.PI*2;
-    const dist=20+Math.random()*40;
+            };
 
-    const randX = rect.left + Math.random() * rect.width;
-const randY = rect.top + Math.random() * rect.height;
+          }
 
-s.style.left = randX + "px";
-s.style.top  = randY + "px";
 
-    document.body.appendChild(s);
+          const k =
+            128 / s.z;
 
-    setTimeout(()=>{
-      s.style.transform=`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(0.5)`;
-      s.style.opacity="0";
-    },10);
 
-    setTimeout(()=>s.remove(),600);
+          const x =
+            s.x * k + w / 2;
 
-  },2000);
-}
 
-</script>
+          const y =
+            s.y * k + h / 2;
+
+
+          const size =
+            (1 - s.z / w) * 20;
+
+
+          ctx.globalAlpha =
+            0.25;
+
+
+          if (img.complete) {
+
+            ctx.drawImage(
+              img,
+              x,
+              y,
+              size,
+              size
+            );
+
+          }
+
+        }
+      );
+
+
+      requestAnimationFrame(
+        animate
+      );
+
+    }
+
+
+    animate();
+
+
+    /* =========================
+       LOGO PULSE
+       ========================= */
+
+    function startPulse() {
+
+      setInterval(
+        () => {
+
+          logo.style.animation =
+            "logoPulse 1.2s ease";
+
+
+          setTimeout(
+            () => {
+
+              logo.style.animation =
+                "";
+
+            },
+            1200
+          );
+
+        },
+        8000
+      );
+
+    }
+
+
+    /* =========================
+       SPARKLES
+       ========================= */
+
+    function startSparkles() {
+
+      setInterval(
+        () => {
+
+          const rect =
+            logo.getBoundingClientRect();
+
+
+          const sparkle =
+            document.createElement("img");
+
+
+          sparkle.src =
+            img.src;
+
+
+          sparkle.className =
+            "sparkle";
+
+
+          const angle =
+            Math.random()
+            * Math.PI
+            * 2;
+
+
+          const distance =
+            20 +
+            Math.random() * 40;
+
+
+          const randomX =
+            rect.left +
+            Math.random()
+            * rect.width;
+
+
+          const randomY =
+            rect.top +
+            Math.random()
+            * rect.height;
+
+
+          sparkle.style.left =
+            randomX + "px";
+
+
+          sparkle.style.top =
+            randomY + "px";
+
+
+          document.body.appendChild(
+            sparkle
+          );
+
+
+          setTimeout(
+            () => {
+
+              sparkle.style.transform =
+                `translate(
+                  ${Math.cos(angle) * distance}px,
+                  ${Math.sin(angle) * distance}px
+                )
+                scale(0.5)`;
+
+
+              sparkle.style.opacity =
+                "0";
+
+            },
+            10
+          );
+
+
+          setTimeout(
+            () => {
+
+              sparkle.remove();
+
+            },
+            600
+          );
+
+
+        },
+        2000
+      );
+
+    }
+
+
+    /* =========================
+       START EVERYTHING
+       ========================= */
+
+    startPulse();
+
+    startSparkles();
+
+  </script>
+
 
 </body>
 </html>
