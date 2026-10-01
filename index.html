@@ -11,6 +11,11 @@
     gtag('config', 'G-YGPZXDQV5Q');
   </script>
 
+
+  <!-- =========================
+       STRUCTURED DATA
+       ========================= -->
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -48,14 +53,25 @@
   }
   </script>
 
-  <title>SterlWorld Entertainment — Games, Worlds, and Creative Experiences</title>
+
+  <!-- =========================
+       PAGE INFO
+       ========================= -->
+
+  <title>
+    SterlWorld Entertainment — Games, Worlds, and Creative Experiences
+  </title>
 
   <meta
     name="description"
     content="An independent creative studio building games, worlds, and interactive experiences."
   >
 
-  <!-- OpenGraph -->
+
+  <!-- =========================
+       OPEN GRAPH
+       ========================= -->
+
   <meta
     property="og:title"
     content="SterlWorld Entertainment — Games, Worlds, and Creative Experiences"
@@ -71,11 +87,25 @@
     content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png"
   >
 
-  <meta property="og:url" content="https://sterlworld.com">
-  <meta property="og:type" content="website">
+  <meta
+    property="og:url"
+    content="https://sterlworld.com"
+  >
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+
+  <!-- =========================
+       TWITTER CARD
+       ========================= -->
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
 
   <meta
     name="twitter:title"
@@ -92,6 +122,11 @@
     content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png"
   >
 
+
+  <!-- =========================
+       META
+       ========================= -->
+
   <meta charset="UTF-8">
 
   <meta
@@ -99,10 +134,20 @@
     content="width=device-width, initial-scale=1, user-scalable=no"
   >
 
+
+  <!-- =========================
+       FONTS
+       ========================= -->
+
   <link
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap"
     rel="stylesheet"
   >
+
+
+  <!-- =========================
+       STYLES
+       ========================= -->
 
   <style>
 
@@ -112,28 +157,40 @@
       box-sizing: border-box;
     }
 
+
     html,
     body {
-      height: 100%;
+
       width: 100%;
-      background: black;
-      font-family: 'Poppins', sans-serif;
-      color: white;
+      height: 100%;
+
+      background: #000;
+
+      color: #fff;
+
+      font-family:
+        'Poppins',
+        sans-serif;
+
       overflow: hidden;
     }
 
 
-    /* =========================
-       NAV
-       ========================= */
+    /* ==================================================
+       NAVIGATION
+       ================================================== */
 
     nav {
+
       position: fixed;
+
       top: 20px;
       right: 30px;
+
       z-index: 9999;
 
       display: flex;
+
       gap: 20px;
 
       font-size: 0.9rem;
@@ -141,15 +198,23 @@
       opacity: 1;
     }
 
+
     nav a {
+
       color: #0ff;
+
       text-decoration: none;
+
       opacity: 0.6;
 
-      transition: 0.3s;
+      transition:
+        opacity 0.3s ease,
+        text-shadow 0.3s ease;
     }
 
+
     nav a:hover {
+
       opacity: 1;
 
       text-shadow:
@@ -157,11 +222,12 @@
     }
 
 
-    /* =========================
+    /* ==================================================
        STARFIELD
-       ========================= */
+       ================================================== */
 
     canvas {
+
       position: fixed;
 
       top: 0;
@@ -170,23 +236,25 @@
       width: 100%;
       height: 100%;
 
-      opacity: 1;
-
       z-index: 0;
+
+      opacity: 1;
     }
 
 
-    /* =========================
-       LOGO
-       ========================= */
+    /* ==================================================
+       STERLWORLD LOGO
+       ================================================== */
 
     #logo-wrapper {
+
       position: fixed;
 
       top: 60px;
       left: 50%;
 
-      transform: translateX(-50%);
+      transform:
+        translateX(-50%);
 
       text-align: center;
 
@@ -195,38 +263,49 @@
       opacity: 1;
     }
 
+
     #logo {
+
       width: 220px;
+
+      height: auto;
     }
 
 
-    /* =========================
-       MESSAGE
-       ========================= */
+    /* ==================================================
+       MAIN CONTENT
+       ================================================== */
 
     #message {
+
       position: fixed;
 
       top: 50%;
       left: 50%;
 
-      transform: translate(-50%, -50%);
+      transform:
+        translate(-50%, -50%);
 
-      width: 90%;
+      width: 92%;
 
-      max-width: 800px;
+      max-width: 900px;
 
       text-align: center;
 
-      opacity: 1;
-
-      pointer-events: auto;
-
       z-index: 10;
+
+      opacity: 1;
     }
 
+
     #message h1 {
-      font-family: 'Orbitron', sans-serif;
+
+      font-family:
+        'Orbitron',
+        sans-serif;
+
+      font-size:
+        clamp(1.5rem, 4vw, 2.3rem);
 
       text-shadow:
         0 0 20px #0ff;
@@ -234,209 +313,320 @@
       margin-bottom: 10px;
     }
 
+
     #message p {
+
       color: #ccc;
 
-      margin-bottom: 25px;
+      font-size:
+        0.95rem;
+
+      margin-bottom: 28px;
     }
 
 
-    /* =========================
-       CTA LAYOUT
-       ========================= */
+    /* ==================================================
+       WORLD LOGO BUTTONS
+       ================================================== */
 
-    .cta {
-      display: flex;
+    .world-buttons {
 
-      flex-direction: column;
-
-      justify-content: center;
-
-      align-items: center;
-
-      gap: 12px;
-    }
-
-
-    /* =========================
-       PRIMARY GAME BUTTONS
-       ========================= */
-
-    .primary-buttons {
       display: flex;
 
       justify-content: center;
 
-      align-items: center;
+      align-items: stretch;
 
-      gap: 12px;
+      gap: 25px;
 
       width: 100%;
     }
 
 
-    .primary-buttons a {
+    .world-button {
+
+      position: relative;
+
       display: flex;
 
       align-items: center;
 
       justify-content: center;
 
-      min-width: 180px;
+      width: 290px;
 
-      padding: 13px 22px;
+      height: 170px;
 
-      border-radius: 8px;
+      padding: 18px;
 
-      color: white;
+      border-radius: 18px;
 
       text-decoration: none;
 
-      font-weight: 600;
+      overflow: hidden;
 
-      text-shadow:
-        0 0 8px rgba(255,255,255,0.7);
+      background:
+        rgba(255,255,255,0.025);
+
+      backdrop-filter:
+        blur(8px);
+
+      -webkit-backdrop-filter:
+        blur(8px);
 
       transition:
-        transform 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease;
-
-      backdrop-filter: blur(6px);
-
-      -webkit-backdrop-filter: blur(6px);
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
     }
 
 
-    /* =========================
-       SUPER PUNKASS
-       ========================= */
+    .world-button::before {
 
-    .super-punkass {
+      content: "";
 
-      border: 1px solid rgba(255, 94, 196, 0.9);
+      position: absolute;
 
-      background:
-        rgba(255, 94, 196, 0.20);
+      inset: 0;
 
-      box-shadow:
-        0 0 10px rgba(255, 94, 196, 0.5),
-        inset 0 0 8px rgba(255, 94, 196, 0.2);
+      border-radius: 18px;
 
-      text-shadow:
-        0 0 8px rgba(255, 94, 196, 0.9);
+      pointer-events: none;
+
+      opacity: 0.7;
+
+      transition:
+        opacity 0.3s ease;
     }
 
-    .super-punkass:hover {
 
-      background:
-        rgba(255, 94, 196, 0.42);
+    .world-button img {
+
+      position: relative;
+
+      z-index: 2;
+
+      display: block;
+
+      max-width: 100%;
+
+      max-height: 140px;
+
+      width: auto;
+
+      height: auto;
+
+      object-fit: contain;
+
+      transition:
+        transform 0.35s ease,
+        filter 0.35s ease;
+    }
+
+
+    /* ==================================================
+       SUPER PUNKASS WORLD BUTTON
+       ================================================== */
+
+    .world-button.super-punkass {
+
+      border:
+        1px solid
+        rgba(255, 94, 196, 0.65);
 
       box-shadow:
-        0 0 20px rgba(255, 94, 196, 0.95),
-        inset 0 0 12px rgba(255, 94, 196, 0.4);
+
+        0 0 12px
+        rgba(255, 94, 196, 0.28),
+
+        inset 0 0 15px
+        rgba(255, 94, 196, 0.08);
+    }
+
+
+    .world-button.super-punkass::before {
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(255, 94, 196, 0.15),
+          transparent 70%
+        );
+    }
+
+
+    .world-button.super-punkass:hover {
 
       transform:
-        scale(1.08);
+        translateY(-6px)
+        scale(1.025);
+
+      background:
+        rgba(255, 94, 196, 0.08);
+
+      box-shadow:
+
+        0 0 28px
+        rgba(255, 94, 196, 0.7),
+
+        0 0 60px
+        rgba(255, 94, 196, 0.2),
+
+        inset 0 0 20px
+        rgba(255, 94, 196, 0.16);
     }
 
 
-    /* =========================
-       PIZZA DALES
-       ========================= */
-
-    .pizza-dales {
-
-      border: 1px solid rgba(62, 199, 80, 0.95);
-
-      background:
-        rgba(62, 199, 80, 0.20);
-
-      box-shadow:
-        0 0 10px rgba(62, 199, 80, 0.5),
-        inset 0 0 8px rgba(62, 199, 80, 0.2);
-
-      text-shadow:
-        0 0 8px rgba(62, 199, 80, 0.9);
-    }
-
-    .pizza-dales:hover {
-
-      background:
-        rgba(62, 199, 80, 0.42);
-
-      box-shadow:
-        0 0 20px rgba(62, 199, 80, 0.95),
-        inset 0 0 12px rgba(62, 199, 80, 0.4);
+    .world-button.super-punkass:hover img {
 
       transform:
-        scale(1.08);
+        scale(1.06);
+
+      filter:
+        drop-shadow(
+          0 0 12px
+          rgba(255, 94, 196, 0.9)
+        );
     }
 
 
-    /* =========================
+    /* ==================================================
+       PIZZA DALES WORLD BUTTON
+       ================================================== */
+
+    .world-button.pizza-dales {
+
+      border:
+        1px solid
+        rgba(62, 199, 80, 0.7);
+
+      box-shadow:
+
+        0 0 12px
+        rgba(62, 199, 80, 0.28),
+
+        inset 0 0 15px
+        rgba(62, 199, 80, 0.08);
+    }
+
+
+    .world-button.pizza-dales::before {
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(62, 199, 80, 0.15),
+          transparent 70%
+        );
+    }
+
+
+    .world-button.pizza-dales:hover {
+
+      transform:
+        translateY(-6px)
+        scale(1.025);
+
+      background:
+        rgba(62, 199, 80, 0.08);
+
+      box-shadow:
+
+        0 0 28px
+        rgba(62, 199, 80, 0.7),
+
+        0 0 60px
+        rgba(62, 199, 80, 0.2),
+
+        inset 0 0 20px
+        rgba(62, 199, 80, 0.16);
+    }
+
+
+    .world-button.pizza-dales:hover img {
+
+      transform:
+        scale(1.06);
+
+      filter:
+        drop-shadow(
+          0 0 12px
+          rgba(62, 199, 80, 0.9)
+        );
+    }
+
+
+    /* ==================================================
        SECONDARY BUTTONS
-       ========================= */
+       ================================================== */
 
     .secondary-buttons {
+
       display: flex;
 
       justify-content: center;
 
       align-items: center;
 
-      gap: 8px;
+      gap: 9px;
+
+      margin-top: 14px;
     }
+
 
     .secondary-buttons a {
 
       display: inline-block;
 
-      padding: 8px 14px;
+      padding:
+        7px 15px;
 
-      border: 1px solid rgba(0, 255, 255, 0.35);
+      border:
+        1px solid
+        rgba(0,255,255,0.3);
 
       border-radius: 6px;
 
-      color: #aaa;
+      color: #999;
 
-      font-size: 0.78rem;
+      font-size:
+        0.74rem;
 
       text-decoration: none;
 
       background:
-        rgba(0, 255, 255, 0.07);
-
-      box-shadow:
-        inset 0 0 5px rgba(0, 255, 255, 0.1);
+        rgba(0,255,255,0.05);
 
       transition:
         all 0.25s ease;
     }
 
+
     .secondary-buttons a:hover {
 
-      color: white;
+      color: #fff;
 
       border-color:
-        rgba(0, 255, 255, 0.7);
+        rgba(0,255,255,0.7);
 
       background:
-        rgba(0, 255, 255, 0.16);
+        rgba(0,255,255,0.14);
 
       box-shadow:
-        0 0 10px rgba(0, 255, 255, 0.35);
+        0 0 10px
+        rgba(0,255,255,0.35);
 
       transform:
         scale(1.05);
     }
 
 
-    /* =========================
+    /* ==================================================
        FOOTER
-       ========================= */
+       ================================================== */
 
     footer {
+
       position: fixed;
 
       bottom: 10px;
@@ -445,39 +635,42 @@
 
       text-align: center;
 
-      font-size: 0.75rem;
+      font-size:
+        0.75rem;
 
       color: #666;
-
-      opacity: 1;
 
       z-index: 10;
     }
 
 
-    /* =========================
+    /* ==================================================
        LOGO PULSE
-       ========================= */
+       ================================================== */
 
     @keyframes logoPulse {
 
       0%,
       100% {
-        transform: scale(1);
+
+        transform:
+          scale(1);
       }
 
       50% {
-        transform: scale(1.05);
-      }
 
+        transform:
+          scale(1.05);
+      }
     }
 
 
-    /* =========================
+    /* ==================================================
        SPARKLES
-       ========================= */
+       ================================================== */
 
     .sparkle {
+
       position: fixed;
 
       width: 8px;
@@ -486,91 +679,115 @@
 
       z-index: 9999;
 
-      transition: 0.6s;
+      transition:
+        0.6s;
     }
 
 
-    /* =========================
+    /* ==================================================
        MOBILE
-       ========================= */
+       ================================================== */
 
     @media (max-width: 768px) {
 
       nav {
+
         right: 50%;
 
-        transform: translateX(50%);
+        transform:
+          translateX(50%);
 
         top: 15px;
       }
 
+
       #logo-wrapper {
-        top: 100px;
+
+        top: 95px;
       }
 
+
       #logo {
+
         width: 130px;
       }
 
+
       #message {
 
-        top: 65%;
+        top: 64%;
 
-        transform:
-          translate(-50%, -50%);
-
-        width: 90%;
+        width: 92%;
       }
+
 
       #message h1 {
-        font-size: 1.4rem;
+
+        font-size:
+          1.35rem;
       }
+
 
       #message p {
-        font-size: 0.9rem;
 
-        margin-bottom: 20px;
+        font-size:
+          0.82rem;
+
+        margin-bottom:
+          18px;
       }
 
 
-      .primary-buttons {
+      .world-buttons {
 
         flex-direction: column;
+
+        align-items: center;
 
         gap: 10px;
       }
 
 
-      .primary-buttons a {
+      .world-button {
 
-        width: 85%;
+        width: 82%;
 
-        max-width: 260px;
+        max-width: 280px;
 
-        padding: 13px;
+        height: 125px;
+
+        padding: 12px;
+      }
+
+
+      .world-button img {
+
+        max-height:
+          105px;
       }
 
 
       .secondary-buttons {
 
-        gap: 8px;
+        margin-top:
+          10px;
       }
 
 
       .secondary-buttons a {
 
         padding:
-          7px 12px;
+          6px 12px;
 
         font-size:
-          0.72rem;
+          0.7rem;
       }
 
 
       footer {
 
         font-size:
-          0.7rem;
+          0.68rem;
 
         bottom:
           5px;
@@ -586,31 +803,37 @@
 <body>
 
 
-  <!-- =========================
+  <!-- ==================================================
        NAVIGATION
-       ========================= -->
+       ================================================== -->
 
   <nav>
 
-    <a href="/">Home</a>
+    <a href="/">
+      Home
+    </a>
 
-    <a href="/about">About</a>
+    <a href="/about">
+      About
+    </a>
 
-    <a href="/contact">Contact</a>
+    <a href="/contact">
+      Contact
+    </a>
 
   </nav>
 
 
-  <!-- =========================
+  <!-- ==================================================
        STARFIELD
-       ========================= -->
+       ================================================== -->
 
   <canvas id="space"></canvas>
 
 
-  <!-- =========================
+  <!-- ==================================================
        STERLWORLD LOGO
-       ========================= -->
+       ================================================== -->
 
   <div id="logo-wrapper">
 
@@ -623,9 +846,9 @@
   </div>
 
 
-  <!-- =========================
-       MAIN MESSAGE
-       ========================= -->
+  <!-- ==================================================
+       MAIN CONTENT
+       ================================================== -->
 
   <div id="message">
 
@@ -633,63 +856,77 @@
       A Universe in the Making
     </h1>
 
+
     <p>
       SterlWorld is an independent game and multimedia studio creating original worlds.
     </p>
 
 
-    <div class="cta">
+    <!-- ==================================================
+         WORLD BUTTONS
+         ================================================== -->
+
+    <div class="world-buttons">
 
 
-      <!-- =========================
-           PRIMARY WORLDS
-           ========================= -->
+      <!-- SUPER PUNKASS -->
 
-      <div class="primary-buttons">
+      <a
+        href="https://sterlworld.com/superpunkass"
+        class="world-button super-punkass"
+        aria-label="Visit Super Punkass"
+      >
 
-        <a
-          href="https://sterlworld.com/superpunkass"
-          class="super-punkass"
+        <img
+          src="/assets/images/Super Punkass Logo Final.png"
+          alt="Super Punkass"
         >
-          Super Punkass
-        </a>
+
+      </a>
 
 
-        <a
-          href="/pizzadales"
-          class="pizza-dales"
+      <!-- PIZZA DALES -->
+
+      <a
+        href="/pizzadales"
+        class="world-button pizza-dales"
+        aria-label="Visit Pizza Dales"
+      >
+
+        <img
+          src="/assets/images/Pizza Dales Logo Updated 2026.png"
+          alt="Pizza Dales"
         >
-          Pizza Dales
-        </a>
 
-      </div>
-
-
-      <!-- =========================
-           SECONDARY LINKS
-           ========================= -->
-
-      <div class="secondary-buttons">
-
-        <a href="/about">
-          About
-        </a>
-
-        <a href="/contact">
-          Contact
-        </a>
-
-      </div>
+      </a>
 
 
     </div>
 
+
+    <!-- ==================================================
+         SECONDARY LINKS
+         ================================================== -->
+
+    <div class="secondary-buttons">
+
+      <a href="/about">
+        About
+      </a>
+
+      <a href="/contact">
+        Contact
+      </a>
+
+    </div>
+
+
   </div>
 
 
-  <!-- =========================
+  <!-- ==================================================
        FOOTER
-       ========================= -->
+       ================================================== -->
 
   <footer>
 
@@ -714,37 +951,32 @@
   </footer>
 
 
+  <!-- ==================================================
+       JAVASCRIPT
+       ================================================== -->
+
   <script>
 
+
     /* ==================================================
-       STERLWORLD — IMMEDIATE START
-
-       No:
-       - Tap to Enter
-       - Loading screen
-       - Loading bar
-       - Artificial delay
-       - Click-to-start
-       ================================================== */
-
-
-    /* =========================
        ELEMENTS
-       ========================= */
+       ================================================== */
 
     const logo =
       document.getElementById("logo");
 
+
     const canvas =
       document.getElementById("space");
+
 
     const ctx =
       canvas.getContext("2d");
 
 
-    /* =========================
-       STARFIELD SETUP
-       ========================= */
+    /* ==================================================
+       CANVAS RESIZE
+       ================================================== */
 
     let w;
     let h;
@@ -772,20 +1004,21 @@
     );
 
 
-    /* =========================
+    /* ==================================================
        STAR IMAGE
-       ========================= */
+       ================================================== */
 
     const img =
       new Image();
+
 
     img.src =
       "/assets/images/Star.png";
 
 
-    /* =========================
+    /* ==================================================
        CREATE STARS
-       ========================= */
+       ================================================== */
 
     let stars = [];
 
@@ -814,9 +1047,9 @@
     }
 
 
-    /* =========================
+    /* ==================================================
        STARFIELD ANIMATION
-       ========================= */
+       ================================================== */
 
     function animate() {
 
@@ -830,6 +1063,7 @@
 
       stars.forEach(
         (s, i) => {
+
 
           s.z -= 0.25;
 
@@ -869,8 +1103,8 @@
 
 
           const size =
-            (1 - s.z / w) *
-            20;
+            (1 - s.z / w)
+            * 20;
 
 
           ctx.globalAlpha =
@@ -903,9 +1137,9 @@
     animate();
 
 
-    /* =========================
+    /* ==================================================
        LOGO PULSE
-       ========================= */
+       ================================================== */
 
     function startPulse() {
 
@@ -933,14 +1167,15 @@
     }
 
 
-    /* =========================
+    /* ==================================================
        SPARKLES
-       ========================= */
+       ================================================== */
 
     function startSparkles() {
 
       setInterval(
         () => {
+
 
           const rect =
             logo.getBoundingClientRect();
@@ -997,6 +1232,7 @@
           setTimeout(
             () => {
 
+
               sparkle.style.transform =
                 `translate(
                   ${Math.cos(angle) * distance}px,
@@ -1007,6 +1243,7 @@
 
               sparkle.style.opacity =
                 "0";
+
 
             },
             10
@@ -1030,13 +1267,14 @@
     }
 
 
-    /* =========================
-       START EVERYTHING
-       ========================= */
+    /* ==================================================
+       START EFFECTS
+       ================================================== */
 
     startPulse();
 
     startSparkles();
+
 
   </script>
 
