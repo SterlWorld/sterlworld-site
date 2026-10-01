@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
   <!-- ========================================================= -->
@@ -162,9 +163,7 @@
     html {
       width: 100%;
       min-height: 100%;
-
       scroll-behavior: smooth;
-
       background: #080317;
     }
 
@@ -196,7 +195,6 @@
       content: "";
 
       position: fixed;
-
       inset: 0;
 
       pointer-events: none;
@@ -303,12 +301,12 @@
     /* ========================================================= */
 
     .hero {
-
       position: relative;
 
       width: 100%;
 
       min-height: 100vh;
+      min-height: 100svh;
 
       display: flex;
 
@@ -327,13 +325,20 @@
     }
 
 
-    .hero-inner {
+    /*
+      The hero is intentionally top-anchored rather than vertically
+      centered as one giant block.
 
+      This keeps the SterlWorld logo in a stable position while
+      allowing the "ENTER A WORLD" section to breathe below it.
+    */
+
+    .hero-inner {
       width: 100%;
 
       max-width: 1500px;
 
-      margin: auto;
+      margin: 0 auto;
 
       display: flex;
 
@@ -348,10 +353,9 @@
     /* ========================================================= */
 
     .logo-wrapper {
-
       position: relative;
 
-      margin-bottom: 7vh;
+      margin-bottom: 0;
 
       animation:
         logoFloat 7s ease-in-out infinite;
@@ -359,27 +363,22 @@
 
 
     .logo {
-  display: block;
+      display: block;
 
-  width:
-    clamp(
-      285px,
-      23vw,
-      370px
-    );
+      width:
+        clamp(
+          285px,
+          23vw,
+          370px
+        );
 
-  height: auto;
+      height: auto;
 
-  filter:
-    drop-shadow(
-      0 0 18px
-      rgba(255,255,255,0.07)
-    );
-
-  transition:
-    transform 1.2s ease,
-    filter 1.2s ease;
-}
+      filter:
+        drop-shadow(
+          0 0 18px
+          rgba(255,255,255,0.07)
+        );
 
       transition:
         transform 1.2s ease,
@@ -404,16 +403,50 @@
 
 
     /* ========================================================= */
+    /* WORLD ENTRY GROUP */
+    /* ========================================================= */
+
+    /*
+      This is the important spacing change.
+
+      The entire world-selection area is deliberately separated
+      from the SterlWorld logo so the logo feels like the emblem
+      of the universe rather than the heading of a cramped menu.
+    */
+
+    .world-entry {
+      width: 100%;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      margin-top:
+        clamp(
+          85px,
+          9vh,
+          125px
+        );
+    }
+
+
+    /* ========================================================= */
     /* ENTER A WORLD */
     /* ========================================================= */
 
     .worlds-label {
-
       position: relative;
 
       display: inline-block;
 
-      margin-bottom: 5vh;
+      margin-bottom:
+        clamp(
+          38px,
+          5vh,
+          58px
+        );
 
       font-family:
         'Orbitron',
@@ -455,7 +488,6 @@
 
     .worlds-label::before,
     .worlds-label::after {
-
       content:
         "ENTER A WORLD";
 
@@ -474,7 +506,6 @@
 
 
     .worlds-label::before {
-
       color: #00ffff;
 
       transform:
@@ -489,7 +520,6 @@
 
 
     .worlds-label::after {
-
       color: #ff5ec4;
 
       transform:
@@ -511,7 +541,6 @@
       12%,
       18%,
       100% {
-
         opacity: 1;
 
         text-shadow:
@@ -529,7 +558,6 @@
       8%,
       11%,
       17% {
-
         opacity: 0.48;
 
         text-shadow:
@@ -542,7 +570,6 @@
 
 
       45% {
-
         opacity: 0.9;
 
         text-shadow:
@@ -576,7 +603,6 @@
 
 
       71% {
-
         opacity: 0.75;
 
         clip-path:
@@ -592,7 +618,6 @@
 
 
       74% {
-
         opacity: 0.55;
 
         clip-path:
@@ -619,7 +644,6 @@
 
 
       74% {
-
         opacity: 0.65;
 
         clip-path:
@@ -635,7 +659,6 @@
 
 
       77% {
-
         opacity: 0.5;
 
         clip-path:
@@ -657,7 +680,6 @@
     /* ========================================================= */
 
     .worlds {
-
       width: 100%;
 
       display: flex;
@@ -668,47 +690,51 @@
 
       gap:
         clamp(
-          110px,
-          15vw,
-          260px
+          100px,
+          14vw,
+          240px
         );
 
-      margin-bottom: 7vh;
+      margin-bottom:
+        clamp(
+          28px,
+          4vh,
+          45px
+        );
     }
 
 
     .world-button {
-  position: relative;
+      position: relative;
 
-  width:
-    clamp(
-      330px,
-      25vw,
-      420px
-    );
+      width:
+        clamp(
+          330px,
+          25vw,
+          420px
+        );
 
-  height:
-    clamp(
-      175px,
-      13vw,
-      215px
-    );
+      height:
+        clamp(
+          175px,
+          13vw,
+          215px
+        );
 
-  display: flex;
+      display: flex;
 
-  align-items: center;
+      align-items: center;
 
-  justify-content: center;
+      justify-content: center;
 
-  text-decoration: none;
+      text-decoration: none;
 
-  transition:
-    transform 0.4s ease;
-}
+      transition:
+        transform 0.4s ease;
+    }
 
 
     .world-button img {
-
       display: block;
 
       width: 100%;
@@ -730,7 +756,6 @@
     /* ========================================================= */
 
     .world-button.pizza:hover {
-
       transform:
         translateY(-10px)
         scale(1.05);
@@ -738,7 +763,6 @@
 
 
     .world-button.pizza:hover img {
-
       filter:
         drop-shadow(
           0 0 5px
@@ -758,7 +782,6 @@
 
 
     .world-button.pizza::after {
-
       content: "";
 
       position: absolute;
@@ -791,7 +814,6 @@
 
 
     .world-button.pizza:hover::after {
-
       transform:
         translateX(-50%)
         scaleX(1);
@@ -803,7 +825,6 @@
     /* ========================================================= */
 
     .world-button.punkass:hover {
-
       transform:
         translateY(-10px)
         scale(1.05);
@@ -811,7 +832,6 @@
 
 
     .world-button.punkass:hover img {
-
       filter:
         drop-shadow(
           0 0 5px
@@ -831,7 +851,6 @@
 
 
     .world-button.punkass::after {
-
       content: "";
 
       position: absolute;
@@ -864,7 +883,6 @@
 
 
     .world-button.punkass:hover::after {
-
       transform:
         translateX(-50%)
         scaleX(1);
@@ -876,7 +894,6 @@
     /* ========================================================= */
 
     .secondary-links {
-
       display: flex;
 
       align-items: center;
@@ -897,7 +914,6 @@
 
 
     .secondary-links a {
-
       color:
         rgba(
           255,
@@ -916,7 +932,6 @@
 
 
     .secondary-links a:hover {
-
       color:
         #ffffff;
 
@@ -932,7 +947,6 @@
 
 
     .secondary-divider {
-
       width: 3px;
 
       height: 3px;
@@ -954,7 +968,6 @@
     /* ========================================================= */
 
     .explore-hint {
-
       position: absolute;
 
       left: 50%;
@@ -992,7 +1005,6 @@
 
 
     .explore-arrow {
-
       width: 8px;
 
       height: 8px;
@@ -1030,7 +1042,6 @@
 
       0%,
       100% {
-
         transform:
           translateY(0)
           rotate(45deg);
@@ -1038,7 +1049,6 @@
 
 
       50% {
-
         transform:
           translateY(5px)
           rotate(45deg);
@@ -1052,7 +1062,6 @@
     /* ========================================================= */
 
     .section-divider {
-
       width: 100%;
 
       height: 1px;
@@ -1073,7 +1082,6 @@
 
 
     .section-divider::after {
-
       content: "";
 
       display: block;
@@ -1110,7 +1118,6 @@
     /* ========================================================= */
 
     .updates {
-
       position: relative;
 
       width: 100%;
@@ -1123,7 +1130,6 @@
 
 
     .updates-inner {
-
       width: 100%;
 
       max-width: 1100px;
@@ -1133,7 +1139,6 @@
 
 
     .updates-header {
-
       display: flex;
 
       align-items: flex-end;
@@ -1152,7 +1157,6 @@
 
 
     .updates-kicker {
-
       font-family:
         'Orbitron',
         sans-serif;
@@ -1179,7 +1183,6 @@
 
 
     .updates-title {
-
       font-family:
         'Orbitron',
         sans-serif;
@@ -1197,7 +1200,6 @@
 
 
     .updates-intro {
-
       max-width:
         390px;
 
@@ -1222,7 +1224,6 @@
     /* ========================================================= */
 
     .update-list {
-
       display:
         flex;
 
@@ -1235,7 +1236,6 @@
 
 
     .update-card {
-
       position:
         relative;
 
@@ -1271,7 +1271,6 @@
 
 
     .update-card:hover {
-
       transform:
         translateX(6px);
 
@@ -1286,7 +1285,6 @@
 
 
     .update-meta {
-
       display:
         flex;
 
@@ -1311,7 +1309,6 @@
 
 
     .update-date {
-
       color:
         rgba(
           255,
@@ -1323,7 +1320,6 @@
 
 
     .update-status {
-
       color:
         #ff5ec4;
 
@@ -1339,7 +1335,6 @@
 
 
     .update-card h3 {
-
       font-family:
         'Orbitron',
         sans-serif;
@@ -1360,7 +1355,6 @@
 
 
     .update-card p {
-
       color:
         rgba(
           255,
@@ -1381,7 +1375,6 @@
 
 
     .update-link {
-
       display:
         inline-block;
 
@@ -1416,7 +1409,6 @@
 
 
     .update-link:hover {
-
       opacity:
         1;
 
@@ -1436,7 +1428,6 @@
     /* ========================================================= */
 
     footer {
-
       position:
         relative;
 
@@ -1469,7 +1460,6 @@
 
 
     footer a {
-
       color:
         rgba(
           255,
@@ -1487,7 +1477,6 @@
 
 
     footer a:hover {
-
       color:
         #ffffff;
     }
@@ -1499,15 +1488,23 @@
 
     @media (max-width: 1000px) {
 
-      .worlds {
+      .world-entry {
+        margin-top:
+          clamp(
+            75px,
+            8vh,
+            105px
+          );
+      }
 
+
+      .worlds {
         gap:
           70px;
       }
 
 
       .world-button {
-
         width:
           290px;
 
@@ -1525,7 +1522,6 @@
     @media (max-width: 768px) {
 
       .hero {
-
         min-height:
           100svh;
 
@@ -1536,15 +1532,7 @@
       }
 
 
-      .logo-wrapper {
-
-        margin-bottom:
-          6vh;
-      }
-
-
       .logo {
-
         width:
           min(
             260px,
@@ -1553,8 +1541,22 @@
       }
 
 
-      .worlds-label {
+      /*
+        Mobile gets less separation than desktop because
+        the screen is much shorter.
+      */
 
+      .world-entry {
+        margin-top:
+          clamp(
+            60px,
+            8vh,
+            85px
+          );
+      }
+
+
+      .worlds-label {
         font-size:
           clamp(
             1rem,
@@ -1571,20 +1573,18 @@
 
 
       .worlds {
-
         flex-direction:
           column;
 
         gap:
-          8px;
+          2px;
 
         margin-bottom:
-          5vh;
+          3vh;
       }
 
 
       .world-button {
-
         width:
           275px;
 
@@ -1594,7 +1594,6 @@
 
 
       .secondary-links {
-
         gap:
           18px;
 
@@ -1604,14 +1603,12 @@
 
 
       .explore-hint {
-
         bottom:
           2.5vh;
       }
 
 
       .updates {
-
         padding:
           85px
           20px
@@ -1620,7 +1617,6 @@
 
 
       .updates-header {
-
         flex-direction:
           column;
 
@@ -1633,14 +1629,12 @@
 
 
       .updates-intro {
-
         max-width:
           100%;
       }
 
 
       .update-card {
-
         padding:
           25px 20px;
       }
@@ -1655,14 +1649,18 @@
     @media (max-width: 430px) {
 
       .logo {
-
         width:
           235px;
       }
 
 
-      .world-button {
+      .world-entry {
+        margin-top:
+          55px;
+      }
 
+
+      .world-button {
         width:
           255px;
 
@@ -1672,7 +1670,6 @@
 
 
       .secondary-links {
-
         font-size:
           0.62rem;
 
@@ -1738,71 +1735,81 @@
 
 
         <!-- ================================================= -->
-        <!-- ENTER A WORLD -->
+        <!-- WORLD ENTRY -->
         <!-- ================================================= -->
 
-        <div class="worlds-label">
-          ENTER A WORLD
-        </div>
+        <div class="world-entry">
 
 
-        <!-- ================================================= -->
-        <!-- GAME WORLDS -->
-        <!-- ================================================= -->
+          <!-- =============================================== -->
+          <!-- ENTER A WORLD -->
+          <!-- =============================================== -->
 
-        <div class="worlds">
+          <div class="worlds-label">
+            ENTER A WORLD
+          </div>
 
 
-          <!-- PIZZA DALES -->
+          <!-- =============================================== -->
+          <!-- GAME WORLDS -->
+          <!-- =============================================== -->
 
-          <a
-            class="world-button pizza"
-            href="/pizzadales"
-            aria-label="Enter Pizza Dales"
-          >
+          <div class="worlds">
 
-            <img
-              src="/assets/images/Pizza Dales Logo Updated 2026.png"
-              alt="Pizza Dales"
+
+            <!-- PIZZA DALES -->
+
+            <a
+              class="world-button pizza"
+              href="/pizzadales"
+              aria-label="Enter Pizza Dales"
             >
 
-          </a>
+              <img
+                src="/assets/images/Pizza Dales Logo Updated 2026.png"
+                alt="Pizza Dales"
+              >
+
+            </a>
 
 
-          <!-- SUPER PUNKASS -->
+            <!-- SUPER PUNKASS -->
 
-          <a
-            class="world-button punkass"
-            href="/superpunkass"
-            aria-label="Enter Super Punkass"
-          >
-
-            <img
-              src="/assets/images/Super Punkass Logo Final.png"
-              alt="Super Punkass"
+            <a
+              class="world-button punkass"
+              href="/superpunkass"
+              aria-label="Enter Super Punkass"
             >
 
-          </a>
+              <img
+                src="/assets/images/Super Punkass Logo Final.png"
+                alt="Super Punkass"
+              >
+
+            </a>
 
 
-        </div>
+          </div>
 
 
-        <!-- ================================================= -->
-        <!-- SECONDARY LINKS -->
-        <!-- ================================================= -->
+          <!-- =============================================== -->
+          <!-- SECONDARY LINKS -->
+          <!-- =============================================== -->
 
-        <div class="secondary-links">
+          <div class="secondary-links">
 
-          <a href="/about">
-            About SterlWorld
-          </a>
+            <a href="/about">
+              About SterlWorld
+            </a>
 
-          <span class="secondary-divider"></span>
+            <span class="secondary-divider"></span>
 
-          <a href="/contact">
-            Contact
-          </a>
+            <a href="/contact">
+              Contact
+            </a>
+
+          </div>
+
 
         </div>
 
@@ -2245,7 +2252,7 @@
           /*
            * STAR SIZE
            *
-           * Approximately 3× the previous
+           * Approximately 3× the original
            * star size.
            */
 
@@ -2563,4 +2570,5 @@
 
 
 </body>
+
 </html>
