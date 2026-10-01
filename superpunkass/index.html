@@ -45,11 +45,7 @@
       color: #ffffff;
       overflow-x: hidden;
 
-      /*
-        ONE CONTINUOUS GRADIENT FOR THE ENTIRE PAGE.
-        There are no individual section backgrounds.
-      */
-
+      /* Continuous page-wide gradient */
       background:
         linear-gradient(
           to bottom,
@@ -274,7 +270,7 @@
 
 
     /* =========================================================
-       MEDIA PLACEHOLDERS
+       EMPTY MEDIA FRAMES
     ========================================================== */
 
     .media-frame {
@@ -311,30 +307,6 @@
           rgba(255,255,255,0.025) 50%,
           transparent 100%
         );
-    }
-
-    .media-frame::after {
-      content: "MEDIA PLACEHOLDER";
-
-      position: absolute;
-      inset: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-family: "Press Start 2P", monospace;
-      font-size: 9px;
-
-      color:
-        rgba(
-          255,
-          224,
-          213,
-          0.25
-        );
-
-      letter-spacing: 1px;
     }
 
 
@@ -704,29 +676,6 @@
       overflow: hidden;
     }
 
-    .enemy::before {
-      content: "ARTWORK";
-
-      position: absolute;
-      inset: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-family: "Press Start 2P", monospace;
-
-      font-size: 9px;
-
-      color:
-        rgba(
-          255,
-          220,
-          210,
-          0.20
-        );
-    }
-
     .enemy-content {
       position: relative;
       z-index: 2;
@@ -919,10 +868,7 @@
       padding:
         35px 0;
 
-      /*
-        No background here.
-        The main page gradient continues underneath.
-      */
+      /* No separate background */
     }
 
     .footer-inner {
@@ -1185,8 +1131,6 @@
       </div>
 
 
-      <!-- TRAILER WILL GO HERE -->
-
       <div class="media-frame trailer-frame">
       </div>
 
@@ -1226,8 +1170,6 @@
 
       </div>
 
-
-      <!-- BLACKOUT CITY ARTWORK WILL GO HERE -->
 
       <div class="media-frame city-frame">
       </div>
@@ -1363,8 +1305,6 @@
         </div>
 
 
-        <!-- GAMEPLAY SCREENSHOT / VIDEO -->
-
         <div class="media-frame gameplay-frame">
         </div>
 
@@ -1483,8 +1423,6 @@
       <div class="blaster-layout">
 
 
-        <!-- BLASTER ARTWORK -->
-
         <div class="media-frame blaster-frame">
         </div>
 
@@ -1599,8 +1537,6 @@
 
       </div>
 
-
-      <!-- CINEMATIC VIDEO / SCREENSHOT -->
 
       <div class="media-frame cinematic-frame">
       </div>
@@ -1725,8 +1661,6 @@
       <div class="enemy-grid">
 
 
-        <!-- PIGS -->
-
         <div class="enemy">
 
           <div class="enemy-content">
@@ -1746,8 +1680,6 @@
         </div>
 
 
-        <!-- RATS -->
-
         <div class="enemy">
 
           <div class="enemy-content">
@@ -1765,8 +1697,6 @@
 
         </div>
 
-
-        <!-- THUGS -->
 
         <div class="enemy">
 
@@ -1804,8 +1734,6 @@
 
       <div class="experience-layout">
 
-
-        <!-- CHARACTER / STORY ART -->
 
         <div class="media-frame experience-frame">
         </div>
@@ -1878,11 +1806,6 @@
 
 
         <div class="cta-buttons">
-
-          <!--
-            Replace # with the actual Steam page
-            when the Steam page is available.
-          -->
 
           <a
             href="#"
