@@ -41,54 +41,41 @@
     }
 
     body {
-
       font-family: "Silkscreen", monospace;
-
       color: #ffffff;
+      overflow-x: hidden;
 
       /*
-        ONE CONTINUOUS PAGE-WIDE GRADIENT.
-
-        The gradient belongs to the entire document rather than
-        individual sections, so there are no hard horizontal
-        transitions as the user scrolls.
+        ONE CONTINUOUS GRADIENT FOR THE ENTIRE PAGE.
+        There are no individual section backgrounds.
       */
 
       background:
         linear-gradient(
           to bottom,
           #16070D 0%,
-          #16070D 17%,
-          #1C080F 31%,
-          #260D14 45%,
-          #35151B 59%,
-          #4B2425 73%,
-          #6B3932 86%,
+          #16070D 18%,
+          #1C080F 32%,
+          #260D14 46%,
+          #35151B 60%,
+          #4B2425 74%,
+          #6B3932 87%,
           #A76555 100%
         );
-
-      background-attachment: scroll;
-
-      overflow-x: hidden;
     }
 
     body::before {
-
       content: "";
-
       position: fixed;
-
       inset: 0;
-
       pointer-events: none;
-
       z-index: 100;
 
       background:
         radial-gradient(
           ellipse at center,
-          transparent 45%,
-          rgba(0, 0, 0, 0.22) 100%
+          transparent 48%,
+          rgba(0, 0, 0, 0.18) 100%
         );
     }
 
@@ -113,75 +100,43 @@
     ========================================================== */
 
     :root {
-
-      --burgundy: #16070D;
-      --burgundy-light: #35151B;
-
       --pink: #FF4F9A;
       --yellow: #FFD76A;
-
       --cream: #FFE5D1;
-
       --muted: #D8BDB5;
-
       --line: rgba(255, 225, 210, 0.16);
-
-      --black: #090509;
     }
 
 
     /* =========================================================
-       GLOBAL LAYOUT
+       GLOBAL
     ========================================================== */
 
     .container {
-
-      width: min(
-        1200px,
-        calc(100% - 48px)
-      );
-
+      width: min(1200px, calc(100% - 48px));
       margin: 0 auto;
     }
 
     .section {
-
       position: relative;
-
       padding: 130px 0;
     }
 
     .eyebrow {
-
       font-family: "Press Start 2P", monospace;
-
       font-size: 10px;
-
       line-height: 1.7;
-
       letter-spacing: 1px;
-
       color: var(--yellow);
-
       margin-bottom: 22px;
     }
 
     .section-title {
-
       font-family: "Press Start 2P", monospace;
-
-      font-size: clamp(
-        30px,
-        5vw,
-        64px
-      );
-
+      font-size: clamp(30px, 5vw, 64px);
       line-height: 1.15;
-
       text-transform: uppercase;
-
       color: #ffffff;
-
       max-width: 1000px;
     }
 
@@ -190,15 +145,10 @@
     }
 
     .section-copy {
-
       max-width: 720px;
-
       margin-top: 28px;
-
       color: var(--muted);
-
       font-size: 14px;
-
       line-height: 2;
     }
 
@@ -208,63 +158,40 @@
     ========================================================== */
 
     .top-nav {
-
       position: absolute;
-
       top: 0;
       left: 0;
-
       width: 100%;
-
       z-index: 50;
-
       padding: 28px 0;
     }
 
     .nav-inner {
-
-      width: min(
-        1400px,
-        calc(100% - 48px)
-      );
-
+      width: min(1400px, calc(100% - 48px));
       margin: 0 auto;
 
       display: flex;
-
       align-items: center;
-
       justify-content: space-between;
     }
 
     .nav-brand {
-
       font-family: "Press Start 2P", monospace;
-
       font-size: 11px;
-
       letter-spacing: 1px;
     }
 
     .nav-links {
-
       display: flex;
-
       align-items: center;
-
       gap: 28px;
-
       font-size: 9px;
-
       text-transform: uppercase;
     }
 
     .nav-links a {
-
       color: #d8beb7;
-
-      transition:
-        color 0.2s ease;
+      transition: color 0.2s ease;
     }
 
     .nav-links a:hover {
@@ -277,7 +204,6 @@
     ========================================================== */
 
     .hero {
-
       min-height: 100vh;
 
       padding:
@@ -286,80 +212,41 @@
         110px;
 
       display: flex;
-
       align-items: center;
 
       position: relative;
-
       overflow: hidden;
     }
 
     .hero::before {
-
       content: "";
-
       position: absolute;
-
       inset: 0;
-
       pointer-events: none;
 
       background:
         radial-gradient(
-          circle at 50% 18%,
-          rgba(255, 79, 154, 0.09),
+          circle at 50% 15%,
+          rgba(255, 79, 154, 0.07),
           transparent 34%
         );
     }
 
-    .hero::after {
-
-      content: "";
-
-      position: absolute;
-
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      height: 260px;
-
-      pointer-events: none;
-
-      background:
-        linear-gradient(
-          to bottom,
-          transparent,
-          rgba(22, 7, 13, 0)
-        );
-    }
-
     .hero-content {
-
       position: relative;
-
       z-index: 2;
-
       width: 100%;
-
       text-align: center;
     }
 
     .logo {
-
-      width: min(
-        620px,
-        90vw
-      );
-
-      margin:
-        0 auto
-        42px;
+      width: min(620px, 90vw);
+      margin: 0 auto 42px;
 
       filter:
         drop-shadow(
           0 0 18px
-          rgba(255, 79, 154, 0.18)
+          rgba(255, 79, 154, 0.16)
         )
         drop-shadow(
           0 18px 35px
@@ -368,36 +255,20 @@
     }
 
     .hero-intro {
-
-      width: min(
-        780px,
-        100%
-      );
-
+      width: min(780px, 100%);
       margin: 0 auto;
     }
 
     .hero-intro h1 {
-
       font-family: "Press Start 2P", monospace;
-
-      font-size: clamp(
-        18px,
-        3vw,
-        30px
-      );
-
+      font-size: clamp(18px, 3vw, 30px);
       line-height: 1.5;
-
       margin-bottom: 25px;
     }
 
     .hero-intro p {
-
       color: #dfc7c0;
-
       font-size: 14px;
-
       line-height: 2.1;
     }
 
@@ -407,9 +278,7 @@
     ========================================================== */
 
     .media-frame {
-
       position: relative;
-
       width: 100%;
 
       background:
@@ -421,12 +290,7 @@
 
       border:
         1px solid
-        rgba(
-          255,
-          218,
-          202,
-          0.16
-        );
+        rgba(255, 218, 202, 0.16);
 
       overflow: hidden;
 
@@ -436,11 +300,8 @@
     }
 
     .media-frame::before {
-
       content: "";
-
       position: absolute;
-
       inset: 0;
 
       background:
@@ -453,21 +314,16 @@
     }
 
     .media-frame::after {
-
       content: "MEDIA PLACEHOLDER";
 
       position: absolute;
-
       inset: 0;
 
       display: flex;
-
       align-items: center;
-
       justify-content: center;
 
       font-family: "Press Start 2P", monospace;
-
       font-size: 9px;
 
       color:
@@ -487,92 +343,62 @@
     ========================================================== */
 
     .trailer-section {
-
       padding-top: 60px;
-
       padding-bottom: 120px;
     }
 
     .trailer-intro {
-
       margin-bottom: 42px;
     }
 
     .trailer-frame {
-
       aspect-ratio: 16 / 9;
     }
 
 
     /* =========================================================
-       CITY
+       BLACKOUT CITY
     ========================================================== */
 
     .city-section {
-
       padding-top: 130px;
     }
 
     .city-header {
-
       margin-bottom: 55px;
     }
 
     .city-frame {
-
       aspect-ratio: 21 / 9;
-
       margin-bottom: 50px;
     }
 
     .city-bottom {
-
       display: grid;
-
-      grid-template-columns:
-        1.3fr
-        0.7fr;
-
+      grid-template-columns: 1.3fr 0.7fr;
       gap: 70px;
-
       align-items: start;
     }
 
     .city-facts {
-
-      border-top:
-        1px solid
-        var(--line);
+      border-top: 1px solid var(--line);
     }
 
     .fact {
-
       padding: 24px 0;
-
-      border-bottom:
-        1px solid
-        var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     .fact h3 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 10px;
-
       color: var(--yellow);
-
       margin-bottom: 10px;
     }
 
     .fact p {
-
       font-size: 11px;
-
       color: #d5bdb6;
-
       line-height: 1.9;
     }
 
@@ -582,52 +408,34 @@
     ========================================================== */
 
     .gameplay-section {
-
       padding-top: 150px;
     }
 
     .gameplay-header {
-
       margin-bottom: 65px;
     }
 
     .gameplay-layout {
-
       display: grid;
-
-      grid-template-columns:
-        0.8fr
-        1.2fr;
-
+      grid-template-columns: 0.8fr 1.2fr;
       gap: 70px;
-
       align-items: center;
     }
 
     .gameplay-copy h3 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 20px;
-
       line-height: 1.7;
-
       margin-bottom: 25px;
     }
 
     .gameplay-copy p {
-
       color: var(--muted);
-
       font-size: 13px;
-
       line-height: 2;
     }
 
     .gameplay-frame {
-
       aspect-ratio: 16 / 9;
     }
 
@@ -637,16 +445,12 @@
     ========================================================== */
 
     .features-section {
-
       padding-top: 80px;
     }
 
     .features-grid {
-
       display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
 
       border-top:
         1px solid
@@ -658,9 +462,7 @@
     }
 
     .feature {
-
       min-height: 235px;
-
       padding: 38px;
 
       border-right:
@@ -676,7 +478,6 @@
     }
 
     .feature:hover {
-
       background:
         rgba(
           255,
@@ -687,37 +488,22 @@
     }
 
     .feature-number {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 9px;
-
       color: var(--pink);
-
       margin-bottom: 28px;
     }
 
     .feature h3 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 14px;
-
       line-height: 1.6;
-
       margin-bottom: 18px;
     }
 
     .feature p {
-
       color: #cdb5ae;
-
       font-size: 11px;
-
       line-height: 1.9;
     }
 
@@ -727,87 +513,53 @@
     ========================================================== */
 
     .blaster-section {
-
       padding-top: 160px;
     }
 
     .blaster-layout {
-
       display: grid;
-
-      grid-template-columns:
-        1fr
-        1fr;
-
+      grid-template-columns: 1fr 1fr;
       gap: 80px;
-
       align-items: center;
     }
 
     .blaster-frame {
-
       aspect-ratio: 1 / 1;
     }
 
     .blaster-copy h3 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 21px;
-
       line-height: 1.7;
-
       margin-bottom: 25px;
     }
 
     .blaster-copy > p {
-
       color: var(--muted);
-
       font-size: 13px;
-
       line-height: 2;
     }
 
     .weapon-modes {
-
       margin-top: 38px;
-
-      border-top:
-        1px solid
-        var(--line);
+      border-top: 1px solid var(--line);
     }
 
     .weapon-mode {
-
       padding: 22px 0;
-
-      border-bottom:
-        1px solid
-        var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     .weapon-mode h4 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 10px;
-
       color: var(--yellow);
-
       margin-bottom: 9px;
     }
 
     .weapon-mode p {
-
       font-size: 11px;
-
       line-height: 1.8;
-
       color: #cdb5ae;
     }
 
@@ -817,29 +569,21 @@
     ========================================================== */
 
     .cinematic-section {
-
       padding-top: 170px;
     }
 
     .cinematic-header {
-
       margin-bottom: 55px;
     }
 
     .cinematic-frame {
-
       aspect-ratio: 21 / 9;
-
       margin-bottom: 45px;
     }
 
     .cinematic-grid {
-
       display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
+      grid-template-columns: repeat(3, 1fr);
       gap: 1px;
 
       background:
@@ -847,39 +591,28 @@
     }
 
     .cinematic-item {
-
       background:
         rgba(
           17,
           6,
           12,
-          0.25
+          0.20
         );
 
       padding: 30px;
-
       min-height: 180px;
     }
 
     .cinematic-item h3 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 10px;
-
       line-height: 1.7;
-
       margin-bottom: 16px;
     }
 
     .cinematic-item p {
-
       font-size: 11px;
-
       line-height: 1.8;
-
       color: #cbb4ad;
     }
 
@@ -889,26 +622,18 @@
     ========================================================== */
 
     .music-section {
-
       text-align: center;
-
       padding-top: 170px;
-
       padding-bottom: 150px;
     }
 
     .music-content {
-
       max-width: 850px;
-
       margin: 0 auto;
     }
 
     .music-title {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
+      font-family: "Press Start 2P", monospace;
 
       font-size:
         clamp(
@@ -925,9 +650,7 @@
     }
 
     .music-copy {
-
-      margin:
-        30px auto 0;
+      margin: 30px auto 0;
 
       color: #d9c0b9;
 
@@ -944,35 +667,26 @@
     ========================================================== */
 
     .enemies-section {
-
       padding-top: 150px;
     }
 
     .enemy-intro {
-
       margin-bottom: 60px;
     }
 
     .enemy-grid {
-
       display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
 
     .enemy {
-
       min-height: 400px;
 
       padding: 38px;
 
       display: flex;
-
       flex-direction: column;
-
       justify-content: flex-end;
 
       background:
@@ -987,27 +701,20 @@
         var(--line);
 
       position: relative;
-
       overflow: hidden;
     }
 
     .enemy::before {
-
       content: "ARTWORK";
 
       position: absolute;
-
       inset: 0;
 
       display: flex;
-
       align-items: center;
-
       justify-content: center;
 
-      font-family:
-        "Press Start 2P",
-        monospace;
+      font-family: "Press Start 2P", monospace;
 
       font-size: 9px;
 
@@ -1021,60 +728,40 @@
     }
 
     .enemy-content {
-
       position: relative;
-
       z-index: 2;
     }
 
     .enemy h3 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
-
+      font-family: "Press Start 2P", monospace;
       font-size: 16px;
-
       margin-bottom: 15px;
     }
 
     .enemy p {
-
       font-size: 11px;
-
       line-height: 1.8;
-
       color: #d0b8b0;
     }
 
 
     /* =========================================================
-       EXPERIENCE
+       THE EXPERIENCE
     ========================================================== */
 
     .experience-section {
-
       padding-top: 180px;
     }
 
     .experience-layout {
-
       display: grid;
-
-      grid-template-columns:
-        1fr
-        1fr;
-
+      grid-template-columns: 1fr 1fr;
       gap: 80px;
-
       align-items: center;
     }
 
     .experience-copy h3 {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
+      font-family: "Press Start 2P", monospace;
 
       font-size: 21px;
 
@@ -1084,7 +771,6 @@
     }
 
     .experience-copy p {
-
       color: var(--muted);
 
       font-size: 13px;
@@ -1095,7 +781,6 @@
     }
 
     .experience-frame {
-
       aspect-ratio: 4 / 5;
     }
 
@@ -1105,7 +790,6 @@
     ========================================================== */
 
     .cta-section {
-
       padding:
         190px
         0
@@ -1115,20 +799,12 @@
     }
 
     .cta-inner {
-
-      width: min(
-        950px,
-        100%
-      );
-
+      width: min(950px, 100%);
       margin: 0 auto;
     }
 
     .cta-title {
-
-      font-family:
-        "Press Start 2P",
-        monospace;
+      font-family: "Press Start 2P", monospace;
 
       font-size:
         clamp(
@@ -1147,7 +823,6 @@
     }
 
     .cta-copy {
-
       max-width: 650px;
 
       margin:
@@ -1161,7 +836,6 @@
     }
 
     .cta-buttons {
-
       margin-top: 45px;
 
       display: flex;
@@ -1174,11 +848,9 @@
     }
 
     .button {
-
       display: inline-flex;
 
       align-items: center;
-
       justify-content: center;
 
       min-width: 240px;
@@ -1209,7 +881,6 @@
     }
 
     .button-primary {
-
       background:
         var(--pink);
 
@@ -1220,33 +891,14 @@
         #ffffff;
     }
 
-    .button-secondary {
-
-      background:
-        rgba(
-          0,
-          0,
-          0,
-          0.12
-        );
-    }
-
     .button:hover {
-
       transform:
         translateY(-3px);
     }
 
     .button-primary:hover {
-
       background:
         #ff72ae;
-    }
-
-    .button-secondary:hover {
-
-      border-color:
-        var(--pink);
     }
 
 
@@ -1255,7 +907,6 @@
     ========================================================== */
 
     footer {
-
       border-top:
         1px solid
         rgba(
@@ -1269,14 +920,12 @@
         35px 0;
 
       /*
-        IMPORTANT:
-        No separate background here.
-        The continuous body gradient should continue behind it.
+        No background here.
+        The main page gradient continues underneath.
       */
     }
 
     .footer-inner {
-
       width: min(
         1200px,
         calc(100% - 48px)
@@ -1294,7 +943,6 @@
     }
 
     .footer-brand {
-
       font-family:
         "Press Start 2P",
         monospace;
@@ -1303,7 +951,6 @@
     }
 
     .footer-copy {
-
       color: #9d827b;
 
       font-size: 8px;
@@ -1332,52 +979,41 @@
       .gameplay-layout,
       .blaster-layout,
       .experience-layout {
-
         grid-template-columns: 1fr;
-
         gap: 45px;
       }
 
       .enemy-grid {
-
         grid-template-columns: 1fr;
       }
 
       .cinematic-grid {
-
         grid-template-columns: 1fr;
       }
 
       .city-frame,
       .cinematic-frame {
-
         aspect-ratio: 16 / 9;
       }
 
       .features-grid {
-
         grid-template-columns: 1fr;
       }
 
       .enemy {
-
         min-height: 340px;
       }
 
       .experience-frame {
-
         order: -1;
       }
 
       .footer-inner {
-
         flex-direction: column;
-
         align-items: flex-start;
       }
 
       .footer-copy {
-
         text-align: left;
       }
     }
@@ -1390,7 +1026,6 @@
     @media (max-width: 600px) {
 
       .container {
-
         width:
           min(
             100% - 30px,
@@ -1399,44 +1034,35 @@
       }
 
       .hero {
-
         padding-top: 120px;
       }
 
       .logo {
-
         width: 92vw;
       }
 
       .hero-intro p {
-
         font-size: 12px;
       }
 
       .section-title {
-
         font-size: 27px;
       }
 
       .feature {
-
         padding: 28px;
-
         min-height: auto;
       }
 
       .music-title {
-
         font-size: 32px;
       }
 
       .cta-title {
-
         font-size: 29px;
       }
 
       .button {
-
         width: 100%;
       }
     }
@@ -1509,7 +1135,6 @@
           class="logo"
         >
 
-
         <div class="hero-intro">
 
           <h1>
@@ -1517,8 +1142,8 @@
           </h1>
 
           <p>
-            Super Punkass is an 80s-inspired 2.5D action game set
-            in a city where the night never seems to end.
+            Super Punkass is an 80s-inspired 2.5D action game
+            set in a city where the night never seems to end.
             After years of surviving on her own, Super Punkass
             makes one last move: rob Blackout City Bank,
             take the money, and get out.
@@ -1560,9 +1185,7 @@
       </div>
 
 
-      <!--
-        TRAILER VIDEO GOES HERE
-      -->
+      <!-- TRAILER WILL GO HERE -->
 
       <div class="media-frame trailer-frame">
       </div>
@@ -1595,17 +1218,16 @@
         </h2>
 
         <p class="section-copy">
-          A massive city of skyscrapers, neon signs,
-          concrete rooftops and endless artificial light.
+          A massive 1980s city of towering buildings,
+          crowded streets, concrete rooftops, alleys
+          and endless nighttime.
           The sun never seems to rise here.
         </p>
 
       </div>
 
 
-      <!--
-        FUTURE BLACKOUT CITY ARTWORK
-      -->
+      <!-- BLACKOUT CITY ARTWORK WILL GO HERE -->
 
       <div class="media-frame city-frame">
       </div>
@@ -1625,10 +1247,10 @@
 
           <p class="section-copy">
             Explore a stylized 2.5D version of Blackout City
-            as you move through streets, rooftops and vertical
-            spaces. Jump from building to building, climb
-            through the environment and find your way forward
-            while the entire city seems determined to stop you.
+            as you move through streets, rooftops and
+            vertical spaces. Jump from building to building,
+            climb through the environment and find your way
+            forward while the city closes in around you.
           </p>
 
         </div>
@@ -1644,8 +1266,8 @@
             </h3>
 
             <p>
-              Blackout City is defined by darkness,
-              neon and artificial light.
+              Blackout City is the only place in the world
+              where the sun never seems to rise.
             </p>
 
           </div>
@@ -1672,8 +1294,8 @@
             </h3>
 
             <p>
-              Pixel-art characters move through a detailed
-              low-poly 3D environment.
+              Pixel-art characters move through a
+              detailed low-poly 3D environment.
             </p>
 
           </div>
@@ -1731,11 +1353,11 @@
           </h3>
 
           <p>
-            Navigate Blackout City with fast, responsive movement
-            designed around action. Jump from roof to roof,
-            climb through the environment, slide beneath
-            obstacles and fight your way through anyone
-            who gets in your path.
+            Navigate Blackout City with fast, responsive
+            movement designed around action. Jump from
+            roof to roof, climb through the environment,
+            slide beneath obstacles and fight your way
+            through anyone who gets in your path.
           </p>
 
         </div>
@@ -1832,8 +1454,8 @@
 
           <p>
             When somebody gets too close, throw hands.
-            Punch your way through encounters and make room
-            to escape.
+            Punch your way through encounters and make
+            room to escape.
           </p>
 
         </div>
@@ -1971,8 +1593,8 @@
         <p class="section-copy">
           Super Punkass combines pixel-art characters with
           a low-poly 3D world to create a cinematic 2.5D
-          experience inspired by the attitude, atmosphere
-          and visual language of classic 80s action movies.
+          experience inspired by the action movies and
+          visual style of the 1980s.
         </p>
 
       </div>
@@ -2009,8 +1631,8 @@
 
           <p>
             Pixel-art characters exist inside a low-poly 3D
-            environment, blending nostalgic game visuals
-            with a more cinematic world.
+            environment, combining nostalgic game visuals
+            with a cinematic world.
           </p>
 
         </div>
@@ -2058,10 +1680,9 @@
         </h2>
 
         <p class="music-copy">
-          An 80s-inspired retro soundtrack drives the escape.
-          Synth-heavy music, arcade-inspired sounds and
-          cinematic effects help turn Blackout City into
-          a world that feels alive long after dark.
+          An 80s-inspired retro soundtrack drives the escape,
+          backed by punchy arcade-style sound effects and
+          cinematic audio that keeps the action moving.
         </p>
 
       </div>
@@ -2184,6 +1805,8 @@
       <div class="experience-layout">
 
 
+        <!-- CHARACTER / STORY ART -->
+
         <div class="media-frame experience-frame">
         </div>
 
@@ -2256,7 +1879,10 @@
 
         <div class="cta-buttons">
 
-          <!-- Replace # with your Steam page once available -->
+          <!--
+            Replace # with the actual Steam page
+            when the Steam page is available.
+          -->
 
           <a
             href="#"
