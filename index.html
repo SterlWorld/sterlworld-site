@@ -2,20 +2,28 @@
 <html lang="en">
 <head>
 
-  <!-- Google tag (gtag.js) -->
+  <!-- ========================================================= -->
+  <!-- GOOGLE ANALYTICS -->
+  <!-- ========================================================= -->
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YGPZXDQV5Q"></script>
+
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag(){
+      dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
 
     gtag('config', 'G-YGPZXDQV5Q');
   </script>
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- STRUCTURED DATA -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
   <script type="application/ld+json">
   {
@@ -55,20 +63,20 @@
   </script>
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- SEO -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
-  <title>SterlWorld Entertainment — Games, Worlds, and Creative Experiences</title>
+  <title>SterlWorld Entertainment — Enter a World</title>
 
   <meta
     name="description"
-    content="SterlWorld Entertainment is an independent creative studio building original games, worlds, and interactive experiences."
+    content="Enter the worlds of SterlWorld — an independent creative studio building original games, characters, and interactive worlds."
   >
 
   <meta
     property="og:title"
-    content="SterlWorld Entertainment — Games, Worlds, and Creative Experiences"
+    content="SterlWorld Entertainment — Enter a World"
   >
 
   <meta
@@ -98,7 +106,7 @@
 
   <meta
     name="twitter:title"
-    content="SterlWorld Entertainment"
+    content="SterlWorld Entertainment — Enter a World"
   >
 
   <meta
@@ -111,6 +119,11 @@
     content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png"
   >
 
+
+  <!-- ========================================================= -->
+  <!-- META -->
+  <!-- ========================================================= -->
+
   <meta charset="UTF-8">
 
   <meta
@@ -119,9 +132,9 @@
   >
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- FONTS -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
   <link
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap"
@@ -129,11 +142,15 @@
   >
 
 
-  <!-- ========================= -->
-  <!-- STYLES -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
+  <!-- CSS -->
+  <!-- ========================================================= -->
 
   <style>
+
+    /* ========================================================= */
+    /* RESET */
+    /* ========================================================= */
 
     * {
       margin: 0;
@@ -156,7 +173,7 @@
       width: 100%;
       min-height: 100%;
 
-      color: white;
+      color: #ffffff;
 
       font-family: 'Poppins', sans-serif;
 
@@ -166,11 +183,31 @@
         linear-gradient(
           to bottom,
           #080317 0%,
-          #080317 58%,
-          #0A031A 70%,
-          #0D0411 80%,
-          #14061A 90%,
+          #080317 60%,
+          #090319 70%,
+          #0D0413 80%,
+          #13051A 90%,
           #1A0721 100%
+        );
+    }
+
+
+    body::before {
+      content: "";
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      z-index: 1;
+
+      background:
+        radial-gradient(
+          ellipse at center,
+          rgba(70, 45, 110, 0.055) 0%,
+          rgba(8, 3, 23, 0) 65%
         );
     }
 
@@ -180,9 +217,9 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* STARFIELD */
-    /* ========================================= */
+    /* ========================================================= */
 
     #space {
       position: fixed;
@@ -200,7 +237,8 @@
 
       opacity: 0;
 
-      transition: opacity 1.5s ease;
+      transition:
+        opacity 1.5s ease;
     }
 
 
@@ -209,47 +247,47 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* AMBIENT LIGHT */
-    /* ========================================= */
+    /* ========================================================= */
 
     .ambient-glow {
       position: fixed;
 
-      width: 500px;
-      height: 500px;
+      width: 650px;
+      height: 650px;
 
       border-radius: 50%;
 
-      filter: blur(140px);
+      filter: blur(150px);
 
       pointer-events: none;
 
       z-index: 1;
 
-      opacity: 0.025;
+      opacity: 0.018;
     }
 
 
     .ambient-glow.cyan {
-      top: 10%;
-      left: -250px;
+      top: 5%;
+      left: -350px;
 
       background: #00ffff;
     }
 
 
     .ambient-glow.pink {
-      top: 45%;
-      right: -250px;
+      top: 40%;
+      right: -350px;
 
       background: #ff5ec4;
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* MAIN */
-    /* ========================================= */
+    /* ========================================================= */
 
     main {
       position: relative;
@@ -260,9 +298,9 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* HERO */
-    /* ========================================= */
+    /* ========================================================= */
 
     .hero {
 
@@ -281,23 +319,43 @@
       text-align: center;
 
       padding:
-        8vh
-        30px
-        9vh;
+        7vh
+        40px
+        11vh;
+
+      overflow: hidden;
     }
 
 
-    /* ========================================= */
-    /* LOGO */
-    /* ========================================= */
+    /* ========================================================= */
+    /* HERO INNER */
+    /* ========================================================= */
+
+    .hero-inner {
+
+      width: 100%;
+
+      max-width: 1400px;
+
+      margin: auto;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+    }
+
+
+    /* ========================================================= */
+    /* STERLWORLD LOGO */
+    /* ========================================================= */
 
     .logo-wrapper {
 
       position: relative;
 
-      margin-top: 0;
-
-      margin-bottom: 8vh;
+      margin-bottom: 7vh;
 
       animation:
         logoFloat 7s ease-in-out infinite;
@@ -308,7 +366,12 @@
 
       display: block;
 
-      width: min(330px, 70vw);
+      width:
+        clamp(
+          280px,
+          25vw,
+          390px
+        );
 
       height: auto;
 
@@ -328,19 +391,21 @@
 
       0%,
       100% {
-        transform: translateY(0);
+        transform:
+          translateY(0);
       }
 
       50% {
-        transform: translateY(-6px);
+        transform:
+          translateY(-6px);
       }
 
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* ENTER A WORLD */
-    /* ========================================= */
+    /* ========================================================= */
 
     .worlds-label {
 
@@ -350,29 +415,38 @@
 
       margin-bottom: 4.5vh;
 
-      font-family: 'Orbitron', sans-serif;
+      font-family:
+        'Orbitron',
+        sans-serif;
 
       font-size:
         clamp(
           1.25rem,
-          2.8vw,
+          2.5vw,
           2rem
         );
 
       font-weight: 700;
 
-      letter-spacing: 0.28em;
+      letter-spacing:
+        0.28em;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
 
       color: #ffffff;
 
       white-space: nowrap;
 
       text-shadow:
-        0 0 5px rgba(255,255,255,0.95),
-        0 0 12px rgba(255,255,255,0.7),
-        0 0 25px rgba(120,180,255,0.35);
+        0 0 5px
+        rgba(255,255,255,0.95),
+
+        0 0 12px
+        rgba(255,255,255,0.75),
+
+        0 0 25px
+        rgba(130,170,255,0.4);
 
       animation:
         signalFlicker 4.5s infinite;
@@ -382,7 +456,8 @@
     .worlds-label::before,
     .worlds-label::after {
 
-      content: "ENTER A WORLD";
+      content:
+        "ENTER A WORLD";
 
       position: absolute;
 
@@ -402,7 +477,8 @@
 
       color: #00ffff;
 
-      transform: translateX(-2px);
+      transform:
+        translateX(-2px);
 
       text-shadow:
         0 0 8px #00ffff;
@@ -416,7 +492,8 @@
 
       color: #ff5ec4;
 
-      transform: translateX(2px);
+      transform:
+        translateX(2px);
 
       text-shadow:
         0 0 8px #ff5ec4;
@@ -438,34 +515,49 @@
         opacity: 1;
 
         text-shadow:
-          0 0 5px rgba(255,255,255,0.95),
-          0 0 12px rgba(255,255,255,0.75),
-          0 0 25px rgba(120,180,255,0.4);
+          0 0 5px
+          rgba(255,255,255,0.95),
+
+          0 0 12px
+          rgba(255,255,255,0.75),
+
+          0 0 25px
+          rgba(130,170,255,0.4);
       }
+
 
       8%,
       11%,
       17% {
 
-        opacity: 0.5;
+        opacity: 0.48;
 
         text-shadow:
-          0 0 2px rgba(255,255,255,0.5),
-          0 0 6px rgba(120,180,255,0.2);
+          0 0 2px
+          rgba(255,255,255,0.5),
+
+          0 0 6px
+          rgba(130,170,255,0.2);
       }
+
 
       45% {
 
-        opacity: 0.92;
+        opacity: 0.9;
 
         text-shadow:
-          0 0 5px rgba(255,255,255,0.85),
-          0 0 16px rgba(255,94,196,0.4);
+          0 0 5px
+          rgba(255,255,255,0.85),
+
+          0 0 16px
+          rgba(255,94,196,0.4);
       }
+
 
       46% {
         opacity: 0.45;
       }
+
 
       47% {
         opacity: 1;
@@ -482,25 +574,33 @@
         opacity: 0;
       }
 
+
       71% {
 
         opacity: 0.75;
 
         clip-path:
-          inset(20% 0 60% 0);
+          inset(
+            20% 0 60% 0
+          );
       }
+
 
       72% {
         opacity: 0;
       }
+
 
       74% {
 
         opacity: 0.55;
 
         clip-path:
-          inset(65% 0 10% 0);
+          inset(
+            65% 0 10% 0
+          );
       }
+
 
       75% {
         opacity: 0;
@@ -517,25 +617,33 @@
         opacity: 0;
       }
 
+
       74% {
 
         opacity: 0.65;
 
         clip-path:
-          inset(55% 0 20% 0);
+          inset(
+            55% 0 20% 0
+          );
       }
+
 
       75% {
         opacity: 0;
       }
+
 
       77% {
 
         opacity: 0.5;
 
         clip-path:
-          inset(10% 0 75% 0);
+          inset(
+            10% 0 75% 0
+          );
       }
+
 
       78% {
         opacity: 0;
@@ -544,11 +652,13 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* GAME WORLDS */
-    /* ========================================= */
+    /* ========================================================= */
 
     .worlds {
+
+      width: 100%;
 
       display: flex;
 
@@ -558,12 +668,10 @@
 
       gap:
         clamp(
-          80px,
-          12vw,
-          190px
+          110px,
+          14vw,
+          220px
         );
-
-      width: 100%;
 
       margin-bottom: 7vh;
     }
@@ -573,9 +681,19 @@
 
       position: relative;
 
-      width: 245px;
+      width:
+        clamp(
+          235px,
+          18vw,
+          285px
+        );
 
-      height: 125px;
+      height:
+        clamp(
+          120px,
+          9vw,
+          145px
+        );
 
       display: flex;
 
@@ -595,7 +713,6 @@
       display: block;
 
       width: 100%;
-
       height: 100%;
 
       max-width: 100%;
@@ -609,14 +726,14 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* PIZZA DALES */
-    /* ========================================= */
+    /* ========================================================= */
 
     .world-button.pizza:hover {
 
       transform:
-        translateY(-9px)
+        translateY(-10px)
         scale(1.05);
     }
 
@@ -625,11 +742,15 @@
 
       filter:
         drop-shadow(
-          0 0 5px #3EC750
+          0 0 5px
+          #3EC750
         )
+
         drop-shadow(
-          0 0 15px #3EC750
+          0 0 15px
+          #3EC750
         )
+
         drop-shadow(
           0 0 30px
           rgba(62,199,80,0.65)
@@ -645,7 +766,7 @@
 
       left: 50%;
 
-      bottom: 0;
+      bottom: -3px;
 
       width: 120px;
 
@@ -655,11 +776,15 @@
         translateX(-50%)
         scaleX(0);
 
-      background: #3EC750;
+      background:
+        #3EC750;
 
       box-shadow:
-        0 0 8px #3EC750,
-        0 0 18px #3EC750;
+        0 0 8px
+        #3EC750,
+
+        0 0 18px
+        #3EC750;
 
       transition:
         transform 0.4s ease;
@@ -674,14 +799,14 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* SUPER PUNKASS */
-    /* ========================================= */
+    /* ========================================================= */
 
     .world-button.punkass:hover {
 
       transform:
-        translateY(-9px)
+        translateY(-10px)
         scale(1.05);
     }
 
@@ -690,11 +815,15 @@
 
       filter:
         drop-shadow(
-          0 0 5px #ff5ec4
+          0 0 5px
+          #ff5ec4
         )
+
         drop-shadow(
-          0 0 15px #ff5ec4
+          0 0 15px
+          #ff5ec4
         )
+
         drop-shadow(
           0 0 30px
           rgba(255,94,196,0.7)
@@ -710,7 +839,7 @@
 
       left: 50%;
 
-      bottom: 0;
+      bottom: -3px;
 
       width: 120px;
 
@@ -720,11 +849,15 @@
         translateX(-50%)
         scaleX(0);
 
-      background: #ff5ec4;
+      background:
+        #ff5ec4;
 
       box-shadow:
-        0 0 8px #ff5ec4,
-        0 0 18px #ff5ec4;
+        0 0 8px
+        #ff5ec4,
+
+        0 0 18px
+        #ff5ec4;
 
       transition:
         transform 0.4s ease;
@@ -739,9 +872,9 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* SECONDARY LINKS */
-    /* ========================================= */
+    /* ========================================================= */
 
     .secondary-links {
 
@@ -753,20 +886,29 @@
 
       gap: 28px;
 
-      font-size: 0.75rem;
+      font-size:
+        0.72rem;
 
-      letter-spacing: 0.16em;
+      letter-spacing:
+        0.16em;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
     }
 
 
     .secondary-links a {
 
       color:
-        rgba(255,255,255,0.5);
+        rgba(
+          255,
+          255,
+          255,
+          0.48
+        );
 
-      text-decoration: none;
+      text-decoration:
+        none;
 
       transition:
         color 0.3s ease,
@@ -776,11 +918,17 @@
 
     .secondary-links a:hover {
 
-      color: white;
+      color:
+        #ffffff;
 
       text-shadow:
         0 0 10px
-        rgba(255,255,255,0.65);
+        rgba(
+          255,
+          255,
+          255,
+          0.65
+        );
     }
 
 
@@ -793,13 +941,18 @@
       border-radius: 50%;
 
       background:
-        rgba(255,255,255,0.3);
+        rgba(
+          255,
+          255,
+          255,
+          0.3
+        );
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* EXPLORE */
-    /* ========================================= */
+    /* ========================================================= */
 
     .explore-hint {
 
@@ -807,7 +960,7 @@
 
       left: 50%;
 
-      bottom: 4vh;
+      bottom: 3.5vh;
 
       transform:
         translateX(-50%);
@@ -821,13 +974,21 @@
       gap: 9px;
 
       color:
-        rgba(255,255,255,0.3);
+        rgba(
+          255,
+          255,
+          255,
+          0.28
+        );
 
-      font-size: 0.6rem;
+      font-size:
+        0.6rem;
 
-      letter-spacing: 0.25em;
+      letter-spacing:
+        0.25em;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
     }
 
 
@@ -839,17 +1000,30 @@
 
       border-right:
         1px solid
-        rgba(255,255,255,0.45);
+        rgba(
+          255,
+          255,
+          255,
+          0.4
+        );
 
       border-bottom:
         1px solid
-        rgba(255,255,255,0.45);
+        rgba(
+          255,
+          255,
+          255,
+          0.4
+        );
 
       transform:
         rotate(45deg);
 
       animation:
-        arrowFloat 2s ease-in-out infinite;
+        arrowFloat
+        2s
+        ease-in-out
+        infinite;
     }
 
 
@@ -863,6 +1037,7 @@
           rotate(45deg);
       }
 
+
       50% {
 
         transform:
@@ -873,9 +1048,346 @@
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
+    /* FEATURED SECTION */
+    /* ========================================================= */
+
+    .featured {
+
+      position: relative;
+
+      width: 100%;
+
+      padding:
+        120px
+        40px
+        135px;
+    }
+
+
+    .featured-inner {
+
+      width: 100%;
+
+      max-width: 1250px;
+
+      margin: auto;
+    }
+
+
+    .section-heading {
+
+      display: flex;
+
+      align-items: flex-end;
+
+      justify-content: space-between;
+
+      gap: 30px;
+
+      margin-bottom: 45px;
+    }
+
+
+    .section-kicker {
+
+      font-family:
+        'Orbitron',
+        sans-serif;
+
+      font-size:
+        0.68rem;
+
+      letter-spacing:
+        0.3em;
+
+      text-transform:
+        uppercase;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.38
+        );
+
+      margin-bottom: 12px;
+    }
+
+
+    .section-heading h2 {
+
+      font-family:
+        'Orbitron',
+        sans-serif;
+
+      font-size:
+        clamp(
+          2rem,
+          4vw,
+          3.3rem
+        );
+
+      line-height:
+        1.1;
+
+      letter-spacing:
+        0.03em;
+    }
+
+
+    .section-heading p {
+
+      max-width: 390px;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.48
+        );
+
+      font-size:
+        0.82rem;
+
+      line-height:
+        1.8;
+    }
+
+
+    /* ========================================================= */
+    /* FEATURED WORLD GRID */
+    /* ========================================================= */
+
+    .featured-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0, 1fr)
+        );
+
+      gap: 25px;
+    }
+
+
+    .featured-card {
+
+      position: relative;
+
+      min-height: 300px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: flex-end;
+
+      padding: 35px;
+
+      overflow: hidden;
+
+      text-decoration: none;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.08
+        );
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20,8,32,0.78),
+          rgba(8,3,23,0.5)
+        );
+
+      transition:
+        transform 0.4s ease,
+        border-color 0.4s ease;
+    }
+
+
+    .featured-card::before {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        radial-gradient(
+          circle at 75% 20%,
+          rgba(
+            255,
+            255,
+            255,
+            0.05
+          ),
+          transparent 45%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .featured-card:hover {
+
+      transform:
+        translateY(-6px);
+
+      border-color:
+        rgba(
+          255,
+          255,
+          255,
+          0.2
+        );
+    }
+
+
+    .featured-card.pizza:hover {
+
+      box-shadow:
+        0 20px 60px
+        rgba(
+          62,
+          199,
+          80,
+          0.08
+        );
+    }
+
+
+    .featured-card.punkass:hover {
+
+      box-shadow:
+        0 20px 60px
+        rgba(
+          255,
+          94,
+          196,
+          0.08
+        );
+    }
+
+
+    .featured-card-content {
+
+      position: relative;
+
+      z-index: 2;
+    }
+
+
+    .featured-card-label {
+
+      font-size:
+        0.62rem;
+
+      letter-spacing:
+        0.2em;
+
+      text-transform:
+        uppercase;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.4
+        );
+
+      margin-bottom: 10px;
+    }
+
+
+    .featured-card h3 {
+
+      font-family:
+        'Orbitron',
+        sans-serif;
+
+      font-size:
+        clamp(
+          1.15rem,
+          2vw,
+          1.55rem
+        );
+
+      margin-bottom: 10px;
+    }
+
+
+    .featured-card p {
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.52
+        );
+
+      font-size:
+        0.78rem;
+
+      line-height:
+        1.7;
+
+      max-width:
+        420px;
+    }
+
+
+    .featured-card-arrow {
+
+      position: absolute;
+
+      right: 30px;
+
+      bottom: 30px;
+
+      font-size:
+        1.1rem;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.4
+        );
+
+      transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+    }
+
+
+    .featured-card:hover
+    .featured-card-arrow {
+
+      transform:
+        translateX(6px);
+
+      color:
+        #ffffff;
+    }
+
+
+    /* ========================================================= */
     /* DIVIDER */
-    /* ========================================= */
+    /* ========================================================= */
 
     .section-divider {
 
@@ -887,7 +1399,12 @@
         linear-gradient(
           90deg,
           transparent,
-          rgba(255,255,255,0.12),
+          rgba(
+            255,
+            255,
+            255,
+            0.1
+          ),
           transparent
         );
     }
@@ -909,16 +1426,26 @@
         linear-gradient(
           90deg,
           transparent,
-          rgba(0,255,255,0.45),
-          rgba(255,94,196,0.45),
+          rgba(
+            0,
+            255,
+            255,
+            0.4
+          ),
+          rgba(
+            255,
+            94,
+            196,
+            0.4
+          ),
           transparent
         );
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* UPDATES */
-    /* ========================================= */
+    /* ========================================================= */
 
     .updates {
 
@@ -926,22 +1453,39 @@
 
       width: 100%;
 
-      max-width: 900px;
-
-      margin: 0 auto;
-
       padding:
-        130px
-        25px
+        120px
+        40px
         150px;
+    }
+
+
+    .updates-inner {
+
+      width: 100%;
+
+      max-width: 1100px;
+
+      margin: auto;
     }
 
 
     .updates-header {
 
-      text-align: center;
+      display: flex;
 
-      margin-bottom: 65px;
+      align-items: flex-end;
+
+      justify-content: space-between;
+
+      gap: 30px;
+
+      margin-bottom: 50px;
+    }
+
+
+    .updates-header-left {
+      flex: 1;
     }
 
 
@@ -951,18 +1495,24 @@
         'Orbitron',
         sans-serif;
 
-      font-size: 0.7rem;
+      font-size:
+        0.68rem;
 
-      font-weight: 600;
+      letter-spacing:
+        0.3em;
 
-      letter-spacing: 0.3em;
-
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
 
       color:
-        rgba(255,255,255,0.4);
+        rgba(
+          255,
+          255,
+          255,
+          0.38
+        );
 
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
 
 
@@ -975,62 +1525,75 @@
       font-size:
         clamp(
           2rem,
-          5vw,
-          3.5rem
+          4vw,
+          3.3rem
         );
 
-      line-height: 1.1;
-
-      letter-spacing: 0.04em;
+      line-height:
+        1.1;
     }
 
 
     .updates-intro {
 
-      max-width: 580px;
-
-      margin:
-        20px auto 0;
+      max-width:
+        390px;
 
       color:
-        rgba(255,255,255,0.5);
+        rgba(
+          255,
+          255,
+          255,
+          0.48
+        );
 
-      font-size: 0.88rem;
+      font-size:
+        0.82rem;
 
-      line-height: 1.8;
+      line-height:
+        1.8;
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* UPDATE LIST */
-    /* ========================================= */
+    /* ========================================================= */
 
     .update-list {
 
-      display: flex;
+      display:
+        flex;
 
-      flex-direction: column;
+      flex-direction:
+        column;
 
-      gap: 25px;
+      gap:
+        22px;
     }
 
 
     .update-card {
 
-      position: relative;
+      position:
+        relative;
 
       padding:
-        30px 32px;
+        30px 35px;
 
       border-left:
         2px solid
-        rgba(255,255,255,0.12);
+        rgba(
+          255,
+          255,
+          255,
+          0.12
+        );
 
       background:
         linear-gradient(
           135deg,
-          rgba(5,2,15,0.65),
-          rgba(15,4,22,0.45)
+          rgba(5,2,15,0.68),
+          rgba(20,5,28,0.45)
         );
 
       backdrop-filter:
@@ -1048,45 +1611,68 @@
     .update-card:hover {
 
       transform:
-        translateX(5px);
+        translateX(6px);
 
       border-left-color:
-        rgba(255,255,255,0.35);
+        rgba(
+          255,
+          255,
+          255,
+          0.32
+        );
     }
 
 
     .update-meta {
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 12px;
+      gap:
+        12px;
 
-      margin-bottom: 14px;
+      margin-bottom:
+        14px;
 
-      font-size: 0.7rem;
+      font-size:
+        0.68rem;
 
-      letter-spacing: 0.12em;
+      letter-spacing:
+        0.12em;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
     }
 
 
     .update-date {
 
       color:
-        rgba(255,255,255,0.42);
+        rgba(
+          255,
+          255,
+          255,
+          0.42
+        );
     }
 
 
     .update-status {
 
-      color: #ff5ec4;
+      color:
+        #ff5ec4;
 
       text-shadow:
         0 0 8px
-        rgba(255,94,196,0.3);
+        rgba(
+          255,
+          94,
+          196,
+          0.3
+        );
     }
 
 
@@ -1103,42 +1689,63 @@
           1.5rem
         );
 
-      line-height: 1.35;
+      line-height:
+        1.35;
 
-      margin-bottom: 12px;
+      margin-bottom:
+        12px;
     }
 
 
     .update-card p {
 
       color:
-        rgba(255,255,255,0.6);
+        rgba(
+          255,
+          255,
+          255,
+          0.58
+        );
 
-      font-size: 0.88rem;
+      font-size:
+        0.84rem;
 
-      line-height: 1.8;
+      line-height:
+        1.8;
+
+      max-width:
+        780px;
     }
 
 
     .update-link {
 
-      display: inline-block;
+      display:
+        inline-block;
 
-      margin-top: 18px;
+      margin-top:
+        18px;
 
-      color: white;
+      color:
+        #ffffff;
 
-      font-size: 0.72rem;
+      font-size:
+        0.68rem;
 
-      font-weight: 600;
+      font-weight:
+        600;
 
-      letter-spacing: 0.15em;
+      letter-spacing:
+        0.15em;
 
-      text-transform: uppercase;
+      text-transform:
+        uppercase;
 
-      text-decoration: none;
+      text-decoration:
+        none;
 
-      opacity: 0.6;
+      opacity:
+        0.55;
 
       transition:
         opacity 0.3s ease,
@@ -1148,48 +1755,69 @@
 
     .update-link:hover {
 
-      opacity: 1;
+      opacity:
+        1;
 
       text-shadow:
         0 0 10px
-        rgba(0,255,255,0.6);
+        rgba(
+          0,
+          255,
+          255,
+          0.6
+        );
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* FOOTER */
-    /* ========================================= */
+    /* ========================================================= */
 
     footer {
 
-      position: relative;
+      position:
+        relative;
 
-      z-index: 5;
+      z-index:
+        5;
 
-      width: 100%;
+      width:
+        100%;
 
       padding:
-        30px
-        20px
-        45px;
+        35px 20px 50px;
 
-      text-align: center;
+      text-align:
+        center;
 
-      font-size: 0.7rem;
+      font-size:
+        0.68rem;
 
-      line-height: 1.8;
+      line-height:
+        1.8;
 
       color:
-        rgba(255,255,255,0.32);
+        rgba(
+          255,
+          255,
+          255,
+          0.28
+        );
     }
 
 
     footer a {
 
       color:
-        rgba(255,255,255,0.4);
+        rgba(
+          255,
+          255,
+          255,
+          0.4
+        );
 
-      text-decoration: none;
+      text-decoration:
+        none;
 
       transition:
         color 0.3s ease;
@@ -1198,37 +1826,68 @@
 
     footer a:hover {
 
-      color: white;
+      color:
+        #ffffff;
     }
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* MOBILE */
-    /* ========================================= */
+    /* ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .worlds {
+
+        gap:
+          55px;
+      }
+
+
+      .featured-grid {
+
+        gap:
+          18px;
+      }
+
+    }
+
 
     @media (max-width: 768px) {
 
       .hero {
 
-        min-height: 100svh;
+        min-height:
+          100svh;
 
         padding:
-          7vh
+          6vh
           20px
           10vh;
       }
 
 
+      .hero-inner {
+
+        margin:
+          0 auto;
+      }
+
+
       .logo-wrapper {
 
-        margin-bottom: 7vh;
+        margin-bottom:
+          6vh;
       }
 
 
       .logo {
 
         width:
-          min(260px, 68vw);
+          min(
+            270px,
+            70vw
+          );
       }
 
 
@@ -1238,52 +1897,104 @@
           clamp(
             1rem,
             5vw,
-            1.4rem
+            1.45rem
           );
 
         letter-spacing:
           0.18em;
 
-        margin-bottom: 4vh;
+        margin-bottom:
+          4vh;
       }
 
 
       .worlds {
 
-        flex-direction: column;
+        flex-direction:
+          column;
 
-        gap: 18px;
+        gap:
+          12px;
 
-        margin-bottom: 5vh;
+        margin-bottom:
+          5vh;
       }
 
 
       .world-button {
 
-        width: 210px;
+        width:
+          220px;
 
-        height: 105px;
+        height:
+          110px;
       }
 
 
       .secondary-links {
 
-        gap: 18px;
+        gap:
+          18px;
 
-        font-size: 0.68rem;
+        font-size:
+          0.66rem;
       }
 
 
       .explore-hint {
 
-        bottom: 2.5vh;
+        bottom:
+          2.5vh;
+      }
+
+
+      .featured {
+
+        padding:
+          85px
+          20px
+          100px;
+      }
+
+
+      .section-heading {
+
+        flex-direction:
+          column;
+
+        align-items:
+          flex-start;
+
+        margin-bottom:
+          35px;
+      }
+
+
+      .section-heading p {
+
+        max-width:
+          100%;
+      }
+
+
+      .featured-grid {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .featured-card {
+
+        min-height:
+          260px;
       }
 
 
       .updates {
 
         padding:
-          90px
+          85px
           20px
           110px;
       }
@@ -1291,42 +2002,59 @@
 
       .updates-header {
 
-        margin-bottom: 45px;
+        flex-direction:
+          column;
+
+        align-items:
+          flex-start;
+
+        margin-bottom:
+          40px;
+      }
+
+
+      .updates-intro {
+
+        max-width:
+          100%;
       }
 
 
       .update-card {
 
         padding:
-          24px 20px;
+          25px 20px;
       }
 
     }
 
 
-    /* ========================================= */
-    /* SMALL PHONES */
-    /* ========================================= */
-
     @media (max-width: 430px) {
 
-      .logo-wrapper {
+      .logo {
 
-        margin-bottom: 6vh;
-      }
-
-
-      .worlds {
-
-        gap: 10px;
+        width:
+          245px;
       }
 
 
       .world-button {
 
-        width: 205px;
+        width:
+          205px;
 
-        height: 100px;
+        height:
+          102px;
+      }
+
+
+      .secondary-links {
+
+        font-size:
+          0.62rem;
+
+        gap:
+          14px;
       }
 
     }
@@ -1339,113 +2067,128 @@
 <body>
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- STARFIELD -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
   <canvas id="space"></canvas>
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- AMBIENT GLOW -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
   <div class="ambient-glow cyan"></div>
 
   <div class="ambient-glow pink"></div>
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- MAIN -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
   <main>
 
 
-    <!-- ================================= -->
+    <!-- ======================================================= -->
     <!-- HERO -->
-    <!-- ================================= -->
+    <!-- ======================================================= -->
 
     <section class="hero">
 
-
-      <!-- STERLWORLD LOGO -->
-
-      <div class="logo-wrapper">
-
-        <img
-          class="logo"
-          src="/assets/images/SterlWorld-Logo-2026.png"
-          alt="SterlWorld"
-        >
-
-      </div>
+      <div class="hero-inner">
 
 
-      <!-- ENTER A WORLD -->
+        <!-- ================================================= -->
+        <!-- STERLWORLD LOGO -->
+        <!-- ================================================= -->
 
-      <div class="worlds-label">
-        ENTER A WORLD
-      </div>
-
-
-      <!-- GAME WORLDS -->
-
-      <div class="worlds">
-
-
-        <!-- PIZZA DALES -->
-
-        <a
-          class="world-button pizza"
-          href="/pizzadales"
-          aria-label="Enter Pizza Dales"
-        >
+        <div class="logo-wrapper">
 
           <img
-            src="/assets/images/Pizza Dales Logo Updated 2026.png"
-            alt="Pizza Dales"
+            class="logo"
+            src="/assets/images/SterlWorld-Logo-2026.png"
+            alt="SterlWorld"
           >
 
-        </a>
+        </div>
 
 
-        <!-- SUPER PUNKASS -->
+        <!-- ================================================= -->
+        <!-- ENTER A WORLD -->
+        <!-- ================================================= -->
 
-        <a
-          class="world-button punkass"
-          href="/superpunkass"
-          aria-label="Enter Super Punkass"
-        >
+        <div class="worlds-label">
+          ENTER A WORLD
+        </div>
 
-          <img
-            src="/assets/images/Super Punkass Logo Final.png"
-            alt="Super Punkass"
+
+        <!-- ================================================= -->
+        <!-- GAME WORLDS -->
+        <!-- ================================================= -->
+
+        <div class="worlds">
+
+
+          <!-- PIZZA DALES -->
+
+          <a
+            class="world-button pizza"
+            href="/pizzadales"
+            aria-label="Enter Pizza Dales"
           >
 
-        </a>
+            <img
+              src="/assets/images/Pizza Dales Logo Updated 2026.png"
+              alt="Pizza Dales"
+            >
+
+          </a>
+
+
+          <!-- SUPER PUNKASS -->
+
+          <a
+            class="world-button punkass"
+            href="/superpunkass"
+            aria-label="Enter Super Punkass"
+          >
+
+            <img
+              src="/assets/images/Super Punkass Logo Final.png"
+              alt="Super Punkass"
+            >
+
+          </a>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SECONDARY LINKS -->
+        <!-- ================================================= -->
+
+        <div class="secondary-links">
+
+          <a href="/about">
+            About SterlWorld
+          </a>
+
+          <span class="secondary-divider"></span>
+
+          <a href="/contact">
+            Contact
+          </a>
+
+        </div>
+
 
       </div>
 
 
-      <!-- SECONDARY LINKS -->
-
-      <div class="secondary-links">
-
-        <a href="/about">
-          About SterlWorld
-        </a>
-
-        <span class="secondary-divider"></span>
-
-        <a href="/contact">
-          Contact
-        </a>
-
-      </div>
-
-
+      <!-- ================================================= -->
       <!-- EXPLORE -->
+      <!-- ================================================= -->
 
       <div class="explore-hint">
 
@@ -1461,132 +2204,272 @@
     </section>
 
 
-    <!-- ================================= -->
+    <!-- ======================================================= -->
     <!-- DIVIDER -->
-    <!-- ================================= -->
+    <!-- ======================================================= -->
 
     <div class="section-divider"></div>
 
 
-    <!-- ================================= -->
+    <!-- ======================================================= -->
+    <!-- FEATURED -->
+    <!-- ======================================================= -->
+
+    <section class="featured">
+
+      <div class="featured-inner">
+
+
+        <div class="section-heading">
+
+          <div>
+
+            <div class="section-kicker">
+              Explore the Universe
+            </div>
+
+            <h2>
+              Worlds of SterlWorld
+            </h2>
+
+          </div>
+
+
+          <p>
+            Games, characters, and worlds are taking shape
+            inside the SterlWorld universe. Step inside and
+            see where each one leads.
+          </p>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FEATURED WORLD CARDS -->
+        <!-- ================================================= -->
+
+        <div class="featured-grid">
+
+
+          <!-- PIZZA DALES -->
+
+          <a
+            class="featured-card pizza"
+            href="/pizzadales"
+          >
+
+            <div class="featured-card-content">
+
+              <div class="featured-card-label">
+                World 01
+              </div>
+
+              <h3>
+                Pizza Dales
+              </h3>
+
+              <p>
+                A hand-drawn cartoon universe filled with
+                pizza, trouble, weird characters, and
+                adventures around every corner.
+              </p>
+
+            </div>
+
+
+            <div class="featured-card-arrow">
+              →
+            </div>
+
+          </a>
+
+
+          <!-- SUPER PUNKASS -->
+
+          <a
+            class="featured-card punkass"
+            href="/superpunkass"
+          >
+
+            <div class="featured-card-content">
+
+              <div class="featured-card-label">
+                World 02
+              </div>
+
+              <h3>
+                Super Punkass
+              </h3>
+
+              <p>
+                Blackout City never sees daylight. Neon,
+                danger, criminals, explosions, and trouble
+                are waiting around every corner.
+              </p>
+
+            </div>
+
+
+            <div class="featured-card-arrow">
+              →
+            </div>
+
+          </a>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================= -->
+    <!-- DIVIDER -->
+    <!-- ======================================================= -->
+
+    <div class="section-divider"></div>
+
+
+    <!-- ======================================================= -->
     <!-- UPDATES -->
-    <!-- ================================= -->
+    <!-- ======================================================= -->
 
     <section
       class="updates"
       id="updates"
     >
 
+      <div class="updates-inner">
 
-      <div class="updates-header">
 
-        <div class="updates-kicker">
-          The Latest
+        <div class="updates-header">
+
+
+          <div class="updates-header-left">
+
+            <div class="updates-kicker">
+              The Latest
+            </div>
+
+            <h2 class="updates-title">
+              From SterlWorld
+            </h2>
+
+          </div>
+
+
+          <p class="updates-intro">
+            Development updates, new worlds, and things
+            happening behind the scenes.
+          </p>
+
+
         </div>
 
-        <h2 class="updates-title">
-          From SterlWorld
-        </h2>
 
-        <p class="updates-intro">
-          A little look inside the worlds as they take shape.
-          Development updates, new projects, and things happening
-          behind the scenes at SterlWorld.
-        </p>
+        <!-- ================================================= -->
+        <!-- UPDATE ARCHIVE -->
+        <!-- ================================================= -->
 
-      </div>
+        <div class="update-list">
 
 
-      <div class="update-list">
+          <!-- ================================================= -->
+          <!-- OCTOBER 1, 2026 -->
+          <!-- ================================================= -->
+
+          <article class="update-card">
+
+            <div class="update-meta">
+
+              <span class="update-date">
+                October 1, 2026
+              </span>
+
+              <span>
+                •
+              </span>
+
+              <span class="update-status">
+                In Development
+              </span>
+
+            </div>
 
 
-        <!-- ================================= -->
-        <!-- OCTOBER 1, 2026 -->
-        <!-- ================================= -->
-
-        <article class="update-card">
-
-          <div class="update-meta">
-
-            <span class="update-date">
-              October 1, 2026
-            </span>
-
-            <span>
-              •
-            </span>
-
-            <span class="update-status">
-              In Development
-            </span>
-
-          </div>
+            <h3>
+              Super Punkass Is In Development
+            </h3>
 
 
-          <h3>
-            Super Punkass Is In Development
-          </h3>
+            <p>
+              The next world is taking shape. Super Punkass
+              is officially in development, and Blackout City
+              is beginning to come alive — a city that never
+              sees daylight, filled with endless lights,
+              danger, and trouble around every corner.
+            </p>
 
 
-          <p>
-            The next world is taking shape. Super Punkass is officially
-            in development, and Blackout City is beginning to come alive —
-            a city that never sees daylight, filled with endless lights,
-            danger, and trouble around every corner.
-          </p>
+            <a
+              class="update-link"
+              href="/superpunkass"
+            >
+              Enter Blackout City →
+            </a>
+
+          </article>
 
 
-          <a
-            class="update-link"
-            href="/superpunkass"
-          >
-            Enter Blackout City →
-          </a>
+          <!-- ================================================= -->
+          <!-- FUTURE UPDATE TEMPLATE -->
+          <!-- ================================================= -->
 
-        </article>
+          <!--
+
+          <article class="update-card">
+
+            <div class="update-meta">
+
+              <span class="update-date">
+                MONTH DAY, YEAR
+              </span>
+
+              <span>
+                •
+              </span>
+
+              <span class="update-status">
+                STATUS
+              </span>
+
+            </div>
 
 
-        <!-- ================================= -->
-        <!-- FUTURE UPDATE TEMPLATE -->
-        <!-- ================================= -->
+            <h3>
+              UPDATE TITLE
+            </h3>
 
-        <!--
 
-        <article class="update-card">
+            <p>
+              UPDATE DESCRIPTION
+            </p>
 
-          <div class="update-meta">
 
-            <span class="update-date">
-              MONTH DAY, YEAR
-            </span>
+            <a
+              class="update-link"
+              href="/YOUR-LINK"
+            >
+              READ MORE →
+            </a>
 
-            <span>•</span>
+          </article>
 
-            <span class="update-status">
-              STATUS
-            </span>
+          -->
 
-          </div>
 
-          <h3>
-            UPDATE TITLE
-          </h3>
-
-          <p>
-            UPDATE DESCRIPTION
-          </p>
-
-          <a
-            class="update-link"
-            href="/YOUR-LINK"
-          >
-            READ MORE →
-          </a>
-
-        </article>
-
-        -->
-
+        </div>
 
       </div>
 
@@ -1596,9 +2479,9 @@
   </main>
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- FOOTER -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
   <footer>
 
@@ -1619,16 +2502,16 @@
   </footer>
 
 
-  <!-- ========================= -->
+  <!-- ========================================================= -->
   <!-- JAVASCRIPT -->
-  <!-- ========================= -->
+  <!-- ========================================================= -->
 
   <script>
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* STARFIELD */
-    /* ========================================= */
+    /* ========================================================= */
 
     const canvas =
       document.getElementById("space");
@@ -1637,30 +2520,41 @@
       canvas.getContext("2d");
 
 
-    let w;
-    let h;
+    let width;
+    let height;
 
 
-    function resize() {
+    function resizeCanvas() {
 
-      w =
+      width =
         canvas.width =
         window.innerWidth;
 
-      h =
+      height =
         canvas.height =
         window.innerHeight;
 
     }
 
 
-    resize();
+    resizeCanvas();
+
 
     window.addEventListener(
       "resize",
-      resize
+      () => {
+
+        resizeCanvas();
+
+        createStars();
+
+      }
     );
 
+
+    /* ========================================================= */
+    /* STAR IMAGE */
+    /* ========================================================= */
 
     const starImage =
       new Image();
@@ -1669,9 +2563,9 @@
       "/assets/images/Star.png";
 
 
-    /* ========================================= */
-    /* CREATE STARS */
-    /* ========================================= */
+    /* ========================================================= */
+    /* STAR DATA */
+    /* ========================================================= */
 
     let stars = [];
 
@@ -1680,37 +2574,42 @@
 
       stars = [];
 
-      const count =
+
+      const starCount =
         window.innerWidth < 768
-          ? 90
-          : 170;
+          ? 100
+          : 220;
 
 
       for (
         let i = 0;
-        i < count;
+        i < starCount;
         i++
       ) {
 
         stars.push({
 
           x:
-            Math.random() * w,
+            (Math.random() - 0.5)
+            * width
+            * 2.2,
 
           y:
-            Math.random() * h,
+            (Math.random() - 0.5)
+            * height
+            * 2.2,
 
-          size:
-            2 +
-            Math.random() * 5,
+          z:
+            Math.random()
+            * width,
 
-          opacity:
+          speed:
             0.12 +
-            Math.random() * 0.28,
+            Math.random() * 0.35,
 
-          drift:
-            0.03 +
-            Math.random() * 0.08
+          brightness:
+            0.18 +
+            Math.random() * 0.45
 
         });
 
@@ -1722,59 +2621,193 @@
     createStars();
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* STARFIELD ANIMATION */
-    /* ========================================= */
+    /* ========================================================= */
 
     function animateStars() {
 
       ctx.clearRect(
         0,
         0,
-        w,
-        h
+        width,
+        height
       );
 
 
+      const centerX =
+        width / 2;
+
+
+      const centerY =
+        height / 2;
+
+
       stars.forEach(
-        (star) => {
+        (star, index) => {
 
-          star.y += star.drift;
 
+          /* Move stars toward viewer */
+
+          star.z -=
+            star.speed;
+
+
+          /* Reset stars when they reach viewer */
 
           if (
-            star.y >
-            h + 10
+            star.z <= 1
           ) {
 
-            star.y = -10;
+            stars[index] = {
 
-            star.x =
-              Math.random() * w;
+              x:
+                (Math.random() - 0.5)
+                * width
+                * 2.2,
+
+              y:
+                (Math.random() - 0.5)
+                * height
+                * 2.2,
+
+              z:
+                width,
+
+              speed:
+                0.12 +
+                Math.random() * 0.35,
+
+              brightness:
+                0.18 +
+                Math.random() * 0.45
+
+            };
+
+            return;
 
           }
 
 
-          ctx.globalAlpha =
-            star.opacity;
+          /* Perspective */
 
+          const scale =
+            180 / star.z;
+
+
+          const x =
+            star.x * scale +
+            centerX;
+
+
+          const y =
+            star.y * scale +
+            centerY;
+
+
+          const previousScale =
+            180 /
+            (star.z + 2.5);
+
+
+          const previousX =
+            star.x *
+            previousScale +
+            centerX;
+
+
+          const previousY =
+            star.y *
+            previousScale +
+            centerY;
+
+
+          /* Size */
+
+          const size =
+            Math.max(
+              1,
+              (1 - star.z / width)
+              * 5
+            );
+
+
+          /* Opacity */
+
+          const opacity =
+            Math.min(
+              star.brightness,
+              (1 - star.z / width)
+              * 0.8
+              + 0.08
+            );
+
+
+          ctx.globalAlpha =
+            opacity;
+
+
+          /* Draw star */
 
           if (
-            starImage.complete
+            starImage.complete &&
+            x > -20 &&
+            x < width + 20 &&
+            y > -20 &&
+            y < height + 20
           ) {
 
             ctx.drawImage(
               starImage,
-              star.x,
-              star.y,
-              star.size,
-              star.size
+              x - size / 2,
+              y - size / 2,
+              size,
+              size
             );
+
+          }
+
+
+          /* Very subtle motion streak */
+
+          if (
+            star.z < width * 0.35 &&
+            size > 2
+          ) {
+
+            ctx.globalAlpha =
+              opacity * 0.35;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+              previousX,
+              previousY
+            );
+
+            ctx.lineTo(
+              x,
+              y
+            );
+
+            ctx.strokeStyle =
+              "rgba(255,255,255,0.35)";
+
+            ctx.lineWidth =
+              Math.max(
+                0.4,
+                size * 0.18
+              );
+
+            ctx.stroke();
 
           }
 
         }
       );
+
+
+      ctx.globalAlpha = 1;
 
 
       requestAnimationFrame(
@@ -1787,9 +2820,9 @@
     animateStars();
 
 
-    /* ========================================= */
-    /* FADE STARFIELD IN */
-    /* ========================================= */
+    /* ========================================================= */
+    /* STARFIELD FADE IN */
+    /* ========================================================= */
 
     window.addEventListener(
       "load",
@@ -1810,9 +2843,9 @@
     );
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* LOGO PULSE */
-    /* ========================================= */
+    /* ========================================================= */
 
     const logo =
       document.querySelector(".logo");
@@ -1855,9 +2888,9 @@
     );
 
 
-    /* ========================================= */
+    /* ========================================================= */
     /* SPARKLES */
-    /* ========================================= */
+    /* ========================================================= */
 
     function createSparkle() {
 
