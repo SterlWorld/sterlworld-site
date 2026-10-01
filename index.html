@@ -11,11 +11,6 @@
     gtag('config', 'G-YGPZXDQV5Q');
   </script>
 
-
-  <!-- =========================
-       STRUCTURED DATA
-       ========================= -->
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -54,23 +49,12 @@
   </script>
 
 
-  <!-- =========================
-       PAGE INFO
-       ========================= -->
-
-  <title>
-    SterlWorld Entertainment — Games, Worlds, and Creative Experiences
-  </title>
+  <title>SterlWorld Entertainment — Games, Worlds, and Creative Experiences</title>
 
   <meta
     name="description"
     content="An independent creative studio building games, worlds, and interactive experiences."
   >
-
-
-  <!-- =========================
-       OPEN GRAPH
-       ========================= -->
 
   <meta
     property="og:title"
@@ -97,15 +81,7 @@
     content="website"
   >
 
-
-  <!-- =========================
-       TWITTER CARD
-       ========================= -->
-
-  <meta
-    name="twitter:card"
-    content="summary_large_image"
-  >
+  <meta name="twitter:card" content="summary_large_image">
 
   <meta
     name="twitter:title"
@@ -122,11 +98,6 @@
     content="https://raw.githubusercontent.com/SterlWorld/sterlworld-site/refs/heads/main/assets/images/SterlWorld-Logo-2026.png"
   >
 
-
-  <!-- =========================
-       META
-       ========================= -->
-
   <meta charset="UTF-8">
 
   <meta
@@ -134,20 +105,11 @@
     content="width=device-width, initial-scale=1, user-scalable=no"
   >
 
-
-  <!-- =========================
-       FONTS
-       ========================= -->
-
   <link
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap"
     rel="stylesheet"
   >
 
-
-  <!-- =========================
-       STYLES
-       ========================= -->
 
   <style>
 
@@ -164,9 +126,9 @@
       width: 100%;
       height: 100%;
 
-      background: #000;
+      background: black;
 
-      color: #fff;
+      color: white;
 
       font-family:
         'Poppins',
@@ -177,7 +139,7 @@
 
 
     /* ==================================================
-       NAVIGATION
+       NAV
        ================================================== */
 
     nav {
@@ -273,7 +235,7 @@
 
 
     /* ==================================================
-       MAIN CONTENT
+       MAIN MESSAGE
        ================================================== */
 
     #message {
@@ -293,8 +255,6 @@
       text-align: center;
 
       z-index: 10;
-
-      opacity: 1;
     }
 
 
@@ -326,7 +286,7 @@
 
 
     /* ==================================================
-       WORLD LOGO BUTTONS
+       LOGO BUTTON AREA
        ================================================== */
 
     .world-buttons {
@@ -335,17 +295,19 @@
 
       justify-content: center;
 
-      align-items: stretch;
+      align-items: center;
 
-      gap: 25px;
+      gap: 70px;
 
       width: 100%;
     }
 
 
-    .world-button {
+    /* ==================================================
+       LOGO BUTTON
+       ================================================== */
 
-      position: relative;
+    .world-button {
 
       display: flex;
 
@@ -353,64 +315,26 @@
 
       justify-content: center;
 
-      width: 290px;
-
-      height: 170px;
-
-      padding: 18px;
-
-      border-radius: 18px;
-
       text-decoration: none;
 
-      overflow: hidden;
+      background: none;
 
-      background:
-        rgba(255,255,255,0.025);
+      border: none;
 
-      backdrop-filter:
-        blur(8px);
+      outline: none;
 
-      -webkit-backdrop-filter:
-        blur(8px);
+      cursor: pointer;
 
-      transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease;
-    }
-
-
-    .world-button::before {
-
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
-
-      border-radius: 18px;
-
-      pointer-events: none;
-
-      opacity: 0.7;
+      padding: 15px;
 
       transition:
-        opacity 0.3s ease;
+        transform 0.35s ease;
     }
 
 
     .world-button img {
 
-      position: relative;
-
-      z-index: 2;
-
       display: block;
-
-      max-width: 100%;
-
-      max-height: 140px;
 
       width: auto;
 
@@ -425,133 +349,95 @@
 
 
     /* ==================================================
-       SUPER PUNKASS WORLD BUTTON
+       SUPER PUNKASS LOGO
        ================================================== */
 
-    .world-button.super-punkass {
+    .super-punkass img {
 
-      border:
-        1px solid
-        rgba(255, 94, 196, 0.65);
+      max-width: 260px;
 
-      box-shadow:
+      max-height: 150px;
 
-        0 0 12px
-        rgba(255, 94, 196, 0.28),
+      filter:
+        drop-shadow(
+          0 0 5px
+          rgba(255, 94, 196, 0.55)
+        )
 
-        inset 0 0 15px
-        rgba(255, 94, 196, 0.08);
-    }
-
-
-    .world-button.super-punkass::before {
-
-      background:
-        radial-gradient(
-          circle at center,
-          rgba(255, 94, 196, 0.15),
-          transparent 70%
+        drop-shadow(
+          0 0 14px
+          rgba(255, 94, 196, 0.35)
         );
     }
 
 
-    .world-button.super-punkass:hover {
+    .super-punkass:hover img {
 
       transform:
-        translateY(-6px)
-        scale(1.025);
-
-      background:
-        rgba(255, 94, 196, 0.08);
-
-      box-shadow:
-
-        0 0 28px
-        rgba(255, 94, 196, 0.7),
-
-        0 0 60px
-        rgba(255, 94, 196, 0.2),
-
-        inset 0 0 20px
-        rgba(255, 94, 196, 0.16);
-    }
-
-
-    .world-button.super-punkass:hover img {
-
-      transform:
-        scale(1.06);
+        scale(1.08);
 
       filter:
         drop-shadow(
-          0 0 12px
-          rgba(255, 94, 196, 0.9)
+          0 0 7px
+          rgba(255, 94, 196, 1)
+        )
+
+        drop-shadow(
+          0 0 18px
+          rgba(255, 94, 196, 0.85)
+        )
+
+        drop-shadow(
+          0 0 35px
+          rgba(255, 94, 196, 0.45)
         );
     }
 
 
     /* ==================================================
-       PIZZA DALES WORLD BUTTON
+       PIZZA DALES LOGO
        ================================================== */
 
-    .world-button.pizza-dales {
+    .pizza-dales img {
 
-      border:
-        1px solid
-        rgba(62, 199, 80, 0.7);
+      max-width: 250px;
 
-      box-shadow:
+      max-height: 155px;
 
-        0 0 12px
-        rgba(62, 199, 80, 0.28),
+      filter:
 
-        inset 0 0 15px
-        rgba(62, 199, 80, 0.08);
-    }
+        drop-shadow(
+          0 0 5px
+          rgba(62, 199, 80, 0.65)
+        )
 
-
-    .world-button.pizza-dales::before {
-
-      background:
-        radial-gradient(
-          circle at center,
-          rgba(62, 199, 80, 0.15),
-          transparent 70%
+        drop-shadow(
+          0 0 14px
+          rgba(62, 199, 80, 0.4)
         );
     }
 
 
-    .world-button.pizza-dales:hover {
+    .pizza-dales:hover img {
 
       transform:
-        translateY(-6px)
-        scale(1.025);
-
-      background:
-        rgba(62, 199, 80, 0.08);
-
-      box-shadow:
-
-        0 0 28px
-        rgba(62, 199, 80, 0.7),
-
-        0 0 60px
-        rgba(62, 199, 80, 0.2),
-
-        inset 0 0 20px
-        rgba(62, 199, 80, 0.16);
-    }
-
-
-    .world-button.pizza-dales:hover img {
-
-      transform:
-        scale(1.06);
+        scale(1.08);
 
       filter:
+
         drop-shadow(
-          0 0 12px
+          0 0 7px
+          rgba(62, 199, 80, 1)
+        )
+
+        drop-shadow(
+          0 0 18px
           rgba(62, 199, 80, 0.9)
+        )
+
+        drop-shadow(
+          0 0 35px
+          rgba(62, 199, 80, 0.5)
         );
     }
 
@@ -570,7 +456,7 @@
 
       gap: 9px;
 
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
 
@@ -583,7 +469,7 @@
 
       border:
         1px solid
-        rgba(0,255,255,0.3);
+        rgba(0, 255, 255, 0.3);
 
       border-radius: 6px;
 
@@ -595,7 +481,7 @@
       text-decoration: none;
 
       background:
-        rgba(0,255,255,0.05);
+        rgba(0, 255, 255, 0.05);
 
       transition:
         all 0.25s ease;
@@ -604,17 +490,17 @@
 
     .secondary-buttons a:hover {
 
-      color: #fff;
+      color: white;
 
       border-color:
-        rgba(0,255,255,0.7);
+        rgba(0, 255, 255, 0.7);
 
       background:
-        rgba(0,255,255,0.14);
+        rgba(0, 255, 255, 0.14);
 
       box-shadow:
         0 0 10px
-        rgba(0,255,255,0.35);
+        rgba(0, 255, 255, 0.35);
 
       transform:
         scale(1.05);
@@ -662,6 +548,7 @@
         transform:
           scale(1.05);
       }
+
     }
 
 
@@ -740,37 +627,42 @@
 
       .world-buttons {
 
-        flex-direction: column;
-
-        align-items: center;
-
-        gap: 10px;
+        gap: 25px;
       }
 
 
       .world-button {
 
-        width: 82%;
+        padding: 8px;
 
-        max-width: 280px;
-
-        height: 125px;
-
-        padding: 12px;
+        flex: 1;
       }
 
 
-      .world-button img {
+      .super-punkass img {
+
+        max-width:
+          155px;
 
         max-height:
-          105px;
+          100px;
+      }
+
+
+      .pizza-dales img {
+
+        max-width:
+          155px;
+
+        max-height:
+          100px;
       }
 
 
       .secondary-buttons {
 
         margin-top:
-          10px;
+          8px;
       }
 
 
@@ -863,7 +755,7 @@
 
 
     <!-- ==================================================
-         WORLD BUTTONS
+         LOGO BUTTONS
          ================================================== -->
 
     <div class="world-buttons">
@@ -965,10 +857,8 @@
     const logo =
       document.getElementById("logo");
 
-
     const canvas =
       document.getElementById("space");
-
 
     const ctx =
       canvas.getContext("2d");
@@ -1010,7 +900,6 @@
 
     const img =
       new Image();
-
 
     img.src =
       "/assets/images/Star.png";
@@ -1063,7 +952,6 @@
 
       stars.forEach(
         (s, i) => {
-
 
           s.z -= 0.25;
 
@@ -1176,7 +1064,6 @@
       setInterval(
         () => {
 
-
           const rect =
             logo.getBoundingClientRect();
 
@@ -1232,7 +1119,6 @@
           setTimeout(
             () => {
 
-
               sparkle.style.transform =
                 `translate(
                   ${Math.cos(angle) * distance}px,
@@ -1243,7 +1129,6 @@
 
               sparkle.style.opacity =
                 "0";
-
 
             },
             10
