@@ -2150,14 +2150,17 @@
 
           /*
            * Stars move toward the viewer.
-           * This keeps the original SterlWorld
-           * perspective-space effect instead of
-           * making them fall like snow.
+           * They do NOT fall vertically.
            */
 
           star.z -=
             star.speed;
 
+
+          /*
+           * Reset star once it reaches
+           * the viewer.
+           */
 
           if (
             star.z <= 1
@@ -2193,10 +2196,13 @@
           }
 
 
-          /* Perspective */
+          /*
+           * Perspective projection.
+           */
 
           const scale =
-            220 / star.z;
+            220 /
+            star.z;
 
 
           const x =
@@ -2211,7 +2217,10 @@
             centerY;
 
 
-          /* Previous position */
+          /*
+           * Previous position used
+           * for the subtle close-star streak.
+           */
 
           const previousScale =
             220 /
@@ -2231,19 +2240,22 @@
 
 
           /*
-           * Larger stars.
+           * STAR SIZE
+           *
+           * Approximately 3× the previous
+           * star size.
            */
 
           const size =
             Math.max(
-              1.8,
+              5.4,
               (1 - star.z / width)
-              * 8
+              * 24
             );
 
 
           /*
-           * More visible stars.
+           * STAR BRIGHTNESS
            */
 
           const opacity =
@@ -2260,16 +2272,16 @@
 
 
           /*
-           * Keep stars inside
-           * the visible viewport.
+           * Draw the actual Star.png
+           * image.
            */
 
           if (
             starImage.complete &&
-            x > -30 &&
-            x < width + 30 &&
-            y > -30 &&
-            y < height + 30
+            x > -40 &&
+            x < width + 40 &&
+            y > -40 &&
+            y < height + 40
           ) {
 
             ctx.drawImage(
@@ -2290,14 +2302,14 @@
 
 
           /*
-           * Subtle streak when
-           * stars get close.
+           * Very subtle streak on
+           * the closest stars.
            */
 
           if (
             star.z <
             width * 0.28 &&
-            size > 3
+            size > 7
           ) {
 
             ctx.globalAlpha =
@@ -2325,7 +2337,7 @@
 
             ctx.lineWidth =
               Math.max(
-                0.5,
+                0.6,
                 size * 0.16
               );
 
@@ -2420,7 +2432,7 @@
 
 
     /* ========================================================= */
-    /* SPARKLES */
+    /* LOGO SPARKLES */
     /* ========================================================= */
 
     function createSparkle() {
@@ -2446,12 +2458,17 @@
         "fixed";
 
 
+      /*
+       * Larger sparkles to match
+       * the larger starfield.
+       */
+
       sparkle.style.width =
-        "8px";
+        "12px";
 
 
       sparkle.style.height =
-        "8px";
+        "12px";
 
 
       sparkle.style.pointerEvents =
