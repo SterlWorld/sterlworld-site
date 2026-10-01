@@ -5,7 +5,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Super Punkass | SterlWorld</title>
 
@@ -16,7 +19,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
@@ -26,207 +33,1108 @@
 
     <style>
 
-        /* =========================================
+        /* =========================================================
            GLOBAL
-           ========================================= */
+           ========================================================= */
 
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
 
-        html,
         body {
             margin: 0;
             padding: 0;
 
-            width: 100%;
-            min-height: 100%;
-        }
-
-
-        body {
-
             min-height: 100vh;
 
-            /*
-             * =====================================
-             * CINEMATIC SUPER PUNKASS SKY
-             * =====================================
-             *
-             * Deep burgundy-black at the top
-             * gradually fading into a warm
-             * dusty orange horizon.
-             */
+            background:
+                linear-gradient(
+                    to bottom,
+                    #16070D 0%,
+                    #16070D 38%,
+                    #210B12 52%,
+                    #35151B 65%,
+                    #5B302B 82%,
+                    #A76555 100%
+                );
 
-            background: linear-gradient(
-                to bottom,
+            color: #ffffff;
 
-                #16070D 0%,
-                #16070D 38%,
-                #210B12 52%,
-                #35151B 65%,
-                #5B302B 82%,
-                #A76555 100%
-            );
-
-
-            color: white;
-
-            font-family: Arial, Helvetica, sans-serif;
-
-            text-align: center;
+            font-family: "Silkscreen", monospace;
 
             overflow-x: hidden;
         }
 
 
+        /* =========================================================
+           ATMOSPHERE
+           ========================================================= */
 
-        /* =========================================
-           SUPER PUNKASS LOGO
-           ========================================= */
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: 100;
+
+            opacity: 0.08;
+
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    transparent 0px,
+                    transparent 3px,
+                    rgba(255,255,255,0.12) 4px
+                );
+        }
+
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: 99;
+
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    transparent 45%,
+                    rgba(0,0,0,0.28) 100%
+                );
+        }
+
+
+        /* =========================================================
+           NAVIGATION
+           ========================================================= */
+
+        .top-nav {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 90;
+
+            width: 100%;
+
+            padding: 16px 30px;
+
+            background:
+                rgba(12, 4, 8, 0.82);
+
+            border-bottom:
+                1px solid rgba(255, 145, 180, 0.22);
+
+            backdrop-filter: blur(8px);
+        }
+
+
+        .nav-inner {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+
+        .nav-brand {
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 11px;
+
+            color: #ff91c4;
+
+            text-decoration: none;
+
+            white-space: nowrap;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 25px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .nav-links a {
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            transition: 0.2s ease;
+
+            opacity: 0.78;
+        }
+
+
+        .nav-links a:hover {
+
+            color: #ff91c4;
+
+            opacity: 1;
+        }
+
+
+        /* =========================================================
+           HERO
+           ========================================================= */
+
+        .hero {
+
+            min-height: 760px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: flex-start;
+
+            text-align: center;
+
+            padding:
+                55px 25px
+                100px;
+        }
+
 
         .logo {
 
             display: block;
 
-            width: 500px;
+            width: 560px;
 
-            max-width: 85%;
+            max-width: 90%;
 
             height: auto;
 
-            margin: 40px auto 0 auto;
+            margin: 0 auto;
         }
 
 
+        .hero-subtitle {
 
-        /* =========================================
-           GAME BIO
-           ========================================= */
+            margin-top: 8px;
 
-        .game-bio {
-
-            width: 900px;
-
-            max-width: 88%;
-
-            margin: 90px auto 120px auto;
-
-            text-align: center;
-        }
-
-
-
-        /* =========================================
-           BIO TITLE
-           ========================================= */
-
-        .game-bio h1 {
-
-            margin: 0 0 35px 0;
-
-            font-family: "Press Start 2P", monospace;
-
-            font-size: 28px;
-
-            line-height: 1.5;
-
-            color: #FFFFFF;
-
-            /*
-             * Pixel-style dark outline/shadow
-             */
-
-            text-shadow:
-                4px 4px 0 #16070D,
-                0 0 12px rgba(255, 120, 190, 0.7);
-        }
-
-
-
-        /* =========================================
-           BIO TEXT
-           ========================================= */
-
-        .game-bio p {
-
-            margin: 0 auto 28px auto;
-
-            max-width: 780px;
-
-            font-family: "Silkscreen", monospace;
+            font-family:
+                "Press Start 2P",
+                monospace;
 
             font-size: 18px;
 
-            line-height: 1.9;
-
             letter-spacing: 1px;
 
-            color: #FFFFFF;
+            color: #ffffff;
 
-            /*
-             * Dark pixel-style shadow
-             */
+            text-shadow:
+                3px 3px 0 #16070D;
+        }
+
+
+        .hero-description {
+
+            max-width: 650px;
+
+            margin:
+                35px auto
+                0;
+
+            font-size: 16px;
+
+            line-height: 1.9;
+
+            color: rgba(255,255,255,0.88);
 
             text-shadow:
                 2px 2px 0 #16070D;
         }
 
 
+        .hero-buttons {
 
-        /* =========================================
-           MOBILE
-           ========================================= */
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-top: 35px;
+        }
+
+
+        .button {
+
+            display: inline-block;
+
+            padding:
+                16px 24px;
+
+            border:
+                2px solid #ffffff;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 10px;
+
+            background:
+                rgba(22, 7, 13, 0.65);
+
+            box-shadow:
+                4px 4px 0 #16070D;
+
+            transition:
+                transform 0.15s ease,
+                background 0.15s ease,
+                color 0.15s ease;
+        }
+
+
+        .button:hover {
+
+            transform:
+                translate(2px, 2px);
+
+            background: #ff91c4;
+
+            color: #16070D;
+
+            box-shadow:
+                2px 2px 0 #16070D;
+        }
+
+
+        .coming-soon {
+
+            margin-top: 20px;
+
+            font-size: 11px;
+
+            color: rgba(255,255,255,0.65);
+        }
+
+
+        /* =========================================================
+           SECTION SYSTEM
+           ========================================================= */
+
+        .section {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding:
+                110px 30px;
+        }
+
+
+        .section-label {
+
+            margin-bottom: 14px;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 10px;
+
+            color: #ff91c4;
+
+            letter-spacing: 1px;
+        }
+
+
+        .section-title {
+
+            margin: 0 0 35px;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 30px;
+
+            line-height: 1.6;
+
+            text-shadow:
+                4px 4px 0 #16070D;
+        }
+
+
+        .section-divider {
+
+            width: 100%;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    to right,
+                    transparent,
+                    rgba(255,255,255,0.3),
+                    transparent
+                );
+        }
+
+
+        /* =========================================================
+           INTRO / STORY
+           ========================================================= */
+
+        .intro-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr
+                0.9fr;
+
+            gap: 70px;
+
+            align-items: center;
+        }
+
+
+        .intro-text p {
+
+            margin:
+                0 0 25px;
+
+            font-size: 16px;
+
+            line-height: 2;
+
+            color:
+                rgba(255,255,255,0.9);
+        }
+
+
+        .intro-highlight {
+
+            padding: 35px;
+
+            border-left:
+                3px solid #ff91c4;
+
+            background:
+                rgba(20, 5, 12, 0.28);
+        }
+
+
+        .intro-highlight span {
+
+            display: block;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           MEDIA PLACEHOLDER
+           ========================================================= */
+
+        .media-placeholder {
+
+            width: 100%;
+
+            min-height: 360px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(20,5,12,0.82),
+                    rgba(75,30,38,0.55)
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.22);
+
+            box-shadow:
+                inset 0 0 60px rgba(0,0,0,0.3);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .media-placeholder::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 15px;
+
+            border:
+                1px dashed rgba(255,145,196,0.28);
+
+            pointer-events: none;
+        }
+
+
+        .media-placeholder-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            padding: 30px;
+        }
+
+
+        .media-placeholder h3 {
+
+            margin: 0 0 15px;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 15px;
+        }
+
+
+        .media-placeholder p {
+
+            margin: 0;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+            color:
+                rgba(255,255,255,0.6);
+        }
+
+
+        /* =========================================================
+           BLACKOUT CITY
+           ========================================================= */
+
+        .city-section {
+
+            text-align: center;
+        }
+
+
+        .city-description {
+
+            max-width: 850px;
+
+            margin: 0 auto 50px;
+
+            font-size: 16px;
+
+            line-height: 2;
+
+            color:
+                rgba(255,255,255,0.9);
+        }
+
+
+        .city-tagline {
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            color: #ff91c4;
+
+            text-shadow:
+                3px 3px 0 #16070D;
+        }
+
+
+        /* =========================================================
+           GAMEPLAY
+           ========================================================= */
+
+        .feature-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .feature-card {
+
+            padding: 30px;
+
+            min-height: 210px;
+
+            background:
+                rgba(20, 5, 12, 0.36);
+
+            border:
+                1px solid rgba(255,255,255,0.16);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(255,145,196,0.65);
+        }
+
+
+        .feature-number {
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 12px;
+
+            color: #ff91c4;
+
+            margin-bottom: 22px;
+        }
+
+
+        .feature-card h3 {
+
+            margin: 0 0 15px;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .feature-card p {
+
+            margin: 0;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            color:
+                rgba(255,255,255,0.72);
+        }
+
+
+        /* =========================================================
+           BLASTER
+           ========================================================= */
+
+        .blaster-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                0.9fr
+                1.1fr;
+
+            gap: 60px;
+
+            align-items: center;
+        }
+
+
+        .blaster-info p {
+
+            font-size: 15px;
+
+            line-height: 2;
+
+            color:
+                rgba(255,255,255,0.88);
+        }
+
+
+        .weapon-modes {
+
+            display: grid;
+
+            gap: 14px;
+
+            margin-top: 30px;
+        }
+
+
+        .weapon-mode {
+
+            padding: 20px 22px;
+
+            border:
+                1px solid rgba(255,255,255,0.18);
+
+            background:
+                rgba(20,5,12,0.3);
+        }
+
+
+        .weapon-mode strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 11px;
+
+            color: #ff91c4;
+        }
+
+
+        .weapon-mode span {
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            color:
+                rgba(255,255,255,0.72);
+        }
+
+
+        /* =========================================================
+           STORY MODE
+           ========================================================= */
+
+        .story-line {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 12px;
+
+            margin-top: 50px;
+        }
+
+
+        .story-step {
+
+            min-height: 180px;
+
+            padding: 25px 18px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            border:
+                1px solid rgba(255,255,255,0.16);
+
+            background:
+                rgba(20,5,12,0.3);
+
+            text-align: center;
+        }
+
+
+        .story-step-number {
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 9px;
+
+            color: #ff91c4;
+
+            margin-bottom: 20px;
+        }
+
+
+        .story-step h3 {
+
+            margin: 0;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           MEDIA
+           ========================================================= */
+
+        .media-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .media-grid .media-placeholder {
+
+            min-height: 300px;
+        }
+
+
+        /* =========================================================
+           STEAM CTA
+           ========================================================= */
+
+        .steam-section {
+
+            text-align: center;
+
+            padding:
+                150px 30px;
+        }
+
+
+        .steam-section h2 {
+
+            margin: 0 0 25px;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 30px;
+
+            line-height: 1.7;
+
+            text-shadow:
+                4px 4px 0 #16070D;
+        }
+
+
+        .steam-section p {
+
+            max-width: 650px;
+
+            margin:
+                0 auto 35px;
+
+            font-size: 15px;
+
+            line-height: 2;
+
+            color:
+                rgba(255,255,255,0.78);
+        }
+
+
+        .steam-button {
+
+            display: inline-block;
+
+            padding:
+                20px 35px;
+
+            background: #ffffff;
+
+            color: #16070D;
+
+            text-decoration: none;
+
+            font-family:
+                "Press Start 2P",
+                monospace;
+
+            font-size: 12px;
+
+            box-shadow:
+                6px 6px 0 #16070D;
+
+            transition:
+                transform 0.15s ease;
+        }
+
+
+        .steam-button:hover {
+
+            transform:
+                translate(3px, 3px);
+
+            box-shadow:
+                3px 3px 0 #16070D;
+        }
+
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        footer {
+
+            padding:
+                45px 25px;
+
+            text-align: center;
+
+            border-top:
+                1px solid rgba(255,255,255,0.15);
+
+            background:
+                rgba(8,3,7,0.65);
+        }
+
+
+        footer p {
+
+            margin: 7px 0;
+
+            font-size: 10px;
+
+            color:
+                rgba(255,255,255,0.55);
+        }
+
+
+        footer a {
+
+            color: #ff91c4;
+
+            text-decoration: none;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .nav-inner {
+
+                flex-direction: column;
+            }
+
+
+            .intro-grid,
+            .blaster-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 45px;
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .story-line {
+
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
 
         @media (max-width: 600px) {
 
+            .top-nav {
 
-            /* Logo */
+                padding: 14px 15px;
+            }
+
+
+            .nav-brand {
+
+                font-size: 9px;
+            }
+
+
+            .nav-links {
+
+                gap: 12px;
+            }
+
+
+            .nav-links a {
+
+                font-size: 8px;
+            }
+
+
+            .hero {
+
+                min-height: 650px;
+
+                padding:
+                    35px 18px
+                    70px;
+            }
+
 
             .logo {
 
-                width: 420px;
+                width: 500px;
 
-                max-width: 90%;
-
-                margin-top: 30px;
+                max-width: 94%;
             }
 
 
-            /* Bio container */
+            .hero-subtitle {
 
-            .game-bio {
-
-                width: 90%;
-
-                margin-top: 70px;
-
-                margin-bottom: 80px;
+                font-size: 13px;
             }
 
 
-            /* Bio heading */
+            .hero-description {
 
-            .game-bio h1 {
-
-                font-size: 18px;
-
-                line-height: 1.6;
-
-                margin-bottom: 25px;
-            }
-
-
-            /* Bio paragraphs */
-
-            .game-bio p {
-
-                font-size: 14px;
+                font-size: 13px;
 
                 line-height: 1.8;
+            }
 
-                letter-spacing: 0.5px;
+
+            .section {
+
+                padding:
+                    80px 20px;
+            }
+
+
+            .section-title {
+
+                font-size: 20px;
+            }
+
+
+            .intro-text p,
+            .city-description,
+            .blaster-info p {
+
+                font-size: 13px;
+
+                line-height: 1.9;
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .story-line {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .media-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .media-placeholder {
+
+                min-height: 240px;
+            }
+
+
+            .steam-section {
+
+                padding:
+                    100px 20px;
+            }
+
+
+            .steam-section h2 {
+
+                font-size: 20px;
             }
 
         }
@@ -240,44 +1148,821 @@
 <body>
 
 
-    <!-- =========================================
-         SUPER PUNKASS LOGO
-         ========================================= -->
+    <!-- =========================================================
+         NAVIGATION
+         ========================================================= -->
 
-    <img
-        src="../assets/images/Super%20Punkass%20Logo%20Final.png"
-        alt="Super Punkass"
-        class="logo"
+    <nav class="top-nav">
+
+        <div class="nav-inner">
+
+            <a
+                href="#top"
+                class="nav-brand"
+            >
+                SUPER PUNKASS
+            </a>
+
+
+            <div class="nav-links">
+
+                <a href="#about">
+                    ABOUT
+                </a>
+
+                <a href="#city">
+                    BLACKOUT CITY
+                </a>
+
+                <a href="#gameplay">
+                    GAMEPLAY
+                </a>
+
+                <a href="#blaster">
+                    BLASTER
+                </a>
+
+                <a href="#story">
+                    STORY
+                </a>
+
+                <a href="#media">
+                    MEDIA
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <header
+        class="hero"
+        id="top"
     >
 
+        <img
+            src="../assets/images/Super%20Punkass%20Logo%20Final.png"
+            alt="Super Punkass"
+            class="logo"
+        >
 
 
-    <!-- =========================================
-         GAME BIO
-         ========================================= -->
-
-    <section class="game-bio">
+        <div class="hero-subtitle">
+            ESCAPE THE CITY
+        </div>
 
 
+        <p class="hero-description">
 
+            An 80s-inspired 2.5D action game
+            set beneath the endless night
+            of Blackout City.
 
-        <p>
-            The city is under attack, and Super Punkass is ready
-            to fight her way out. Take control of a fearless hero
-            armed with a pink blaster and a serious attitude as
-            she battles through a city overrun with chaos.
         </p>
 
 
-        <p>
-            Run, jump, shoot, punch, slide, climb and survive
-            your way across the city in this cinematic 2.5D
-            action adventure inspired by 16-bit games and
-            classic 80s action movies.
-        </p>
+        <div class="hero-buttons">
 
+            <a
+                href="#about"
+                class="button"
+            >
+                EXPLORE THE GAME
+            </a>
+
+
+            <a
+                href="#media"
+                class="button"
+            >
+                MEDIA
+            </a>
+
+        </div>
+
+
+        <div class="coming-soon">
+
+            COMING TO STEAM
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         ABOUT SUPER PUNKASS
+         ========================================================= -->
+
+    <section
+        class="section"
+        id="about"
+    >
+
+        <div class="section-label">
+            THE GIRL
+        </div>
+
+
+        <h2 class="section-title">
+            RAISED BY NO ONE.
+        </h2>
+
+
+        <div class="intro-grid">
+
+
+            <div class="intro-text">
+
+                <p>
+
+                    At 18 years old, Super Punkass has already
+                    spent most of her life taking care of herself.
+
+                    An orphan growing up in Blackout City,
+                    she learned early that nobody was coming
+                    to save her.
+
+                </p>
+
+
+                <p>
+
+                    Over the years, petty crimes became a way
+                    of life. She became faster, tougher, more
+                    resourceful, and developed a reputation
+                    throughout the city.
+
+                </p>
+
+
+                <p>
+
+                    But eventually, surviving isn't enough.
+
+                    She wants out.
+
+                    And she's willing to take what she needs
+                    to make it happen.
+
+                </p>
+
+            </div>
+
+
+            <div class="intro-highlight">
+
+                <span>
+                    ONE CITY.
+                </span>
+
+                <span>
+                    ONE WAY OUT.
+                </span>
+
+                <span>
+                    NOTHING TO LOSE.
+                </span>
+
+            </div>
+
+        </div>
 
     </section>
+
+
+
+    <div class="section-divider"></div>
+
+
+
+    <!-- =========================================================
+         BLACKOUT CITY
+         ========================================================= -->
+
+    <section
+        class="section city-section"
+        id="city"
+    >
+
+        <div class="section-label">
+            THE WORLD
+        </div>
+
+
+        <h2 class="section-title">
+            BLACKOUT CITY
+        </h2>
+
+
+        <p class="city-description">
+
+            A massive metropolis buried beneath skyscrapers,
+            crowded streets, neon signs, and an overwhelming
+            sea of artificial light.
+
+            Blackout City is the only known place in the
+            Super Punkass universe where night seems to
+            never end.
+
+        </p>
+
+
+        <p class="city-tagline">
+
+            WHERE THE SUN NEVER SEEMS TO RISE.
+
+        </p>
+
+
+        <!-- CITY IMAGE PLACEHOLDER -->
+
+        <div
+            class="media-placeholder"
+            style="margin-top: 55px;"
+        >
+
+            <div class="media-placeholder-content">
+
+                <h3>
+                    CITYSCAPE / KEY ART
+                </h3>
+
+                <p>
+                    IMAGE PLACEHOLDER
+                </p>
+
+                <p>
+                    Replace with Blackout City artwork,
+                    skyline, or environmental screenshot.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <div class="section-divider"></div>
+
+
+
+    <!-- =========================================================
+         GAMEPLAY
+         ========================================================= -->
+
+    <section
+        class="section"
+        id="gameplay"
+    >
+
+        <div class="section-label">
+            THE GAME
+        </div>
+
+
+        <h2 class="section-title">
+            RUN. FIGHT. SURVIVE.
+        </h2>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">
+                    01
+                </div>
+
+                <h3>
+                    MOVE
+                </h3>
+
+                <p>
+                    Super Punkass is built around speed,
+                    agility, jumping, climbing, sliding,
+                    and fast movement through the city.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">
+                    02
+                </div>
+
+                <h3>
+                    SHOOT
+                </h3>
+
+                <p>
+                    Take on enemies with the DNA-locked
+                    Blaster Pistol and its CyberTech-powered
+                    firing modes.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">
+                    03
+                </div>
+
+                <h3>
+                    FIGHT
+                </h3>
+
+                <p>
+                    Punch, shoot, dodge, slide, and keep
+                    moving through a city that won't make
+                    escaping easy.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">
+                    04
+                </div>
+
+                <h3>
+                    ENDURE
+                </h3>
+
+                <p>
+                    Super Punkass can take more punishment
+                    than the average person and keep moving.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">
+                    05
+                </div>
+
+                <h3>
+                    EXPLORE
+                </h3>
+
+                <p>
+                    Navigate a massive urban environment
+                    filled with rooftops, buildings, streets,
+                    and hidden corners.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">
+                    06
+                </div>
+
+                <h3>
+                    ESCAPE
+                </h3>
+
+                <p>
+                    The objective is simple.
+
+                    Get the money.
+
+                    Leave the city.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <div class="section-divider"></div>
+
+
+
+    <!-- =========================================================
+         BLASTER PISTOL
+         ========================================================= -->
+
+    <section
+        class="section"
+        id="blaster"
+    >
+
+        <div class="section-label">
+            CYBERTECH
+        </div>
+
+
+        <h2 class="section-title">
+            THE BLASTER
+        </h2>
+
+
+        <div class="blaster-grid">
+
+
+            <!-- WEAPON IMAGE PLACEHOLDER -->
+
+            <div
+                class="media-placeholder"
+            >
+
+                <div class="media-placeholder-content">
+
+                    <h3>
+                        BLASTER PISTOL
+                    </h3>
+
+                    <p>
+                        IMAGE PLACEHOLDER
+                    </p>
+
+                    <p>
+                        Replace with weapon artwork
+                        or gameplay screenshot.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="blaster-info">
+
+                <p>
+
+                    Super Punkass carries a pink Blaster
+                    Pistol that is biologically registered
+                    to her DNA.
+
+                </p>
+
+
+                <p>
+
+                    Through CyberTech Chips, the Blaster
+                    can be equipped with different firing
+                    modes, changing how Super Punkass
+                    approaches combat.
+
+                </p>
+
+
+                <div class="weapon-modes">
+
+
+                    <div class="weapon-mode">
+
+                        <strong>
+                            RAPID SHOT
+                        </strong>
+
+                        <span>
+                            Fast, continuous fire for
+                            dealing with enemies quickly.
+                        </span>
+
+                    </div>
+
+
+                    <div class="weapon-mode">
+
+                        <strong>
+                            CHARGE SHOT
+                        </strong>
+
+                        <span>
+                            Build power before releasing
+                            a stronger attack.
+                        </span>
+
+                    </div>
+
+
+                    <div class="weapon-mode">
+
+                        <strong>
+                            STUN SHOT
+                        </strong>
+
+                        <span>
+                            Temporarily disable enemies
+                            and create an opening.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <div class="section-divider"></div>
+
+
+
+    <!-- =========================================================
+         STORY
+         ========================================================= -->
+
+    <section
+        class="section"
+        id="story"
+    >
+
+        <div class="section-label">
+            STORY MODE
+        </div>
+
+
+        <h2 class="section-title">
+            THE JOB
+        </h2>
+
+
+        <p class="city-description">
+
+            Super Punkass has spent years committing petty
+            crimes throughout Blackout City.
+
+            This time, she's going after something much
+            bigger.
+
+        </p>
+
+
+        <div class="story-line">
+
+
+            <div class="story-step">
+
+                <div class="story-step-number">
+                    01
+                </div>
+
+                <h3>
+                    BLACKOUT CITY BANK
+                </h3>
+
+            </div>
+
+
+            <div class="story-step">
+
+                <div class="story-step-number">
+                    02
+                </div>
+
+                <h3>
+                    CITY ESCAPE
+                </h3>
+
+            </div>
+
+
+            <div class="story-step">
+
+                <div class="story-step-number">
+                    03
+                </div>
+
+                <h3>
+                    POLICE STATION
+                </h3>
+
+            </div>
+
+
+            <div class="story-step">
+
+                <div class="story-step-number">
+                    04
+                </div>
+
+                <h3>
+                    ROOFTOP SHOWDOWN
+                </h3>
+
+            </div>
+
+
+            <div class="story-step">
+
+                <div class="story-step-number">
+                    05
+                </div>
+
+                <h3>
+                    GIANT PIG ROBOT
+                </h3>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <div class="section-divider"></div>
+
+
+
+    <!-- =========================================================
+         MEDIA
+         ========================================================= -->
+
+    <section
+        class="section"
+        id="media"
+    >
+
+        <div class="section-label">
+            MEDIA
+        </div>
+
+
+        <h2 class="section-title">
+            FROM BLACKOUT CITY
+        </h2>
+
+
+        <div class="media-grid">
+
+
+            <div class="media-placeholder">
+
+                <div class="media-placeholder-content">
+
+                    <h3>
+                        GAMEPLAY TRAILER
+                    </h3>
+
+                    <p>
+                        VIDEO PLACEHOLDER
+                    </p>
+
+                    <p>
+                        Drop the trailer here later.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="media-placeholder">
+
+                <div class="media-placeholder-content">
+
+                    <h3>
+                        GAMEPLAY SCREENSHOT
+                    </h3>
+
+                    <p>
+                        IMAGE PLACEHOLDER
+                    </p>
+
+                    <p>
+                        Replace with in-game footage.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="media-placeholder">
+
+                <div class="media-placeholder-content">
+
+                    <h3>
+                        SUPER PUNKASS
+                    </h3>
+
+                    <p>
+                        CHARACTER ART PLACEHOLDER
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="media-placeholder">
+
+                <div class="media-placeholder-content">
+
+                    <h3>
+                        BLACKOUT CITY
+                    </h3>
+
+                    <p>
+                        ENVIRONMENT ART PLACEHOLDER
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         STEAM
+         ========================================================= -->
+
+    <section
+        class="steam-section"
+    >
+
+        <h2>
+            ESCAPE THE CITY.
+        </h2>
+
+
+        <p>
+
+            Super Punkass is currently in development
+            for PC and is coming to Steam.
+
+        </p>
+
+
+        <!--
+            Replace # with your actual Steam page
+            once the store page exists.
+        -->
+
+        <a
+            href="#"
+            class="steam-button"
+        >
+            STEAM
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer>
+
+        <p>
+            SUPER PUNKASS © 2026 STERLWORLD
+        </p>
+
+        <p>
+            A SterlWorld production.
+        </p>
+
+        <p>
+            <a href="#top">
+                BACK TO TOP
+            </a>
+        </p>
+
+    </footer>
 
 
 </body>
