@@ -177,22 +177,30 @@
     #space {
       position: fixed;
       inset: 0;
+
       width: 100%;
       height: 100%;
+
       z-index: 0;
-      opacity: 1;
+
       pointer-events: none;
     }
 
 
     .ambient-glow {
       position: fixed;
+
       width: 700px;
       height: 700px;
+
       border-radius: 50%;
+
       pointer-events: none;
+
       z-index: 1;
+
       filter: blur(120px);
+
       opacity: 0.08;
     }
 
@@ -200,6 +208,7 @@
     .glow-cyan {
       top: -350px;
       left: -250px;
+
       background: #00ffff;
     }
 
@@ -207,47 +216,8 @@
     .glow-pink {
       bottom: -350px;
       right: -250px;
+
       background: #ff5ec4;
-    }
-
-
-    /* ========================================================= */
-    /* NAVIGATION */
-    /* ========================================================= */
-
-    nav {
-      position: fixed;
-      top: 24px;
-      right: 32px;
-      z-index: 1000;
-
-      display: flex;
-      gap: 24px;
-
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
-
-      opacity: 1;
-    }
-
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      opacity: 0.55;
-
-      transition:
-        opacity 0.3s ease,
-        text-shadow 0.3s ease,
-        transform 0.3s ease;
-    }
-
-
-    nav a:hover {
-      opacity: 1;
-      color: #0ff;
-      text-shadow: 0 0 10px #0ff;
-      transform: translateY(-1px);
     }
 
 
@@ -257,7 +227,9 @@
 
     .page {
       position: relative;
+
       z-index: 5;
+
       width: 100%;
     }
 
@@ -267,17 +239,21 @@
     /* ========================================================= */
 
     .hero {
+
       min-height: 100vh;
 
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
+
       justify-content: center;
 
       text-align: center;
 
       padding:
-        120px
+        80px
         24px
         90px;
 
@@ -286,94 +262,80 @@
 
 
     .hero-inner {
+
       width: 100%;
-      max-width: 1100px;
+
+      max-width: 1050px;
+
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
     }
 
 
     /* ========================================================= */
-    /* SMALL SIGNAL */
-    /* ========================================================= */
-
-    .signal {
-      font-family: 'Orbitron', sans-serif;
-
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-
-      color: #0ff;
-      opacity: 0.65;
-
-      margin-bottom: 22px;
-
-      text-transform: uppercase;
-
-      text-shadow:
-        0 0 8px rgba(0,255,255,0.6);
-    }
-
-
-    .signal::before,
-    .signal::after {
-      content: "✦";
-      margin: 0 12px;
-      opacity: 0.7;
-    }
-
-
-    /* ========================================================= */
-    /* MAIN LOGO */
+    /* LOGO */
     /* ========================================================= */
 
     #logo-wrapper {
+
       position: relative;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       margin-bottom: 26px;
 
-      animation: logoFloat 6s ease-in-out infinite;
+      animation:
+        logoFloat 6s ease-in-out infinite;
     }
 
 
     #logo-wrapper::before {
+
       content: "";
 
       position: absolute;
 
-      width: 280px;
-      height: 280px;
+      width: 300px;
+      height: 300px;
 
       border-radius: 50%;
 
       background:
         radial-gradient(
           circle,
-          rgba(255,215,0,0.10) 0%,
-          rgba(255,215,0,0.03) 35%,
+          rgba(255,215,0,0.11) 0%,
+          rgba(255,215,0,0.035) 38%,
           transparent 70%
         );
 
-      filter: blur(12px);
+      filter: blur(14px);
 
       z-index: -1;
     }
 
 
     #logo {
-      width: 250px;
-      max-width: 65vw;
+
+      width: 235px;
+
+      max-width: 60vw;
 
       display: block;
 
       filter:
-        drop-shadow(0 0 10px rgba(255,255,255,0.08))
-        drop-shadow(0 0 24px rgba(255,215,0,0.12));
+        drop-shadow(
+          0 0 10px rgba(255,255,255,0.08)
+        )
+        drop-shadow(
+          0 0 25px rgba(255,215,0,0.12)
+        );
     }
 
 
@@ -391,94 +353,261 @@
 
 
     /* ========================================================= */
-    /* WELCOME */
-    /* ========================================================= */
-
-    .welcome {
-      font-family: 'Orbitron', sans-serif;
-
-      font-size: clamp(
-        1.6rem,
-        4vw,
-        2.5rem
-      );
-
-      line-height: 1.2;
-
-      margin-bottom: 12px;
-
-      text-shadow:
-        0 0 14px rgba(0,255,255,0.35);
-    }
-
-
-    .welcome-sub {
-      max-width: 620px;
-
-      color: #aaa;
-
-      font-size: 0.95rem;
-      line-height: 1.8;
-
-      margin-bottom: 38px;
-    }
-
-
-    /* ========================================================= */
-    /* WORLDS LABEL */
+    /* ENTER A WORLD — GLITCH SIGNAL */
     /* ========================================================= */
 
     .worlds-label {
+
+      position: relative;
+
+      display: inline-block;
+
+      margin-bottom: 32px;
+
       font-family: 'Orbitron', sans-serif;
 
-      font-size: 0.62rem;
-      letter-spacing: 0.32em;
+      font-size: clamp(
+        0.9rem,
+        2.2vw,
+        1.25rem
+      );
 
-      color: #777;
+      font-weight: 600;
 
-      margin-bottom: 20px;
+      letter-spacing: 0.28em;
 
       text-transform: uppercase;
+
+      color: #fff;
+
+      cursor: default;
+
+      animation:
+        signalFlicker 4.8s infinite;
+    }
+
+
+    .worlds-label::before,
+    .worlds-label::after {
+
+      content: "ENTER A WORLD";
+
+      position: absolute;
+
+      left: 0;
+      top: 0;
+
+      width: 100%;
+
+      pointer-events: none;
+    }
+
+
+    .worlds-label::before {
+
+      color: #ff5ec4;
+
+      transform:
+        translate(
+          -2px,
+          0
+        );
+
+      opacity: 0;
+
+      clip-path:
+        inset(
+          20% 0 60% 0
+        );
+
+      animation:
+        glitchPink 5.7s infinite;
+    }
+
+
+    .worlds-label::after {
+
+      color: #00ffff;
+
+      transform:
+        translate(
+          2px,
+          0
+        );
+
+      opacity: 0;
+
+      clip-path:
+        inset(
+          65% 0 10% 0
+        );
+
+      animation:
+        glitchCyan 4.1s infinite;
+    }
+
+
+    @keyframes signalFlicker {
+
+      0%,
+      8%,
+      10%,
+      12%,
+      19%,
+      21%,
+      45%,
+      46%,
+      48%,
+      72%,
+      74%,
+      100% {
+
+        opacity: 1;
+
+        text-shadow:
+          0 0 4px rgba(255,255,255,0.8),
+          0 0 10px rgba(0,255,255,0.7),
+          0 0 24px rgba(0,255,255,0.45),
+          0 0 42px rgba(255,94,196,0.2);
+      }
+
+
+      9%,
+      11%,
+      20%,
+      47%,
+      73% {
+
+        opacity: 0.45;
+
+        text-shadow:
+          0 0 2px rgba(255,255,255,0.5),
+          0 0 5px rgba(0,255,255,0.3);
+      }
+
+
+      49%,
+      50% {
+
+        opacity: 0.78;
+
+        text-shadow:
+          0 0 3px #fff,
+          0 0 8px #0ff,
+          0 0 18px #0ff;
+      }
+
+    }
+
+
+    @keyframes glitchPink {
+
+      0%, 84%, 100% {
+        opacity: 0;
+      }
+
+      85% {
+        opacity: 0.8;
+      }
+
+      86% {
+        opacity: 0;
+      }
+
+      87% {
+        opacity: 0.6;
+      }
+
+      88% {
+        opacity: 0;
+      }
+
+    }
+
+
+    @keyframes glitchCyan {
+
+      0%, 61%, 100% {
+        opacity: 0;
+      }
+
+      62% {
+        opacity: 0.8;
+      }
+
+      63% {
+        opacity: 0;
+      }
+
+      64% {
+        opacity: 0.65;
+      }
+
+      65% {
+        opacity: 0;
+      }
+
     }
 
 
     /* ========================================================= */
-    /* WORLD LOGOS */
+    /* WORLDS */
     /* ========================================================= */
 
     .worlds {
+
       width: 100%;
 
       display: flex;
+
       justify-content: center;
+
       align-items: center;
 
-      gap: clamp(35px, 8vw, 100px);
+      gap: clamp(
+        45px,
+        8vw,
+        95px
+      );
 
-      margin-bottom: 34px;
+      margin-bottom: 50px;
     }
 
 
     .world-button {
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       text-decoration: none;
 
-      width: clamp(180px, 27vw, 300px);
+      /*
+        IMPORTANT:
+        Both logos receive the exact same footprint.
+      */
+
+      width: 245px;
+      height: 125px;
 
       transition:
-        transform 0.35s ease,
-        filter 0.35s ease;
+        transform 0.35s ease;
     }
 
 
     .world-button img {
-      width: 100%;
-      height: auto;
 
       display: block;
+
+      width: 100%;
+
+      max-width: 100%;
+
+      max-height: 100%;
+
+      object-fit: contain;
 
       transition:
         transform 0.35s ease,
@@ -487,106 +616,153 @@
 
 
     /* ========================================================= */
-    /* SUPER PUNKASS GLOW */
+    /* SUPER PUNKASS */
     /* ========================================================= */
 
     .world-button.punkass img {
+
       filter:
-        drop-shadow(0 0 7px rgba(255,94,196,0.45))
-        drop-shadow(0 0 18px rgba(255,94,196,0.30))
-        drop-shadow(0 0 35px rgba(255,94,196,0.18));
+        drop-shadow(
+          0 0 7px rgba(255,94,196,0.48)
+        )
+        drop-shadow(
+          0 0 18px rgba(255,94,196,0.32)
+        )
+        drop-shadow(
+          0 0 35px rgba(255,94,196,0.18)
+        );
     }
 
 
     .world-button.punkass:hover img {
-      transform: scale(1.08);
+
+      transform: scale(1.07);
 
       filter:
-        drop-shadow(0 0 10px rgba(255,94,196,0.8))
-        drop-shadow(0 0 25px rgba(255,94,196,0.65))
-        drop-shadow(0 0 50px rgba(255,94,196,0.35));
+        drop-shadow(
+          0 0 10px rgba(255,94,196,0.85)
+        )
+        drop-shadow(
+          0 0 25px rgba(255,94,196,0.65)
+        )
+        drop-shadow(
+          0 0 50px rgba(255,94,196,0.35)
+        );
     }
 
 
     /* ========================================================= */
-    /* PIZZA DALES GLOW */
+    /* PIZZA DALES */
     /* ========================================================= */
 
     .world-button.pizza img {
+
       filter:
-        drop-shadow(0 0 7px rgba(62,199,80,0.45))
-        drop-shadow(0 0 18px rgba(62,199,80,0.30))
-        drop-shadow(0 0 35px rgba(62,199,80,0.18));
+        drop-shadow(
+          0 0 7px rgba(62,199,80,0.48)
+        )
+        drop-shadow(
+          0 0 18px rgba(62,199,80,0.32)
+        )
+        drop-shadow(
+          0 0 35px rgba(62,199,80,0.18)
+        );
     }
 
 
     .world-button.pizza:hover img {
-      transform: scale(1.08);
+
+      transform: scale(1.07);
 
       filter:
-        drop-shadow(0 0 10px rgba(62,199,80,0.8))
-        drop-shadow(0 0 25px rgba(62,199,80,0.65))
-        drop-shadow(0 0 50px rgba(62,199,80,0.35));
+        drop-shadow(
+          0 0 10px rgba(62,199,80,0.85)
+        )
+        drop-shadow(
+          0 0 25px rgba(62,199,80,0.65)
+        )
+        drop-shadow(
+          0 0 50px rgba(62,199,80,0.35)
+        );
     }
 
 
     /* ========================================================= */
-    /* SMALL LINKS */
+    /* ABOUT / CONTACT */
     /* ========================================================= */
 
     .secondary-links {
+
       display: flex;
+
       justify-content: center;
+
       align-items: center;
 
-      gap: 24px;
+      gap: 28px;
+
+      margin-top: 4px;
     }
 
 
     .secondary-links a {
+
       color: #888;
 
       text-decoration: none;
 
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
+      font-size: 0.7rem;
+
+      letter-spacing: 0.16em;
 
       text-transform: uppercase;
 
       transition:
         color 0.3s ease,
-        text-shadow 0.3s ease;
+        text-shadow 0.3s ease,
+        transform 0.3s ease;
     }
 
 
     .secondary-links a:hover {
+
       color: #0ff;
 
       text-shadow:
         0 0 10px rgba(0,255,255,0.7);
+
+      transform:
+        translateY(-2px);
     }
 
 
     .secondary-divider {
+
       color: #333;
-      font-size: 0.65rem;
+
+      font-size: 0.6rem;
     }
 
 
     /* ========================================================= */
-    /* SCROLL INDICATOR */
+    /* SCROLL */
     /* ========================================================= */
 
     .scroll-hint {
+
       position: absolute;
 
-      bottom: 28px;
+      bottom: 25px;
+
       left: 50%;
 
-      transform: translateX(-50%);
+      transform:
+        translateX(-50%);
 
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
 
       gap: 8px;
@@ -595,15 +771,18 @@
 
       font-family: 'Orbitron', sans-serif;
 
-      font-size: 0.55rem;
-      letter-spacing: 0.25em;
+      font-size: 0.52rem;
+
+      letter-spacing: 0.28em;
 
       text-transform: uppercase;
     }
 
 
     .scroll-line {
+
       width: 1px;
+
       height: 32px;
 
       background:
@@ -613,20 +792,27 @@
           transparent
         );
 
-      animation: scrollPulse 2s ease-in-out infinite;
+      animation:
+        scrollPulse 2s ease-in-out infinite;
     }
 
 
     @keyframes scrollPulse {
 
       0%,100% {
-        opacity: 0.25;
-        transform: scaleY(0.65);
+
+        opacity: 0.2;
+
+        transform:
+          scaleY(0.6);
       }
 
       50% {
+
         opacity: 1;
-        transform: scaleY(1);
+
+        transform:
+          scaleY(1);
       }
 
     }
@@ -637,7 +823,12 @@
     /* ========================================================= */
 
     .section-divider {
-      width: min(900px, 80%);
+
+      width:
+        min(
+          900px,
+          80%
+        );
 
       height: 1px;
 
@@ -656,6 +847,7 @@
 
 
     .section-divider::after {
+
       content: "✦";
 
       position: absolute;
@@ -663,7 +855,11 @@
       left: 50%;
       top: 50%;
 
-      transform: translate(-50%, -50%);
+      transform:
+        translate(
+          -50%,
+          -50%
+        );
 
       padding: 0 12px;
 
@@ -679,29 +875,34 @@
 
 
     /* ========================================================= */
-    /* UPDATES SECTION */
+    /* UPDATES */
     /* ========================================================= */
 
     .updates {
+
       min-height: 80vh;
 
       padding:
         110px
         24px
         130px;
-
-      position: relative;
     }
 
 
     .updates-inner {
-      width: min(900px, 100%);
+
+      width:
+        min(
+          900px,
+          100%
+        );
 
       margin: 0 auto;
     }
 
 
     .section-kicker {
+
       text-align: center;
 
       font-family: 'Orbitron', sans-serif;
@@ -722,24 +923,28 @@
 
 
     .section-title {
+
       text-align: center;
 
       font-family: 'Orbitron', sans-serif;
 
-      font-size: clamp(
-        1.5rem,
-        4vw,
-        2.4rem
-      );
+      font-size:
+        clamp(
+          1.5rem,
+          4vw,
+          2.4rem
+        );
 
       margin-bottom: 14px;
     }
 
 
     .section-intro {
+
       max-width: 600px;
 
-      margin: 0 auto 55px;
+      margin:
+        0 auto 55px;
 
       text-align: center;
 
@@ -752,17 +957,30 @@
 
 
     /* ========================================================= */
-    /* UPDATE CARD */
+    /* UPDATE ARCHIVE */
     /* ========================================================= */
 
+    .update-list {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 28px;
+    }
+
+
     .update-card {
+
       position: relative;
 
       width: 100%;
 
-      padding: 42px;
+      padding: 38px 42px;
 
-      border: 1px solid rgba(255,255,255,0.09);
+      border:
+        1px solid
+        rgba(255,255,255,0.09);
 
       background:
         linear-gradient(
@@ -772,8 +990,11 @@
           rgba(0,0,0,0.7)
         );
 
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter:
+        blur(8px);
+
+      -webkit-backdrop-filter:
+        blur(8px);
 
       overflow: hidden;
 
@@ -785,6 +1006,7 @@
 
 
     .update-card::before {
+
       content: "";
 
       position: absolute;
@@ -808,6 +1030,7 @@
 
 
     .update-card::after {
+
       content: "";
 
       position: absolute;
@@ -831,7 +1054,9 @@
 
 
     .update-card:hover {
-      transform: translateY(-4px);
+
+      transform:
+        translateY(-4px);
 
       border-color:
         rgba(255,94,196,0.35);
@@ -842,9 +1067,16 @@
     }
 
 
+    /* ========================================================= */
+    /* POST DATE */
+    /* ========================================================= */
+
     .update-meta {
+
       display: flex;
+
       align-items: center;
+
       gap: 12px;
 
       margin-bottom: 20px;
@@ -853,7 +1085,7 @@
 
       font-size: 0.58rem;
 
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
 
       color: #777;
 
@@ -861,15 +1093,17 @@
     }
 
 
-    .update-status {
-      color: #ff5ec4;
+    .update-date {
+
+      color: #aaa;
 
       text-shadow:
-        0 0 8px rgba(255,94,196,0.6);
+        0 0 8px rgba(255,255,255,0.15);
     }
 
 
     .update-dot {
+
       width: 4px;
       height: 4px;
 
@@ -879,14 +1113,29 @@
     }
 
 
+    .update-status {
+
+      color: #ff5ec4;
+
+      text-shadow:
+        0 0 8px rgba(255,94,196,0.6);
+    }
+
+
+    /* ========================================================= */
+    /* POST */
+    /* ========================================================= */
+
     .update-card h3 {
+
       font-family: 'Orbitron', sans-serif;
 
-      font-size: clamp(
-        1.3rem,
-        3vw,
-        2rem
-      );
+      font-size:
+        clamp(
+          1.3rem,
+          3vw,
+          2rem
+        );
 
       line-height: 1.25;
 
@@ -898,6 +1147,7 @@
 
 
     .update-card p {
+
       color: #aaa;
 
       line-height: 1.85;
@@ -911,6 +1161,7 @@
 
 
     .update-link {
+
       display: inline-flex;
 
       align-items: center;
@@ -937,6 +1188,7 @@
 
 
     .update-link:hover {
+
       color: #ff5ec4;
 
       gap: 15px;
@@ -947,23 +1199,25 @@
 
 
     /* ========================================================= */
-    /* FUTURE SIGNAL */
+    /* ARCHIVE NOTE */
     /* ========================================================= */
 
     .future-note {
+
       text-align: center;
 
-      margin-top: 45px;
+      margin-top: 42px;
 
       color: #444;
 
-      font-size: 0.7rem;
+      font-size: 0.68rem;
 
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
     }
 
 
     .future-note span {
+
       color: #666;
     }
 
@@ -973,6 +1227,7 @@
     /* ========================================================= */
 
     footer {
+
       position: relative;
 
       z-index: 10;
@@ -993,6 +1248,7 @@
 
 
     footer .footer-mark {
+
       font-family: 'Orbitron', sans-serif;
 
       color: #666;
@@ -1006,6 +1262,7 @@
 
 
     footer a {
+
       color: #555;
 
       text-decoration: none;
@@ -1016,6 +1273,7 @@
 
 
     footer a:hover {
+
       color: #0ff;
     }
 
@@ -1025,6 +1283,7 @@
     /* ========================================================= */
 
     .sparkle {
+
       position: fixed;
 
       width: 7px;
@@ -1043,7 +1302,120 @@
 
 
     /* ========================================================= */
-    /* ACCESSIBILITY */
+    /* MOBILE */
+    /* ========================================================= */
+
+    @media (max-width: 768px) {
+
+      .hero {
+
+        padding:
+          80px
+          18px
+          75px;
+      }
+
+
+      #logo {
+
+        width: 175px;
+      }
+
+
+      #logo-wrapper::before {
+
+        width: 220px;
+        height: 220px;
+      }
+
+
+      .worlds-label {
+
+        font-size: 0.8rem;
+
+        letter-spacing: 0.22em;
+
+        margin-bottom: 25px;
+      }
+
+
+      .worlds {
+
+        flex-direction: column;
+
+        gap: 14px;
+
+        margin-bottom: 42px;
+      }
+
+
+      .world-button {
+
+        width: 245px;
+        height: 105px;
+      }
+
+
+      .secondary-links {
+
+        gap: 20px;
+      }
+
+
+      .updates {
+
+        padding:
+          80px
+          18px
+          100px;
+      }
+
+
+      .section-intro {
+
+        font-size: 0.8rem;
+
+        margin-bottom: 35px;
+      }
+
+
+      .update-card {
+
+        padding:
+          28px
+          22px;
+      }
+
+
+      .update-card p {
+
+        font-size: 0.82rem;
+
+        line-height: 1.75;
+      }
+
+
+      .update-meta {
+
+        flex-wrap: wrap;
+
+        line-height: 1.6;
+      }
+
+
+      footer {
+
+        padding:
+          35px
+          18px
+          25px;
+      }
+
+    }
+
+
+    /* ========================================================= */
+    /* REDUCED MOTION */
     /* ========================================================= */
 
     @media (prefers-reduced-motion: reduce) {
@@ -1053,149 +1425,16 @@
       }
 
       #logo-wrapper,
-      .scroll-line {
+      .scroll-line,
+      .worlds-label,
+      .worlds-label::before,
+      .worlds-label::after {
         animation: none;
       }
 
       * {
-        transition-duration: 0.01ms !important;
-      }
-
-    }
-
-
-    /* ========================================================= */
-    /* MOBILE */
-    /* ========================================================= */
-
-    @media (max-width: 768px) {
-
-      nav {
-        top: 16px;
-        left: 50%;
-        right: auto;
-
-        transform: translateX(-50%);
-
-        width: max-content;
-
-        gap: 18px;
-
-        font-size: 0.7rem;
-      }
-
-
-      .hero {
-        padding:
-          105px
-          18px
-          80px;
-      }
-
-
-      #logo {
-        width: 170px;
-      }
-
-
-      #logo-wrapper::before {
-        width: 210px;
-        height: 210px;
-      }
-
-
-      .signal {
-        font-size: 0.52rem;
-
-        letter-spacing: 0.23em;
-      }
-
-
-      .signal::before,
-      .signal::after {
-        margin: 0 7px;
-      }
-
-
-      .welcome {
-        font-size: 1.5rem;
-      }
-
-
-      .welcome-sub {
-        font-size: 0.82rem;
-
-        max-width: 340px;
-
-        line-height: 1.7;
-
-        margin-bottom: 32px;
-      }
-
-
-      .worlds {
-        flex-direction: column;
-
-        gap: 12px;
-
-        margin-bottom: 28px;
-      }
-
-
-      .world-button {
-        width: min(250px, 75vw);
-      }
-
-
-      .secondary-links {
-        gap: 18px;
-      }
-
-
-      .scroll-hint {
-        bottom: 18px;
-      }
-
-
-      .updates {
-        padding:
-          80px
-          18px
-          100px;
-      }
-
-
-      .section-intro {
-        font-size: 0.8rem;
-
-        margin-bottom: 35px;
-      }
-
-
-      .update-card {
-        padding: 28px 22px;
-      }
-
-
-      .update-card p {
-        font-size: 0.82rem;
-
-        line-height: 1.75;
-      }
-
-
-      .update-meta {
-        flex-wrap: wrap;
-
-        line-height: 1.6;
-      }
-
-
-      footer {
-        padding:
-          35px
-          18px
-          25px;
+        transition-duration:
+          0.01ms !important;
       }
 
     }
@@ -1220,18 +1459,8 @@
   <!-- ========================================================= -->
 
   <div class="ambient-glow glow-cyan"></div>
+
   <div class="ambient-glow glow-pink"></div>
-
-
-  <!-- ========================================================= -->
-  <!-- NAVIGATION -->
-  <!-- ========================================================= -->
-
-  <nav>
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/contact">Contact</a>
-  </nav>
 
 
   <!-- ========================================================= -->
@@ -1250,11 +1479,6 @@
       <div class="hero-inner">
 
 
-        <div class="signal">
-          Welcome, traveler
-        </div>
-
-
         <!-- STERLWORLD LOGO -->
 
         <div id="logo-wrapper">
@@ -1268,25 +1492,16 @@
         </div>
 
 
-        <!-- WELCOME -->
-
-        <h1 class="welcome">
-          Welcome to SterlWorld.
-        </h1>
-
-
-        <p class="welcome-sub">
-          Games, characters, stories, and worlds are being built here.
-          Some are already out there. Others are just beginning.
-        </p>
-
-
-        <!-- WORLDS -->
+        <!-- ENTER A WORLD -->
 
         <div class="worlds-label">
-          Enter a World
+          ENTER A WORLD
         </div>
 
+
+        <!-- =================================================== -->
+        <!-- WORLD LOGOS -->
+        <!-- =================================================== -->
 
         <div class="worlds">
 
@@ -1326,7 +1541,9 @@
         </div>
 
 
-        <!-- SECONDARY LINKS -->
+        <!-- =================================================== -->
+        <!-- LOWER LINKS -->
+        <!-- =================================================== -->
 
         <div class="secondary-links">
 
@@ -1372,10 +1589,13 @@
 
 
     <!-- ======================================================= -->
-    <!-- LATEST FROM STERLWORLD -->
+    <!-- STERLWORLD UPDATES -->
     <!-- ======================================================= -->
 
-    <section class="updates" id="updates">
+    <section
+      class="updates"
+      id="updates"
+    >
 
       <div class="updates-inner">
 
@@ -1391,62 +1611,125 @@
 
 
         <p class="section-intro">
-          A little window into what's being built, imagined,
-          drawn, coded, and brought to life behind the scenes.
+          Development notes, announcements, new worlds,
+          and little pieces of what's happening behind the scenes.
         </p>
 
 
         <!-- =================================================== -->
-        <!-- FEATURED UPDATE -->
+        <!-- UPDATE ARCHIVE -->
         <!-- =================================================== -->
 
-        <article class="update-card">
+        <div class="update-list">
 
 
-          <div class="update-meta">
+          <!-- ================================================= -->
+          <!-- POST #1 -->
+          <!-- ================================================= -->
 
-            <span class="update-status">
-              In Development
-            </span>
+          <article class="update-card">
 
-            <span class="update-dot"></span>
+            <div class="update-meta">
 
-            <span>
-              October 2026
-            </span>
+              <span class="update-date">
+                October 1, 2026
+              </span>
 
-          </div>
+              <span class="update-dot"></span>
 
+              <span class="update-status">
+                In Development
+              </span>
 
-          <h3>
-            Super Punkass Is In Development
-          </h3>
-
-
-          <p>
-            The next world is taking shape.
-            Super Punkass is officially in development,
-            and Blackout City is beginning to come alive —
-            a city that never sees daylight, filled with
-            endless lights, danger, and trouble around every corner.
-          </p>
+            </div>
 
 
-          <a
-            href="/superpunkass"
-            class="update-link"
-          >
-            Enter Super Punkass
-            <span>→</span>
-          </a>
+            <h3>
+              Super Punkass Is In Development
+            </h3>
 
 
-        </article>
+            <p>
+              The next world is taking shape.
+              Super Punkass is officially in development,
+              and Blackout City is beginning to come alive —
+              a city that never sees daylight, filled with
+              endless lights, danger, and trouble around every corner.
+            </p>
+
+
+            <a
+              href="/superpunkass"
+              class="update-link"
+            >
+
+              Enter Super Punkass
+
+              <span>
+                →
+              </span>
+
+            </a>
+
+
+          </article>
+
+
+          <!-- ================================================= -->
+          <!--
+            FUTURE POSTS GO ABOVE THIS LINE.
+
+            Example:
+
+            <article class="update-card">
+
+              <div class="update-meta">
+
+                <span class="update-date">
+                  October 15, 2026
+                </span>
+
+                <span class="update-dot"></span>
+
+                <span class="update-status">
+                  Development
+                </span>
+
+              </div>
+
+              <h3>
+                Your New Update Title
+              </h3>
+
+              <p>
+                Your update goes here.
+              </p>
+
+              <a
+                href="/superpunkass"
+                class="update-link"
+              >
+                Read More
+                <span>→</span>
+              </a>
+
+            </article>
+
+          -->
+          <!-- ================================================= -->
+
+
+        </div>
 
 
         <div class="future-note">
-          More transmissions will appear here as the worlds grow.
-          <span>✦</span>
+
+          The story keeps moving.
+
+          <span>
+            ✦
+          </span>
+
         </div>
 
 
@@ -1496,8 +1779,12 @@
     /* STARFIELD */
     /* ========================================================= */
 
-    const canvas = document.getElementById("space");
-    const ctx = canvas.getContext("2d");
+    const canvas =
+      document.getElementById("space");
+
+    const ctx =
+      canvas.getContext("2d");
+
 
     let w;
     let h;
@@ -1505,13 +1792,18 @@
 
     function resize() {
 
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      w =
+        canvas.width =
+        window.innerWidth;
 
+      h =
+        canvas.height =
+        window.innerHeight;
     }
 
 
     resize();
+
 
     window.addEventListener(
       "resize",
@@ -1519,7 +1811,8 @@
     );
 
 
-    const starImage = new Image();
+    const starImage =
+      new Image();
 
     starImage.src =
       "/assets/images/Star.png";
@@ -1581,17 +1874,19 @@
       stars.forEach(
         (s, index) => {
 
-          s.z -= s.speed;
+          s.z -=
+            s.speed;
 
 
-          if (s.z <= 0) {
+          if (
+            s.z <= 0
+          ) {
 
             stars[index] =
               createStar();
 
             stars[index].z =
               w;
-
           }
 
 
@@ -1612,7 +1907,8 @@
           const size =
             Math.max(
               1,
-              (1 - s.z / w) * 15
+              (1 - s.z / w)
+              * 15
             );
 
 
@@ -1624,13 +1920,14 @@
           ) {
 
             return;
-
           }
 
 
           ctx.globalAlpha =
             0.18
-            + (1 - s.z / w) * 0.35;
+            +
+            (1 - s.z / w)
+            * 0.35;
 
 
           if (
@@ -1651,7 +1948,8 @@
       );
 
 
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha =
+        1;
 
 
       requestAnimationFrame(
@@ -1695,10 +1993,6 @@
       9000
     );
 
-
-    /* ========================================================= */
-    /* LOGO PULSE KEYFRAME */
-    /* ========================================================= */
 
     const pulseStyle =
       document.createElement(
@@ -1754,13 +2048,15 @@
 
       const x =
         rect.left
-        + Math.random()
+        +
+        Math.random()
         * rect.width;
 
 
       const y =
         rect.top
-        + Math.random()
+        +
+        Math.random()
         * rect.height;
 
 
@@ -1785,7 +2081,9 @@
 
       const distance =
         18
-        + Math.random() * 45;
+        +
+        Math.random()
+        * 45;
 
 
       requestAnimationFrame(
@@ -1799,6 +2097,7 @@
               )
               scale(0.4)
             `;
+
 
           sparkle.style.opacity =
             "0";
