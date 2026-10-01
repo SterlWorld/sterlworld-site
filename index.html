@@ -237,78 +237,87 @@
     #message p {
       color: #ccc;
 
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
 
     /* =========================
-       CTA BUTTONS
+       CTA LAYOUT
        ========================= */
 
     .cta {
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      gap: 12px;
+    }
+
+
+    /* =========================
+       PRIMARY GAME BUTTONS
+       ========================= */
+
+    .primary-buttons {
       display: flex;
 
       justify-content: center;
 
       align-items: center;
 
-      flex-wrap: wrap;
+      gap: 12px;
 
-      gap: 10px;
+      width: 100%;
     }
 
-    .cta a {
-      display: inline-block;
 
-      padding: 12px 18px;
+    .primary-buttons a {
+      display: flex;
 
-      border: 1px solid rgba(0, 255, 255, 0.6);
+      align-items: center;
+
+      justify-content: center;
+
+      min-width: 180px;
+
+      padding: 13px 22px;
+
+      border-radius: 8px;
 
       color: white;
 
       text-decoration: none;
 
-      border-radius: 8px;
+      font-weight: 600;
 
       text-shadow:
-        0 0 6px rgba(255, 255, 255, 0.6);
+        0 0 8px rgba(255,255,255,0.7);
 
-      background:
-        rgba(0, 255, 255, 0.18);
+      transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
 
       backdrop-filter: blur(6px);
 
       -webkit-backdrop-filter: blur(6px);
-
-      box-shadow:
-        0 0 8px rgba(0, 255, 255, 0.4),
-        inset 0 0 6px rgba(0, 255, 255, 0.2);
-
-      transition:
-        all 0.25s ease;
-    }
-
-    .cta a:hover {
-      transform: scale(1.08);
-
-      background:
-        rgba(0, 255, 255, 0.41);
-
-      box-shadow:
-        0 0 14px rgba(0, 255, 255, 0.8),
-        inset 0 0 10px rgba(0, 255, 255, 0.4);
     }
 
 
     /* =========================
-       SUPER PUNKASS BUTTON
+       SUPER PUNKASS
        ========================= */
 
-    .cta a.super-punkass {
-      border-color: rgba(255, 94, 196, 0.85);
+    .super-punkass {
+
+      border: 1px solid rgba(255, 94, 196, 0.9);
 
       background:
-        rgba(255, 94, 196, 0.18);
+        rgba(255, 94, 196, 0.20);
 
       box-shadow:
         0 0 10px rgba(255, 94, 196, 0.5),
@@ -318,15 +327,108 @@
         0 0 8px rgba(255, 94, 196, 0.9);
     }
 
-    .cta a.super-punkass:hover {
+    .super-punkass:hover {
+
       background:
-        rgba(255, 94, 196, 0.4);
+        rgba(255, 94, 196, 0.42);
 
       box-shadow:
-        0 0 18px rgba(255, 94, 196, 0.9),
-        inset 0 0 12px rgba(255, 94, 196, 0.35);
+        0 0 20px rgba(255, 94, 196, 0.95),
+        inset 0 0 12px rgba(255, 94, 196, 0.4);
 
-      transform: scale(1.1);
+      transform:
+        scale(1.08);
+    }
+
+
+    /* =========================
+       PIZZA DALES
+       ========================= */
+
+    .pizza-dales {
+
+      border: 1px solid rgba(62, 199, 80, 0.95);
+
+      background:
+        rgba(62, 199, 80, 0.20);
+
+      box-shadow:
+        0 0 10px rgba(62, 199, 80, 0.5),
+        inset 0 0 8px rgba(62, 199, 80, 0.2);
+
+      text-shadow:
+        0 0 8px rgba(62, 199, 80, 0.9);
+    }
+
+    .pizza-dales:hover {
+
+      background:
+        rgba(62, 199, 80, 0.42);
+
+      box-shadow:
+        0 0 20px rgba(62, 199, 80, 0.95),
+        inset 0 0 12px rgba(62, 199, 80, 0.4);
+
+      transform:
+        scale(1.08);
+    }
+
+
+    /* =========================
+       SECONDARY BUTTONS
+       ========================= */
+
+    .secondary-buttons {
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      gap: 8px;
+    }
+
+    .secondary-buttons a {
+
+      display: inline-block;
+
+      padding: 8px 14px;
+
+      border: 1px solid rgba(0, 255, 255, 0.35);
+
+      border-radius: 6px;
+
+      color: #aaa;
+
+      font-size: 0.78rem;
+
+      text-decoration: none;
+
+      background:
+        rgba(0, 255, 255, 0.07);
+
+      box-shadow:
+        inset 0 0 5px rgba(0, 255, 255, 0.1);
+
+      transition:
+        all 0.25s ease;
+    }
+
+    .secondary-buttons a:hover {
+
+      color: white;
+
+      border-color:
+        rgba(0, 255, 255, 0.7);
+
+      background:
+        rgba(0, 255, 255, 0.16);
+
+      box-shadow:
+        0 0 10px rgba(0, 255, 255, 0.35);
+
+      transform:
+        scale(1.05);
     }
 
 
@@ -411,9 +513,11 @@
       }
 
       #message {
+
         top: 65%;
 
-        transform: translate(-50%, -50%);
+        transform:
+          translate(-50%, -50%);
 
         width: 90%;
       }
@@ -424,30 +528,52 @@
 
       #message p {
         font-size: 0.9rem;
+
+        margin-bottom: 20px;
       }
 
-      .cta {
-        display: flex;
+
+      .primary-buttons {
 
         flex-direction: column;
 
-        align-items: center;
-
-        gap: 12px;
+        gap: 10px;
       }
 
-      .cta a {
+
+      .primary-buttons a {
+
         width: 85%;
 
         max-width: 260px;
 
-        padding: 14px;
+        padding: 13px;
       }
 
-      footer {
-        font-size: 0.7rem;
 
-        bottom: 5px;
+      .secondary-buttons {
+
+        gap: 8px;
+      }
+
+
+      .secondary-buttons a {
+
+        padding:
+          7px 12px;
+
+        font-size:
+          0.72rem;
+      }
+
+
+      footer {
+
+        font-size:
+          0.7rem;
+
+        bottom:
+          5px;
       }
 
     }
@@ -511,26 +637,50 @@
       SterlWorld is an independent game and multimedia studio creating original worlds.
     </p>
 
+
     <div class="cta">
 
-      <a
-        href="https://sterlworld.com/superpunkass"
-        class="super-punkass"
-      >
-        Super Punkass
-      </a>
 
-      <a href="/pizzadales">
-        Pizza Dales
-      </a>
+      <!-- =========================
+           PRIMARY WORLDS
+           ========================= -->
 
-      <a href="/about">
-        About
-      </a>
+      <div class="primary-buttons">
 
-      <a href="/contact">
-        Contact
-      </a>
+        <a
+          href="https://sterlworld.com/superpunkass"
+          class="super-punkass"
+        >
+          Super Punkass
+        </a>
+
+
+        <a
+          href="/pizzadales"
+          class="pizza-dales"
+        >
+          Pizza Dales
+        </a>
+
+      </div>
+
+
+      <!-- =========================
+           SECONDARY LINKS
+           ========================= -->
+
+      <div class="secondary-buttons">
+
+        <a href="/about">
+          About
+        </a>
+
+        <a href="/contact">
+          Contact
+        </a>
+
+      </div>
+
 
     </div>
 
@@ -599,17 +749,22 @@
     let w;
     let h;
 
+
     function resize() {
 
-      w = canvas.width =
+      w =
+        canvas.width =
         window.innerWidth;
 
-      h = canvas.height =
+      h =
+        canvas.height =
         window.innerHeight;
 
     }
 
+
     resize();
+
 
     window.addEventListener(
       "resize",
@@ -633,6 +788,7 @@
        ========================= */
 
     let stars = [];
+
 
     for (
       let i = 0;
@@ -690,7 +846,8 @@
                 (Math.random() - 0.5)
                 * h * 2,
 
-              z: w
+              z:
+                w
 
             };
 
@@ -702,15 +859,18 @@
 
 
           const x =
-            s.x * k + w / 2;
+            s.x * k +
+            w / 2;
 
 
           const y =
-            s.y * k + h / 2;
+            s.y * k +
+            h / 2;
 
 
           const size =
-            (1 - s.z / w) * 20;
+            (1 - s.z / w) *
+            20;
 
 
           ctx.globalAlpha =
