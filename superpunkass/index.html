@@ -1,42 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Super Punkass | SterlWorld</title>
 
+
+    <!-- =========================================
+         PIXEL FONTS
+         ========================================= -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
+        rel="stylesheet"
+    >
+
+
     <style>
+
         /* =========================================
-           SUPER PUNKASS
+           GLOBAL
            ========================================= */
 
         * {
             box-sizing: border-box;
         }
 
+
         html,
         body {
             margin: 0;
             padding: 0;
+
             width: 100%;
             min-height: 100%;
         }
 
+
         body {
+
             min-height: 100vh;
 
             /*
-             * SUPER PUNKASS CINEMATIC SKY
+             * =====================================
+             * CINEMATIC SUPER PUNKASS SKY
+             * =====================================
              *
              * Deep burgundy-black at the top
-             * Slowly transitions into a warm
-             * dusty orange toward the bottom.
+             * gradually fading into a warm
+             * dusty orange horizon.
              */
 
             background: linear-gradient(
                 to bottom,
+
                 #16070D 0%,
                 #16070D 38%,
                 #210B12 52%,
@@ -44,6 +69,7 @@
                 #5B302B 82%,
                 #A76555 100%
             );
+
 
             color: white;
 
@@ -55,14 +81,17 @@
         }
 
 
+
         /* =========================================
            SUPER PUNKASS LOGO
            ========================================= */
 
         .logo {
+
             display: block;
 
             width: 500px;
+
             max-width: 85%;
 
             height: auto;
@@ -71,27 +100,149 @@
         }
 
 
+
+        /* =========================================
+           GAME BIO
+           ========================================= */
+
+        .game-bio {
+
+            width: 900px;
+
+            max-width: 88%;
+
+            margin: 90px auto 120px auto;
+
+            text-align: center;
+        }
+
+
+
+        /* =========================================
+           BIO TITLE
+           ========================================= */
+
+        .game-bio h1 {
+
+            margin: 0 0 35px 0;
+
+            font-family: "Press Start 2P", monospace;
+
+            font-size: 28px;
+
+            line-height: 1.5;
+
+            color: #FFFFFF;
+
+            /*
+             * Pixel-style dark outline/shadow
+             */
+
+            text-shadow:
+                4px 4px 0 #16070D,
+                0 0 12px rgba(255, 120, 190, 0.7);
+        }
+
+
+
+        /* =========================================
+           BIO TEXT
+           ========================================= */
+
+        .game-bio p {
+
+            margin: 0 auto 28px auto;
+
+            max-width: 780px;
+
+            font-family: "Silkscreen", monospace;
+
+            font-size: 18px;
+
+            line-height: 1.9;
+
+            letter-spacing: 1px;
+
+            color: #FFFFFF;
+
+            /*
+             * Dark pixel-style shadow
+             */
+
+            text-shadow:
+                2px 2px 0 #16070D;
+        }
+
+
+
         /* =========================================
            MOBILE
            ========================================= */
 
         @media (max-width: 600px) {
 
+
+            /* Logo */
+
             .logo {
+
                 width: 420px;
+
                 max-width: 90%;
 
                 margin-top: 30px;
             }
 
+
+            /* Bio container */
+
+            .game-bio {
+
+                width: 90%;
+
+                margin-top: 70px;
+
+                margin-bottom: 80px;
+            }
+
+
+            /* Bio heading */
+
+            .game-bio h1 {
+
+                font-size: 18px;
+
+                line-height: 1.6;
+
+                margin-bottom: 25px;
+            }
+
+
+            /* Bio paragraphs */
+
+            .game-bio p {
+
+                font-size: 14px;
+
+                line-height: 1.8;
+
+                letter-spacing: 0.5px;
+            }
+
         }
+
     </style>
+
 </head>
+
 
 
 <body>
 
-    <!-- SUPER PUNKASS LOGO -->
+
+    <!-- =========================================
+         SUPER PUNKASS LOGO
+         ========================================= -->
 
     <img
         src="../assets/images/Super%20Punkass%20Logo%20Final.png"
@@ -99,5 +250,39 @@
         class="logo"
     >
 
+
+
+    <!-- =========================================
+         GAME BIO
+         ========================================= -->
+
+    <section class="game-bio">
+
+
+        <h1>
+            SUPER PUNKASS
+        </h1>
+
+
+        <p>
+            The city is under attack, and Super Punkass is ready
+            to fight her way out. Take control of a fearless hero
+            armed with a pink blaster and a serious attitude as
+            she battles through a city overrun with chaos.
+        </p>
+
+
+        <p>
+            Run, jump, shoot, punch, slide, climb and survive
+            your way across the city in this cinematic 2.5D
+            action adventure inspired by 16-bit games and
+            classic 80s action movies.
+        </p>
+
+
+    </section>
+
+
 </body>
+
 </html>
