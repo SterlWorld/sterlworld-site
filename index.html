@@ -821,6 +821,91 @@
 
 
     /* ========================================================= */
+    /* SUPER PUNKASS — COMING SOON */
+    /* ========================================================= */
+
+    .world-button.punkass-coming-soon {
+      position: relative;
+
+      cursor: default;
+
+      pointer-events: none;
+    }
+
+
+    .world-button.punkass-coming-soon img {
+      opacity: 0.28;
+
+      filter:
+        grayscale(0.35)
+        brightness(0.65);
+
+      transition:
+        opacity 0.4s ease,
+        filter 0.4s ease;
+    }
+
+
+    .punkass-coming-soon-label {
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      z-index: 2;
+
+      padding:
+        9px 18px;
+
+      border:
+        1px solid
+        rgba(255,94,196,0.55);
+
+      background:
+        rgba(8,3,23,0.78);
+
+      color:
+        #ffffff;
+
+      font-family:
+        'Orbitron',
+        sans-serif;
+
+      font-size:
+        0.7rem;
+
+      font-weight:
+        700;
+
+      letter-spacing:
+        0.18em;
+
+      text-transform:
+        uppercase;
+
+      white-space:
+        nowrap;
+
+      text-shadow:
+        0 0 8px
+        rgba(255,94,196,0.65);
+
+      box-shadow:
+        0 0 18px
+        rgba(255,94,196,0.18);
+
+      backdrop-filter:
+        blur(5px);
+
+      -webkit-backdrop-filter:
+        blur(5px);
+    }
+
+
+    /* ========================================================= */
     /* SECONDARY LINKS */
     /* ========================================================= */
 
@@ -1702,6 +1787,25 @@
               >
 
             </a>
+
+
+            <!-- SUPER PUNKASS — COMING SOON -->
+
+            <div
+              class="world-button punkass-coming-soon"
+              aria-label="Super Punkass — Coming Soon"
+            >
+
+              <img
+                src="/assets/images/Super Punkass Logo Final.png"
+                alt="Super Punkass"
+              >
+
+              <span class="punkass-coming-soon-label">
+                Coming Soon
+              </span>
+
+            </div>
 
 
           </div>
