@@ -7,50 +7,36 @@
 
     <title>About SterlWorld</title>
 
-    <meta name="description" content="Learn about SterlWorld — an independent creative studio building original games, characters, worlds, and interactive experiences.">
+    <meta name="description" content="Learn about SterlWorld — an independent creative studio creating original games, characters, worlds, and entertainment experiences.">
 
     <meta property="og:title" content="About SterlWorld">
-    <meta property="og:description" content="SterlWorld is an independent creative studio building original games, characters, worlds, and interactive experiences.">
+    <meta property="og:description" content="SterlWorld is an independent creative studio creating original games, characters, worlds, and entertainment experiences.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sterlworld.com/about">
     <meta property="og:image" content="https://sterlworld.com/assets/images/SterlWorld-Logo-2026.png">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="About SterlWorld">
-    <meta name="twitter:description" content="An independent creative studio building original games, characters, worlds, and interactive experiences.">
+    <meta name="twitter:description" content="An independent creative studio creating original games, characters, worlds, and entertainment experiences.">
     <meta name="twitter:image" content="https://sterlworld.com/assets/images/SterlWorld-Logo-2026.png">
 
-
     <!-- Google Analytics -->
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YGPZXDQV5Q"></script>
-
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag(){
-            dataLayer.push(arguments);
-        }
+        function gtag(){dataLayer.push(arguments);}
 
         gtag('js', new Date());
-
         gtag('config', 'G-YGPZXDQV5Q');
     </script>
 
-
     <!-- Google Fonts -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap"
-        rel="stylesheet"
-    >
-
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- Structured Data -->
-
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -58,7 +44,7 @@
         "name": "SterlWorld",
         "url": "https://sterlworld.com",
         "logo": "https://sterlworld.com/assets/images/SterlWorld-Logo-2026.png",
-        "description": "An independent creative studio building original games, characters, worlds, and interactive experiences.",
+        "description": "An independent creative studio creating original games, characters, worlds, and entertainment experiences.",
         "founder": {
             "@type": "Person",
             "name": "Sterlin Griffin"
@@ -66,82 +52,47 @@
     }
     </script>
 
-
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-
         html {
             scroll-behavior: smooth;
         }
 
-
         body {
             background:
-                radial-gradient(
-                    circle at 15% 20%,
-                    rgba(100, 50, 180, 0.12),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at 85% 75%,
-                    rgba(0, 200, 255, 0.08),
-                    transparent 30%
-                ),
+                radial-gradient(circle at 15% 20%, rgba(100, 50, 180, 0.12), transparent 32%),
+                radial-gradient(circle at 85% 75%, rgba(0, 200, 255, 0.08), transparent 30%),
                 #050507;
-
             color: #ffffff;
-
             font-family: 'Poppins', sans-serif;
-
             line-height: 1.8;
-
             min-height: 100vh;
-
             overflow-x: hidden;
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.35;
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px),
+                radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
+            background-size: 140px 140px, 220px 220px;
+            background-position: 20px 30px, 80px 100px;
+            z-index: -1;
+        }
 
         a {
             color: inherit;
             text-decoration: none;
         }
-
-
-        /* =========================
-           STARFIELD
-        ========================= */
-
-        #space {
-            position: fixed;
-
-            inset: 0;
-
-            width: 100%;
-            height: 100%;
-
-            z-index: 0;
-
-            pointer-events: none;
-
-            background: transparent;
-
-            opacity: 0;
-
-            transition:
-                opacity 1.5s ease;
-        }
-
-
-        #space.visible {
-            opacity: 1;
-        }
-
 
         /* =========================
            NAVIGATION
@@ -149,46 +100,28 @@
 
         nav {
             width: 100%;
-
             padding: 28px 6%;
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             position: relative;
-
             z-index: 10;
         }
 
-
         nav a {
             font-family: 'Orbitron', sans-serif;
-
             font-size: 0.9rem;
-
             font-weight: 600;
-
             letter-spacing: 0.22em;
-
             text-transform: uppercase;
-
             color: rgba(255,255,255,0.78);
-
             transition: 0.25s ease;
         }
 
-
         nav a:hover {
             color: #ffffff;
-
-            text-shadow:
-                0 0 12px
-                rgba(255,255,255,0.45);
+            text-shadow: 0 0 12px rgba(255,255,255,0.45);
         }
-
 
         /* =========================
            PAGE
@@ -196,74 +129,37 @@
 
         .page {
             width: min(1000px, 88%);
-
             margin: 0 auto;
-
             padding: 70px 0 80px;
-
-            position: relative;
-
-            z-index: 5;
         }
-
 
         .hero {
             text-align: center;
-
             margin-bottom: 75px;
         }
 
-
         .hero-logo {
             width: min(270px, 65vw);
-
             height: auto;
-
             margin-bottom: 42px;
-
-            filter:
-                drop-shadow(
-                    0 0 22px
-                    rgba(255,255,255,0.08)
-                );
-
-            transition:
-                transform 1.2s ease,
-                filter 1.2s ease;
+            filter: drop-shadow(0 0 22px rgba(255,255,255,0.08));
         }
-
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-
-            font-size:
-                clamp(
-                    2rem,
-                    5vw,
-                    3.6rem
-                );
-
+            font-size: clamp(2rem, 5vw, 3.6rem);
             font-weight: 700;
-
             letter-spacing: 0.08em;
-
             line-height: 1.2;
-
             margin-bottom: 25px;
         }
 
-
         .hero-line {
             width: 70px;
-
             height: 2px;
-
             margin: 0 auto;
-
-            background:
-                rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.7);
         }
-
 
         /* =========================
            CONTENT
@@ -271,89 +167,51 @@
 
         .content {
             max-width: 850px;
-
             margin: 0 auto;
         }
 
-
         .intro {
             font-size: 1.15rem;
-
             line-height: 1.9;
-
-            color:
-                rgba(255,255,255,0.88);
-
+            color: rgba(255,255,255,0.88);
             margin-bottom: 65px;
         }
-
 
         .section {
             margin-bottom: 65px;
         }
 
-
         .section h2 {
             font-family: 'Orbitron', sans-serif;
-
-            font-size:
-                clamp(
-                    1.25rem,
-                    3vw,
-                    1.8rem
-                );
-
+            font-size: clamp(1.25rem, 3vw, 1.8rem);
             font-weight: 600;
-
             letter-spacing: 0.08em;
-
             margin-bottom: 22px;
-
             color: #ffffff;
         }
 
-
         .section p {
             font-size: 1rem;
-
-            color:
-                rgba(255,255,255,0.72);
-
+            color: rgba(255,255,255,0.72);
             margin-bottom: 20px;
         }
-
 
         .section p:last-child {
             margin-bottom: 0;
         }
 
-
         .highlight {
-            border-left:
-                2px solid
-                rgba(255,255,255,0.5);
-
-            padding:
-                6px
-                0
-                6px
-                25px;
-
+            border-left: 2px solid rgba(255,255,255,0.5);
+            padding: 6px 0 6px 25px;
             margin-bottom: 50px;
         }
 
-
         .highlight p {
             font-size: 1.12rem;
-
-            color:
-                rgba(255,255,255,0.9);
-
+            color: rgba(255,255,255,0.9);
             line-height: 1.85;
-
             margin: 0;
         }
-
 
         /* =========================
            PROJECT LINK
@@ -361,37 +219,21 @@
 
         .project-link {
             display: inline-block;
-
             margin-top: 8px;
-
             font-family: 'Orbitron', sans-serif;
-
             font-size: 0.85rem;
-
             font-weight: 600;
-
             letter-spacing: 0.08em;
-
             color: #ffffff;
-
-            border-bottom:
-                1px solid
-                rgba(255,255,255,0.45);
-
+            border-bottom: 1px solid rgba(255,255,255,0.45);
             padding-bottom: 3px;
-
             transition: 0.25s ease;
         }
 
-
         .project-link:hover {
             border-color: #ffffff;
-
-            text-shadow:
-                0 0 12px
-                rgba(255,255,255,0.4);
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
         }
-
 
         /* =========================
            CONTACT
@@ -399,50 +241,32 @@
 
         .contact {
             text-align: center;
-
             margin-top: 90px;
-
             padding-top: 55px;
-
-            border-top:
-                1px solid
-                rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
-
 
         .contact h2 {
             font-family: 'Orbitron', sans-serif;
-
             font-size: 1.35rem;
-
             letter-spacing: 0.1em;
-
             margin-bottom: 20px;
         }
 
-
         .contact p {
-            color:
-                rgba(255,255,255,0.65);
-
+            color: rgba(255,255,255,0.65);
             font-size: 0.95rem;
-
             margin-bottom: 8px;
         }
 
-
         .contact a {
-            color:
-                rgba(255,255,255,0.85);
-
+            color: rgba(255,255,255,0.85);
             transition: 0.25s ease;
         }
-
 
         .contact a:hover {
             color: #ffffff;
         }
-
 
         /* =========================
            FOOTER
@@ -450,48 +274,26 @@
 
         footer {
             text-align: center;
-
-            padding:
-                35px
-                20px
-                45px;
-
+            padding: 35px 20px 45px;
             margin-top: 80px;
-
-            border-top:
-                1px solid
-                rgba(255,255,255,0.08);
-
-            color:
-                rgba(255,255,255,0.4);
-
+            border-top: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.4);
             font-size: 0.78rem;
-
-            position: relative;
-
-            z-index: 5;
         }
-
 
         footer p {
             margin-bottom: 10px;
         }
 
-
         footer a {
-            color:
-                rgba(255,255,255,0.5);
-
+            color: rgba(255,255,255,0.5);
             margin: 0 8px;
-
             transition: 0.25s ease;
         }
-
 
         footer a:hover {
             color: #ffffff;
         }
-
 
         /* =========================
            MOBILE
@@ -503,81 +305,51 @@
                 padding: 22px 5%;
             }
 
-
             .page {
                 width: 88%;
-
                 padding-top: 50px;
             }
-
 
             .hero {
                 margin-bottom: 55px;
             }
 
-
             .hero-logo {
-                width:
-                    min(
-                        230px,
-                        65vw
-                    );
-
+                width: min(230px, 65vw);
                 margin-bottom: 32px;
             }
-
 
             .intro {
                 font-size: 1.03rem;
             }
 
-
             .section {
                 margin-bottom: 50px;
             }
-
 
             .highlight {
                 padding-left: 18px;
             }
 
-
             .section p {
                 font-size: 0.96rem;
             }
 
-
             .contact {
                 margin-top: 65px;
             }
-
         }
-
     </style>
-
 </head>
 
-
 <body>
-
-
-    <!-- =========================
-         STARFIELD CANVAS
-    ========================= -->
-
-    <canvas id="space"></canvas>
-
 
     <!-- =========================
          NAVIGATION
     ========================= -->
 
     <nav>
-
-        <a href="/">
-            SterlWorld
-        </a>
-
+        <a href="/">SterlWorld</a>
     </nav>
 
 
@@ -587,9 +359,7 @@
 
     <main class="page">
 
-
         <section class="hero">
-
 
             <img
                 src="/assets/images/SterlWorld-Logo-2026.png"
@@ -597,30 +367,22 @@
                 class="hero-logo"
             >
 
-
-            <h1>
-                About SterlWorld
-            </h1>
-
+            <h1>About SterlWorld</h1>
 
             <div class="hero-line"></div>
-
 
         </section>
 
 
         <div class="content">
 
-
             <!-- INTRO -->
 
             <div class="highlight">
-
                 <p>
                     SterlWorld is an independent creative studio founded by Sterlin Griffin,
-                    built around original games, characters, worlds, and interactive experiences.
+                    creating original games, characters, worlds, and entertainment experiences.
                 </p>
-
             </div>
 
 
@@ -628,33 +390,25 @@
 
             <section class="section">
 
-
-                <h2>
-                    Building Worlds With Their Own Identity
-                </h2>
-
+                <h2>Building Worlds With Their Own Identity</h2>
 
                 <p>
-                    SterlWorld exists to create original entertainment properties that feel
-                    distinct, memorable, and alive. Rather than treating each project as an
-                    isolated release, the studio is building a growing library of original
-                    intellectual properties with their own characters, visual identities,
-                    stories, and gameplay experiences.
+                    SterlWorld is built around the idea that original worlds should feel like
+                    more than just games. They should have their own characters, personalities,
+                    visual identities, stories, and experiences that people can connect with.
                 </p>
-
 
                 <p>
-                    The work spans game development, interactive experiences, character-driven
-                    storytelling, and visual media — with a focus on strong creative direction
-                    and recognizable worlds.
+                    Games are where SterlWorld is beginning, but they are not where the vision
+                    ends. The studio is building original intellectual properties with the
+                    potential to grow into different forms of entertainment over time.
                 </p>
-
 
                 <p>
-                    At the center of that approach is a simple idea: every world should feel
-                    like somewhere worth coming back to.
+                    Every world is approached with its own creative identity. Some may draw
+                    inspiration from a particular era, genre, or style, while still bringing
+                    something new to the experience.
                 </p>
-
 
             </section>
 
@@ -663,49 +417,35 @@
 
             <section class="section">
 
-
-                <h2>
-                    Pizza Dales
-                </h2>
-
+                <h2>Pizza Dales</h2>
 
                 <p>
-
-                    <a
-                        href="/pizzadales"
-                        class="project-link"
-                    >
+                    <a href="/pizzadales" class="project-link">
                         Explore Pizza Dales →
                     </a>
-
                 </p>
-
 
                 <p>
-                    Pizza Dales is the flagship universe of SterlWorld — a character-driven
-                    arcade world built around speed, humor, rivalry, chaos, and personality.
+                    Pizza Dales is SterlWorld's first original universe and the studio's first
+                    major introduction to this approach to world-building. Its colorful
+                    characters and visual style are inspired by the feeling of 1990s cartoons,
+                    bringing that nostalgic energy into an interactive world.
                 </p>
-
-
-                <p>
-                    Its characters and settings form the foundation of a larger universe
-                    designed to expand across games and other forms of interactive entertainment.
-                </p>
-
 
                 <p>
                     The first official release,
-                    <strong>
-                        Pizza Dales: Detention Dash
-                    </strong>,
-                    brings players into the halls of Yokey Oats High, where Dale and Rocket
-                    turn an ordinary school day into a fast-moving escape through the Pizza Dales
-                    universe.
+                    <strong>Pizza Dales: Detention Dash</strong>,
+                    introduced the Pizza Dales universe to players while also marking
+                    SterlWorld's first officially released game.
                 </p>
 
+                <p>
+                    Detention Dash began as an endless runner, but its role within SterlWorld
+                    goes beyond its gameplay. It was the first opportunity to take one of the
+                    studio's original worlds from an idea to a finished, shipped experience.
+                </p>
 
                 <p>
-
                     <a
                         href="https://apps.apple.com/us/app/pizza-dales-detention-dash/id6762026581"
                         class="project-link"
@@ -714,9 +454,7 @@
                     >
                         Get Pizza Dales: Detention Dash on the App Store →
                     </a>
-
                 </p>
-
 
             </section>
 
@@ -725,36 +463,56 @@
 
             <section class="section">
 
-
-                <h2>
-                    Expanding the Universe
-                </h2>
-
+                <h2>Expanding the Universe</h2>
 
                 <p>
-                    SterlWorld is no longer centered around a single project. New characters,
-                    concepts, and worlds are being developed alongside the studio's existing
-                    properties.
+                    SterlWorld is continuing to develop new worlds and experiences, each with
+                    its own identity and creative direction.
                 </p>
-
 
                 <p>
-                    <strong>
-                        Super Punkass
-                    </strong>
-                    is the next major world currently in development. Set within the neon-lit
-                    streets of Blackout City, the project explores a different side of the
-                    SterlWorld identity through fast-paced action, cinematic presentation,
-                    and an entirely new cast of characters.
+                    <strong>Super Punkass</strong> is the next major game currently in
+                    development. While Pizza Dales draws from the nostalgic feeling of a
+                    1990s cartoon, Super Punkass takes inspiration from the atmosphere of
+                    1980s movies and the experience of playing games in the 1990s, while
+                    bringing a modern touch to the experience.
                 </p>
-
 
                 <p>
-                    Each new property gives SterlWorld another way to experiment with gameplay,
-                    art direction, characters, and storytelling while contributing to the larger
-                    creative ecosystem the studio is building.
+                    The project represents a larger step forward for SterlWorld, moving beyond
+                    the studio's first endless runner into a fully planned action-platforming
+                    experience with story, cinematic presentation, and a 2.5D visual approach.
                 </p>
 
+                <p>
+                    As SterlWorld grows, new properties will continue to explore different
+                    genres, eras, aesthetics, characters, and ways of telling stories.
+                </p>
+
+            </section>
+
+
+            <!-- BEYOND GAMES -->
+
+            <section class="section">
+
+                <h2>More Than Games</h2>
+
+                <p>
+                    Games are the foundation of SterlWorld's journey, but the long-term vision
+                    extends beyond interactive software.
+                </p>
+
+                <p>
+                    The studio is ultimately interested in creating original entertainment
+                    properties that can exist across different mediums, including games,
+                    animation, characters, stories, and other creative experiences.
+                </p>
+
+                <p>
+                    Those possibilities will grow alongside the worlds themselves. For now,
+                    SterlWorld is focused on building them one project at a time.
+                </p>
 
             </section>
 
@@ -763,31 +521,26 @@
 
             <section class="section">
 
-
-                <h2>
-                    Originality First
-                </h2>
-
+                <h2>Originality First</h2>
 
                 <p>
-                    SterlWorld is built around original ideas, recognizable visual identity,
-                    gameplay-first experiences, memorable characters, and worlds that can
-                    continue to grow over time.
+                    SterlWorld is built around original ideas and strong creative identities.
+                    The goal is to create worlds that are recognizable, memorable, and worth
+                    exploring beyond a single release.
                 </p>
-
 
                 <p>
-                    The goal is not simply to release individual games. It is to establish
-                    original properties that can evolve, connect, and live beyond a single release.
+                    Nostalgia is part of that creative language, but it is not about simply
+                    recreating the past. It is about capturing the feelings, styles, and
+                    experiences that made different eras of entertainment memorable and
+                    bringing those influences into something new.
                 </p>
-
 
                 <p>
-                    From a small game concept to a larger universe, every project is part of
-                    the same long-term creative direction: build something original, give it
-                    an identity, and keep expanding it.
+                    From the first game to the worlds that come after it, SterlWorld is
+                    building toward something bigger: original properties with their own
+                    identities, stories, and places in the larger creative landscape.
                 </p>
-
 
             </section>
 
@@ -796,35 +549,25 @@
 
             <section class="contact">
 
-
-                <h2>
-                    Contact
-                </h2>
-
+                <h2>Contact</h2>
 
                 <p>
                     General inquiries:
-
                     <a href="mailto:info@sterlworld.com">
                         info@sterlworld.com
                     </a>
                 </p>
 
-
                 <p>
                     Support:
-
                     <a href="mailto:support@sterlworld.com">
                         support@sterlworld.com
                     </a>
                 </p>
 
-
             </section>
 
-
         </div>
-
 
     </main>
 
@@ -835,580 +578,16 @@
 
     <footer>
 
-
         <p>
             © 2025–2026 SterlWorld. All rights reserved.
         </p>
 
-
         <p>
-
-            <a href="/privacy">
-                Privacy
-            </a>
-
-            <a href="/terms">
-                Terms
-            </a>
-
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
         </p>
 
-
     </footer>
-
-
-    <!-- =========================
-         STARFIELD JAVASCRIPT
-    ========================= -->
-
-    <script>
-
-
-        /* ========================================================= */
-        /* STARFIELD */
-        /* ========================================================= */
-
-        const canvas =
-            document.getElementById("space");
-
-        const ctx =
-            canvas.getContext("2d");
-
-
-        let width;
-        let height;
-
-
-        function resizeCanvas() {
-
-            width =
-                canvas.width =
-                window.innerWidth;
-
-            height =
-                canvas.height =
-                window.innerHeight;
-
-        }
-
-
-        resizeCanvas();
-
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-                resizeCanvas();
-
-                createStars();
-
-            }
-        );
-
-
-        /* ========================================================= */
-        /* STAR IMAGE */
-        /* ========================================================= */
-
-        const starImage =
-            new Image();
-
-
-        starImage.src =
-            "/assets/images/Star.png";
-
-
-        /* ========================================================= */
-        /* CREATE STARS */
-        /* ========================================================= */
-
-        let stars = [];
-
-
-        function createStars() {
-
-            stars = [];
-
-
-            const starCount =
-                window.innerWidth < 768
-                    ? 110
-                    : 240;
-
-
-            for (
-                let i = 0;
-                i < starCount;
-                i++
-            ) {
-
-                stars.push({
-
-                    x:
-                        (Math.random() - 0.5)
-                        * width
-                        * 2.5,
-
-                    y:
-                        (Math.random() - 0.5)
-                        * height
-                        * 2.5,
-
-                    z:
-                        Math.random()
-                        * width,
-
-                    speed:
-                        0.10 +
-                        Math.random() * 0.38,
-
-                    brightness:
-                        0.25 +
-                        Math.random() * 0.5
-
-                });
-
-            }
-
-        }
-
-
-        createStars();
-
-
-        /* ========================================================= */
-        /* STARFIELD ANIMATION */
-        /* ========================================================= */
-
-        function animateStars() {
-
-            ctx.clearRect(
-                0,
-                0,
-                width,
-                height
-            );
-
-
-            const centerX =
-                width / 2;
-
-
-            const centerY =
-                height / 2;
-
-
-            stars.forEach(
-                (star, index) => {
-
-
-                    /*
-                     * Stars move toward the viewer.
-                     * They do NOT fall vertically.
-                     */
-
-                    star.z -=
-                        star.speed;
-
-
-                    /*
-                     * Reset star once it reaches
-                     * the viewer.
-                     */
-
-                    if (
-                        star.z <= 1
-                    ) {
-
-                        stars[index] = {
-
-                            x:
-                                (Math.random() - 0.5)
-                                * width
-                                * 2.5,
-
-                            y:
-                                (Math.random() - 0.5)
-                                * height
-                                * 2.5,
-
-                            z:
-                                width,
-
-                            speed:
-                                0.10 +
-                                Math.random() * 0.38,
-
-                            brightness:
-                                0.25 +
-                                Math.random() * 0.5
-
-                        };
-
-
-                        return;
-
-                    }
-
-
-                    /*
-                     * Perspective projection.
-                     */
-
-                    const scale =
-                        220 /
-                        star.z;
-
-
-                    const x =
-                        star.x *
-                        scale +
-                        centerX;
-
-
-                    const y =
-                        star.y *
-                        scale +
-                        centerY;
-
-
-                    /*
-                     * Previous position used
-                     * for the subtle close-star streak.
-                     */
-
-                    const previousScale =
-                        220 /
-                        (star.z + 3);
-
-
-                    const previousX =
-                        star.x *
-                        previousScale +
-                        centerX;
-
-
-                    const previousY =
-                        star.y *
-                        previousScale +
-                        centerY;
-
-
-                    /*
-                     * STAR SIZE
-                     */
-
-                    const size =
-                        Math.max(
-                            5.4,
-                            (1 - star.z / width)
-                            * 24
-                        );
-
-
-                    /*
-                     * STAR BRIGHTNESS
-                     */
-
-                    const opacity =
-                        Math.min(
-                            star.brightness,
-                            (1 - star.z / width)
-                            * 0.95
-                            + 0.12
-                        );
-
-
-                    ctx.globalAlpha =
-                        opacity;
-
-
-                    /*
-                     * Draw the actual Star.png
-                     * image.
-                     */
-
-                    if (
-                        starImage.complete &&
-                        x > -40 &&
-                        x < width + 40 &&
-                        y > -40 &&
-                        y < height + 40
-                    ) {
-
-                        ctx.drawImage(
-
-                            starImage,
-
-                            x -
-                                size / 2,
-
-                            y -
-                                size / 2,
-
-                            size,
-
-                            size
-
-                        );
-
-                    }
-
-
-                    /*
-                     * Very subtle streak on
-                     * the closest stars.
-                     */
-
-                    if (
-                        star.z <
-                        width * 0.28 &&
-                        size > 7
-                    ) {
-
-                        ctx.globalAlpha =
-                            opacity * 0.35;
-
-
-                        ctx.beginPath();
-
-
-                        ctx.moveTo(
-                            previousX,
-                            previousY
-                        );
-
-
-                        ctx.lineTo(
-                            x,
-                            y
-                        );
-
-
-                        ctx.strokeStyle =
-                            "rgba(255,255,255,0.45)";
-
-
-                        ctx.lineWidth =
-                            Math.max(
-                                0.6,
-                                size * 0.16
-                            );
-
-
-                        ctx.stroke();
-
-                    }
-
-                }
-            );
-
-
-            ctx.globalAlpha = 1;
-
-
-            requestAnimationFrame(
-                animateStars
-            );
-
-        }
-
-
-        animateStars();
-
-
-        /* ========================================================= */
-        /* STARFIELD FADE IN */
-        /* ========================================================= */
-
-        window.addEventListener(
-            "load",
-            () => {
-
-                setTimeout(
-                    () => {
-
-                        canvas.classList.add(
-                            "visible"
-                        );
-
-                    },
-                    300
-                );
-
-            }
-        );
-
-
-        /* ========================================================= */
-        /* LOGO PULSE */
-        /* ========================================================= */
-
-        const logo =
-            document.querySelector(".hero-logo");
-
-
-        function pulseLogo() {
-
-            if (!logo) {
-                return;
-            }
-
-
-            logo.style.transform =
-                "scale(1.025)";
-
-
-            logo.style.filter =
-                "drop-shadow(0 0 22px rgba(255,255,255,0.1))";
-
-
-            setTimeout(
-                () => {
-
-                    logo.style.transform =
-                        "scale(1)";
-
-
-                    logo.style.filter =
-                        "";
-
-                },
-                1200
-            );
-
-        }
-
-
-        setInterval(
-            pulseLogo,
-            8000
-        );
-
-
-        /* ========================================================= */
-        /* LOGO SPARKLES */
-        /* ========================================================= */
-
-        function createSparkle() {
-
-            if (!logo) {
-                return;
-            }
-
-
-            const rect =
-                logo.getBoundingClientRect();
-
-
-            const sparkle =
-                document.createElement("img");
-
-
-            sparkle.src =
-                "/assets/images/Star.png";
-
-
-            sparkle.style.position =
-                "fixed";
-
-
-            sparkle.style.width =
-                "12px";
-
-
-            sparkle.style.height =
-                "12px";
-
-
-            sparkle.style.pointerEvents =
-                "none";
-
-
-            sparkle.style.zIndex =
-                "10";
-
-
-            sparkle.style.opacity =
-                "0.6";
-
-
-            sparkle.style.left =
-                (
-                    rect.left +
-                    Math.random() *
-                    rect.width
-                ) + "px";
-
-
-            sparkle.style.top =
-                (
-                    rect.top +
-                    Math.random() *
-                    rect.height
-                ) + "px";
-
-
-            sparkle.style.transition =
-                "all 0.7s ease";
-
-
-            document.body.appendChild(
-                sparkle
-            );
-
-
-            const angle =
-                Math.random()
-                * Math.PI
-                * 2;
-
-
-            const distance =
-                20 +
-                Math.random() * 40;
-
-
-            setTimeout(
-                () => {
-
-                    sparkle.style.transform =
-                        `translate(
-                            ${Math.cos(angle) * distance}px,
-                            ${Math.sin(angle) * distance}px
-                        )
-                        scale(0.3)`;
-
-
-                    sparkle.style.opacity =
-                        "0";
-
-                },
-                20
-            );
-
-
-            setTimeout(
-                () => {
-
-                    sparkle.remove();
-
-                },
-                750
-            );
-
-        }
-
-
-        setInterval(
-            createSparkle,
-            2400
-        );
-
-
-    </script>
-
 
 </body>
 </html>
